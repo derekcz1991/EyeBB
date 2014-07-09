@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal" >
+
+        <com.eyebb.customview.CircleImageView
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/hugh"
+            app:border_color="@color/white"
+            app:border_width="2dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/DarkGreyText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kitty Chan" />
+
+            <TextView
+                android:id="@+id/place"
+                style="@style/BlackText_15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="\@ Mess Hall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/btn_bg_green"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_list_call" />
+
+                    <TextView
+                        android:id="@+id/phone"
+                        style="@style/WhiteText_15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9123 4567" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/btn_bg_red"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_list_beep" />
+
+                    <TextView
+                        style="@style/WhiteText_15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_beep" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.1"
+        android:background="@color/black" >
+    </LinearLayout>
+
+    <TextView
+        style="@style/DarkGreyText_18"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:text="@string/btn_back" />
+
+</LinearLayout>

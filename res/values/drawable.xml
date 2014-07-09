@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="actionbar_background">#FFEC4235</color>
+    
+    <color name="activity_background_red">#FFEC4235</color>
+    <color name="activity_background_white">#FFFFFFFF</color>
+    <color name="divider_red">#FFEC4235</color>
+    
+ 	<color name="transparent">#00000000</color>
+ 	<color name="black">#FF000000</color>
+ 	<color name="white">#FFFFFFFF</color>
+ 	<color name="red">#FFEC4235</color>
+ 	<color name="dark_grey">#FF585854</color>
+ 	<color name="light_grey">#FFBABABA</color>
+ 	
+ 	<color name="progressbar_green">#FF2BFFB7</color>
+ 	<color name="progressbar_orange">#FFFFC342</color>
+ 	<color name="progressbar_blue">#FF1CD7FF</color>
+ 	<color name="progressbar_red">#FFFE5266</color>
+ 	<color name="progressbar_pink">#FFFF9AE6</color>
+ </resources>
