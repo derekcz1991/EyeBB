@@ -63,258 +63,295 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/functionbar"
-        android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
-
-        <TextView
-            style="@style/DarkGreyText_28"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:text="@string/text_indoor_locator" />
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_home_green01"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ic_home_food" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp" >
+
+                <TextView
+                    style="@style/DarkGreyText_28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/text_indoor_locator" />
+
+                <LinearLayout
+                    android:id="@+id/btn_shcool_bus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/hugh" />
+
+                    <TextView
+                        style="@style/RedText_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/text_shcool_bus" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/btn_arrow_go" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical" >
+                android:background="@drawable/bg_home_green01"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        style="@style/WhiteText_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mess Hall" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="16dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/ic_home_no_bg"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp" >
-
-                        <TextView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_marginRight="2dp"
-                            android:background="@drawable/btn_actbar_profile_on" />
-
-                        <TextView
-                            style="@style/WhiteText_12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2" />
-                    </LinearLayout>
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_home_food" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical" >
 
-                    <com.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
-                        app:border_color="@color/white"
-                        app:border_width="2dp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
 
-                    <com.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
-                        app:border_color="@color/white"
-                        app:border_width="2dp" />
+                        <TextView
+                            style="@style/WhiteText_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_mess_hall" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/ic_home_no_bg"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp" >
+
+                            <TextView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginRight="2dp"
+                                android:background="@drawable/btn_actbar_profile_on" />
+
+                            <TextView
+                                style="@style/WhiteText_12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal" >
+
+                        <com.eyebb.customview.CircleImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+
+                        <com.eyebb.customview.CircleImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_home_blue01"
-            android:orientation="horizontal"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ic_home_play" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical" >
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_home_blue01"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        style="@style/WhiteText_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Playground" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="16dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/ic_home_no_bg"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp" >
-
-                        <TextView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_marginRight="2dp"
-                            android:background="@drawable/btn_actbar_profile_on" />
-
-                        <TextView
-                            style="@style/WhiteText_12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3" />
-                    </LinearLayout>
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_home_play" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical" >
 
-                    <com.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
-                        app:border_color="@color/white"
-                        app:border_width="2dp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
 
-                    <com.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
-                        app:border_color="@color/white"
-                        app:border_width="2dp" />
+                        <TextView
+                            style="@style/WhiteText_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_playground" />
 
-                    <com.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
-                        app:border_color="@color/white"
-                        app:border_width="2dp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/ic_home_no_bg"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp" >
+
+                            <TextView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginRight="2dp"
+                                android:background="@drawable/btn_actbar_profile_on" />
+
+                            <TextView
+                                style="@style/WhiteText_12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal" >
+
+                        <com.eyebb.customview.CircleImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+
+                        <com.eyebb.customview.CircleImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+
+                        <com.eyebb.customview.CircleImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_home_yellow01"
-            android:orientation="horizontal"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/ic_home_sleep" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical" >
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_home_yellow01"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" >
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        style="@style/WhiteText_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sleeping" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="16dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/ic_home_no_bg"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp" >
-
-                        <TextView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:layout_marginRight="2dp"
-                            android:background="@drawable/btn_actbar_profile_on" />
-
-                        <TextView
-                            style="@style/WhiteText_12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0" />
-                    </LinearLayout>
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_home_sleep" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal" >
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical" >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            style="@style/WhiteText_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_sleeping" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/ic_home_no_bg"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp" >
+
+                            <TextView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginRight="2dp"
+                                android:background="@drawable/btn_actbar_profile_on" />
+
+                            <TextView
+                                style="@style/WhiteText_12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

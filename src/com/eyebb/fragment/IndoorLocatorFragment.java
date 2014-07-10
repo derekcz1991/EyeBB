@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.eyebb.R;
 import com.eyebb.activity.MainDialog;
+import com.eyebb.activity.SchoolBusTrackingActivity;
 
 public class IndoorLocatorFragment extends Fragment {
 
@@ -31,6 +32,18 @@ public class IndoorLocatorFragment extends Fragment {
 						Intent intent = new Intent(getActivity(),
 								MainDialog.class);
 						startActivity(intent);
+					}
+				});
+		
+		v.findViewById(R.id.btn_shcool_bus).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(getActivity(),
+								SchoolBusTrackingActivity.class);
+						startActivity(intent);
+
 					}
 				});
 	}

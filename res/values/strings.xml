@@ -18,6 +18,15 @@
     <string name="text_daily">Daily</string>
     <string name="text_weekly">Weekly</string>
     <string name="text_beep">Beep</string>
+    <string name="text_shcool_bus">School Bus</string>
+    <string name="text_mess_hall">Mess Hall</string>
+    <string name="text_playground">Playground</string>
+    <string name="text_sleeping">Sleeping</string>
+    <string name="text_music_room">Music Room</string>
+    <string name="text_class_room_2a">Class Room 2A</string>
+    <string name="text_computer_room">Computer Room</string>
+    <string name="text_art_room">Art Room</string>
+    <string name="text_school_bus_tracking">School Bus Tracking</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
