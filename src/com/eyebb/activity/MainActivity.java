@@ -31,6 +31,7 @@ public class MainActivity extends FragmentActivity {
 		if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
+		mTabHost.setCurrentTab(2);
 	}
 
 	@Override

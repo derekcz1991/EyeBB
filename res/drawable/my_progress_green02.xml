@@ -6,7 +6,7 @@
 	<!-- 定义轨道上已完成部分的样式 -->
 	<item android:id="@android:id/progress">
 	    <clip 
-			android:drawable="@color/progressbar_green" >
+			android:drawable="@color/progressbar_green02" >
 	    </clip>
 	</item>
 </layer-list>     
