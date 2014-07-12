@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
@@ -23,7 +24,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 
 	private final class ViewHolder {
 		private TextView title;
-		private LinearLayout content;
+		private RelativeLayout content;
 		private TextView subTitle;
 		private ProgressBar progressBar;
 		private TextView time;
@@ -64,7 +65,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 					.inflate(R.layout.list_item_performance, parent, false);
 			viewHolder = new ViewHolder();
 			viewHolder.title = (TextView) v.findViewById(R.id.title);
-			viewHolder.content = (LinearLayout) v.findViewById(R.id.content);
+			viewHolder.content = (RelativeLayout) v.findViewById(R.id.content);
 			viewHolder.subTitle = (TextView) v.findViewById(R.id.subtitle);
 			viewHolder.progressBar = (ProgressBar) v
 					.findViewById(R.id.progressBar);
