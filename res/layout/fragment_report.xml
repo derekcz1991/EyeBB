@@ -32,7 +32,7 @@
             style="?android:attr/actionButtonStyle"
              >
 
-            <com.eyebb.customview.CircleImageView
+            <com.twinly.eyebb.customview.CircleImageView
                 android:id="@+id/img"
                 android:layout_width="32dp"
                 android:layout_height="32dp"

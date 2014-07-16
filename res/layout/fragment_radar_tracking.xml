@@ -45,7 +45,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/bg_radar_circle" />
 
-                <com.eyebb.customview.CircleImageView
+                <com.twinly.eyebb.customview.CircleImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="8dp"
@@ -166,7 +166,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp" >
 
-            <com.eyebb.customview.CircleImageView
+            <com.twinly.eyebb.customview.CircleImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginRight="8dp"

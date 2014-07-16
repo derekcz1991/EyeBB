@@ -18,7 +18,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_list_unread" />
 
-        <com.eyebb.customview.CircleImageView
+        <com.twinly.eyebb.customview.CircleImageView
             android:id="@+id/img"
             android:layout_width="88dp"
             android:layout_height="88dp"

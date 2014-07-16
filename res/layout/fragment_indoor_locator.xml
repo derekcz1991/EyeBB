@@ -177,7 +177,7 @@
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal" >
 
-                        <com.eyebb.customview.CircleImageView
+                        <com.twinly.eyebb.customview.CircleImageView
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginRight="8dp"
