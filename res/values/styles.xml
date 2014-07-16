@@ -66,6 +66,11 @@
         <item name="android:textColor">@color/red</item>
     </style>
 
+    <style name="RedText_32">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="DarkGreyText_12">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/dark_grey</item>
@@ -83,6 +88,11 @@
 
     <style name="DarkGreyText_18">
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="DarkGreyText_20">
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
@@ -112,6 +122,11 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="BlackText_18">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="MyDialogStyleActivity" parent="@android:style/Theme.Holo.DialogWhenLarge">
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
@@ -126,6 +141,5 @@
     <style name="logo">
         <item name="android:src">@drawable/logo_en</item>
     </style>
-
 
 </resources>

@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
+import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.MainDialog;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 
@@ -29,8 +30,11 @@ public class IndoorLocatorFragment extends Fragment {
 
 					@Override
 					public void onClick(View v) {
+//						Intent intent = new Intent(getActivity(),
+//								MainDialog.class);
+//						startActivity(intent);
 						Intent intent = new Intent(getActivity(),
-								MainDialog.class);
+								BeepDialog.class);
 						startActivity(intent);
 					}
 				});
@@ -46,5 +50,19 @@ public class IndoorLocatorFragment extends Fragment {
 
 					}
 				});
+		
+		v.findViewById(R.id.child_img).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(getActivity(),
+								MainDialog.class);
+						startActivity(intent);
+
+					}
+				});
+		
+		
 	}
 }

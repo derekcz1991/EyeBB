@@ -1,5 +1,7 @@
 package com.twinly.eyebb.bluetooth;
 
+import com.eyebb.R;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -7,14 +9,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
-
-import com.twinly.eyebb.R;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnClickListener {

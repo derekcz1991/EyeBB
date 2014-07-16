@@ -3,17 +3,21 @@ package com.twinly.eyebb.fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
+import com.twinly.eyebb.activity.BeepDialog;
+import com.twinly.eyebb.activity.MainDialog;
 
 public class RadarTrackingFragment extends Fragment {
 	private SimpleAdapter mkidsListAdapter;
@@ -39,6 +43,21 @@ public class RadarTrackingFragment extends Fragment {
 				R.anim.rotate_anim);
 		anim.setFillAfter(true);
 		radar_rotate.startAnimation(anim);
+		
+
+		View radarBeepBtn = getActivity().findViewById(
+				R.id.radar_beep_btn);
+
+		radarBeepBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(),
+						BeepDialog.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
 }

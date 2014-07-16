@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
 import com.twinly.eyebb.model.PerformanceListItem;
 

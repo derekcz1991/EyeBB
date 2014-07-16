@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 
 public class WelcomeActivity extends Activity {
@@ -42,42 +42,42 @@ public class WelcomeActivity extends Activity {
 			}
 		});
 
-		logo = (ImageView) findViewById(R.id.icon);
-		logo.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				final String[] names = { "Enter", "Leave", "School" };
-				new AlertDialog.Builder(WelcomeActivity.this).setTitle("列表对话框")// 对话框标题
-						.setItems(names, new DialogInterface.OnClickListener() {// 每一条的名称
-									public void onClick(DialogInterface dialog,
-											int which) {
-										//on click
-										if (which == 0) {
-											Intent intent = new Intent(
-													WelcomeActivity.this,
-													BusEnterDialog.class);
-											startActivity(intent);
-											finish();
-										} else if (which == 1) {
-											Intent intent = new Intent(
-													WelcomeActivity.this,
-													BusLeaveDialog.class);
-											startActivity(intent);
-											finish();
-										} else if (which == 2) {
-											Intent intent = new Intent(
-													WelcomeActivity.this,
-													BusSchoolDialog.class);
-											startActivity(intent);
-											finish();
-										}
-									}
-								})
-
-						.show();
-			}
-		});
+//		logo = (ImageView) findViewById(R.id.icon);
+//		logo.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				final String[] names = { "Enter", "Leave", "School" };
+//				new AlertDialog.Builder(WelcomeActivity.this).setTitle("列表对话框")// 对话框标题
+//						.setItems(names, new DialogInterface.OnClickListener() {// 每一条的名称
+//									public void onClick(DialogInterface dialog,
+//											int which) {
+//										//on click
+//										if (which == 0) {
+//											Intent intent = new Intent(
+//													WelcomeActivity.this,
+//													BusEnterDialog.class);
+//											startActivity(intent);
+//											finish();
+//										} else if (which == 1) {
+//											Intent intent = new Intent(
+//													WelcomeActivity.this,
+//													BusLeaveDialog.class);
+//											startActivity(intent);
+//											finish();
+//										} else if (which == 2) {
+//											Intent intent = new Intent(
+//													WelcomeActivity.this,
+//													BusSchoolDialog.class);
+//											startActivity(intent);
+//											finish();
+//										}
+//									}
+//								})
+//
+//						.show();
+//			}
+//		});
 
 	}
 

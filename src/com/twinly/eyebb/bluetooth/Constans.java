@@ -82,14 +82,7 @@ public class Constans {
 		builder.create().show();
 	}
 	
-	public static void logout(final Activity act){
-		//info_dialog(act,"提醒","会话已失效，请重新登陆");
-		Intent intent = new Intent();
-		intent.setClass(act, LoginActivity.class);
-		act.startActivity(intent);
-		act.finish();																	
-	}
-	
+
 	public static String getVersionName(Context ctx) {
 		String versionName = null;
 		try {

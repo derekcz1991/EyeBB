@@ -43,6 +43,8 @@
     <string name="text_forgetPassword_details">Please enter your email address to received details for your new password.</string>
     <string name="text_forgetPassword_email">Enter your email address</string>
     <string name="text_activityDetails">Activity Details</string>
+       <string name="text_beeping">Beeping</string>
+          <string name="text_sec">Sec.</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -51,6 +53,7 @@
     <string name="btn_performance">Performance</string>
     <string name="btn_activities">Activities</string>
     <string name="btn_back">Back</string>
+    <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_share">Share</string>
 

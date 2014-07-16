@@ -178,6 +178,7 @@
                         android:orientation="horizontal" >
 
                         <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/child_img"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginRight="8dp"
