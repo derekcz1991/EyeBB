@@ -13,7 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 
 public class RadarTrackingFragment extends Fragment {
 	private SimpleAdapter mkidsListAdapter;

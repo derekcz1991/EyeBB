@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.eyebb"
+    package="com.twinly.eyebb"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -34,10 +34,10 @@
            where PACKAGE is the application's package name.
     -->
     <permission
-        android:name="com.eyebb.permission.C2D_MESSAGE"
+        android:name="com.twinly.eyebb.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.eyebb.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.twinly.eyebb.permission.C2D_MESSAGE" />
 
     <!--
      The following two permissions are not required to use
@@ -133,7 +133,7 @@
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
-                <category android:name="com.eyebb" />
+                <category android:name="com.twinly.eyebb" />
             </intent-filter>
         </receiver>
 

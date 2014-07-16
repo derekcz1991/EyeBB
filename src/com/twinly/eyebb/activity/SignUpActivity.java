@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 
 
 public class SignUpActivity extends Activity {
