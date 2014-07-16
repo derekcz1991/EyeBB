@@ -2,6 +2,7 @@ package com.twinly.eyebb.activity;
 
 import android.app.Activity;
 import android.app.Service;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 
-
 public class BeepDialog extends Activity {
 	// record the time
 	private Chronometer timer;
@@ -29,24 +29,44 @@ public class BeepDialog extends Activity {
 	private AudioManager aManager;;
 	private MediaPlayer mPlayer;
 
+	// sharedPreferences
+	SharedPreferences SandVpreferences;
+	// boolean sound and vibrate
+	private Boolean isSound;
+	private Boolean isVibrate;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.dialog_beep);
+		SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
+		isSound = SandVpreferences.getBoolean("sound", true);
+		isVibrate = SandVpreferences.getBoolean("vibrate", true);
 
 		// secText = (TextView) findViewById(R.id.sec_text);
 		getTime();
-		vibrate();
-		sound();
+		if (isVibrate) {
+			vibrate();
+		}
+
+		if (isSound) {
+			sound();
+		}
+
 		findViewById(R.id.btn_cancel).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				
+				if (isVibrate) {
+					vibrator.cancel();
+				}
+				if (isSound) {
+					mPlayer.stop();
+					mPlayer.setLooping(false);
+				}
 				finish();
-				vibrator.cancel();
-				mPlayer.stop();
-				mPlayer.setLooping(false);
 			}
 		});
 
@@ -74,10 +94,9 @@ public class BeepDialog extends Activity {
 	// SOUND
 	private void sound() {
 		aManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
-		
+
 		mPlayer = new MediaPlayer();
-		mPlayer = MediaPlayer.create(BeepDialog.this,
-				R.raw.beep);
+		mPlayer = MediaPlayer.create(BeepDialog.this, R.raw.beep);
 		mPlayer.setLooping(true);
 		mPlayer.start();
 	}

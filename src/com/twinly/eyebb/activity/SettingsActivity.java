@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -26,13 +27,20 @@ public class SettingsActivity extends Activity {
 	// the default is true
 	private Boolean isEnableSoundSelected;
 	private Boolean isEnableVibrationSelected;
-
+	
+	//sharedPreferences
+	SharedPreferences SandVpreferences;
+	SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 
+		SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
+		editor = SandVpreferences.edit();
+		
+		
 		tittlebarBackBtn = this.findViewById(R.id.tittlebar_back_btn);
 		tittlebarBackBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -75,27 +83,13 @@ public class SettingsActivity extends Activity {
 
 		// check
 
-		Intent intent = getIntent();
-		isEnableSoundSelected = intent.getBooleanExtra("isEnableSoundSelected",
+		//设定默认值
+		isEnableSoundSelected = SandVpreferences.getBoolean("sound", true);
+		isEnableVibrationSelected = SandVpreferences.getBoolean("vibrate",
 				true);
-		isEnableVibrationSelected = intent.getBooleanExtra(
-				"isEnableVibrationSelected", true);
-
-		if (isEnableVibrationSelected) {
-			enableVibrationSelected
-					.setBackgroundResource(R.drawable.ic_selected);
-		} else if (!isEnableVibrationSelected) {
-			enableVibrationSelected
-					.setBackgroundResource(R.drawable.ic_selected_off);
-		}
-
-		if (isEnableSoundSelected) {
-			enableSoundSelected.setBackgroundResource(R.drawable.ic_selected);
-		} else if (!isEnableSoundSelected) {
-			enableSoundSelected
-					.setBackgroundResource(R.drawable.ic_selected_off);
-		}
-
+		checkSoundAndVibrate(isEnableSoundSelected,isEnableVibrationSelected);
+		//判断是否点击sound vibration
+		
 		enableSoundSelected.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -107,11 +101,16 @@ public class SettingsActivity extends Activity {
 							.setBackgroundResource(R.drawable.ic_selected_off);
 
 					isEnableSoundSelected = false;
+					//设置总的控制 传递数据
+					editor.putBoolean("sound", isEnableSoundSelected);
+					editor.commit();
 				} else if (!isEnableSoundSelected) {
 					enableSoundSelected
 							.setBackgroundResource(R.drawable.ic_selected);
 
 					isEnableSoundSelected = true;
+					editor.putBoolean("sound", isEnableSoundSelected);
+					editor.commit();
 				}
 
 			}
@@ -127,23 +126,29 @@ public class SettingsActivity extends Activity {
 							.setBackgroundResource(R.drawable.ic_selected_off);
 
 					isEnableVibrationSelected = false;
+					editor.putBoolean("vibrate", isEnableVibrationSelected);
+					editor.commit();
 				} else if (!isEnableVibrationSelected) {
 					enableVibrationSelected
 							.setBackgroundResource(R.drawable.ic_selected);
 
 					isEnableVibrationSelected = true;
+					editor.putBoolean("vibrate", isEnableVibrationSelected);
+					editor.commit();
 				}
 			}
 		});
 		checkAppLanguage();
+		
+	
 	}
 
 	// change the language
 	public void changeAppLanguage(int language) {
-		// 搴���ㄥ�����缃�璇�瑷�
-		Resources resources = getResources();// ��峰��res璧�婧�瀵硅薄
-		Configuration config = resources.getConfiguration();// ��峰��璁剧疆瀵硅薄
-		DisplayMetrics dm = resources.getDisplayMetrics();// ��峰��灞�骞������帮��涓昏��������杈ㄧ��锛����绱�绛����
+		
+		Resources resources = getResources();
+		Configuration config = resources.getConfiguration();
+		DisplayMetrics dm = resources.getDisplayMetrics();
 
 		if (language == 1) {
 			config.locale = Locale.ENGLISH;
@@ -155,8 +160,6 @@ public class SettingsActivity extends Activity {
 		}
 		Intent intent = new Intent();
 		intent.setClass(SettingsActivity.this, SettingsActivity.class);
-		intent.putExtra("isEnableVibrationSelected", isEnableVibrationSelected);
-		intent.putExtra("isEnableSoundSelected", isEnableSoundSelected);
 		startActivity(intent);
 		finish();
 	}
@@ -181,6 +184,25 @@ public class SettingsActivity extends Activity {
 			englishSelected.setBackgroundResource(R.drawable.ic_selected_off);
 			chineseSelected.setBackgroundResource(R.drawable.ic_selected);
 			chineseSelected.setEnabled(false);
+		}
+
+	}
+	
+	private void checkSoundAndVibrate(Boolean isEnableSoundSelected,Boolean isEnableVibrationSelected){
+
+		if (isEnableVibrationSelected) {
+			enableVibrationSelected
+					.setBackgroundResource(R.drawable.ic_selected);
+		} else if (!isEnableVibrationSelected) {
+			enableVibrationSelected
+					.setBackgroundResource(R.drawable.ic_selected_off);
+		}
+
+		if (isEnableSoundSelected) {
+			enableSoundSelected.setBackgroundResource(R.drawable.ic_selected);
+		} else if (!isEnableSoundSelected) {
+			enableSoundSelected
+					.setBackgroundResource(R.drawable.ic_selected_off);
 		}
 
 	}
