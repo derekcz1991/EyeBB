@@ -1,6 +1,11 @@
 package com.twinly.eyebb.activity;
 
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -8,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
@@ -18,11 +24,12 @@ import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity {
 	TabHost mTabHost;
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
-
+	private BluetoothAdapter mBluetoothAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,6 +44,29 @@ public class MainActivity extends FragmentActivity {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
 		mTabHost.setCurrentTab(0);
+		
+		
+		checkBluetooth();
+	}
+
+	private void checkBluetooth() {
+		// TODO Auto-generated method stub
+		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
+		if (!getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_BLUETOOTH_LE)) {
+			Toast.makeText(this, R.string.text_ble_not_supported, Toast.LENGTH_SHORT)
+					.show();
+		}
+
+		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
+		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
+
+		// 检查设备上是否支持蓝牙
+		if (mBluetoothAdapter == null) {
+			Toast.makeText(this, R.string.text_error_bluetooth_not_supported,
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override

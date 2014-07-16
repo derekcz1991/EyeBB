@@ -52,7 +52,10 @@
     <string name="text_activityDetails">活動詳情</string>
      <string name="text_beeping">蜂鳴</string>
           <string name="text_sec">秒.</string>
-      
+             <string name="text_ble_not_supported">不支持bluetooth4.0</string>
+    <string name="text_error_bluetooth_not_supported">不支持bluetooth</string>
+    
+    
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
