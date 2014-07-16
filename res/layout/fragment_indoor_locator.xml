@@ -167,7 +167,7 @@
                                 style="@style/WhiteText_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2" />
+                                android:text="1" />
                         </LinearLayout>
                     </RelativeLayout>
 
@@ -176,14 +176,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal" >
-
-                        <com.eyebb.customview.CircleImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
 
                         <com.eyebb.customview.CircleImageView
                             android:layout_width="48dp"
@@ -249,7 +241,7 @@
                                 style="@style/WhiteText_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3" />
+                                android:text="0" />
                         </LinearLayout>
                     </RelativeLayout>
 
@@ -258,30 +250,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal" >
-
-                        <com.eyebb.customview.CircleImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-
-                        <com.eyebb.customview.CircleImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-
-                        <com.eyebb.customview.CircleImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

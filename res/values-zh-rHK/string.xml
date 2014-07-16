@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">寶寶安</string>
+    <string name="text_policy">By Continuing, you agree to our <u>Terms</u> and <u>Privacy Policy</u>.</string>
+    <string name="text_user_name">用戶名</string>
+    <string name="text_email">電郵</string>
+    <string name="text_password">密碼</string>
+    <string name="text_login_account">用戶名或電郵</string>
+    <string name="text_select_kid_kindergarten">選擇幼稚園</string>
+    <string name="text_forgot_password">忘記密碼?</string>
+    <string name="text_indoor_locator">室內定位</string>
+    <string name="text_radar_tracking">雷達追踪</string>
+    <string name="text_report">簡報</string>
+    <string name="text_kids_list">兒童列表</string>
+    <string name="text_beep_all">全部蜂鳴</string>
+    <string name="text_change">修改</string>
+    <string name="text_daily">本日</string>
+    <string name="text_weekly">本週</string>
+    <string name="text_beep">蜂鳴</string>
+    <string name="text_school_bus">校車</string>
+    <string name="text_game_room">唱遊室</string>
+    <string name="text_playground">活動室</string>
+    <string name="text_sleeping">睡眠區</string>
+    <string name="text_music_room">音樂室</string>
+    <string name="text_class_room1">課室1</string>
+    <string name="text_class_room2">課室2</string>
+    <string name="text_computer_room">電腦室</string>
+    <string name="text_art_room">美藝室</string>
+    <string name="text_hall">禮堂</string>
+    <string name="text_living_room">客廳</string>
+    <string name="text_bed_room">睡房</string>
+    <string name="text_toilet">廁所</string>
+    <string name="text_kitchen">廚房</string>
+    <string name="text_school_bus_tracking">校車軌跡</string>
+    <string name="text_notifications">通告</string>
+    <string name="text_mess_hall">餐廳</string>
+     <string name="text_settings">設定</string>
+     <string name="text_settings_notifications">功能</string>
+     <string name="text_enableSound">開啟聲音</string>
+     <string name="text_enableVibration">開啟震動</string>
+         <string name="text_language">語言</string>
+      <string name="text_english">English</string>
+     <string name="text_chinese">繁體中文</string>
+          <string name="text_others">其它</string>
+      <string name="text_about">关于</string>
+     <string name="text_TermsOfService">服務條款</string>
+     <string name="text_privacyPolicy">隱私政策</string>
+          <string name="text_forgetPassword">忘記密碼</string>
+      <string name="text_forgetPassword_details">請輸入您註冊的電郵地址，以便獲取密碼.</string>
+      <string name="text_forgetPassword_email">輸入電郵地址</string>
+       <string name="text_activityDetails">活動詳情</string>
+      
+      
+    <string name="btn_sign_up">註冊</string>
+    <string name="btn_login">登錄</string>
+     <string name="btn_logout">登出</string>
+    <string name="btn_continue">繼續</string>
+    <string name="btn_performance">表現</string>
+    <string name="btn_activities">活動</string>
+    <string name="btn_back">返回</string>
+<string name="btn_confirm">確定</string>
+</resources>

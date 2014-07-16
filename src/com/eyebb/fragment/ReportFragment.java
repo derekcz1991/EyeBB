@@ -132,4 +132,22 @@ public class ReportFragment extends Fragment {
 					}
 				});
 	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+
+		View reportChangeBtn = getActivity().findViewById(
+				R.id.report_change_btn);
+
+		reportChangeBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+	}
 }

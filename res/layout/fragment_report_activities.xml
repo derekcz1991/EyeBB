@@ -43,8 +43,10 @@
                 android:background="@drawable/btn_arrow_go_big" />
 
             <LinearLayout
+                android:id="@+id/details_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@id/arrow"
                 android:orientation="vertical" >

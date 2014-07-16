@@ -14,7 +14,11 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:windowNoTitle">true</item> <!-- 无标题 -->
+
     </style>
 
     <style name="WhiteText_12">
@@ -32,6 +36,11 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="WhiteText_20">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="WhiteText_24">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/white</item>
@@ -42,9 +51,29 @@
         <item name="android:textColor">@color/red</item>
     </style>
 
+    <style name="RedText_16">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="RedText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="RedText_20">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="DarkGreyText_12">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="DarkGreyText_15">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/dark_grey</item>
     </style>
 
     <style name="DarkGreyText_16">
@@ -68,6 +97,11 @@
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
+    <style name="LightGreyText_15">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/light_grey</item>
+    </style>
+
     <style name="LightGreyText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/light_grey</item>
@@ -88,5 +122,10 @@
         <item name="android:windowBackground">@android:color/transparent</item> <!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">true</item> <!-- 模糊 -->
     </style>
+
+    <style name="logo">
+        <item name="android:src">@drawable/logo_en</item>
+    </style>
+
 
 </resources>
