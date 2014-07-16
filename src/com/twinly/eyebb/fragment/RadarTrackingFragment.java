@@ -16,6 +16,7 @@ import android.widget.SimpleAdapter;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class RadarTrackingFragment extends Fragment {
 	private SimpleAdapter mkidsListAdapter;
@@ -41,18 +42,19 @@ public class RadarTrackingFragment extends Fragment {
 				R.anim.rotate_anim);
 		anim.setFillAfter(true);
 		radar_rotate.startAnimation(anim);
-		
 
-		View radarBeepBtn = getActivity().findViewById(
-				R.id.radar_beep_btn);
+		View radarBeepBtn = getActivity().findViewById(R.id.radar_beep_btn);
 
 		radarBeepBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(),
-						BeepDialog.class);
-				startActivity(intent);
+				if (CommonUtils.isFastDoubleClick()) {
+					return;
+				} else {
+					Intent intent = new Intent(getActivity(), BeepDialog.class);
+					startActivity(intent);
+				}
 			}
 		});
 

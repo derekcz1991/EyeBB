@@ -12,6 +12,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.MainDialog;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class IndoorLocatorFragment extends Fragment {
 
@@ -30,15 +31,20 @@ public class IndoorLocatorFragment extends Fragment {
 
 					@Override
 					public void onClick(View v) {
-//						Intent intent = new Intent(getActivity(),
-//								MainDialog.class);
-//						startActivity(intent);
-						Intent intent = new Intent(getActivity(),
-								BeepDialog.class);
-						startActivity(intent);
+						// Intent intent = new Intent(getActivity(),
+						// MainDialog.class);
+						// startActivity(intent);
+						if (CommonUtils.isFastDoubleClick()) {
+							return;
+						} else {
+							Intent intent = new Intent(getActivity(),
+									BeepDialog.class);
+							startActivity(intent);
+						}
+
 					}
 				});
-		
+
 		v.findViewById(R.id.btn_shcool_bus).setOnClickListener(
 				new OnClickListener() {
 
@@ -50,19 +56,21 @@ public class IndoorLocatorFragment extends Fragment {
 
 					}
 				});
-		
+
 		v.findViewById(R.id.child_img).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						Intent intent = new Intent(getActivity(),
-								MainDialog.class);
-						startActivity(intent);
-
+						if (CommonUtils.isFastDoubleClick()) {
+							return;
+						} else {
+							Intent intent = new Intent(getActivity(),
+									MainDialog.class);
+							startActivity(intent);
+						}
 					}
 				});
-		
-		
+
 	}
 }

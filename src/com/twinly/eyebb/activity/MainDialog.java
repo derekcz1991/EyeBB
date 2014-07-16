@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class MainDialog extends Activity {
 
@@ -39,17 +40,21 @@ public class MainDialog extends Activity {
 				}
 			}
 		});
-		
-		findViewById(R.id.maindialog_beep_btn).setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MainDialog.this,
-						BeepDialog.class);
-				startActivity(intent);
-			}
-		});
-		
-		
+		findViewById(R.id.maindialog_beep_btn).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						if (CommonUtils.isFastDoubleClick()) {
+							return;
+						} else {
+							Intent intent = new Intent(MainDialog.this,
+									BeepDialog.class);
+							startActivity(intent);
+						}
+					}
+				});
+
 	}
 }

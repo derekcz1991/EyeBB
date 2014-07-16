@@ -50,10 +50,13 @@
     <string name="text_forgetPassword_details">請輸入您註冊的電郵地址，以便獲取密碼.</string>
     <string name="text_forgetPassword_email">輸入電郵地址</string>
     <string name="text_activityDetails">活動詳情</string>
-     <string name="text_beeping">蜂鳴</string>
-          <string name="text_sec">秒.</string>
-             <string name="text_ble_not_supported">不支持bluetooth4.0</string>
+    <string name="text_beeping">蜂鳴</string>
+    <string name="text_sec">秒.</string>
+    <string name="text_ble_not_supported">不支持bluetooth4.0</string>
     <string name="text_error_bluetooth_not_supported">不支持bluetooth</string>
+    <string name="text_shcool_bus">校車軌跡</string>
+    
+    
     
     
     <string name="btn_sign_up">註冊</string>
@@ -65,5 +68,6 @@
     <string name="btn_back">返回</string>
     <string name="btn_confirm">確定</string>
     <string name="btn_share">分享</string>
-<string name="btn_cancel">取消</string>
+    <string name="btn_cancel">取消</string>
+
 </resources>
