@@ -39,5 +39,17 @@ public class MainDialog extends Activity {
 				}
 			}
 		});
+		
+		findViewById(R.id.maindialog_beep_btn).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainDialog.this,
+						BeepDialog.class);
+				startActivity(intent);
+			}
+		});
+		
+		
 	}
 }
