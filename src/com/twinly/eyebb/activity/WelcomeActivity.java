@@ -1,15 +1,13 @@
 package com.twinly.eyebb.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 
 public class WelcomeActivity extends Activity {

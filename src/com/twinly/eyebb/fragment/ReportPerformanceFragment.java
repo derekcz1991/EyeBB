@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
 import com.twinly.eyebb.model.PerformanceListItem;
 
@@ -95,8 +95,8 @@ public class ReportPerformanceFragment extends Fragment {
 //		list.add(weeklyComputerRoom);
 //		PerformanceListItem weeklyArtRoom = new PerformanceListItem("",
 //				getResources().getString(R.string.text_art_room), -1,
-//				R.drawable.my_progress_green02, 220, 220, 800);
-//		list.add(weeklyArtRoom);
+		//				R.drawable.my_progress_green02, 220, 220, 800);
+		//		list.add(weeklyArtRoom);
 
 		PerformanceListViewAdapter adapter = new PerformanceListViewAdapter(
 				getActivity(), list);

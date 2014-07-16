@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 
 public class MainDialog extends Activity {
 

@@ -1,9 +1,9 @@
 package com.twinly.eyebb.activity;
 
-import com.eyebb.R;
-
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.twinly.eyebb.R;
 
 public class BusEnterDialog extends Activity {
 	

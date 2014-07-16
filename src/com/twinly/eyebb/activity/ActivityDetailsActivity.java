@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ShareActionProvider;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 
 public class ActivityDetailsActivity extends Activity {
 	@Override
