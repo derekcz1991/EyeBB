@@ -86,11 +86,11 @@ public class ActivityDetailsActivity extends Activity {
 		mainLayout = (ViewFlipper) findViewById(R.id.viewFlipper);
 		Image2 = new ImageView(this);
 		Image2.setImageResource(R.drawable.activity_details_img2);
-		DensityUtil.px2dip(this, imageHight);
+		//DensityUtil.px2dip(this, imageHight);
 		// Image2.setId(110); //注意这点 设置id
 		// Image2.setOnClickListener(this);
 		RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, imageHight);
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		// lp1.addRule(RelativeLayout.ALIGN_TOP);
 		// lp1.setMargins(30, 50, 100, 100);//(int left, int top, int right, int
 		// bottom)

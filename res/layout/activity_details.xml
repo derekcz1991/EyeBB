@@ -40,7 +40,7 @@
         <ViewFlipper
             android:id="@+id/viewFlipper"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_marginTop="16dp" >
 
             <LinearLayout
@@ -51,7 +51,7 @@
                 <ImageView
                     android:id="@+id/details_image"
                     android:layout_width="wrap_content"
-                    android:layout_height="150dp"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/activity_details_img" />
             </LinearLayout>
         </ViewFlipper>
