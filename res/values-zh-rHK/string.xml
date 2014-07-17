@@ -56,8 +56,8 @@
     <string name="text_ble_not_supported">不支持bluetooth4.0</string>
     <string name="text_error_bluetooth_not_supported">不支持bluetooth</string>
     <string name="text_shcool_bus">校車軌跡</string>
-       <string name="text_Supervised">搜 尋</string>
-         <string name="text_Missed">丟 失</string>
+       <string name="text_Supervised">搜尋</string>
+         <string name="text_Missed">丟失</string>
     <string name="text_about_details">寶寶安 (EyeBB) 是一個智能兒童行為安全監控軟件。配合我們開發的基於藍牙4.0 BLE的專用智能設備 Macaron，寶寶安能為您監視兒童在家居、校車及幼稚園範圍內行為安全，並提供智能行為分析數據。</string>
      <string name="text_version">版本</string>
     
