@@ -167,6 +167,7 @@ public class LoginActivity extends Activity {
 				dialog.dismiss();
 				System.out.println("result = " + result);
 				try {
+					
 					JSONObject json = new JSONObject(result);
 
 					if (loginAccount.getText().toString().equals("May")) {

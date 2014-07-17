@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Baby boom will see number of  school children in England soar by 1 million over next decade" />
+                android:text="親愛的家長 :   您好!" />
 
             <TextView
                 android:id="@+id/tittle_time"
@@ -63,9 +63,11 @@
                 style="@style/BlackText_15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="The increase in numbers has been fuelled by a decade-long baby boom since 2002, government statisticians suggested.
-Projections published by the Department for Education show that in 2023, it is estimated that overall, there will be 8.022 million youngsters in England's state schools, up over a million from the 7.072 million last year."
-             ></TextView>
+                android:text="小一班目前也有兩位幼兒確診腸病毒,請各位家長特別注意孩子的身體狀況及個人衛生習慣,
+
+經通報嘉義市衛生局,衛生局表示目前並沒有強制停課之必要,因此小一班照常上課進行活動,在此通知各位家長,
+
+請您一同為孩子的身體健康,特別注意與把關."></TextView>
             </ScrollView>
     </LinearLayout>
 

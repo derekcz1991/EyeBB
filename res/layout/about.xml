@@ -14,6 +14,7 @@
         android:orientation="vertical" >
 
         <ImageView
+            android:layout_gravity="center_horizontal"
             android:id="@+id/logo_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_version" />
-
+            
+       
             <TextView
                 android:layout_marginLeft="5dp"
                 android:id="@+id/version"
@@ -41,6 +43,13 @@
                 android:layout_height="wrap_content"
                 android:text="1.0" />
         </LinearLayout>
+             <TextView
+                   style="@style/DarkGreyText_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_http"
+                />
+        
     </LinearLayout>
 
     <TextView

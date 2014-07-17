@@ -128,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="Baby boom will see number of school children ..." />
+                        android:text="幼兒園小一班已有3位幼兒確診腸病毒,請家長特別注意孩子的身體狀況與衛生習慣..." />
 
                     <TextView
                         style="@style/BlackText_15"
@@ -201,7 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="The YMCA of Hong Kong International Kindergarten was established in 1992 ..." />
+                        android:text="公告102學年度幼兒園新生抽籤錄取名單 ..." />
 
                     <TextView
                         style="@style/BlackText_15"
@@ -272,7 +272,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="Our purpose-built, 21st century-fit campus has wireless internet  ..." />
+                        android:text="幼稚園已出現5位確診腸病毒,請家長注意孩子身體狀況,並提醒勤洗手 ..." />
 
                     <TextView
                         style="@style/BlackText_15"

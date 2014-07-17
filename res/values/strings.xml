@@ -52,6 +52,8 @@
     <string name="text_notificationDetails">Notification Details</string>
     <string name="text_about_details">EyeBB is a smart kid bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，EyeBB can help you monitor the safety of kids at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your kids.</string>
     <string name="text_version">Version</string>
+    <string name="text_http">Welcome to www.eyebb.com</string>
+    <string name="text_invalidKindergarten">Invalid kindergarten</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -67,10 +69,17 @@
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_invalid_username_or_password">Invalid username or password</string>
 
-    <string name="child2_notification_tittle">YMCA INTERNATIONAL KINDERGARTEN</string>
-    <string name="child3_notification_tittle">ANFIELD PRIMARY</string>
-    <string name="child2_notification">The YMCA of Hong Kong International Kindergarten was established in 1992 to provide quality education in an English setting to an International body of students.
-
-The Kindergarten was awarded the valued UNICEF ‘Child Friendly School’ award in December 2009 and recognised as the top school in Kowloon by a leading HK Community website. The students are encouraged to serve rather than take, show respect for all living things. and develop social responsibility. Proud of our cultural diversity we offer a progressive curriculum which allows us to create a stimulating environment. Children are encouraged to solve problems, make choices and be active learners; all the time upholding spiritual and moral values. They are motivated to show curiosity, ask questions, develop independence, work alongside others and to enjoy their learning. As an inclusive school, we aim to integrate children with any developmental delays or needs into school life.</string>
-	<string name="child3_notification">Our purpose-built, 21st century-fit campus has wireless internet access and fully networked classrooms all with interactive smart boards for digital learning, an Information and Communication Technology (ICT) suite with the latest resources available fully integrated into learning and teaching, a dedicated science and technology laboratory, a well stocked library, a multipurpose hall, a music and composition suite, an art and design studio, a fully mirrored dance and drama studio, a language laboratory and dedicated spaces for specialist teaching, individual and group learning activities.</string>
+    <string name="child2_notification_tittle">公告102學年度幼兒園新生抽籤錄取名單</string>
+    <string name="child3_notification_tittle">幼稚園已出現5位確診腸病毒,請家長注意孩子身體狀況,並提醒勤洗手</string>
+    <string name="child2_notification">一、  本校幼兒園於102年4月29、30兩日辦理新生報名，因報
+                名人數超過招收名額，於5月3日舉行小班新生抽籤。
+        二、  抽籤錄取幼兒姓名（依抽中順序排列）
+     劉合融、羅啟睿、連亮禔、李世傑、吳浩熏、魏于晴、
+     林映岑、李承綱、蔡千庭、廖芮恩、劉宏泉、蔡秉叡、
+     黃子滐、唐臻浩、謝家祐、何品威、林雋偉、江建璋、
+     吳冠穎、林宥廷、謝涔語、李  威、陳心翎、楊程鴻、
+     劉詠丰、范裕紘、張筠楨。（以上共27人）
+      三、錄取幼兒之家長請依報到通知單上日期，攜帶各項資料到本校幼兒園辦理正式的報到手續。</string>
+	<string name="child3_notification">親愛的幼稚園家長: 您好!
+幼稚園因已出現5位確診腸病毒,特別請家長留意孩子的身體反應,若發現孩子身體不適儘快就醫,並留在家休息,園內各班教室設施設備與戶外遊樂場地也已加強消毒,請各位家長一起為孩子的身體健康把關.</string>
 </resources>
