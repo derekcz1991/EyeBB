@@ -85,7 +85,7 @@ public class MainActivity extends FragmentActivity {
 
 	private void setUpTab() {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setOffscreenPageLimit(2);
+		//mViewPager.setOffscreenPageLimit(2);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
 		View mainLabel = (View) LayoutInflater.from(this).inflate(

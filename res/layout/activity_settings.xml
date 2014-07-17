@@ -223,6 +223,7 @@
         <!-- about -->
 
         <LinearLayout
+            android:id="@+id/about_btn"
             android:layout_width="fill_parent"
             android:layout_height="64dp"
             android:background="@drawable/btn_bg_white"

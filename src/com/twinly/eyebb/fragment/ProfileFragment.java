@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.activity.NotificationActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
 
 	private TextView settingBtn;
+	private View notificationDetailsBtn;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -40,6 +42,26 @@ public class ProfileFragment extends Fragment {
 				
 			}
 		});
+		
+		
+
+		notificationDetailsBtn = getActivity().findViewById(
+				R.id.notification_details_btn);
+
+		notificationDetailsBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), NotificationActivity.class);
+				startActivity(intent);
+			}
+		});
+
 	}
+	
+	
+	
 	
 }

@@ -22,6 +22,8 @@ public class RadarTrackingFragment extends Fragment {
 	private SimpleAdapter mkidsListAdapter;
 	ArrayList<HashMap<String, Object>> mKidsData;
 	ImageView radar_rotate;
+	private View radarBeepAllBtn;
+	private View radarBeepBtn;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -36,14 +38,8 @@ public class RadarTrackingFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 
-		radar_rotate = (ImageView) getActivity().findViewById(
-				R.id.bg_radar_rotate_img);
-		final Animation anim = AnimationUtils.loadAnimation(getActivity(),
-				R.anim.rotate_anim);
-		anim.setFillAfter(true);
-		radar_rotate.startAnimation(anim);
-
-		View radarBeepBtn = getActivity().findViewById(R.id.radar_beep_btn);
+		radarAnim();
+		radarBeepBtn = getActivity().findViewById(R.id.radar_beep_btn);
 
 		radarBeepBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -58,6 +54,31 @@ public class RadarTrackingFragment extends Fragment {
 			}
 		});
 
+		radarBeepAllBtn = getActivity().findViewById(R.id.radar_beep_all_btn);
+
+		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (CommonUtils.isFastDoubleClick()) {
+					return;
+				} else {
+					Intent intent = new Intent(getActivity(), BeepDialog.class);
+					startActivity(intent);
+				}
+			}
+		});
+
+	}
+
+	private void radarAnim() {
+
+		radar_rotate = (ImageView) getActivity().findViewById(
+				R.id.bg_radar_rotate_img);
+		final Animation anim = AnimationUtils.loadAnimation(getActivity(),
+				R.anim.rotate_anim);
+		anim.setFillAfter(true);
+		radar_rotate.startAnimation(anim);
 	}
 
 }

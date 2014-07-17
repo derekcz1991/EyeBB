@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,8 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp" 
-        >
+        android:layout_height="60dp" >
 
         <TextView
             style="@style/DarkGreyText_28"
@@ -34,19 +33,17 @@
                 android:background="@drawable/btn_settings" />
         </LinearLayout>
     </RelativeLayout>
- <LinearLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_white"
-        android:orientation="vertical" 
-    >
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:orientation="horizontal" >
-
-            
 
             <RelativeLayout
                 android:id="@+id/btn_activities"
@@ -81,73 +78,73 @@
         </LinearLayout>
 
         <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="112dp" 
-            android:paddingLeft="8dp"
-    android:paddingRight="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/ic_list_unread" />
-
-        <com.twinly.eyebb.customview.CircleImageView
-            android:id="@+id/img"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginTop="16dp"
-            
-            android:src="@drawable/hugh"
-            app:border_color="#FF000000"
-            app:border_width="0dp" />
-
-        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_toRightOf="@+id/img" >
+            android:layout_height="112dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" >
 
             <TextView
-                android:id="@+id/arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/btn_arrow_go_big" />
+                android:background="@drawable/ic_list_unread" />
 
-            <LinearLayout
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/img"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/hugh"
+                app:border_color="#FF000000"
+                app:border_width="0dp" />
+
+            <RelativeLayout
+                android:id="@+id/notification_details_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/arrow"
-                android:orientation="vertical" >
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/img" >
 
                 <TextView
-                    android:id="@+id/title"
-                    style="@style/DarkGreyText_18"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="2"
-                    android:text="As a LinkedIn member, you'll ..." />
-
-                <TextView
-                    style="@style/BlackText_15"
+                    android:id="@+id/arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2014.07.01" />
-            </LinearLayout>
-        </RelativeLayout>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_arrow_go_big" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/img"
-            android:alpha="0.1"
-            android:background="@color/black" />
-    </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/arrow"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="As a LinkedIn member, you&apos;ll ..." />
+
+                    <TextView
+                        style="@style/BlackText_15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2014.07.01" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/img"
+                android:alpha="0.1"
+                android:background="@color/black" />
+        </RelativeLayout>
     </LinearLayout>
-    
+
 </LinearLayout>

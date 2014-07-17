@@ -47,8 +47,12 @@
     <string name="text_sec">Sec.</string>
     <string name="text_ble_not_supported">BLE is not supported</string>
     <string name="text_error_bluetooth_not_supported">Bluetooth not supported</string>
-    
-    
+      <string name="text_Supervised">Supervised</string>
+         <string name="text_Missed">Missed</string>
+        <string name="text_notificationDetails">Notification Details</string>
+               <string name="text_about_details">EyeBB is a smart kid bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，EyeBB can help you monitor the safety of kids at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your kids.</string> 
+                <string name="text_version">Version</string>
+        
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

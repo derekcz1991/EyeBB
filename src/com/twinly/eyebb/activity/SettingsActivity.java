@@ -22,15 +22,17 @@ public class SettingsActivity extends Activity {
 	private TextView chineseSelected;
 	private TextView enableSoundSelected;
 	private TextView enableVibrationSelected;
-	final static int ENGLISH = 1;
-	final static int CHINESE = 2;
+	public final static int ENGLISH = 1;
+	public final static int CHINESE = 2;
+	private View aboutBtn;
 	// the default is true
 	private Boolean isEnableSoundSelected;
 	private Boolean isEnableVibrationSelected;
-	
-	//sharedPreferences
+
+	// sharedPreferences
 	SharedPreferences SandVpreferences;
 	SharedPreferences.Editor editor;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -39,8 +41,7 @@ public class SettingsActivity extends Activity {
 
 		SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
 		editor = SandVpreferences.edit();
-		
-		
+
 		tittlebarBackBtn = this.findViewById(R.id.tittlebar_back_btn);
 		tittlebarBackBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -83,13 +84,13 @@ public class SettingsActivity extends Activity {
 
 		// check
 
-		//设定默认值
+		// 设定默认值
 		isEnableSoundSelected = SandVpreferences.getBoolean("sound", true);
-		isEnableVibrationSelected = SandVpreferences.getBoolean("vibrate",
-				true);
-		checkSoundAndVibrate(isEnableSoundSelected,isEnableVibrationSelected);
-		//判断是否点击sound vibration
-		
+		isEnableVibrationSelected = SandVpreferences
+				.getBoolean("vibrate", true);
+		checkSoundAndVibrate(isEnableSoundSelected, isEnableVibrationSelected);
+		// 判断是否点击sound vibration
+
 		enableSoundSelected.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -101,7 +102,7 @@ public class SettingsActivity extends Activity {
 							.setBackgroundResource(R.drawable.ic_selected_off);
 
 					isEnableSoundSelected = false;
-					//设置总的控制 传递数据
+					// 设置总的控制 传递数据
 					editor.putBoolean("sound", isEnableSoundSelected);
 					editor.commit();
 				} else if (!isEnableSoundSelected) {
@@ -138,14 +139,32 @@ public class SettingsActivity extends Activity {
 				}
 			}
 		});
-		checkAppLanguage();
 		
-	
+		
+		//about activity
+		
+		aboutBtn = findViewById(
+				R.id.about_btn);
+
+		aboutBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(SettingsActivity.this, AboutActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		
+		
+		checkAppLanguage();
+
 	}
 
 	// change the language
 	public void changeAppLanguage(int language) {
-		
+
 		Resources resources = getResources();
 		Configuration config = resources.getConfiguration();
 		DisplayMetrics dm = resources.getDisplayMetrics();
@@ -153,15 +172,22 @@ public class SettingsActivity extends Activity {
 		if (language == 1) {
 			config.locale = Locale.ENGLISH;
 			resources.updateConfiguration(config, dm);
+
 		} else if (language == 2) {
 			config.locale = Locale.TRADITIONAL_CHINESE;
 			resources.updateConfiguration(config, dm);
 
 		}
-		Intent intent = new Intent();
-		intent.setClass(SettingsActivity.this, SettingsActivity.class);
-		startActivity(intent);
-		finish();
+		editor.putInt("language", language);
+		editor.commit();
+		// Intent intent = new Intent();
+		// intent.setClass(SettingsActivity.this, SettingsActivity.class);
+		// startActivity(intent);
+		// finish();
+		Intent i = getBaseContext().getPackageManager()
+				.getLaunchIntentForPackage(getBaseContext().getPackageName());
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(i);
 	}
 
 	private void checkAppLanguage() {
@@ -187,8 +213,9 @@ public class SettingsActivity extends Activity {
 		}
 
 	}
-	
-	private void checkSoundAndVibrate(Boolean isEnableSoundSelected,Boolean isEnableVibrationSelected){
+
+	private void checkSoundAndVibrate(Boolean isEnableSoundSelected,
+			Boolean isEnableVibrationSelected) {
 
 		if (isEnableVibrationSelected) {
 			enableVibrationSelected

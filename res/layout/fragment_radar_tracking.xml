@@ -46,8 +46,8 @@
                     android:src="@drawable/bg_radar_circle" />
 
                 <com.twinly.eyebb.customview.CircleImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginRight="8dp"
                     android:src="@drawable/hugh"
                     app:border_color="@color/red"
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_circle"
                 android:paddingBottom="8dp"
-                android:paddingLeft="8dp" >
+                android:paddingLeft="18dp" >
 
                 <LinearLayout
                     android:id="@+id/layout_supervised_liner"
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="11dp"
+                       
                         android:src="@drawable/ic_radar_supervised" />
 
                     <TextView
@@ -97,7 +97,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout_supervised_liner"
-                    android:text="Supervised" />
+ 
+                    android:text="@string/text_Supervised" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -138,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout_missed_liner"
-                    android:text="Missed" />
+                    android:text="@string/text_Missed" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -189,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:singleLine="true"
-                android:text="Missed "
+                android:text="@string/text_Missed"
                 android:textColor="@color/red"
                 android:textSize="12sp" />
 

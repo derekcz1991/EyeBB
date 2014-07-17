@@ -21,6 +21,7 @@ public class ReportFragment extends Fragment {
 	private TextView tvActivities;
 	private TextView redDividerActivities;
 	private TextView blackDividerActivities;
+	private View reportChangeBtn;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,7 +139,7 @@ public class ReportFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 
-		View reportChangeBtn = getActivity().findViewById(
+		reportChangeBtn = getActivity().findViewById(
 				R.id.report_change_btn);
 
 		reportChangeBtn.setOnClickListener(new View.OnClickListener() {

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background_yellow"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
+
+        <!-- tittle -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tittle_detials"
+                style="@style/DarkGreyText_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Visiting S.K.H Lam Woo Memorial School" />
+
+            <TextView
+                android:id="@+id/tittle_time"
+                style="@style/BlackText_15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2014.07.13" />
+        </LinearLayout>
+
+        <!-- image -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/details_image"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/activity_details_img" />
+        </LinearLayout>
+
+        <!-- details -->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:scrollbars="vertical" >
+
+            <TextView
+                android:id="@+id/details"
+                style="@style/BlackText_15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="We investigate the transmission mechanism of monetary policy in China over the past decades with emphasis on the post-Asian crisis period. A factor-augmented VAR method is used to study the effectiveness of monetary policy instruments in stabilizing the Chinese economy. We find that repo rate, benchmark lending rate, and a market-based monetary stance have little impact on the Chinese economy" />
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,8 +1,14 @@
 package com.twinly.eyebb.activity;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -12,12 +18,24 @@ import com.twinly.eyebb.constant.Constants;
 
 public class WelcomeActivity extends Activity {
 	private ImageView logo;
+	// sharedPreferences
+	SharedPreferences languagePreferences;
+	private int language;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		languagePreferences = getSharedPreferences("soundAndVibrate",
+				MODE_PRIVATE);
+		language = languagePreferences.getInt("language",
+				SettingsActivity.ENGLISH);
+
+		checkLanguage();
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_welcome);
 
+		logo = (ImageView) findViewById(R.id.icon);
+		checkLogo();
 		findViewById(R.id.sign_up).setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -40,43 +58,31 @@ public class WelcomeActivity extends Activity {
 			}
 		});
 
-//		logo = (ImageView) findViewById(R.id.icon);
-//		logo.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				final String[] names = { "Enter", "Leave", "School" };
-//				new AlertDialog.Builder(WelcomeActivity.this).setTitle("列表对话框")// 对话框标题
-//						.setItems(names, new DialogInterface.OnClickListener() {// 每一条的名称
-//									public void onClick(DialogInterface dialog,
-//											int which) {
-//										//on click
-//										if (which == 0) {
-//											Intent intent = new Intent(
-//													WelcomeActivity.this,
-//													BusEnterDialog.class);
-//											startActivity(intent);
-//											finish();
-//										} else if (which == 1) {
-//											Intent intent = new Intent(
-//													WelcomeActivity.this,
-//													BusLeaveDialog.class);
-//											startActivity(intent);
-//											finish();
-//										} else if (which == 2) {
-//											Intent intent = new Intent(
-//													WelcomeActivity.this,
-//													BusSchoolDialog.class);
-//											startActivity(intent);
-//											finish();
-//										}
-//									}
-//								})
-//
-//						.show();
-//			}
-//		});
+	}
 
+	private void checkLogo() {
+		if (language == 1) {
+			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
+		} else if (language == 2) {
+			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
+		}
+	}
+
+	private void checkLanguage() {
+		// TODO Auto-generated method stub
+		Resources resources = getResources();
+		Configuration config = resources.getConfiguration();
+		DisplayMetrics dm = resources.getDisplayMetrics();
+
+		if (language == 1) {
+			config.locale = Locale.ENGLISH;
+			resources.updateConfiguration(config, dm);
+
+		} else if (language == 2) {
+			config.locale = Locale.TRADITIONAL_CHINESE;
+			resources.updateConfiguration(config, dm);
+
+		}
 	}
 
 	@Override
@@ -89,5 +95,11 @@ public class WelcomeActivity extends Activity {
 				finish();
 			}
 		}
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 	}
 }
