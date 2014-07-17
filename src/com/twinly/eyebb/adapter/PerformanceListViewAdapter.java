@@ -101,7 +101,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 					protected Void doInBackground(Void... params) {
 						int progress = 0;
 						try {
-							Thread.sleep(500);
+							Thread.sleep(100);
 						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();

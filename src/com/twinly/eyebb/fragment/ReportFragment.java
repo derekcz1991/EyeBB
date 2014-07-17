@@ -1,5 +1,6 @@
 package com.twinly.eyebb.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.activity.ChildrenListActivity;
+import com.twinly.eyebb.constant.Constants;
 
 public class ReportFragment extends Fragment {
 
@@ -32,29 +35,7 @@ public class ReportFragment extends Fragment {
 		return v;
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		System.out.println("onResume");
-		performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
-				.findFragmentByTag("performance");
-		System.out.println("performanceFragment = " + performanceFragment);
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		System.out.println("onDestroy");
-	}
-
-	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		System.out.println("onDestroyView");
-	}
-
 	private void setUpView(View v) {
-		System.out.println("--->>setUpView");
 
 		FragmentTransaction fragmentTransaction = getChildFragmentManager()
 				.beginTransaction();
@@ -146,27 +127,42 @@ public class ReportFragment extends Fragment {
 	}
 
 	public void refreshPerformanceFragment() {
-		/*performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
-				.findFragmentByTag("performance");*/
 		if (performanceFragment != null)
 			performanceFragment.updateView();
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 
-		reportChangeBtn = getActivity().findViewById(
-				R.id.report_change_btn);
+		reportChangeBtn = getActivity().findViewById(R.id.report_change_btn);
 
 		reportChangeBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
+				Intent intent = new Intent(getActivity(),
+						ChildrenListActivity.class);
+				startActivityForResult(intent,
+						Constants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
 			}
 		});
-
 	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == Constants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY) {
+			int index = data.getIntExtra("index", 0);
+			switch (index) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+			}
+		}
+	}
+
 }

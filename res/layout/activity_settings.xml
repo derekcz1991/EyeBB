@@ -38,12 +38,12 @@
             android:gravity="right" >
 
             <Button
-                android:id="@+id/logout"
                 style="@style/WhiteText_18"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:background="@drawable/btn_bg_white_frame"
                 android:minWidth="80dp"
+                android:onClick="onLogoutClicked"
                 android:text="@string/btn_logout" />
         </LinearLayout>
     </LinearLayout>

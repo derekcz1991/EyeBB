@@ -169,6 +169,11 @@ public class LoginActivity extends Activity {
 				try {
 					JSONObject json = new JSONObject(result);
 
+					if (loginAccount.getText().toString().equals("May")) {
+						SharePrefsUtils.setRole(LoginActivity.this, true);
+					} else {
+						SharePrefsUtils.setRole(LoginActivity.this, false);
+					}
 					SharePrefsUtils.setLogin(LoginActivity.this, true);
 					SharePrefsUtils.setLoginAccount(LoginActivity.this,
 							loginAccount.getText().toString());

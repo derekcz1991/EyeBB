@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -22,6 +23,7 @@ import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("NewApi")
@@ -30,7 +32,12 @@ public class MainActivity extends FragmentActivity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	private BluetoothAdapter mBluetoothAdapter;
+	private IndoorLocatorFragment IndoorLocatorFragment;
+	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
+	private ProfileFragment profileFragment;
+	private boolean flag = true;
+	private UpdateView updateView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,8 @@ public class MainActivity extends FragmentActivity {
 		mTabHost.setCurrentTab(0);
 
 		checkBluetooth();
+		updateView = new UpdateView();
+		//updateView.execute();
 	}
 
 	private void checkBluetooth() {
@@ -89,21 +98,23 @@ public class MainActivity extends FragmentActivity {
 		//mViewPager.setOffscreenPageLimit(2);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
+		IndoorLocatorFragment = new IndoorLocatorFragment();
 		View mainLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_home_selector);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
-				new IndoorLocatorFragment());
-		
+				IndoorLocatorFragment);
+
+		radarTrackingFragment = new RadarTrackingFragment();
 		View trackingLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		trackingLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_tracking_selector);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
-				new RadarTrackingFragment());
+				radarTrackingFragment);
 
 		reportFragment = new ReportFragment();
 		View reportLabel = (View) LayoutInflater.from(this).inflate(
@@ -114,13 +125,14 @@ public class MainActivity extends FragmentActivity {
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
 				reportFragment);
 
+		profileFragment = new ProfileFragment();
 		View profileLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		profileLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_profile_selector);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
-				new ProfileFragment());
+				profileFragment);
 
 	}
 
@@ -150,6 +162,20 @@ public class MainActivity extends FragmentActivity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+	}
+
+	class UpdateView extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+			return HttpRequestUtils.get("reportService/api/childrenList", null);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+
+		}
+
 	}
 
 }

@@ -22,7 +22,15 @@ public class SharePrefsUtils {
 	public static void setLogin(Context context, boolean value) {
 		setBoolean(context, Constants.SHARE_PREFS_ITEM_IS_LOGIN, value);
 	}
-	
+
+	public static boolean getRole(Context context) {
+		return getBoolean(context, Constants.SHARE_PREFS_ITEM_ROLE, false);
+	}
+
+	public static void setRole(Context context, boolean value) {
+		setBoolean(context, Constants.SHARE_PREFS_ITEM_ROLE, value);
+	}
+
 	/**
 	 * @return Application's {@code SharedPreferences}.
 	 */

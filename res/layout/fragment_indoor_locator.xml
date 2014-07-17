@@ -164,6 +164,7 @@
                                 android:background="@drawable/btn_actbar_profile_on" />
 
                             <TextView
+                                android:id="@+id/mess_hall_num"
                                 style="@style/WhiteText_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -173,16 +174,17 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal" >
 
                         <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/child_img"
+                            android:id="@+id/mess_hall_child"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginRight="8dp"
                             android:src="@drawable/hugh"
+                            android:visibility="gone"
                             app:border_color="@color/white"
                             app:border_width="2dp" />
                     </LinearLayout>
@@ -239,6 +241,7 @@
                                 android:background="@drawable/btn_actbar_profile_on" />
 
                             <TextView
+                                android:id="@+id/playground_num"
                                 style="@style/WhiteText_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -248,9 +251,19 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal" >
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/playground_child"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            android:visibility="invisible"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -305,6 +318,7 @@
                                 android:background="@drawable/btn_actbar_profile_on" />
 
                             <TextView
+                                android:id="@+id/sleep_num"
                                 style="@style/WhiteText_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -314,9 +328,39 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="48dp"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal" >
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/sleep_child_1"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            android:visibility="gone"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/sleep_child_2"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            android:visibility="gone"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/sleep_child_3"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            android:visibility="invisible"
+                            app:border_color="@color/white"
+                            app:border_width="2dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

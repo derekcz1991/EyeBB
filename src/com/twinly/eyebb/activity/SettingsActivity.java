@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SettingsActivity extends Activity {
 
@@ -139,12 +140,10 @@ public class SettingsActivity extends Activity {
 				}
 			}
 		});
-		
-		
+
 		//about activity
-		
-		aboutBtn = findViewById(
-				R.id.about_btn);
+
+		aboutBtn = findViewById(R.id.about_btn);
 
 		aboutBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -156,8 +155,6 @@ public class SettingsActivity extends Activity {
 			}
 		});
 
-		
-		
 		checkAppLanguage();
 
 	}
@@ -234,4 +231,12 @@ public class SettingsActivity extends Activity {
 
 	}
 
+	public void onLogoutClicked(View view) {
+		SharePrefsUtils.setLogin(this, false);
+		SharePrefsUtils.setRole(this, false);
+		Intent i = getBaseContext().getPackageManager()
+				.getLaunchIntentForPackage(getBaseContext().getPackageName());
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(i);
+	}
 }

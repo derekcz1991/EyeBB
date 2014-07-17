@@ -12,7 +12,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class MainDialog extends Activity {
 
-	private String phoneNumber = "1234567890";
+	private String phoneNumber = "9123 4567";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,8 @@ public class MainDialog extends Activity {
 			public void onClick(View v) {
 				if (phoneNumber.trim().length() != 0) {
 
-					Uri telUri = Uri.parse("tel:" + phoneNumber);
+					Uri telUri = Uri.parse("tel:"
+							+ getIntent().getStringExtra("phone"));
 					Intent intent = new Intent(Intent.ACTION_DIAL, telUri);
 					startActivity(intent);
 				}
