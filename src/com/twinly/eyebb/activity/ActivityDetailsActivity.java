@@ -66,7 +66,7 @@ public class ActivityDetailsActivity extends Activity {
 		shareIntent.setType("text/plain");
 		shareIntent
 				.putExtra(Intent.EXTRA_TEXT,
-						"http://stackoverflow.com/questions/7545254/android-and-facebook-share-intent");
+						"Welcome to www.eyebb.com");
 		return shareIntent;
 	}
 
