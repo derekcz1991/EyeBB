@@ -5,12 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ShareActionProvider;
+import android.widget.ViewFlipper;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.utils.DensityUtil;
 
 public class ActivityDetailsActivity extends Activity {
-	@Override
+
+	private ImageView Image2;
+	private ViewFlipper mainLayout;
+	private float startX;
+	private int imageHight = 350;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);
@@ -18,6 +28,16 @@ public class ActivityDetailsActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setDisplayShowHomeEnabled(false);
+
+		addImageView();
+
+		init();
+
+	}
+
+	private void init() {
+		// TODO Auto-generated method stub
+		mainLayout = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 	}
 
@@ -38,7 +58,7 @@ public class ActivityDetailsActivity extends Activity {
 
 	/**
 	 * Creates a sharing {@link Intent}.
-	 *
+	 * 
 	 * @return The sharing intent.
 	 */
 	private Intent createShareIntent() {
@@ -59,5 +79,46 @@ public class ActivityDetailsActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void addImageView() {
+		// 手动添加imageview
+		mainLayout = (ViewFlipper) findViewById(R.id.viewFlipper);
+		Image2 = new ImageView(this);
+		Image2.setImageResource(R.drawable.activity_details_img2);
+		DensityUtil.px2dip(this, imageHight);
+		// Image2.setId(110); //注意这点 设置id
+		// Image2.setOnClickListener(this);
+		RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, imageHight);
+		// lp1.addRule(RelativeLayout.ALIGN_TOP);
+		// lp1.setMargins(30, 50, 100, 100);//(int left, int top, int right, int
+		// bottom)
+//		lp1.leftMargin = 30;
+//		lp1.topMargin = 100;
+		mainLayout.addView(Image2, lp1);
+	}
+
+	// add flipper
+	public boolean onTouchEvent(MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			startX = event.getX();
+			break;
+		case MotionEvent.ACTION_UP:
+
+			if (event.getX() > startX) { // 向右滑动
+				mainLayout.setInAnimation(this, R.anim.in_leftright);
+				mainLayout.setOutAnimation(this, R.anim.out_leftright);
+				mainLayout.showNext();
+			} else if (event.getX() < startX) { // 向左滑动
+				mainLayout.setInAnimation(this, R.anim.in_rightleft);
+				mainLayout.setOutAnimation(this, R.anim.out_rightleft);
+				mainLayout.showPrevious();
+			}
+			break;
+		}
+
+		return super.onTouchEvent(event);
 	}
 }

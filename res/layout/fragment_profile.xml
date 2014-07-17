@@ -127,7 +127,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="As a LinkedIn member, you&apos;ll ..." />
+                        android:text="Baby boom will see number of school children ..." />
 
                     <TextView
                         style="@style/BlackText_15"

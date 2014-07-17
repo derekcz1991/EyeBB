@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Visiting S.K.H Lam Woo Memorial School" />
+                android:text="Baby boom will see number of  school children in England soar by 1 million over next decade" />
 
             <TextView
                 android:id="@+id/tittle_time"
@@ -47,7 +47,7 @@
                 android:id="@+id/details_image"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
-                android:src="@drawable/activity_details_img" />
+                android:src="@drawable/activity_details_img3" />
         </LinearLayout>
 
         <!-- details -->
@@ -63,8 +63,10 @@
                 style="@style/BlackText_15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="We investigate the transmission mechanism of monetary policy in China over the past decades with emphasis on the post-Asian crisis period. A factor-augmented VAR method is used to study the effectiveness of monetary policy instruments in stabilizing the Chinese economy. We find that repo rate, benchmark lending rate, and a market-based monetary stance have little impact on the Chinese economy" />
-        </ScrollView>
+                android:text="The increase in numbers has been fuelled by a decade-long baby boom since 2002, government statisticians suggested.
+Projections published by the Department for Education show that in 2023, it is estimated that overall, there will be 8.022 million youngsters in England's state schools, up over a million from the 7.072 million last year."
+             ></TextView>
+            </ScrollView>
     </LinearLayout>
 
 </LinearLayout>

@@ -37,18 +37,24 @@
 
         <!-- image -->
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical" >
+            android:layout_marginTop="16dp" >
 
-            <ImageView
-                android:id="@+id/details_image"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:src="@drawable/activity_details_img" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/details_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:src="@drawable/activity_details_img" />
+            </LinearLayout>
+        </ViewFlipper>
 
         <!-- details -->
 
