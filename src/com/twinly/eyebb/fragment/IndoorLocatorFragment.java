@@ -124,6 +124,8 @@ public class IndoorLocatorFragment extends Fragment {
 		messHallNum = (TextView) v.findViewById(R.id.mess_hall_num);
 		playgroundNum = (TextView) v.findViewById(R.id.playground_num);
 		sleepNum = (TextView) v.findViewById(R.id.sleep_num);
+
+		refreshView();
 	}
 
 	class AvatarClicked implements OnClickListener {
@@ -136,51 +138,54 @@ public class IndoorLocatorFragment extends Fragment {
 
 	}
 
+	private void refreshView() {
+		if (getActivity() == null) {
+			return;
+		}
+		position = (int) (Math.random() * 4);
+		switch (position) {
+		case 0:
+			messHallChild.setVisibility(View.VISIBLE);
+			playgroundChild.setVisibility(View.GONE);
+			sleepChild3.setVisibility(View.GONE);
+			messHallNum.setText("1");
+			playgroundNum.setText("0");
+			sleepNum.setText("0");
+			if (SharePrefsUtils.getRole(getActivity())) {
+				sleepNum.setText("2");
+			}
+			break;
+		case 1:
+			messHallChild.setVisibility(View.GONE);
+			playgroundChild.setVisibility(View.VISIBLE);
+			sleepChild3.setVisibility(View.GONE);
+			messHallNum.setText("0");
+			playgroundNum.setText("1");
+			sleepNum.setText("0");
+			if (SharePrefsUtils.getRole(getActivity())) {
+				sleepNum.setText("2");
+			}
+			break;
+		case 2:
+			messHallChild.setVisibility(View.GONE);
+			playgroundChild.setVisibility(View.GONE);
+			sleepChild3.setVisibility(View.VISIBLE);
+			messHallNum.setText("0");
+			playgroundNum.setText("0");
+			sleepNum.setText("1");
+			if (SharePrefsUtils.getRole(getActivity())) {
+				sleepChild1.setVisibility(View.VISIBLE);
+				sleepChild2.setVisibility(View.VISIBLE);
+				sleepNum.setText("3");
+			}
+			break;
+		}
+	}
+
 	Runnable mProgressRunner = new Runnable() {
 		@Override
 		public void run() {
-
-			if (getActivity() == null) {
-				return;
-			}
-			position = (int) (Math.random() * 4);
-			switch (position) {
-			case 0:
-				messHallChild.setVisibility(View.VISIBLE);
-				playgroundChild.setVisibility(View.GONE);
-				sleepChild3.setVisibility(View.GONE);
-				messHallNum.setText("1");
-				playgroundNum.setText("0");
-				sleepNum.setText("0");
-				if (SharePrefsUtils.getRole(getActivity())) {
-					sleepNum.setText("2");
-				}
-				break;
-			case 1:
-				messHallChild.setVisibility(View.GONE);
-				playgroundChild.setVisibility(View.VISIBLE);
-				sleepChild3.setVisibility(View.GONE);
-				messHallNum.setText("0");
-				playgroundNum.setText("1");
-				sleepNum.setText("0");
-				if (SharePrefsUtils.getRole(getActivity())) {
-					sleepNum.setText("2");
-				}
-				break;
-			case 2:
-				messHallChild.setVisibility(View.GONE);
-				playgroundChild.setVisibility(View.GONE);
-				sleepChild3.setVisibility(View.VISIBLE);
-				messHallNum.setText("0");
-				playgroundNum.setText("0");
-				sleepNum.setText("1");
-				if (SharePrefsUtils.getRole(getActivity())) {
-					sleepChild1.setVisibility(View.VISIBLE);
-					sleepChild2.setVisibility(View.VISIBLE);
-					sleepNum.setText("3");
-				}
-				break;
-			}
+			refreshView();
 			mHandler.postDelayed(mProgressRunner, 10000);
 		}
 	};
