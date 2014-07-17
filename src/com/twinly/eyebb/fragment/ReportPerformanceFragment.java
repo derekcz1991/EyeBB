@@ -18,6 +18,10 @@ public class ReportPerformanceFragment extends Fragment {
 
 	private ListView dailyListView;
 
+	public ReportPerformanceFragment() {
+		System.out.println("ReportPerformanceFragment constructor");
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -27,6 +31,11 @@ public class ReportPerformanceFragment extends Fragment {
 
 		dailyListView.setAdapter(getAdapter());
 		return v;
+	}
+
+	public void updateView() {
+		System.out.println("updateView");
+		dailyListView.setAdapter(getAdapter());
 	}
 
 	private PerformanceListViewAdapter getAdapter() {
@@ -48,25 +57,25 @@ public class ReportPerformanceFragment extends Fragment {
 				getResources().getString(R.string.text_sleeping), -1,
 				R.drawable.my_progress_blue01, 20, 20, 800);
 		list.add(dailySleeping);
-//		PerformanceListItem dailyMusicRoom = new PerformanceListItem("",
-//				getResources().getString(R.string.text_music_room), -1,
-//				R.drawable.my_progress_red, 440, 440, 800);
-//		list.add(dailyMusicRoom);
-//		PerformanceListItem dailyClassRoom2A = new PerformanceListItem("",
-//				getResources().getString(R.string.text_class_room_2a), -1,
-//				R.drawable.my_progress_blue02, 300, 300, 800);
-//		list.add(dailyClassRoom2A);
-//		PerformanceListItem dailyComputerRoom = new PerformanceListItem("",
-//				getResources().getString(R.string.text_computer_room), -1,
-//				R.drawable.my_progress_pink, 220, 220, 800);
-//		list.add(dailyComputerRoom);
-//		PerformanceListItem dailyArtRoom = new PerformanceListItem("",
-//				getResources().getString(R.string.text_art_room), -1,
-//				R.drawable.my_progress_green02, 220, 220, 800);
-//		list.add(dailyArtRoom);
-		
-		PerformanceListItem weeklyTitle = new PerformanceListItem(getResources()
-				.getString(R.string.text_weekly), "",
+		//		PerformanceListItem dailyMusicRoom = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_music_room), -1,
+		//				R.drawable.my_progress_red, 440, 440, 800);
+		//		list.add(dailyMusicRoom);
+		//		PerformanceListItem dailyClassRoom2A = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_class_room_2a), -1,
+		//				R.drawable.my_progress_blue02, 300, 300, 800);
+		//		list.add(dailyClassRoom2A);
+		//		PerformanceListItem dailyComputerRoom = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_computer_room), -1,
+		//				R.drawable.my_progress_pink, 220, 220, 800);
+		//		list.add(dailyComputerRoom);
+		//		PerformanceListItem dailyArtRoom = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_art_room), -1,
+		//				R.drawable.my_progress_green02, 220, 220, 800);
+		//		list.add(dailyArtRoom);
+
+		PerformanceListItem weeklyTitle = new PerformanceListItem(
+				getResources().getString(R.string.text_weekly), "",
 				R.drawable.bg_report_weekly, -1, 0, 0, 0);
 		list.add(weeklyTitle);
 		PerformanceListItem weeklyMessHall = new PerformanceListItem("",
@@ -81,20 +90,20 @@ public class ReportPerformanceFragment extends Fragment {
 				getResources().getString(R.string.text_sleeping), -1,
 				R.drawable.my_progress_blue01, 20, 20, 800);
 		list.add(weeklySleeping);
-//		PerformanceListItem weeklyMusicRoom = new PerformanceListItem("",
-//				getResources().getString(R.string.text_music_room), -1,
-//				R.drawable.my_progress_red, 440, 440, 800);
-//		list.add(weeklyMusicRoom);
-//		PerformanceListItem weeklyClassRoom2A = new PerformanceListItem("",
-//				getResources().getString(R.string.text_class_room_2a), -1,
-//				R.drawable.my_progress_blue02, 300, 300, 800);
-//		list.add(weeklyClassRoom2A);
-//		PerformanceListItem weeklyComputerRoom = new PerformanceListItem("",
-//				getResources().getString(R.string.text_computer_room), -1,
-//				R.drawable.my_progress_pink, 220, 220, 800);
-//		list.add(weeklyComputerRoom);
-//		PerformanceListItem weeklyArtRoom = new PerformanceListItem("",
-//				getResources().getString(R.string.text_art_room), -1,
+		//		PerformanceListItem weeklyMusicRoom = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_music_room), -1,
+		//				R.drawable.my_progress_red, 440, 440, 800);
+		//		list.add(weeklyMusicRoom);
+		//		PerformanceListItem weeklyClassRoom2A = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_class_room_2a), -1,
+		//				R.drawable.my_progress_blue02, 300, 300, 800);
+		//		list.add(weeklyClassRoom2A);
+		//		PerformanceListItem weeklyComputerRoom = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_computer_room), -1,
+		//				R.drawable.my_progress_pink, 220, 220, 800);
+		//		list.add(weeklyComputerRoom);
+		//		PerformanceListItem weeklyArtRoom = new PerformanceListItem("",
+		//				getResources().getString(R.string.text_art_room), -1,
 		//				R.drawable.my_progress_green02, 220, 220, 800);
 		//		list.add(weeklyArtRoom);
 

@@ -30,6 +30,8 @@ public class MainActivity extends FragmentActivity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 	private BluetoothAdapter mBluetoothAdapter;
+	private ReportFragment reportFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +46,7 @@ public class MainActivity extends FragmentActivity {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}
 		mTabHost.setCurrentTab(0);
-		
-		
+
 		checkBluetooth();
 	}
 
@@ -54,8 +55,8 @@ public class MainActivity extends FragmentActivity {
 		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 		if (!getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(this, R.string.text_ble_not_supported, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, R.string.text_ble_not_supported,
+					Toast.LENGTH_SHORT).show();
 		}
 
 		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
@@ -92,33 +93,35 @@ public class MainActivity extends FragmentActivity {
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_home_selector);
-		mTabsAdapter.addTab(
+		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
-				IndoorLocatorFragment.class, null);
-
+				new IndoorLocatorFragment());
+		
 		View trackingLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		trackingLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_tracking_selector);
-		mTabsAdapter.addTab(
+		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
-				RadarTrackingFragment.class, null);
+				new RadarTrackingFragment());
 
+		reportFragment = new ReportFragment();
 		View reportLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		reportLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_report_selector);
-		mTabsAdapter.addTab(
+		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
-				ReportFragment.class, null);
+				reportFragment);
 
 		View profileLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		profileLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_profile_selector);
-		mTabsAdapter.addTab(
+		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
-				ProfileFragment.class, null);
+				new ProfileFragment());
+
 	}
 
 	@Override
@@ -132,7 +135,7 @@ public class MainActivity extends FragmentActivity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		super.onActivityResult(requestCode, resultCode, arg2);
@@ -148,4 +151,5 @@ public class MainActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
+
 }

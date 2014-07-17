@@ -24,8 +24,10 @@
 
     <!-- VIBRATE -->
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- language -->
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
     <!--  -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -146,6 +148,11 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.KindergartenListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

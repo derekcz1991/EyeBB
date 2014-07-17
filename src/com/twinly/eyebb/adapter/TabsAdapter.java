@@ -3,7 +3,6 @@ package com.twinly.eyebb.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+
+import com.twinly.eyebb.fragment.IndoorLocatorFragment;
+import com.twinly.eyebb.fragment.ProfileFragment;
+import com.twinly.eyebb.fragment.RadarTrackingFragment;
+import com.twinly.eyebb.fragment.ReportFragment;
 
 /**
  * This is a helper class that implements the management of tabs and all details
@@ -28,19 +32,12 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	private final Context mContext;
 	private final TabHost mTabHost;
 	private final ViewPager mViewPager;
-	private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
-
-	static final class TabInfo {
-		//private final String tag;
-		private final Class<?> clss;
-		private final Bundle args;
-
-		TabInfo(String _tag, Class<?> _class, Bundle _args) {
-			//tag = _tag;
-			clss = _class;
-			args = _args;
-		}
-	}
+	//private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+	private final ArrayList<Integer> mFragments = new ArrayList<Integer>();
+	private IndoorLocatorFragment indoorLocatorFragment;
+	private RadarTrackingFragment radarTrackingFragment;
+	private ReportFragment reportFragment;
+	private ProfileFragment profileFragment;
 
 	static class DummyTabFactory implements TabHost.TabContentFactory {
 		private final Context mContext;
@@ -69,25 +66,57 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mViewPager.setOnPageChangeListener(this);
 	}
 
-	public void addTab(TabHost.TabSpec tabSpec, Class<?> clss, Bundle args) {
-		tabSpec.setContent(new DummyTabFactory(mContext));
-		String tag = tabSpec.getTag();
+	public void addFragment(TabHost.TabSpec tabSpec,
+			IndoorLocatorFragment indoorLocatorFragment) {
+		this.indoorLocatorFragment = indoorLocatorFragment;
+		mFragments.add(0);
+		addTab(tabSpec);
+	}
 
-		TabInfo info = new TabInfo(tag, clss, args);
-		mTabs.add(info);
+	public void addFragment(TabHost.TabSpec tabSpec,
+			RadarTrackingFragment radarTrackingFragment) {
+		this.radarTrackingFragment = radarTrackingFragment;
+		mFragments.add(1);
+		addTab(tabSpec);
+	}
+
+	public void addFragment(TabHost.TabSpec tabSpec,
+			ReportFragment reportFragment) {
+		this.reportFragment = reportFragment;
+		mFragments.add(2);
+		addTab(tabSpec);
+	}
+
+	public void addFragment(TabHost.TabSpec tabSpec,
+			ProfileFragment profileFragment) {
+		this.profileFragment = profileFragment;
+		mFragments.add(3);
+		addTab(tabSpec);
+	}
+
+	private void addTab(TabHost.TabSpec tabSpec) {
+		tabSpec.setContent(new DummyTabFactory(mContext));
 		mTabHost.addTab(tabSpec);
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getCount() {
-		return mTabs.size();
+		return mFragments.size();
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		TabInfo info = mTabs.get(position);
-		return Fragment.instantiate(mContext, info.clss.getName(), info.args);
+		switch (mFragments.get(position)) {
+		case 0:
+			return indoorLocatorFragment;
+		case 1:
+			return radarTrackingFragment;
+		case 2:
+			return reportFragment;
+		default:
+			return profileFragment;
+		}
 	}
 
 	@Override
@@ -113,6 +142,10 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 		mTabHost.setCurrentTab(position);
 		widget.setDescendantFocusability(oldFocusability);
+
+		if (position == 2) {
+			reportFragment.refreshPerformanceFragment();
+		}
 	}
 
 	@Override

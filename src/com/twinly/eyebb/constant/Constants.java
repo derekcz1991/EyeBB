@@ -12,6 +12,7 @@ public class Constants {
 	public static final int REQUEST_GO_TO_WELCOME_ACTIVITY = 100;
 	public static final int REQUEST_GO_TO_LOGIN_ACTIVITY = 101;
 	public static final int REQUEST_GO_TO_SIGN_UP_ACTIVITY = 102;
+	public static final int REQUEST_GO_TO_KINDERGARTEN_ACTIVITY = 103;
 	
 	public static final int RESULT_RESULT_OK = 200;
 }

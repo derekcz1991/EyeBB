@@ -33,6 +33,15 @@ public class ReportFragment extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		System.out.println("onResume");
+		performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
+				.findFragmentByTag("performance");
+		System.out.println("performanceFragment = " + performanceFragment);
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		System.out.println("onDestroy");
@@ -45,6 +54,8 @@ public class ReportFragment extends Fragment {
 	}
 
 	private void setUpView(View v) {
+		System.out.println("--->>setUpView");
+
 		FragmentTransaction fragmentTransaction = getChildFragmentManager()
 				.beginTransaction();
 
@@ -132,6 +143,13 @@ public class ReportFragment extends Fragment {
 
 					}
 				});
+	}
+
+	public void refreshPerformanceFragment() {
+		/*performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
+				.findFragmentByTag("performance");*/
+		if (performanceFragment != null)
+			performanceFragment.updateView();
 	}
 
 	@Override
