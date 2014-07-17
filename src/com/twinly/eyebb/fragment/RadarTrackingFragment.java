@@ -43,6 +43,10 @@ public class RadarTrackingFragment extends Fragment {
 			v.findViewById(R.id.avatar2).setVisibility(View.GONE);
 			((TextView) v.findViewById(R.id.radar_text_missed_number))
 					.setText("1");
+			v.findViewById(R.id.newslist_item_layout_1)
+					.setVisibility(View.GONE);
+			v.findViewById(R.id.newslist_item_layout2)
+					.setVisibility(View.GONE);
 		} else {
 			((TextView) v.findViewById(R.id.radar_text_missed_number))
 					.setText("3");

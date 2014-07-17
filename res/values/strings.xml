@@ -67,4 +67,10 @@
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_invalid_username_or_password">Invalid username or password</string>
 
+    <string name="child2_notification_tittle">YMCA INTERNATIONAL KINDERGARTEN</string>
+    <string name="child3_notification_tittle">ANFIELD PRIMARY</string>
+    <string name="child2_notification">The YMCA of Hong Kong International Kindergarten was established in 1992 to provide quality education in an English setting to an International body of students.
+
+The Kindergarten was awarded the valued UNICEF ‘Child Friendly School’ award in December 2009 and recognised as the top school in Kowloon by a leading HK Community website. The students are encouraged to serve rather than take, show respect for all living things. and develop social responsibility. Proud of our cultural diversity we offer a progressive curriculum which allows us to create a stimulating environment. Children are encouraged to solve problems, make choices and be active learners; all the time upholding spiritual and moral values. They are motivated to show curiosity, ask questions, develop independence, work alongside others and to enjoy their learning. As an inclusive school, we aim to integrate children with any developmental delays or needs into school life.</string>
+	<string name="child3_notification">Our purpose-built, 21st century-fit campus has wireless internet access and fully networked classrooms all with interactive smart boards for digital learning, an Information and Communication Technology (ICT) suite with the latest resources available fully integrated into learning and teaching, a dedicated science and technology laboratory, a well stocked library, a multipurpose hall, a music and composition suite, an art and design studio, a fully mirrored dance and drama studio, a language laboratory and dedicated spaces for specialist teaching, individual and group learning activities.</string>
 </resources>

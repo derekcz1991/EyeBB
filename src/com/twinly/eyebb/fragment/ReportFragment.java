@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.ChildrenListActivity;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.CircleImageView;
 
 public class ReportFragment extends Fragment {
 
@@ -25,11 +26,13 @@ public class ReportFragment extends Fragment {
 	private TextView redDividerActivities;
 	private TextView blackDividerActivities;
 	private View reportChangeBtn;
+	private CircleImageView img;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report, container, false);
+		img = (CircleImageView) v.findViewById(R.id.img);
 		setUpView(v);
 		setUpListener(v);
 		return v;
@@ -153,13 +156,25 @@ public class ReportFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == Constants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY) {
+			if (data == null) {
+				return;
+			}
 			int index = data.getIntExtra("index", 0);
 			switch (index) {
+			case 2:
+				img.setImageResource(R.drawable.hugh);
+				activitiesFragment.updateAvatar((R.drawable.hugh));
+				performanceFragment.updateIndex(0);
+				break;
 			case 0:
+				img.setImageResource(R.drawable.head_img2);
+				activitiesFragment.updateAvatar((R.drawable.head_img2));
+				performanceFragment.updateIndex(1);
 				break;
 			case 1:
-				break;
-			case 2:
+				img.setImageResource(R.drawable.head_img3);
+				activitiesFragment.updateAvatar((R.drawable.head_img3));
+				performanceFragment.updateIndex(2);
 				break;
 			}
 		}

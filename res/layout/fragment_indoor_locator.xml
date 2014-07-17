@@ -337,7 +337,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
+                            android:src="@drawable/head_img2"
                             android:visibility="gone"
                             app:border_color="@color/white"
                             app:border_width="2dp" />
@@ -347,7 +347,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
+                            android:src="@drawable/head_img3"
                             android:visibility="gone"
                             app:border_color="@color/white"
                             app:border_width="2dp" />

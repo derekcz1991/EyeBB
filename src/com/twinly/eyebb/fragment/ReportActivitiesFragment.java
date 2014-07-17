@@ -9,14 +9,17 @@ import android.view.ViewGroup;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.ActivityDetailsActivity;
+import com.twinly.eyebb.customview.CircleImageView;
 
 public class ReportActivitiesFragment extends Fragment {
+	private CircleImageView img;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report_activities,
 				container, false);
+		img = (CircleImageView) v.findViewById(R.id.img);
 		return v;
 	}
 
@@ -37,5 +40,9 @@ public class ReportActivitiesFragment extends Fragment {
 			}
 		});
 
+	}
+
+	public void updateAvatar(int i) {
+		img.setImageResource(i);
 	}
 }

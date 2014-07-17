@@ -59,7 +59,7 @@
                     android:layout_height="35dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="8dp"
-                    android:src="@drawable/hugh"
+                    android:src="@drawable/head_img2"
                     app:border_color="@color/red"
                     app:border_width="2dp" />
 
@@ -70,7 +70,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="8dp"
-                    android:src="@drawable/hugh"
+                    android:src="@drawable/head_img3"
                     app:border_color="@color/red"
                     app:border_width="2dp" />
 
@@ -311,7 +311,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
+                        android:src="@drawable/head_img2"
                         app:border_color="@color/red"
                         app:border_width="2dp" />
                 </RelativeLayout>
@@ -397,7 +397,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
+                        android:src="@drawable/head_img3"
                         app:border_color="@color/red"
                         app:border_width="2dp" />
                 </RelativeLayout>

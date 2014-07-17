@@ -84,6 +84,7 @@
             android:paddingRight="8dp" >
 
             <TextView
+                android:id="@+id/vi_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -134,6 +135,150 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2014.07.01" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/img"
+                android:alpha="0.1"
+                android:background="@color/black" />
+        </RelativeLayout>
+        
+        
+        <!--  2-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="112dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" >
+
+            <TextView
+                android:id="@+id/vi_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_list_unread" 
+                android:visibility="gone"/>
+
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/img"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/head_img2"
+                app:border_color="#FF000000"
+                app:border_width="0dp" />
+
+            <RelativeLayout
+                android:id="@+id/notification_details_btn2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/img" >
+
+                <TextView
+                    android:id="@+id/arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_arrow_go_big" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/arrow"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="The YMCA of Hong Kong International Kindergarten was established in 1992 ..." />
+
+                    <TextView
+                        style="@style/BlackText_15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2014.07.03" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/img"
+                android:alpha="0.1"
+                android:background="@color/black" />
+        </RelativeLayout>
+        <!-- 3 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="112dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" >
+
+            <TextView
+                android:id="@+id/vi_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_list_unread"
+                android:visibility="gone" />
+
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/img"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/head_img3"
+                app:border_color="#FF000000"
+                app:border_width="0dp" />
+
+            <RelativeLayout
+                android:id="@+id/notification_details_btn3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/img" >
+
+                <TextView
+                    android:id="@+id/arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/btn_arrow_go_big" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/arrow"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="Our purpose-built, 21st century-fit campus has wireless internet  ..." />
+
+                    <TextView
+                        style="@style/BlackText_15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2014.07.10" />
                 </LinearLayout>
             </RelativeLayout>
 
