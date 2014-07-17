@@ -146,6 +146,7 @@ public class ReportFragment extends Fragment {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(),
 						ChildrenListActivity.class);
+				intent.putExtra("from", 2);
 				startActivityForResult(intent,
 						Constants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
 			}

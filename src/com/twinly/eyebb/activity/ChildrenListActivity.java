@@ -18,7 +18,9 @@ public class ChildrenListActivity extends Activity {
 	private LinearLayout item1;
 	private LinearLayout item2;
 	private LinearLayout item3;
-	private TextView location;
+	private TextView location1;
+	private TextView location2;
+	private TextView location3;
 	private TextView phone1;
 	private TextView phone2;
 	private TextView phone3;
@@ -38,7 +40,9 @@ public class ChildrenListActivity extends Activity {
 		item1 = (LinearLayout) findViewById(R.id.item1);
 		item2 = (LinearLayout) findViewById(R.id.item2);
 		item3 = (LinearLayout) findViewById(R.id.item3);
-		location = (TextView) findViewById(R.id.location);
+		location1 = (TextView) findViewById(R.id.location1);
+		location2 = (TextView) findViewById(R.id.location2);
+		location3 = (TextView) findViewById(R.id.location3);
 		phone1 = (TextView) findViewById(R.id.phone_1);
 		phone2 = (TextView) findViewById(R.id.phone_2);
 		phone3 = (TextView) findViewById(R.id.phone_3);
@@ -52,7 +56,7 @@ public class ChildrenListActivity extends Activity {
 			item1.setVisibility(View.GONE);
 			item2.setVisibility(View.GONE);
 		}
-		location.setText("@" + getIntent().getStringExtra("location"));
+		location3.setText("@" + getIntent().getStringExtra("location"));
 
 		phone1.setOnClickListener(new OnClickListener() {
 
@@ -119,6 +123,12 @@ public class ChildrenListActivity extends Activity {
 				finish();
 			}
 		});
+
+		if (getIntent().getIntExtra("from", 0) == 2) {
+			location1.setVisibility(View.GONE);
+			location2.setVisibility(View.GONE);
+			location3.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

@@ -94,6 +94,7 @@ public class IndoorLocatorFragment extends Fragment {
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
 								ChildrenListActivity.class);
+						intent.putExtra("from", 1);
 						switch (position) {
 						case 0:
 							intent.putExtra("location",

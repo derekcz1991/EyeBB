@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_white"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <com.twinly.eyebb.customview.CircleImageView
@@ -36,7 +37,7 @@
                 android:text="Chily" />
 
             <TextView
-                android:id="@+id/place"
+                android:id="@+id/location1"
                 style="@style/BlackText_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,6 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_white"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <com.twinly.eyebb.customview.CircleImageView
@@ -124,6 +126,7 @@
                 android:text="Terry" />
 
             <TextView
+                android:id="@+id/location2"
                 style="@style/BlackText_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -189,6 +192,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_white"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <com.twinly.eyebb.customview.CircleImageView
@@ -211,7 +215,7 @@
                 android:text="Kitty Chan" />
 
             <TextView
-                android:id="@+id/location"
+                android:id="@+id/location3"
                 style="@style/BlackText_15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
