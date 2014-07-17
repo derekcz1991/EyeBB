@@ -12,11 +12,11 @@
         android:layout_height="60dp" >
 
         <TextView
+            android:id="@+id/username"
             style="@style/DarkGreyText_28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Miss Lee" />
+            android:layout_centerVertical="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -146,9 +146,9 @@
                 android:alpha="0.1"
                 android:background="@color/black" />
         </RelativeLayout>
-        
-        
-        <!--  2-->
+
+        <!-- 2 -->
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="112dp"
@@ -160,11 +160,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_list_unread" 
-                android:visibility="gone"/>
+                android:background="@drawable/ic_list_unread"
+                android:visibility="gone" />
 
             <com.twinly.eyebb.customview.CircleImageView
-                android:id="@+id/img"
+                android:id="@+id/img1"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:layout_marginTop="16dp"
@@ -178,10 +178,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@+id/img" >
+                android:layout_toRightOf="@+id/img1" >
 
                 <TextView
-                    android:id="@+id/arrow"
+                    android:id="@+id/arrow1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -192,11 +192,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:layout_toLeftOf="@id/arrow"
+                    android:layout_toLeftOf="@id/arrow1"
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/title"
+                        android:id="@+id/title1"
                         style="@style/DarkGreyText_18"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -215,11 +215,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/img"
+                android:layout_toRightOf="@+id/img1"
                 android:alpha="0.1"
                 android:background="@color/black" />
         </RelativeLayout>
         <!-- 3 -->
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="112dp"
@@ -235,7 +236,7 @@
                 android:visibility="gone" />
 
             <com.twinly.eyebb.customview.CircleImageView
-                android:id="@+id/img"
+                android:id="@+id/img2"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:layout_marginTop="16dp"
@@ -249,10 +250,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@+id/img" >
+                android:layout_toRightOf="@+id/img2" >
 
                 <TextView
-                    android:id="@+id/arrow"
+                    android:id="@+id/arrow2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -263,11 +264,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:layout_toLeftOf="@id/arrow"
+                    android:layout_toLeftOf="@id/arrow2"
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/title"
+                        android:id="@+id/title2"
                         style="@style/DarkGreyText_18"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -286,7 +287,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/img"
+                android:layout_toRightOf="@+id/img2"
                 android:alpha="0.1"
                 android:background="@color/black" />
         </RelativeLayout>

@@ -66,6 +66,7 @@ local.properties
 .settings/
 .loadpath
 proguard-project.txt
+project.properties
 
 # External tool builders
 .externalToolBuilders/

@@ -67,6 +67,7 @@
     <string name="btn_share">Share</string>
     
     <string name="toast_login">Login&#8230;</string>
+    <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username or password</string>
 
     <string name="child2_notification_tittle">公告102學年度幼兒園新生抽籤錄取名單</string>

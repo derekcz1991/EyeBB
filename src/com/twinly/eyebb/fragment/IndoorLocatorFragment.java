@@ -125,7 +125,7 @@ public class IndoorLocatorFragment extends Fragment {
 		playgroundNum = (TextView) v.findViewById(R.id.playground_num);
 		sleepNum = (TextView) v.findViewById(R.id.sleep_num);
 
-		refreshView();
+		//refreshView();
 	}
 
 	class AvatarClicked implements OnClickListener {
@@ -142,7 +142,8 @@ public class IndoorLocatorFragment extends Fragment {
 		if (getActivity() == null) {
 			return;
 		}
-		position = (int) (Math.random() * 4);
+		position = (int) (Math.random() * 3);
+		System.out.println("position = " + position);
 		switch (position) {
 		case 0:
 			messHallChild.setVisibility(View.VISIBLE);
@@ -153,6 +154,9 @@ public class IndoorLocatorFragment extends Fragment {
 			sleepNum.setText("0");
 			if (SharePrefsUtils.getRole(getActivity())) {
 				sleepNum.setText("2");
+			} else {
+				sleepChild1.setVisibility(View.GONE);
+				sleepChild2.setVisibility(View.GONE);
 			}
 			break;
 		case 1:
@@ -164,6 +168,9 @@ public class IndoorLocatorFragment extends Fragment {
 			sleepNum.setText("0");
 			if (SharePrefsUtils.getRole(getActivity())) {
 				sleepNum.setText("2");
+			} else {
+				sleepChild1.setVisibility(View.GONE);
+				sleepChild2.setVisibility(View.GONE);
 			}
 			break;
 		case 2:
@@ -177,6 +184,9 @@ public class IndoorLocatorFragment extends Fragment {
 				sleepChild1.setVisibility(View.VISIBLE);
 				sleepChild2.setVisibility(View.VISIBLE);
 				sleepNum.setText("3");
+			} else {
+				sleepChild1.setVisibility(View.GONE);
+				sleepChild2.setVisibility(View.GONE);
 			}
 			break;
 		}

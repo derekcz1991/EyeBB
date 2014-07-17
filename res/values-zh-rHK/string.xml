@@ -74,6 +74,7 @@
     <string name="btn_cancel">取消</string>
     
     <string name="toast_login">登錄中&#8230;</string>
+    <string name="toast_please_select_kindergartens">請選擇幼稚園</string>
     <string name="toast_invalid_username_or_password">帳號或密碼錯誤</string>
 
 </resources>

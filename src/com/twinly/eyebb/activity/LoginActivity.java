@@ -138,6 +138,9 @@ public class LoginActivity extends Activity {
 		} else if (TextUtils.isEmpty(password.getText().toString())) {
 			return;
 		} else if (kindergartenId == -1) {
+			Toast.makeText(LoginActivity.this,
+					getString(R.string.toast_please_select_kindergartens),
+					Toast.LENGTH_SHORT).show();
 			return;
 		}
 
