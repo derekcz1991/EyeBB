@@ -31,6 +31,7 @@ public class IndoorLocatorFragment extends Fragment {
 	private TextView playgroundNum;
 	private TextView sleepNum;
 	private int position;
+	private boolean flag = true;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,8 +40,21 @@ public class IndoorLocatorFragment extends Fragment {
 				false);
 		setUpView(v);
 		setUpListener(v);
-		mProgressRunner.run();
 		return v;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		flag = true;
+		mProgressRunner.run();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		mHandler.removeCallbacks(mProgressRunner);
+		flag = false;
 	}
 
 	private void setUpListener(View v) {
@@ -143,7 +157,6 @@ public class IndoorLocatorFragment extends Fragment {
 			return;
 		}
 		position = (int) (Math.random() * 3);
-		System.out.println("position = " + position);
 		switch (position) {
 		case 0:
 			messHallChild.setVisibility(View.VISIBLE);
@@ -195,8 +208,11 @@ public class IndoorLocatorFragment extends Fragment {
 	Runnable mProgressRunner = new Runnable() {
 		@Override
 		public void run() {
-			refreshView();
-			mHandler.postDelayed(mProgressRunner, 10000);
+			if (flag) {
+				System.out.println("----->>>");
+				refreshView();
+				mHandler.postDelayed(mProgressRunner, 10000);
+			}
 		}
 	};
 }
