@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
@@ -13,6 +14,7 @@ public class NotificationActivity extends Activity {
 	private int child;
 	private TextView tittle;
 	private TextView content;
+	private ImageView detailsImage;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.notification_detials);
@@ -25,6 +27,7 @@ public class NotificationActivity extends Activity {
 		child = intent.getIntExtra("child", 1);
 		tittle = (TextView) findViewById(R.id.tittle_detials);
 		content = (TextView) findViewById(R.id.details);
+		detailsImage = (ImageView) findViewById(R.id.details_image);
 		selectNotificationByChild(child);
 
 	}
@@ -45,14 +48,16 @@ public class NotificationActivity extends Activity {
 		
 		switch (child) {
 		case 1:
-			
+			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details1));
 			break;
 
 		case 2:
+			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details2));
 			tittle.setText(R.string.child2_notification_tittle);
 			content.setText(R.string.child2_notification);
 			break;
 		case 3:
+			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details3));
 			tittle.setText(R.string.child3_notification_tittle);
 			content.setText(R.string.child3_notification);
 			break;

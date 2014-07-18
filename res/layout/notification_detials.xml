@@ -46,8 +46,8 @@
             <ImageView
                 android:id="@+id/details_image"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:src="@drawable/activity_details_img3" />
+                android:layout_height="200dp"
+               />
         </LinearLayout>
 
         <!-- details -->
