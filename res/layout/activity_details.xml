@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Visiting S.K.H Lam Woo Memorial School" />
+                android:text="兩文三語學習" />
 
             <TextView
                 android:id="@+id/tittle_time"
@@ -66,7 +66,7 @@
                         android:id="@+id/details_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/activity_details_img" />
+                        android:src="@drawable/activity_details_img1" />
                 </LinearLayout>
             </ViewFlipper>
 
@@ -93,8 +93,10 @@
                 style="@style/BlackText_15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="We investigate the transmission mechanism of monetary policy in China over the past decades with emphasis on the post-Asian crisis period. A factor-augmented VAR method is used to study the effectiveness of monetary policy instruments in stabilizing the Chinese economy. We find that repo rate, benchmark lending rate, and a market-based monetary stance have little impact on the Chinese economy" />
-        </ScrollView>
+                android:text="英語課程採用jolly phonics 併音課程，讓幼兒學懂42個英語的混音，透過動作，激發學習，從基本發音、混音，進而讀出字詞，提升幼兒的英語閱讀、書寫及理解能力。
+普通話課程採用《來說普通話》教材套，配合《學前教育課程指引》的宗旨，透過遊戲、歌謠及朗誦等活動，訓練幼兒普通話聽、講、寫的整合技能。「故事角」和「戲劇天地」是普通話的增潤課程，綜合訓練幼兒朗讀、說話和聆聽等能力。" />
+    
+            </ScrollView>
     </LinearLayout>
 
 </LinearLayout>

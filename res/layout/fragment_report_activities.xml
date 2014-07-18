@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:text="Visiting S.K.H Lam Woo Memorial School" />
+                    android:text="兩文三語學習" />
 
                 <TextView
                     style="@style/BlackText_15"

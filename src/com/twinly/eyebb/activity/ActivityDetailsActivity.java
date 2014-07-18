@@ -28,9 +28,9 @@ public class ActivityDetailsActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setDisplayShowHomeEnabled(false);
-
-		addImageView();
-
+	//	addImageView(R.drawable.activity_details_img1);
+		addImageView(R.drawable.activity_details_img2);
+		addImageView(R.drawable.activity_details_img3);
 		init();
 
 	}
@@ -81,11 +81,11 @@ public class ActivityDetailsActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void addImageView() {
+	private void addImageView(int img) {
 		// 手动添加imageview
 		mainLayout = (ViewFlipper) findViewById(R.id.viewFlipper);
 		Image2 = new ImageView(this);
-		Image2.setImageResource(R.drawable.activity_details_img2);
+		Image2.setImageResource(img);
 		//DensityUtil.px2dip(this, imageHight);
 		// Image2.setId(110); //注意这点 设置id
 		// Image2.setOnClickListener(this);
