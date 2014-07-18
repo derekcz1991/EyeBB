@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 
 public class NotificationActivity extends Activity {
 

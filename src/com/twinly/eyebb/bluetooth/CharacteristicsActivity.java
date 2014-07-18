@@ -22,7 +22,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 
 public class CharacteristicsActivity extends Activity {	
 	

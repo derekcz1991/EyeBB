@@ -27,7 +27,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class ServicesActivity extends Activity {	

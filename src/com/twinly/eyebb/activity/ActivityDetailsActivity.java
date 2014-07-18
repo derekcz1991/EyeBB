@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.ShareActionProvider;
 import android.widget.ViewFlipper;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 import com.twinly.eyebb.utils.DensityUtil;
 
 public class ActivityDetailsActivity extends Activity {

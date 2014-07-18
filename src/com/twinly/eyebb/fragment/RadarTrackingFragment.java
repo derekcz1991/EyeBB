@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;

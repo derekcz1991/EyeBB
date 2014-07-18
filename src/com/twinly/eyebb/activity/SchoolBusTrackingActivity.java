@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 import com.twinly.eyebb.utils.DirectionsJSONParser;
 
 public class SchoolBusTrackingActivity extends FragmentActivity {

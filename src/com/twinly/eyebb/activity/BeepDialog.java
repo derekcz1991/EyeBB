@@ -16,7 +16,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 
 public class BeepDialog extends Activity {
 	// record the time

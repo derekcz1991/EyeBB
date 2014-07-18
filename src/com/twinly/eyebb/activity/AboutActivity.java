@@ -1,5 +1,7 @@
 package com.twinly.eyebb.activity;
 
+import com.eyebb.R;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -11,7 +13,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+
 
 public class AboutActivity extends Activity {
 	private ImageView logo;

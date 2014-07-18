@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 
 @SuppressLint("NewApi")
 public class PeripheralActivity extends Activity {

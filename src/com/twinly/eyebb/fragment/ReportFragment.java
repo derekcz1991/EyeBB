@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 import com.twinly.eyebb.activity.ChildrenListActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;

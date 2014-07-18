@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.eyebb.R;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity implements OnClickListener {
