@@ -3,40 +3,89 @@ package com.twinly.eyebb.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 
 public class SharePrefsUtils {
 
 	public static String getLoginAccount(Context context) {
-		return getString(context, Constants.SHARE_PREFS_ITEM_LOGIN_ACCOUNT);
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_LOGIN_ACCOUNT);
 	}
 
 	public static void setLoginAccount(Context context, String value) {
-		setString(context, Constants.SHARE_PREFS_ITEM_LOGIN_ACCOUNT, value);
+		setString(context, ActivityConstants.SHARE_PREFS_ITEM_LOGIN_ACCOUNT,
+				value);
 	}
 
 	public static Boolean isLogin(Context context) {
-		return getBoolean(context, Constants.SHARE_PREFS_ITEM_IS_LOGIN, false);
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_LOGIN,
+				false);
 	}
 
 	public static void setLogin(Context context, boolean value) {
-		setBoolean(context, Constants.SHARE_PREFS_ITEM_IS_LOGIN, value);
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_LOGIN, value);
 	}
 
 	public static boolean getRole(Context context) {
-		return getBoolean(context, Constants.SHARE_PREFS_ITEM_ROLE, false);
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_ROLE,
+				false);
 	}
 
 	public static void setRole(Context context, boolean value) {
-		setBoolean(context, Constants.SHARE_PREFS_ITEM_ROLE, value);
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_ROLE, value);
+	}
+
+	public static int getKindergartenId(Context context) {
+		return getInt(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
+	}
+
+	public static void setKindergartenId(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID,
+				value);
+	}
+
+	public static String getKindergartenName(Context context) {
+		int locale = SystemUtils.getLocale(context);
+		switch (locale) {
+		case Constants.LOCALE_CN:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC);
+		case Constants.LOCALE_TW:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
+		case Constants.LOCALE_HK:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
+		default:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN);
+		}
+
+	}
+
+	public static void setKindergartenNameTc(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC, value);
+	}
+
+	public static void setKindergartenNameSc(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC, value);
+	}
+
+	public static void setKindergartenNameEn(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN, value);
 	}
 
 	/**
 	 * @return Application's {@code SharedPreferences}.
 	 */
 	private static SharedPreferences getPrefs(Context context) {
-		return context.getSharedPreferences(Constants.SHARE_PREFERENCES_NAME,
-				Context.MODE_PRIVATE);
+		return context.getSharedPreferences(
+				ActivityConstants.SHARE_PREFERENCES_NAME, Context.MODE_PRIVATE);
 	}
 
 	private static String getString(Context context, String name) {

@@ -30,7 +30,7 @@ public class AboutActivity extends Activity {
 				SettingsActivity.ENGLISH);
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
+		setContentView(R.layout.activity_about);
 
 		// check logo
 		logo = (ImageView) findViewById(R.id.logo_img);

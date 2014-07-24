@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.NotificationActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class ProfileFragment extends Fragment {
@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
 				Intent intent = new Intent(getActivity(),
 						SettingsActivity.class);
 				startActivityForResult(intent,
-						Constants.REQUEST_GO_TO_SETTING_ACTIVITY);
+						ActivityConstants.REQUEST_GO_TO_SETTING_ACTIVITY);
 
 			}
 		});
@@ -120,8 +120,8 @@ public class ProfileFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == Constants.REQUEST_GO_TO_SETTING_ACTIVITY) {
-			if (resultCode == Constants.RESULT_LOGOUT) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_SETTING_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_LOGOUT) {
 
 			}
 		}

@@ -11,8 +11,6 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,15 +21,15 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.model.Kindergarten;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 public class KindergartenListActivity extends Activity {
 	private ListView listView;
-	private ArrayList<Kindergarten> kindergartendsList;
 	private ArrayList<Map<String, String>> mapList;
 
 	@Override
@@ -51,10 +49,15 @@ public class KindergartenListActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent data = new Intent();
-				data.putExtra("kindergartenId", kindergartendsList
-						.get(position).getId());
-				data.putExtra("name", mapList.get(position).get("name"));
-				setResult(Constants.RESULT_RESULT_OK, data);
+				Map<String, String> map = mapList.get(position);
+
+				data.putExtra("kindergartenId",
+						Integer.parseInt(map.get("kindergartenId")));
+				data.putExtra("nameEn", map.get("nameEn"));
+				data.putExtra("nameTc", map.get("nameTc"));
+				data.putExtra("nameSc", map.get("nameSc"));
+				data.putExtra("displayName", map.get("displayName"));
+				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
 			}
 		});
@@ -97,37 +100,37 @@ public class KindergartenListActivity extends Activity {
 				JSONObject json = new JSONObject(result);
 				int size = json.getInt("size");
 				if (size > 0) {
-					kindergartendsList = new ArrayList<Kindergarten>();
 					mapList = new ArrayList<Map<String, String>>();
 
-					JSONArray list = json.getJSONArray("allKindergartensInfo");
+					JSONArray list = json
+							.getJSONArray(HttpConstants.JSON_KEY_KINDERGARTENS_INFO);
 					for (int i = 0; i < list.length(); i++) {
 						JSONObject object = (JSONObject) list.get(i);
-						Kindergarten kindergarten = new Kindergarten();
-
-						kindergarten.setId(object.getInt("kindergartenId"));
-						kindergarten.setEnglishName(object.getString("name"));
-						kindergarten.setTranditionalName(object
-								.getString("nameTc"));
-						kindergarten.setSimplifiedName(object
-								.getString("nameSc"));
-						kindergartendsList.add(kindergarten);
 
 						Map<String, String> map = new HashMap<String, String>();
-						Resources resources = getResources();
-						Configuration config = resources.getConfiguration();
-						if (config.locale.toString().equals("en_GB")
-								|| config.locale.toString().equals("en")) {
-							map.put("name", kindergarten.getEnglishName());
-						} else if (config.locale.toString().equals("zh_TW")
-								|| config.locale.toString().equals("zh")) {
-							map.put("name", kindergarten.getTranditionalName());
-						} else if (config.locale.toString().equals("zh_HK")
-								|| config.locale.toString().equals("zh")) {
-							map.put("name", kindergarten.getTranditionalName());
-						} else if (config.locale.toString().equals("zh_CN")
-								|| config.locale.toString().equals("zh")) {
-							map.put("name", kindergarten.getTranditionalName());
+						map.put("kindergartenId",
+								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_id));
+						map.put("nameEn",
+								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_EN));
+						map.put("nameTc",
+								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
+						map.put("nameSc",
+								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_SC));
+						int locale = SystemUtils
+								.getLocale(KindergartenListActivity.this);
+						switch (locale) {
+						case Constants.LOCALE_CN:
+							map.put("displayName", map.get("nameTc"));
+							break;
+						case Constants.LOCALE_TW:
+							map.put("displayName", map.get("nameSc"));
+							break;
+						case Constants.LOCALE_HK:
+							map.put("displayName", map.get("nameSc"));
+							break;
+						default:
+							map.put("displayName", map.get("nameEn"));
+							break;
 						}
 						mapList.add(map);
 					}
@@ -136,7 +139,8 @@ public class KindergartenListActivity extends Activity {
 					SimpleAdapter adapter = new SimpleAdapter(
 							KindergartenListActivity.this, mapList,
 							R.layout.list_item_kindergarten,
-							new String[] { "name" }, new int[] { R.id.name });
+							new String[] { "displayName" },
+							new int[] { R.id.name });
 					listView.setAdapter(adapter);
 				}
 			} catch (JSONException e) {

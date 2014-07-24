@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_home_green01"
+    android:orientation="horizontal"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp" >
+
+    <TextView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ic_home_food" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/area_name"
+                style="@style/WhiteText_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_mess_hall" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_home_no_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp" >
+
+                <TextView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/btn_actbar_profile_on" />
+
+                <TextView
+                    android:id="@+id/children_num"
+                    style="@style/WhiteText_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <com.twinly.eyebb.customview.FlowLayout
+            android:id="@+id/avatarContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:animateLayoutChanges="false"
+            android:orientation="horizontal"
+            android:showDividers="middle" >
+
+            <com.twinly.eyebb.customview.CircleImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/hugh"
+                app:border_color="@color/white"
+                app:border_width="2dp" />
+        </com.twinly.eyebb.customview.FlowLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
@@ -89,7 +89,7 @@ public class MainActivity extends FragmentActivity {
 		if (SharePrefsUtils.isLogin(this) == false) {
 			Intent intent = new Intent(this, WelcomeActivity.class);
 			startActivityForResult(intent,
-					Constants.REQUEST_GO_TO_WELCOME_ACTIVITY);
+					ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY);
 		}
 	}
 
@@ -151,8 +151,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		super.onActivityResult(requestCode, resultCode, arg2);
-		if (requestCode == Constants.REQUEST_GO_TO_WELCOME_ACTIVITY) {
-			if (resultCode != Constants.RESULT_RESULT_OK) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY) {
+			if (resultCode != ActivityConstants.RESULT_RESULT_OK) {
 				finish();
 			}
 		}

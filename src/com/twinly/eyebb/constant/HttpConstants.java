@@ -7,7 +7,19 @@ public class HttpConstants {
 
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "连接服务器失败";
-	
+
 	public static final String LOGIN = "j_spring_security_check";
 	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
+
+	public static final String JSON_KEY_KINDERGARTENS_INFO = "allKindergartensInfo";
+	public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
+	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";
+	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
+	public static final String JSON_KEY_KINDERGARTEN_NAME_SC = "nameSc";
+	
+	public static final String JSON_KEY_CHILDREN_LIST = "childrenList";
+	public static final String JSON_KEY_CHILD_ID = "childId";
+	public static final String JSON_KEY_CHILD_NAME = "name";
+	public static final String JSON_KEY_CHILD_ICON = "icon";
+
 }

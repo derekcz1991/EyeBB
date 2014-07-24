@@ -1,41 +1,32 @@
 package com.twinly.eyebb.model;
 
 public class Child {
-	private int childId;
+	private long childId;
 	private String name;
-	private int locationId;
-	private String locationName;
+	private String icon;
+	private String phone;
 
-	public int getChildId() {
-		return childId;
+	public Child(int childId, String name, String icon) {
+		super();
+		this.childId = childId;
+		this.name = name;
+		this.icon = icon;
 	}
 
-	public void setChildId(int childId) {
-		this.childId = childId;
+	public long getChildId() {
+		return childId;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getIcon() {
+		return icon;
 	}
 
-	public int getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(int locationId) {
-		this.locationId = locationId;
-	}
-
-	public String getLocationName() {
-		return locationName;
-	}
-
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
+	public String getPhone() {
+		return phone;
 	}
 
 }

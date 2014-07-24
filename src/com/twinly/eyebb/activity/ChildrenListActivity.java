@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class ChildrenListActivity extends Activity {
@@ -97,7 +97,7 @@ public class ChildrenListActivity extends Activity {
 			public void onClick(View v) {
 				Intent data = new Intent();
 				data.putExtra("index", 0);
-				setResult(Constants.RESULT_RESULT_OK, data);
+				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
 			}
 		});
@@ -108,7 +108,7 @@ public class ChildrenListActivity extends Activity {
 			public void onClick(View v) {
 				Intent data = new Intent();
 				data.putExtra("index", 1);
-				setResult(Constants.RESULT_RESULT_OK, data);
+				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
 			}
 		});
@@ -119,7 +119,7 @@ public class ChildrenListActivity extends Activity {
 			public void onClick(View v) {
 				Intent data = new Intent();
 				data.putExtra("index", 2);
-				setResult(Constants.RESULT_RESULT_OK, data);
+				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
 			}
 		});

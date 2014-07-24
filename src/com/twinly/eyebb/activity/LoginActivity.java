@@ -3,6 +3,7 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,9 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -41,7 +44,11 @@ public class LoginActivity extends Activity {
 	private EditText loginAccount;
 	private EditText password;
 	private TextView kindergarten;
+
 	private int kindergartenId = -1;
+	private String kindergartenNameEn;
+	private String kindergartenNameSc;
+	private String kindergartenNameTc;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,10 @@ public class LoginActivity extends Activity {
 
 		password = (EditText) findViewById(R.id.password);
 		kindergarten = (TextView) findViewById(R.id.kindergarten);
+		if (TextUtils.isEmpty(SharePrefsUtils.getKindergartenName(this)) == false) {
+			kindergarten.setText(SharePrefsUtils.getKindergartenName(this));
+			kindergartenId = SharePrefsUtils.getKindergartenId(this);
+		}
 
 		kindergartenItem.setOnClickListener(new OnClickListener() {
 
@@ -67,7 +78,7 @@ public class LoginActivity extends Activity {
 				Intent intent = new Intent(LoginActivity.this,
 						KindergartenListActivity.class);
 				startActivityForResult(intent,
-						Constants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY);
+						ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY);
 			}
 		});
 
@@ -170,8 +181,17 @@ public class LoginActivity extends Activity {
 				dialog.dismiss();
 				System.out.println("result = " + result);
 				try {
-					
 					JSONObject json = new JSONObject(result);
+					JSONArray list = json
+							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+					for (int i = 0; i < list.length(); i++) {
+						JSONObject object = (JSONObject) list.get(i);
+						Child child = new Child(
+								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+						DBChildren.insert(LoginActivity.this, child);
+					}
 
 					if (loginAccount.getText().toString().equals("May")) {
 						SharePrefsUtils.setRole(LoginActivity.this, true);
@@ -181,7 +201,16 @@ public class LoginActivity extends Activity {
 					SharePrefsUtils.setLogin(LoginActivity.this, true);
 					SharePrefsUtils.setLoginAccount(LoginActivity.this,
 							loginAccount.getText().toString());
-					setResult(Constants.RESULT_RESULT_OK);
+					SharePrefsUtils.setKindergartenId(LoginActivity.this,
+							kindergartenId);
+					SharePrefsUtils.setKindergartenNameEn(LoginActivity.this,
+							kindergartenNameEn);
+					SharePrefsUtils.setKindergartenNameSc(LoginActivity.this,
+							kindergartenNameSc);
+					SharePrefsUtils.setKindergartenNameTc(LoginActivity.this,
+							kindergartenNameTc);
+
+					setResult(ActivityConstants.RESULT_RESULT_OK);
 					finish();
 				} catch (JSONException e) {
 					Toast.makeText(
@@ -198,10 +227,14 @@ public class LoginActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == Constants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY) {
-			if (resultCode == Constants.RESULT_RESULT_OK) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+				kindergarten.setText(data.getStringExtra("displayName"));
+
 				kindergartenId = data.getIntExtra("kindergartenId", -1);
-				kindergarten.setText(data.getStringExtra("name"));
+				kindergartenNameEn = data.getStringExtra("nameEn");
+				kindergartenNameTc = data.getStringExtra("nameTc");
+				kindergartenNameSc = data.getStringExtra("nameSc");
 			}
 		}
 	}

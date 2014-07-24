@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.ChildrenListActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 
 public class ReportFragment extends Fragment {
@@ -148,7 +148,7 @@ public class ReportFragment extends Fragment {
 						ChildrenListActivity.class);
 				intent.putExtra("from", 2);
 				startActivityForResult(intent,
-						Constants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
+						ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
 			}
 		});
 	}
@@ -156,7 +156,7 @@ public class ReportFragment extends Fragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == Constants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY) {
 			if (data == null) {
 				return;
 			}

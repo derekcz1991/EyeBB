@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.ActivityConstants;
 
 public class WelcomeActivity extends Activity {
 	private ImageView logo;
@@ -43,7 +43,7 @@ public class WelcomeActivity extends Activity {
 				Intent intent = new Intent(WelcomeActivity.this,
 						SignUpActivity.class);
 				startActivityForResult(intent,
-						Constants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
+						ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
 			}
 		});
 
@@ -54,7 +54,7 @@ public class WelcomeActivity extends Activity {
 				Intent intent = new Intent(WelcomeActivity.this,
 						LoginActivity.class);
 				startActivityForResult(intent,
-						Constants.REQUEST_GO_TO_LOGIN_ACTIVITY);
+						ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
 			}
 		});
 
@@ -88,10 +88,10 @@ public class WelcomeActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		super.onActivityResult(requestCode, resultCode, arg2);
-		if (requestCode == Constants.REQUEST_GO_TO_SIGN_UP_ACTIVITY
-				|| requestCode == Constants.REQUEST_GO_TO_LOGIN_ACTIVITY) {
-			if (resultCode == Constants.RESULT_RESULT_OK) {
-				setResult(Constants.RESULT_RESULT_OK);
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY
+				|| requestCode == ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+				setResult(ActivityConstants.RESULT_RESULT_OK);
 				finish();
 			}
 		}
