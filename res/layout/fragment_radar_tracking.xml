@@ -45,7 +45,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:paddingTop="20dp" >
+                        android:paddingTop="20dp" 
+                        android:paddingBottom="20dp">
 
                         <ImageView
                             android:id="@+id/radar_circle"
@@ -57,7 +58,7 @@
                         <com.twinly.eyebb.customview.CircleImageView
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="8dp"
                             android:src="@drawable/hugh"
                             app:border_color="@color/red"
                             app:border_width="2dp" />
@@ -78,7 +79,7 @@
                             android:layout_height="35dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="8dp"
+                            android:layout_marginRight="3dp"
                             android:src="@drawable/head_img3"
                             app:border_color="@color/red"
                             app:border_width="2dp" />
@@ -88,14 +89,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/bg_radar_rotate" />
+                            android:src="@drawable/bg_radar_rotate"
+                             />
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/layout_supervised"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/layout_circle"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
                         android:paddingBottom="8dp"
                         android:paddingLeft="18dp" >
 
@@ -135,9 +138,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@id/layout_circle"
+                        android:layout_alignParentBottom="true"
                         android:paddingBottom="8dp"
-                        android:paddingRight="8dp" >
+                        android:paddingRight="4dp" >
 
                         <LinearLayout
                             android:id="@+id/layout_missed_liner"
@@ -205,8 +208,8 @@
                             android:layout_marginRight="16dp" >
 
                             <com.twinly.eyebb.customview.CircleImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="58dp"
+                                android:layout_height="58dp"
                                 android:layout_marginRight="8dp"
                                 android:src="@drawable/hugh"
                                 app:border_color="@color/red"
@@ -290,8 +293,8 @@
                             android:layout_marginRight="16dp" >
 
                             <com.twinly.eyebb.customview.CircleImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="58dp"
+                                android:layout_height="58dp"
                                 android:layout_marginRight="8dp"
                                 android:src="@drawable/head_img2"
                                 app:border_color="@color/red"
@@ -375,8 +378,8 @@
                             android:layout_marginRight="16dp" >
 
                             <com.twinly.eyebb.customview.CircleImageView
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
+                                android:layout_width="58dp"
+                                android:layout_height="58dp"
                                 android:layout_marginRight="8dp"
                                 android:src="@drawable/head_img3"
                                 app:border_color="@color/red"
