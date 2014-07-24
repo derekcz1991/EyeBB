@@ -107,7 +107,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 							e1.printStackTrace();
 						}
 						while (progress < list.get(position).getProgress()) {
-							progress += 2;
+							progress += 4;
 							publishProgress(progress);
 							try {
 								Thread.sleep(10);
