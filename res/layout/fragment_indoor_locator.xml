@@ -44,34 +44,34 @@
                     android:layout_height="wrap_content"
                     android:text="@string/text_kids_list" />
             </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:alpha="0.1"
-            android:background="@color/black" />
-
-        <LinearLayout
-            android:id="@+id/btn_beepall"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:gravity="center"
-            android:orientation="horizontal" >
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/btn_funcbar_beep" />
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:alpha="0.1"
+                android:background="@color/black" />
 
-            <TextView
-                style="@style/WhiteText_18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_beep_all" />
+            <LinearLayout
+                android:id="@+id/btn_beepall"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/btn_funcbar_beep" />
+
+                <TextView
+                    style="@style/WhiteText_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_beep_all" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

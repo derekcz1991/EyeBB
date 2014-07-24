@@ -62,6 +62,8 @@
     <string name="text_version">版本</string>
       <string name="text_http">歡迎訪問 www.eyebb.com</string>
      <string name="text_invalidKindergarten">選擇幼稚園</string>
+         <string name="text_change_kids">選擇兒童</string>
+     
      
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
