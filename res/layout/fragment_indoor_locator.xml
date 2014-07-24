@@ -5,33 +5,45 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/functionbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/red"
-        android:orientation="horizontal" >
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:src="@color/black" />
 
         <LinearLayout
-            android:id="@+id/btn_kidslist"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:gravity="center"
+            android:id="@+id/functionbar"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:background="@color/red"
             android:orientation="horizontal" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/btn_funcbar_list" />
+            <LinearLayout
+                android:id="@+id/btn_kidslist"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
 
-            <TextView
-                style="@style/WhiteText_18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_kids_list" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/btn_funcbar_list" />
+
+                <TextView
+                    style="@style/WhiteText_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_kids_list" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView

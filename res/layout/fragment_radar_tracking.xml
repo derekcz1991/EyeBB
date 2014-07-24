@@ -5,472 +5,490 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/liner_radar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp" >
-
-            <TextView
-                style="@style/DarkGreyText_28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/text_radar_tracking" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/radar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_white" >
-
-            <RelativeLayout
-                android:id="@+id/layout_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="20dp" >
-
-                <ImageView
-                    android:id="@+id/radar_circle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/bg_radar_circle" />
-
-                <com.twinly.eyebb.customview.CircleImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/hugh"
-                    app:border_color="@color/red"
-                    app:border_width="2dp" />
-
-                <com.twinly.eyebb.customview.CircleImageView
-                    android:id="@+id/avatar1"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/head_img2"
-                    app:border_color="@color/red"
-                    app:border_width="2dp" />
-
-                <com.twinly.eyebb.customview.CircleImageView
-                    android:id="@+id/avatar2"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/head_img3"
-                    app:border_color="@color/red"
-                    app:border_width="2dp" />
-
-                <ImageView
-                    android:id="@+id/bg_radar_rotate_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/bg_radar_rotate" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/layout_supervised"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/layout_circle"
-                android:paddingBottom="8dp"
-                android:paddingLeft="18dp" >
-
-                <LinearLayout
-                    android:id="@+id/layout_supervised_liner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <ImageView
-                        android:id="@+id/radar_text_supervised_number_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_radar_supervised" />
-
-                    <TextView
-                        android:id="@+id/radar_text_supervised_number"
-                        style="@style/DarkGreyText_18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:text="0" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/radar_text_supervised"
-                    style="@style/DarkGreyText_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/layout_supervised_liner"
-                    android:text="@string/text_Supervised" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/layout_missed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/layout_circle"
-                android:paddingBottom="8dp"
-                android:paddingRight="8dp" >
-
-                <LinearLayout
-                    android:id="@+id/layout_missed_liner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" >
-
-                    <ImageView
-                        android:id="@+id/radar_text_missed_number_img"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="4dp"
-                        android:src="@drawable/ic_radar_missed" />
-
-                    <TextView
-                        android:id="@+id/radar_text_missed_number"
-                        style="@style/DarkGreyText_18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:text="1" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/radar_text_missed"
-                    style="@style/DarkGreyText_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/layout_missed_liner"
-                    android:text="@string/text_Missed" />
-            </RelativeLayout>
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/radar_beep_all_btn"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/red"
-        android:clickable="true"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/btn_funcbar_beep" />
-
-        <TextView
-            style="@style/WhiteText_18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_beep_all" >
-        </TextView>
-    </LinearLayout>
-
-    <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
-
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/radar_beep_all_btn"
-        android:layout_below="@id/liner_radar" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <RelativeLayout
-                android:id="@+id/newslist_item_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="64.0dip"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_white"
-                android:descendantFocusability="blocksDescendants"
-                android:marqueeRepeatLimit="marquee_forever" >
+            <LinearLayout
+                android:id="@+id/liner_radar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" >
 
                 <RelativeLayout
-                    android:id="@+id/newslist_item_info_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="16dp" >
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp" >
 
-                    <com.twinly.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh"
-                        app:border_color="@color/red"
-                        app:border_width="2dp" />
+                    <TextView
+                        style="@style/DarkGreyText_28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/text_radar_tracking" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/newslist_kids_name"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/radar"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@id/newslist_item_info_layout" >
+                    android:background="@drawable/bg_white" >
 
-                    <TextView
-                        android:id="@+id/radar_list_kids_missd"
+                    <RelativeLayout
+                        android:id="@+id/layout_circle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:singleLine="true"
-                        android:text="@string/text_Missed"
-                        android:textColor="@color/red"
-                        android:textSize="12sp" />
+                        android:layout_centerHorizontal="true"
+                        android:paddingTop="20dp" >
 
-                    <TextView
-                        android:id="@+id/radar_list_kids_name"
+                        <ImageView
+                            android:id="@+id/radar_circle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/bg_radar_circle" />
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/red"
+                            app:border_width="2dp" />
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/avatar1"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/head_img2"
+                            app:border_color="@color/red"
+                            app:border_width="2dp" />
+
+                        <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/avatar2"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/head_img3"
+                            app:border_color="@color/red"
+                            app:border_width="2dp" />
+
+                        <ImageView
+                            android:id="@+id/bg_radar_rotate_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/bg_radar_rotate" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_supervised"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/radar_list_kids_missd"
-                        android:text="Kitty Chan"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
+                        android:layout_below="@id/layout_circle"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="18dp" >
+
+                        <LinearLayout
+                            android:id="@+id/layout_supervised_liner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/radar_text_supervised_number_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_radar_supervised" />
+
+                            <TextView
+                                android:id="@+id/radar_text_supervised_number"
+                                style="@style/DarkGreyText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:text="0" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/radar_text_supervised"
+                            style="@style/DarkGreyText_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/layout_supervised_liner"
+                            android:text="@string/text_Supervised" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_missed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/layout_circle"
+                        android:paddingBottom="8dp"
+                        android:paddingRight="8dp" >
+
+                        <LinearLayout
+                            android:id="@+id/layout_missed_liner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/radar_text_missed_number_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="4dp"
+                                android:src="@drawable/ic_radar_missed" />
+
+                            <TextView
+                                android:id="@+id/radar_text_missed_number"
+                                style="@style/DarkGreyText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="15dp"
+                                android:text="1" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/radar_text_missed"
+                            style="@style/DarkGreyText_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/layout_missed_liner"
+                            android:text="@string/text_Missed" />
+                    </RelativeLayout>
                 </RelativeLayout>
+            </LinearLayout>
+
+            <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
                 <LinearLayout
-                    android:id="@+id/radar_beep_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/btn_bg_red"
-                    android:clickable="true"
-                    android:gravity="center" >
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/newslist_item_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="64.0dip"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:background="@drawable/btn_funcbar_beep" />
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_white"
+                        android:descendantFocusability="blocksDescendants"
+                        android:marqueeRepeatLimit="marquee_forever" >
 
-                    <TextView
-                        style="@style/WhiteText_15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:text="@string/text_beep" >
-                    </TextView>
-                </LinearLayout>
-            </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/newslist_item_info_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="16dp" >
 
-            <RelativeLayout
-                android:id="@+id/newslist_item_layout_1"
-                android:layout_width="fill_parent"
-                android:layout_height="64.0dip"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_white"
-                android:descendantFocusability="blocksDescendants"
-                android:marqueeRepeatLimit="marquee_forever" >
+                            <com.twinly.eyebb.customview.CircleImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/hugh"
+                                app:border_color="@color/red"
+                                app:border_width="2dp" />
+                        </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/newslist_item_info_layout1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="16dp" >
+                        <RelativeLayout
+                            android:id="@+id/newslist_kids_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_toRightOf="@id/newslist_item_info_layout" >
 
-                    <com.twinly.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/head_img2"
-                        app:border_color="@color/red"
-                        app:border_width="2dp" />
-                </RelativeLayout>
+                            <TextView
+                                android:id="@+id/radar_list_kids_missd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:singleLine="true"
+                                android:text="@string/text_Missed"
+                                android:textColor="@color/red"
+                                android:textSize="12sp" />
 
-                <RelativeLayout
-                    android:id="@+id/newslist_kids_name1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@id/newslist_item_info_layout1" >
+                            <TextView
+                                android:id="@+id/radar_list_kids_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/radar_list_kids_missd"
+                                android:text="Kitty Chan"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="18sp" />
+                        </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/radar_list_kids_missd1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:singleLine="true"
-                        android:text="@string/text_Missed"
-                        android:textColor="@color/red"
-                        android:textSize="12sp" />
+                        <LinearLayout
+                            android:id="@+id/radar_beep_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/btn_bg_red"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp" >
 
-                    <TextView
-                        android:id="@+id/radar_list_kids_name1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/radar_list_kids_missd1"
-                        android:text="Chily"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
-                </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_funcbar_beep" />
 
-                <LinearLayout
-                    android:id="@+id/radar_beep_btn1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/btn_bg_red"
-                    android:clickable="true"
-                    android:gravity="center" >
+                            <TextView
+                                style="@style/WhiteText_15"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/text_beep" >
+                            </TextView>
+                        </LinearLayout>
+                    </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/newslist_item_layout_1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="64.0dip"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:background="@drawable/btn_funcbar_beep" />
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_white"
+                        android:descendantFocusability="blocksDescendants"
+                        android:marqueeRepeatLimit="marquee_forever" >
 
-                    <TextView
-                        style="@style/WhiteText_15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:text="@string/text_beep" >
-                    </TextView>
-                </LinearLayout>
-            </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/newslist_item_info_layout1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="16dp" >
 
-            <RelativeLayout
-                android:id="@+id/newslist_item_layout2"
-                android:layout_width="fill_parent"
-                android:layout_height="64.0dip"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_white"
-                android:descendantFocusability="blocksDescendants"
-                android:marqueeRepeatLimit="marquee_forever" >
+                            <com.twinly.eyebb.customview.CircleImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/head_img2"
+                                app:border_color="@color/red"
+                                app:border_width="2dp" />
+                        </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/newslist_item_info_layout2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="16dp" >
+                        <RelativeLayout
+                            android:id="@+id/newslist_kids_name1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_toRightOf="@id/newslist_item_info_layout1" >
 
-                    <com.twinly.eyebb.customview.CircleImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/head_img3"
-                        app:border_color="@color/red"
-                        app:border_width="2dp" />
-                </RelativeLayout>
+                            <TextView
+                                android:id="@+id/radar_list_kids_missd1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:singleLine="true"
+                                android:text="@string/text_Missed"
+                                android:textColor="@color/red"
+                                android:textSize="12sp" />
 
-                <RelativeLayout
-                    android:id="@+id/newslist_kids_name2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_toRightOf="@id/newslist_item_info_layout2" >
+                            <TextView
+                                android:id="@+id/radar_list_kids_name1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/radar_list_kids_missd1"
+                                android:text="Chily"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="18sp" />
+                        </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/radar_list_kids_missd2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:singleLine="true"
-                        android:text="@string/text_Missed"
-                        android:textColor="@color/red"
-                        android:textSize="12sp" />
+                        <LinearLayout
+                            android:id="@+id/radar_beep_btn1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/btn_bg_red"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp" >
 
-                    <TextView
-                        android:id="@+id/radar_list_kids_name2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/radar_list_kids_missd2"
-                        android:text="Terry"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="18sp" />
-                </RelativeLayout>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_funcbar_beep" />
 
-                <LinearLayout
-                    android:id="@+id/radar_beep_btn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/btn_bg_red"
-                    android:clickable="true"
-                    android:gravity="center" >
+                            <TextView
+                                style="@style/WhiteText_15"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/text_beep" >
+                            </TextView>
+                        </LinearLayout>
+                    </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/newslist_item_layout2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="64.0dip"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:background="@drawable/btn_funcbar_beep" />
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_white"
+                        android:descendantFocusability="blocksDescendants"
+                        android:marqueeRepeatLimit="marquee_forever" >
 
-                    <TextView
-                        style="@style/WhiteText_15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:text="@string/text_beep" >
-                    </TextView>
+                        <RelativeLayout
+                            android:id="@+id/newslist_item_info_layout2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="16dp" >
+
+                            <com.twinly.eyebb.customview.CircleImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/head_img3"
+                                app:border_color="@color/red"
+                                app:border_width="2dp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/newslist_kids_name2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_toRightOf="@id/newslist_item_info_layout2" >
+
+                            <TextView
+                                android:id="@+id/radar_list_kids_missd2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:singleLine="true"
+                                android:text="@string/text_Missed"
+                                android:textColor="@color/red"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/radar_list_kids_name2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/radar_list_kids_missd2"
+                                android:text="Terry"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="18sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/radar_beep_btn2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/btn_bg_red"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/btn_funcbar_beep" />
+
+                            <TextView
+                                style="@style/WhiteText_15"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/text_beep" >
+                            </TextView>
+                        </LinearLayout>
+                    </RelativeLayout>
                 </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
+
+            <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
+
+            <ListView
+                android:id="@+id/news_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/liner_radar"
+                android:layout_marginTop="338dp"
+                android:cacheColorHint="#00000000"
+                android:divider="#FFf1f1e5"
+                android:dividerHeight="8dp" />
         </LinearLayout>
     </ScrollView>
 
-    <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
-
-    <ListView
-        android:id="@+id/news_list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/liner_radar"
-        android:layout_marginTop="338dp"
-        android:cacheColorHint="#00000000"
-        android:divider="#FFf1f1e5"
-        android:dividerHeight="8dp" />
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:src="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/radar_beep_all_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="47dp"
+            android:background="@color/red"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/btn_funcbar_beep" />
+
+            <TextView
+                style="@style/WhiteText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_beep_all" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>

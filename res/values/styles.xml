@@ -16,7 +16,7 @@
     <style name="AppTheme" parent="AppBaseTheme">
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:fontFamily">sans-serif-light</item>
+     
         <item name="android:windowNoTitle">true</item> <!-- 无标题 -->
 
     </style>
@@ -24,107 +24,128 @@
     <style name="WhiteText_12">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/white</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="WhiteText_15">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/white</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="WhiteText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="WhiteText_20">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/white</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="WhiteText_24">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/white</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="RedText_14">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/red</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="RedText_16">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/red</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="RedText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/red</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="RedText_20">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/red</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="RedText_32">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/red</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkGreyText_12">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkGreyText_15">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkGreyText_16">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkGreyText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkGreyText_20">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="DarkGreyText_alpha50_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:alpha">0.5</item>
     </style>
 
     <style name="DarkGreyText_28">
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/dark_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="LightGreyText_15">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/light_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="LightGreyText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/light_grey</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="BlackText_15">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/black</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="BlackText_18">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="MyDialogStyleActivity" parent="@android:style/Theme.Holo.DialogWhenLarge">
@@ -136,6 +157,7 @@
         <item name="android:windowNoTitle">true</item> <!-- 无标题 -->
         <item name="android:windowBackground">@android:color/transparent</item> <!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">true</item> <!-- 模糊 -->
+             <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     
@@ -147,6 +169,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
+          <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
 </resources>
