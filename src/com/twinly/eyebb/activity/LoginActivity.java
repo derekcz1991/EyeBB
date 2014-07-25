@@ -190,7 +190,7 @@ public class LoginActivity extends Activity {
 								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
 								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
 								object.getString(HttpConstants.JSON_KEY_CHILD_ICON),
-								object.getString(HttpConstants.JSON_KEY_CHILD_PHONE));
+								"");
 						DBChildren.insert(LoginActivity.this, child);
 					}
 
