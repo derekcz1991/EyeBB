@@ -21,5 +21,6 @@ public class HttpConstants {
 	public static final String JSON_KEY_CHILD_ID = "childId";
 	public static final String JSON_KEY_CHILD_NAME = "name";
 	public static final String JSON_KEY_CHILD_ICON = "icon";
+	public static final String JSON_KEY_CHILD_PHONE = "phone";
 
 }

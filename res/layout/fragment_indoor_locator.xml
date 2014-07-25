@@ -4,7 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <RelativeLayout
+        android:id="@+id/menubar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
+
+        <TextView
+            style="@style/DarkGreyText_28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/text_indoor_locator" />
+
+        <LinearLayout
+            android:id="@+id/btn_shcool_bus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/hugh" />
+
+            <TextView
+                style="@style/RedText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="@string/text_shcool_bus" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_arrow_go" />
+        </LinearLayout>
+    </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/functionbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
@@ -12,12 +57,11 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:src="@color/black" />
 
         <LinearLayout
-            android:id="@+id/functionbar"
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:background="@color/red"
@@ -75,303 +119,18 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp" >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp" >
-
-                <TextView
-                    style="@style/DarkGreyText_28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/text_indoor_locator" />
-
-                <LinearLayout
-                    android:id="@+id/btn_shcool_bus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal" >
-
-                    <TextView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/hugh" />
-
-                    <TextView
-                        style="@style/RedText_18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:text="@string/text_shcool_bus" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/btn_arrow_go" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_home_green01"
-                android:orientation="horizontal"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/ic_home_food" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical" >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            style="@style/WhiteText_24"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/text_mess_hall" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="16dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/ic_home_no_bg"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp" >
-
-                            <TextView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/btn_actbar_profile_on" />
-
-                            <TextView
-                                android:id="@+id/mess_hall_num"
-                                style="@style/WhiteText_12"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal" >
-
-                        <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/mess_hall_child"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_home_blue01"
-                android:orientation="horizontal"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/ic_home_play" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical" >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            style="@style/WhiteText_24"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/text_playground" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="16dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/ic_home_no_bg"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp" >
-
-                            <TextView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/btn_actbar_profile_on" />
-
-                            <TextView
-                                android:id="@+id/playground_num"
-                                style="@style/WhiteText_12"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal" >
-
-                        <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/playground_child"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_home_yellow01"
-                android:orientation="horizontal"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/ic_home_sleep" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical" >
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            style="@style/WhiteText_24"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/text_sleeping" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="16dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/ic_home_no_bg"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp" >
-
-                            <TextView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:layout_marginRight="2dp"
-                                android:background="@drawable/btn_actbar_profile_on" />
-
-                            <TextView
-                                android:id="@+id/sleep_num"
-                                style="@style/WhiteText_12"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0" />
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal" >
-
-                        <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/sleep_child_1"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/head_img2"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-
-                        <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/sleep_child_2"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/head_img3"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-
-                        <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/sleep_child_3"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/white"
-                            app:border_width="2dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_above="@id/functionbar"
+        android:layout_below="@id/menubar"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@null"
+        android:dividerHeight="8dp"
+        android:listSelector="@drawable/list_selector"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+    </ListView>
 
 </RelativeLayout>

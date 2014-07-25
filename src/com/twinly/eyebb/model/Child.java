@@ -5,12 +5,14 @@ public class Child {
 	private String name;
 	private String icon;
 	private String phone;
+	private String indoorAreaId; // dynamic changing
 
-	public Child(int childId, String name, String icon) {
+	public Child(long childId, String name, String icon, String phone) {
 		super();
 		this.childId = childId;
 		this.name = name;
 		this.icon = icon;
+		this.phone = phone;
 	}
 
 	public long getChildId() {
@@ -27,6 +29,14 @@ public class Child {
 
 	public String getPhone() {
 		return phone;
+	}
+
+	public String getIndoorAreaId() {
+		return indoorAreaId;
+	}
+
+	public void setIndoorAreaId(String indoorAreaId) {
+		this.indoorAreaId = indoorAreaId;
 	}
 
 }

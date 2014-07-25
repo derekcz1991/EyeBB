@@ -80,6 +80,58 @@ public class SharePrefsUtils {
 				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN, value);
 	}
 
+	public static boolean isUpdateIndoorLocator(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_INDOOR_LOCATOR_FLAG,
+				true);
+	}
+
+	public static void setUpdateIndoorLocatorFlag(Context context, boolean value) {
+		setBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_INDOOR_LOCATOR_FLAG,
+				value);
+	}
+
+	public static boolean isUpdateReportPerformance(Context context) {
+		return getBoolean(
+				context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG,
+				true);
+	}
+
+	public static void setUpdateReportPerfromanceFlag(Context context,
+			boolean value) {
+		setBoolean(
+				context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG,
+				value);
+	}
+
+	public static boolean isUpdateReportActivities(Context context) {
+		return getBoolean(
+				context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG,
+				true);
+	}
+
+	public static void setUpdateReportActivitiesFlag(Context context,
+			boolean value) {
+		setBoolean(
+				context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG,
+				value);
+	}
+
+	public static boolean isUpdateNotice(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, true);
+	}
+
+	public static void setUpdateNoticeFlag(Context context, boolean value) {
+		setBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, value);
+	}
+
 	/**
 	 * @return Application's {@code SharedPreferences}.
 	 */

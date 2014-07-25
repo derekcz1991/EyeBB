@@ -13,6 +13,10 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC = "kindergarten_name_tc";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC = "kindergarten_name_sc";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN = "kindergarten_name_en";
+	public static final String SHARE_PREFS_ITEM_UPDATE_INDOOR_LOCATOR_FLAG = "update_indoor_locator_flag";
+	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG = "update_report_performance_flag";
+	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG = "update_report_activities_flag";
+	public static final String SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG = "update_notice_flag";
 
 	public static final int REQUEST_GO_TO_WELCOME_ACTIVITY = 100;
 	public static final int REQUEST_GO_TO_LOGIN_ACTIVITY = 101;

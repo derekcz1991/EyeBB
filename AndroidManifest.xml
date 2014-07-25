@@ -102,7 +102,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.MainDialog"
+            android:name="com.twinly.eyebb.activity.ChildDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
