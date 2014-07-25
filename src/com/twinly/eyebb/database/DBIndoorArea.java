@@ -1,6 +1,6 @@
 package com.twinly.eyebb.database;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,9 +23,8 @@ public class DBIndoorArea {
 		db.close();
 	}
 
-	public static ArrayList<IndoorAera> getAll(Context context) {
-		ArrayList<IndoorAera> list = new ArrayList<IndoorAera>();
-
+	public static HashMap<String, IndoorAera> getAll(Context context) {
+		HashMap<String, IndoorAera> map = new HashMap<String, IndoorAera>();
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery("select * from indoor_area", null);
 		while (cursor.moveToNext()) {
@@ -33,8 +32,11 @@ public class DBIndoorArea {
 			indoorArea.setAeraId(cursor.getLong(cursor
 					.getColumnIndex("area_id")));
 			indoorArea.setName(cursor.getString(cursor.getColumnIndex("name")));
-			list.add(indoorArea);
+			map.put(String.valueOf(indoorArea.getAeraId()), indoorArea);
 		}
-		return list;
+		cursor.close();
+		db.close();
+		return map;
 	}
+
 }

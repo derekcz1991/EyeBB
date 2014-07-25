@@ -20,6 +20,8 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class IndoorLocatorFragment extends Fragment {
 	private ListView listView;
 
+	//public static IndoorLocatorFragment newInstance(Hash)
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

@@ -7,6 +7,10 @@ public class Child {
 	private String phone;
 	private String indoorAreaId; // dynamic changing
 
+	public Child() {
+
+	}
+
 	public Child(long childId, String name, String icon, String phone) {
 		super();
 		this.childId = childId;
@@ -19,16 +23,32 @@ public class Child {
 		return childId;
 	}
 
+	public void setChildId(long childId) {
+		this.childId = childId;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getIcon() {
 		return icon;
 	}
 
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 	public String getPhone() {
 		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getIndoorAreaId() {

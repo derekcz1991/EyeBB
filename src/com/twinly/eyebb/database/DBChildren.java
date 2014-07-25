@@ -1,7 +1,10 @@
 package com.twinly.eyebb.database;
 
+import java.util.HashMap;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.twinly.eyebb.model.Child;
@@ -20,5 +23,23 @@ public class DBChildren {
 		values.put("phone", child.getPhone());
 		db.insertOrThrow("children", null, values);
 		db.close();
+	}
+
+	public static HashMap<String, Child> getChildren(Context context) {
+		HashMap<String, Child> map = new HashMap<String, Child>();
+		SQLiteDatabase db = getInstance(context);
+		Cursor cursor = db.rawQuery("select * from children", null);
+		while (cursor.moveToNext()) {
+			Child child = new Child();
+			child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
+			child.setName(cursor.getString(cursor.getColumnIndex("name")));
+			child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
+			child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
+
+			map.put(String.valueOf(child.getChildId()), child);
+		}
+		cursor.close();
+		db.close();
+		return map;
 	}
 }

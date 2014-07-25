@@ -30,7 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
+                android:digits="0123456789
+		            abcdefghigklmnopqrstuvwxyz
+		            ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
                 android:hint="@string/text_user_name"
+                android:inputType="text"
+                android:maxLength="16"
                 android:singleLine="true" />
         </LinearLayout>
 
@@ -65,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:hint="@string/text_email"
+                android:inputType="textEmailAddress"
                 android:singleLine="true" />
         </LinearLayout>
 

@@ -28,11 +28,11 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity {
-	TabHost mTabHost;
-	ViewPager mViewPager;
-	TabsAdapter mTabsAdapter;
+	private TabHost mTabHost;
+	private ViewPager mViewPager;
+	private TabsAdapter mTabsAdapter;
 	private BluetoothAdapter mBluetoothAdapter;
-	private IndoorLocatorFragment IndoorLocatorFragment;
+	private IndoorLocatorFragment indoorLocatorFragment;
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
@@ -98,14 +98,14 @@ public class MainActivity extends FragmentActivity {
 		//mViewPager.setOffscreenPageLimit(2);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
-		IndoorLocatorFragment = new IndoorLocatorFragment();
+		indoorLocatorFragment = new IndoorLocatorFragment();
 		View mainLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_home_selector);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
-				IndoorLocatorFragment);
+				indoorLocatorFragment);
 
 		radarTrackingFragment = new RadarTrackingFragment();
 		View trackingLabel = (View) LayoutInflater.from(this).inflate(
