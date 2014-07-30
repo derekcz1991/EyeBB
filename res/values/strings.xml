@@ -59,8 +59,9 @@
     <string name="text_matching_verification">Matching Verification</string>
     <string name="text_matching_device">Matching Device</string>
     <string name="text_device_verified">Device Verified!</string>
-    
-    
+     <string name="text_error_username">The User Name is not in the correct format! \n(eg.A-Z a-z 0-9 _) Length:3-30</string>
+    <string name="text_error_email">The Email is not in the correct format!</string>
+    <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:8-30</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -77,6 +78,7 @@
     
     
     <string name="toast_login">Login&#8230;</string>
+        <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username or password</string>
     <string name="child2_notification_tittle">公告102學年度幼兒園新生抽籤錄取名單</string>

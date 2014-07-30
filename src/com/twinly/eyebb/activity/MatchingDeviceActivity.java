@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -32,6 +33,10 @@ import com.twinly.eyebb.utils.SystemUtils;
 public class MatchingDeviceActivity extends Activity {
 	private ListView listView;
 	private ArrayList<Map<String, String>> mapList;
+	
+	// sharedPreferences
+	private SharedPreferences SandVpreferences;
+	private SharedPreferences.Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,10 @@ public class MatchingDeviceActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setDisplayShowHomeEnabled(false);
+		
+		// sharedPreferences for signup
+		SandVpreferences = getSharedPreferences("signup", MODE_PRIVATE);
+		editor = SandVpreferences.edit();
 		
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -58,6 +67,11 @@ public class MatchingDeviceActivity extends Activity {
 				data.putExtra("nameSc", map.get("nameSc"));
 				data.putExtra("displayName", map.get("displayName"));
 				setResult(ActivityConstants.RESULT_RESULT_OK, data);
+				
+				editor.putInt("kindergartenId", Integer.parseInt(map.get("kindergartenId")));
+				editor.putString("nameEns",  map.get("nameEn"));
+				System.out.println("kindergartenId" + Integer.parseInt(map.get("kindergartenId").toString()));
+				editor.commit();
 				
 				Intent intent = new Intent(MatchingDeviceActivity.this,MatchingVerificationActivity.class);
 				startActivity(intent);
@@ -87,7 +101,7 @@ public class MatchingDeviceActivity extends Activity {
 			super.onPreExecute();
 			dialog = LoadingDialog.createLoadingDialog(
 					MatchingDeviceActivity.this,
-					getString(R.string.toast_login));
+					getString(R.string.toast_signup));
 			dialog.show();
 		}
 

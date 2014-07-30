@@ -67,6 +67,10 @@
      <string name="text_matching_verification">匹配驗證</string>
            <string name="text_matching_device">匹配設備</string>
      <string name="text_device_verified">驗證成功</string>
+     <string name="text_error_username">用戶名格式錯誤！ \n(例如：A-Z a-z 0-9 _) 長度：3-30</string>
+    <string name="text_error_email">郵件地址格式錯誤！</string>
+    <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
+     
      
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -80,6 +84,7 @@
     <string name="btn_verify">確認</string>
     
     <string name="toast_login">登錄中&#8230;</string>
+    <string name="toast_signup">註冊中&#8230;</string>
     <string name="toast_please_select_kindergartens">請選擇幼稚園</string>
     <string name="toast_invalid_username_or_password">帳號或密碼錯誤</string>
 
