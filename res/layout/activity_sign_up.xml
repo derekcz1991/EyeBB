@@ -112,6 +112,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_continue"
         style="@style/WhiteText_18"
         android:layout_width="180dp"
         android:layout_height="44dp"

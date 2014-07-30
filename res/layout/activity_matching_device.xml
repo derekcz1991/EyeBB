@@ -3,10 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/activity_background_white"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:background="@color/activity_background_white"
     android:paddingTop="8dp" >
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="32dp"
+        android:text="@string/text_select_kid_kindergarten"
+        style="@style/RedText_16"
+         />
 
     <ListView
         android:id="@+id/listView"
