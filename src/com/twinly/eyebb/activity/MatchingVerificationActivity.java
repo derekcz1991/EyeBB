@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +23,12 @@ public class MatchingVerificationActivity extends Activity {
 	private Calendar calendar;
 	private Button btnVerify;
 
+	// sharedPreferences
+	private SharedPreferences SandVpreferences;
+	private SharedPreferences.Editor editor;
+	
+	private String dateOfBirth;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,22 +37,32 @@ public class MatchingVerificationActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setDisplayShowHomeEnabled(false);
+		
+		// sharedPreferences for signup
+		SandVpreferences = getSharedPreferences("signup", MODE_PRIVATE);
+		editor = SandVpreferences.edit();
 
 		calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		int monthOfYear = calendar.get(Calendar.MONTH);
 		int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
+		
 		datePicker = (DatePicker) findViewById(R.id.datePicker);
 		datePicker.init(year, monthOfYear, dayOfMonth,
 				new OnDateChangedListener() {
 					public void onDateChanged(DatePicker view, int year,
 							int monthOfYear, int dayOfMonth) {
-						Toast.makeText(
-								MatchingVerificationActivity.this,
-								"当前日期为" + year + "年" + monthOfYear + "月"
-										+ dayOfMonth + "日", Toast.LENGTH_SHORT)
-								.show();
+//						Toast.makeText(
+//								MatchingVerificationActivity.this,
+//								"当前日期为" + year + "年" + monthOfYear + "月"
+//										+ dayOfMonth + "日", Toast.LENGTH_SHORT)
+//								.show();
+						monthOfYear = monthOfYear + 1;
+						dateOfBirth = dayOfMonth + "/" + monthOfYear + "/" + year;
+						System.out.println("dateOfBirth==>" + dateOfBirth);
+						editor.putString("dateOfBirth", dateOfBirth);
+						editor.commit();
 					}
 				});
 
