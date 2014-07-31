@@ -26,6 +26,7 @@
                 android:background="@drawable/ic_login_name" />
 
             <EditText
+                android:id="@+id/ed_username"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,9 +35,11 @@
 		            abcdefghigklmnopqrstuvwxyz
 		            ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
                 android:hint="@string/text_user_name"
-                android:inputType="text"
-                android:maxLength="16"
-                android:singleLine="true" />
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:singleLine="true" >
+            </EditText>
         </LinearLayout>
 
         <LinearLayout
@@ -65,12 +68,14 @@
                 android:background="@drawable/ic_login_email" />
 
             <EditText
+                android:id="@+id/ed_email"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:hint="@string/text_email"
-                android:inputType="textEmailAddress"
+                android:imeOptions="actionNext"
+                android:maxLength="60"
                 android:singleLine="true" />
         </LinearLayout>
 
@@ -100,12 +105,15 @@
                 android:background="@drawable/ic_login_pw" />
 
             <EditText
+                android:id="@+id/ed_password"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:hint="@string/text_password"
+                android:imeOptions="actionDone"
                 android:inputType="textPassword"
+                android:maxLength="30"
                 android:singleLine="true" />
         </LinearLayout>
 
@@ -118,6 +126,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/btn_continue"
         style="@style/WhiteText_18"
         android:layout_width="180dp"
         android:layout_height="44dp"

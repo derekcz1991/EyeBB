@@ -7,7 +7,7 @@
     android:paddingRight="8dp"
     tools:context=".MainActivity" >
 
-    <ListView
+    <com.twinly.eyebb.customview.PullToRefreshListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,6 +16,6 @@
         android:dividerHeight="2dp"
         android:listSelector="@drawable/list_selector"
         android:paddingTop="2dp" >
-    </ListView>
+    </com.twinly.eyebb.customview.PullToRefreshListView>
 
 </LinearLayout>

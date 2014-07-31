@@ -161,6 +161,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.MatchingVerificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.MatchingDeviceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.VerifyDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
 
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"

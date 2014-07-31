@@ -31,8 +31,8 @@ public class SettingsActivity extends Activity {
 	private Boolean isEnableVibrationSelected;
 
 	// sharedPreferences
-	SharedPreferences SandVpreferences;
-	SharedPreferences.Editor editor;
+	private SharedPreferences SandVpreferences;
+	private SharedPreferences.Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

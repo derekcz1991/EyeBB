@@ -14,8 +14,9 @@ import com.eyebb.R;
 import com.twinly.eyebb.activity.ChildrenListActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.fragment.ReportPerformanceFragment.CallbackInterface;
 
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements CallbackInterface {
 
 	private ReportPerformanceFragment performanceFragment;
 	private ReportActivitiesFragment activitiesFragment;
@@ -27,6 +28,17 @@ public class ReportFragment extends Fragment {
 	private TextView blackDividerActivities;
 	private View reportChangeBtn;
 	private CircleImageView img;
+	private CallbackInterface callback;
+
+	public interface CallbackInterface {
+		public void updateProgressBar(int value);
+
+		public void cancelProgressBar();
+	}
+
+	public void setCallbackInterface(CallbackInterface callback) {
+		this.callback = callback;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +61,7 @@ public class ReportFragment extends Fragment {
 			performanceFragment = new ReportPerformanceFragment();
 			fragmentTransaction.add(R.id.container, performanceFragment,
 					"performance");
+			performanceFragment.setCallbackInterface(this);
 		} else {
 			fragmentTransaction.show(performanceFragment);
 		}
@@ -181,4 +194,18 @@ public class ReportFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void updateProgressBar(int value) {
+		callback.updateProgressBar(value);
+	}
+
+	@Override
+	public void cancelProgressBar() {
+		callback.cancelProgressBar();
+	}
+
+	public void setRefreshing(boolean isRefreshing) {
+		performanceFragment.setRefreshing(isRefreshing);
+	}
+	
 }

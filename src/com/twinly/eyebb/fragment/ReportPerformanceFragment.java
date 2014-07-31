@@ -8,34 +8,48 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
+import com.twinly.eyebb.customview.PullToRefreshListView;
+import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.model.PerformanceListItem;
 
-public class ReportPerformanceFragment extends Fragment {
+public class ReportPerformanceFragment extends Fragment implements
+		PullToRefreshListener {
 
-	private ListView dailyListView;
+	private PullToRefreshListView dailyListView;
 	private int index;
+	private CallbackInterface callback;
+
+	public interface CallbackInterface {
+		public void updateProgressBar(int value);
+
+		public void cancelProgressBar();
+	}
 
 	public ReportPerformanceFragment() {
 		System.out.println("ReportPerformanceFragment constructor");
 	}
-	
+
+	public void setCallbackInterface(CallbackInterface callback) {
+		this.callback = callback;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report_performance,
 				container, false);
-		dailyListView = (ListView) v.findViewById(R.id.listView);
+		dailyListView = (PullToRefreshListView) v.findViewById(R.id.listView);
 
+		dailyListView.setPullToRefreshListener(this);
 		dailyListView.setAdapter(getAdapter());
 		return v;
 	}
 
 	public void updateView() {
-		switch(index) {
+		switch (index) {
 		case 0:
 			dailyListView.setAdapter(getAdapter());
 			break;
@@ -52,7 +66,7 @@ public class ReportPerformanceFragment extends Fragment {
 		index = i;
 		updateView();
 	}
-	
+
 	private PerformanceListViewAdapter getAdapter() {
 		List<PerformanceListItem> list = new ArrayList<PerformanceListItem>();
 
@@ -126,7 +140,7 @@ public class ReportPerformanceFragment extends Fragment {
 				getActivity(), list);
 		return adapter;
 	}
-	
+
 	private PerformanceListViewAdapter getAdapter1() {
 		List<PerformanceListItem> list = new ArrayList<PerformanceListItem>();
 
@@ -168,7 +182,7 @@ public class ReportPerformanceFragment extends Fragment {
 				getActivity(), list);
 		return adapter;
 	}
-	
+
 	private PerformanceListViewAdapter getAdapter2() {
 		List<PerformanceListItem> list = new ArrayList<PerformanceListItem>();
 
@@ -209,5 +223,20 @@ public class ReportPerformanceFragment extends Fragment {
 		PerformanceListViewAdapter adapter = new PerformanceListViewAdapter(
 				getActivity(), list);
 		return adapter;
+	}
+
+	@Override
+	public void updateProgressBar(int value) {
+		callback.updateProgressBar(value);
+	}
+
+	@Override
+	public void cancelProgressBar() {
+		callback.cancelProgressBar();
+
+	}
+
+	public void setRefreshing(boolean isRefreshing) {
+		dailyListView.setRefreshing(isRefreshing);
 	}
 }

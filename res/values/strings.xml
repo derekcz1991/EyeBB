@@ -8,6 +8,7 @@
     <string name="text_password">Password</string>
     <string name="text_login_account">User Name or Email Address</string>
     <string name="text_select_kid_kindergarten">Select your kid\&apos;s kindergarten</string>
+    <string name="text_device_is_found">Device is found. Please verify it by your kid\&apos;s date of birth.</string>
     <string name="text_forgot_password">Forgot your password?</string>
     <string name="text_indoor_locator">Indoor Locator</string>
     <string name="text_radar_tracking">Radar Tracking</string>
@@ -55,6 +56,12 @@
     <string name="text_version">Version</string>
     <string name="text_http">Welcome to www.eyebb.com</string>
     <string name="text_invalidKindergarten">Invalid kindergarten</string>
+    <string name="text_matching_verification">Matching Verification</string>
+    <string name="text_matching_device">Matching Device</string>
+    <string name="text_device_verified">Device Verified!</string>
+     <string name="text_error_username">The User Name is not in the correct format! \n(eg.A-Z a-z 0-9 _) Length:3-30</string>
+    <string name="text_error_email">The Email is not in the correct format!</string>
+    <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:8-30</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -66,11 +73,14 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_share">Share</string>
+    <string name="btn_verify">Verify</string>
+    
+    
     
     <string name="toast_login">Login&#8230;</string>
+        <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username or password</string>
-
     <string name="child2_notification_tittle">公告102學年度幼兒園新生抽籤錄取名單</string>
     <string name="child3_notification_tittle">幼稚園已出現5位確診腸病毒,請家長注意孩子身體狀況,並提醒勤洗手</string>
     <string name="child2_notification">一、  本校幼兒園於102年4月29、30兩日辦理新生報名，因報
@@ -82,6 +92,7 @@
      吳冠穎、林宥廷、謝涔語、李  威、陳心翎、楊程鴻、
      劉詠丰、范裕紘、張筠楨。（以上共27人）
       三、錄取幼兒之家長請依報到通知單上日期，攜帶各項資料到本校幼兒園辦理正式的報到手續。</string>
-	<string name="child3_notification">親愛的幼稚園家長: 您好!
+    <string name="child3_notification">親愛的幼稚園家長: 您好!
 幼稚園因已出現5位確診腸病毒,特別請家長留意孩子的身體反應,若發現孩子身體不適儘快就醫,並留在家休息,園內各班教室設施設備與戶外遊樂場地也已加強消毒,請各位家長一起為孩子的身體健康把關.</string>
+
 </resources>

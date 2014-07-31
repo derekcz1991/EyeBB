@@ -6,10 +6,14 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +27,14 @@ import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.fragment.ReportFragment.CallbackInterface;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+
 @SuppressLint("NewApi")
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements CallbackInterface {
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -36,47 +43,25 @@ public class MainActivity extends FragmentActivity {
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
+
+	private SmoothProgressBar progressBar;
+	private SmoothProgressBar bar;
+
 	private boolean flag = true;
 	private UpdateView updateView;
+	private boolean isRefreshing;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		checkLogin();
-
 		setContentView(R.layout.activity_main);
-		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-		mTabHost.setup();
-		setUpTab();
-		if (savedInstanceState != null) {
-			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
-		}
-		mTabHost.setCurrentTab(0);
 
+		setUpTab(savedInstanceState);
+		setUpProgressBar();
 		checkBluetooth();
-		updateView = new UpdateView();
-		//updateView.execute();
-	}
 
-	private void checkBluetooth() {
-		// TODO Auto-generated method stub
-		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
-		if (!getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(this, R.string.text_ble_not_supported,
-					Toast.LENGTH_SHORT).show();
-		}
-
-		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
-		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-		mBluetoothAdapter = bluetoothManager.getAdapter();
-
-		// 检查设备上是否支持蓝牙
-		if (mBluetoothAdapter == null) {
-			Toast.makeText(this, R.string.text_error_bluetooth_not_supported,
-					Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	@Override
@@ -93,7 +78,10 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	private void setUpTab() {
+	private void setUpTab(Bundle savedInstanceState) {
+		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+		mTabHost.setup();
+
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		//mViewPager.setOffscreenPageLimit(2);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
@@ -117,6 +105,7 @@ public class MainActivity extends FragmentActivity {
 				radarTrackingFragment);
 
 		reportFragment = new ReportFragment();
+		reportFragment.setCallbackInterface(this);
 		View reportLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		reportLabel.findViewById(R.id.label).setBackgroundResource(
@@ -134,6 +123,49 @@ public class MainActivity extends FragmentActivity {
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
 
+		mTabHost.setCurrentTab(0);
+		if (savedInstanceState != null) {
+			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
+		}
+
+	}
+
+	private void setUpProgressBar() {
+		bar = (SmoothProgressBar) findViewById(R.id.bar);
+		bar.setVisibility(View.INVISIBLE);
+
+		progressBar = (SmoothProgressBar) findViewById(R.id.progressBar);
+		ShapeDrawable shape = new ShapeDrawable();
+		shape.setShape(new RectShape());
+		shape.getPaint().setColor(
+				getResources().getColor(R.color.spb_default_color));
+		ClipDrawable clipDrawable = new ClipDrawable(shape, Gravity.CENTER,
+				ClipDrawable.HORIZONTAL);
+		progressBar.setProgressDrawable(clipDrawable);
+
+		progressBar.setVisibility(View.INVISIBLE);
+		progressBar.setProgress(0);
+		progressBar.setIndeterminate(false);
+	}
+
+	private void checkBluetooth() {
+		// TODO Auto-generated method stub
+		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
+		if (!getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_BLUETOOTH_LE)) {
+			Toast.makeText(this, R.string.text_ble_not_supported,
+					Toast.LENGTH_SHORT).show();
+		}
+
+		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
+		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
+
+		// 检查设备上是否支持蓝牙
+		if (mBluetoothAdapter == null) {
+			Toast.makeText(this, R.string.text_error_bluetooth_not_supported,
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
@@ -160,22 +192,59 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
+		bar.setVisibility(View.INVISIBLE);
 	}
 
 	class UpdateView extends AsyncTask<Void, Void, String> {
 
 		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			bar.setVisibility(View.VISIBLE);
+			bar.progressiveStart();
+		}
+
+		@Override
 		protected String doInBackground(Void... params) {
+			try {
+				Thread.sleep(2500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return HttpRequestUtils.get("reportService/api/childrenList", null);
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-
+			isRefreshing = false;
+			progressBar.setProgress(0);
+			bar.progressiveStop();
+			reportFragment.setRefreshing(false);
 		}
 
 	}
 
+	@Override
+	public void updateProgressBar(int value) {
+		updateProgress(value);
+	}
+
+	@Override
+	public void cancelProgressBar() {
+		if (isRefreshing == false) {
+			progressBar.setProgress(0);
+		}
+	}
+
+	private void updateProgress(int value) {
+		progressBar.setVisibility(View.VISIBLE);
+		progressBar.setProgress(progressBar.getProgress() + value);
+		if (progressBar.getProgress() >= 100) {
+			isRefreshing = true;
+			reportFragment.setRefreshing(true);
+			new UpdateView().execute();
+		}
+	}
 }

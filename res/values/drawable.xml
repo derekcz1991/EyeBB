@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="actionbar_background">#FFEC4235</color>
-    
     <color name="activity_background_yellow">#FFF1F1E5</color>
     <color name="activity_background_white">#FFF1F1E5</color>
     <color name="divider_red">#FFEC4235</color>
-    
- 	<color name="transparent">#00000000</color>
- 	<color name="black">#FF000000</color>
- 	<color name="white">#FFFFFFFF</color>
- 	<color name="red">#FFEC4235</color>
- 	<color name="dark_grey">#FF585854</color>
- 	<color name="light_grey">#FFBABABA</color>
- 	
- 	<color name="progressbar_green01">#FF2BFFB7</color>
- 	<color name="progressbar_green02">#FF6ACE67</color>
- 	<color name="progressbar_yellow">#FFFFC342</color>
- 	<color name="progressbar_blue01">#FF1CD7FF</color>
- 	<color name="progressbar_blue02">#FF6699FF</color>
- 	<color name="progressbar_red">#FFFE5266</color>
- 	<color name="progressbar_pink">#FFFF9AE6</color>
- 	<color name="progressbar_purple">#FFBE9CFF</color>
- </resources>
+    <color name="transparent">#00000000</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FFEC4235</color>
+    <color name="dark_grey">#FF585854</color>
+    <color name="light_grey">#FFBABABA</color>
+    <color name="progressbar_green01">#FF2BFFB7</color>
+    <color name="progressbar_green02">#FF6ACE67</color>
+    <color name="progressbar_yellow">#FFFFC342</color>
+    <color name="progressbar_blue01">#FF1CD7FF</color>
+    <color name="progressbar_blue02">#FF6699FF</color>
+    <color name="progressbar_red">#FFFE5266</color>
+    <color name="progressbar_pink">#FFFF9AE6</color>
+    <color name="progressbar_purple">#FFBE9CFF</color>
+
+    <color name="spb_default_color">#33b5e5</color>
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
+
+</resources>

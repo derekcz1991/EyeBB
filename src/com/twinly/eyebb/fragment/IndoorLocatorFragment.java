@@ -5,8 +5,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
@@ -17,11 +19,11 @@ import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class IndoorLocatorFragment extends Fragment {
+public class IndoorLocatorFragment extends Fragment implements OnTouchListener {
 	private ListView listView;
 
 	//public static IndoorLocatorFragment newInstance(Hash)
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -95,6 +97,12 @@ public class IndoorLocatorFragment extends Fragment {
 						//startActivity(intent);
 					}
 				});
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		System.out.println("-------------");
+		return false;
 	}
 
 }
