@@ -3,11 +3,20 @@ package com.twinly.eyebb.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import android.util.Log;
@@ -15,6 +24,8 @@ import android.util.Log;
 import com.twinly.eyebb.constant.HttpConstants;
 
 public class HttpRequestUtils {
+	static HttpClient httpClient = new DefaultHttpClient();
+	
 	private static String TAG = "HttpRequestUtils";
 
 	private static String getParameters(Map<String, String> map) {
@@ -30,11 +41,26 @@ public class HttpRequestUtils {
 		return sb.toString();
 	}
 
-	private static String getResponse(HttpURLConnection urlConn) {
+	private static List<NameValuePair> postParameters(Map<String, String> map) {
+		if (map == null) {
+			return null;
+		}
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			params.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+		}
+		return params;
+	}
+
+	private static String getResponse(HttpEntity entity) {
+		if (entity == null) {
+			System.out.println("entity is null");
+			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
+		}
 		try {
 			// receive data
 			BufferedReader in = new BufferedReader(new InputStreamReader(
-					urlConn.getInputStream(), HTTP.UTF_8));
+					entity.getContent(), HTTP.UTF_8));
 			StringBuilder response = new StringBuilder();
 			String inputLine;
 
@@ -51,21 +77,29 @@ public class HttpRequestUtils {
 	}
 
 	public static String get(String action, Map<String, String> map) {
-		String path = HttpConstants.SERVER_URL + action + "?"
+		String url = HttpConstants.SERVER_URL + action + "?"
 				+ getParameters(map);
-		URL url = null;
-		try {
-			url = new URL(path);
-			HttpURLConnection urlConn = (HttpURLConnection) url
-					.openConnection();
-			urlConn.setRequestMethod("GET");
-			urlConn.setConnectTimeout(HttpConstants.CONNECT_TIMEOUT);
-			urlConn.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			urlConn.setRequestProperty("charset", HTTP.UTF_8);
 
-			return getResponse(urlConn);
-		} catch (IOException e) {
+		System.out.println("url = " + url);
+
+		/*AuthScope as = new AuthScope("158.182.246.221", 8089);
+		UsernamePasswordCredentials upc = new UsernamePasswordCredentials(
+				"master", "controller");
+		((AbstractHttpClient) httpClient).getCredentialsProvider()
+				.setCredentials(as, upc);
+		BasicHttpContext localContext = new BasicHttpContext();
+		BasicScheme basicAuth = new BasicScheme();
+		localContext.setAttribute("preemptive-auth", basicAuth);
+		HttpHost targetHost = new HttpHost("158.182.246.221", 8089, "http");*/
+
+		HttpGet get = new HttpGet(url);
+		get.setHeader("Content-Type", "application/json");
+		try {
+			/*HttpResponse httpResponse = httpClient.execute(targetHost, get,
+					localContext);*/
+			HttpResponse httpResponse = httpClient.execute(get);
+			return getResponse(httpResponse.getEntity());
+		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
 			Log.e(TAG, e.getMessage());
 			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
@@ -73,30 +107,19 @@ public class HttpRequestUtils {
 	}
 
 	public static String post(String action, Map<String, String> map) {
-		String params = getParameters(map);
-
-		String path = HttpConstants.SERVER_URL + action;
-		URL url = null;
+		String url = HttpConstants.SERVER_URL + action;
+		//HttpClient httpClient = new DefaultHttpClient();
+		HttpPost post = new HttpPost(url);
 		try {
-			url = new URL(path);
-			System.out.println("url = " + url);
-			// use HttpURLConnection open connection
-			HttpURLConnection urlConn = (HttpURLConnection) url
-					.openConnection();
-			urlConn.setRequestMethod("POST");
-			urlConn.setConnectTimeout(HttpConstants.CONNECT_TIMEOUT);
-			urlConn.setDoInput(true);
-			urlConn.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			urlConn.setRequestProperty("charset", HTTP.UTF_8);
-			/*urlConn.setRequestProperty("Content-Length",
-					String.valueOf(params.getBytes().length));*/
-
-			OutputStream os = urlConn.getOutputStream();
-			os.write(params.getBytes());
-
-			return getResponse(urlConn);
-		} catch (IOException e) {
+			post.setEntity(new UrlEncodedFormEntity(postParameters(map),
+					HTTP.UTF_8));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			HttpResponse httpResponse = httpClient.execute(post);
+			return getResponse(httpResponse.getEntity());
+		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
 			Log.e(TAG, e.getMessage());
 			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;

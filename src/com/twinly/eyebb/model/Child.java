@@ -5,7 +5,7 @@ public class Child {
 	private String name;
 	private String icon;
 	private String phone;
-	private String indoorAreaId; // dynamic changing
+	private String locationName; // dynamic changing
 
 	public Child() {
 
@@ -51,12 +51,12 @@ public class Child {
 		this.phone = phone;
 	}
 
-	public String getIndoorAreaId() {
-		return indoorAreaId;
+	public String getLocationName() {
+		return locationName;
 	}
 
-	public void setIndoorAreaId(String indoorAreaId) {
-		this.indoorAreaId = indoorAreaId;
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 
 }

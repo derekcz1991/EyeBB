@@ -1,5 +1,13 @@
 package com.twinly.eyebb.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -23,18 +31,20 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
-import com.twinly.eyebb.fragment.ReportFragment.CallbackInterface;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 @SuppressLint("NewApi")
-public class MainActivity extends FragmentActivity implements CallbackInterface {
+public class MainActivity extends FragmentActivity implements
+		ReportFragment.CallbackInterface,
+		IndoorLocatorFragment.CallbackInterface {
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -44,11 +54,11 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
+	private Map<String, ArrayList<String>> indoorLocatorData;
+
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 
-	private boolean flag = true;
-	private UpdateView updateView;
 	private boolean isRefreshing;
 
 	@Override
@@ -61,7 +71,7 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 		checkBluetooth();
-
+		indoorLocatorData = new HashMap<String, ArrayList<String>>();
 	}
 
 	@Override
@@ -83,10 +93,11 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
 		mTabHost.setup();
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		//mViewPager.setOffscreenPageLimit(2);
+		mViewPager.setOffscreenPageLimit(3);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
 		indoorLocatorFragment = new IndoorLocatorFragment();
+		indoorLocatorFragment.setCallbackInterface(this);
 		View mainLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
@@ -203,12 +214,13 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
 			super.onPreExecute();
 			bar.setVisibility(View.VISIBLE);
 			bar.progressiveStart();
+			indoorLocatorData.clear();
 		}
 
 		@Override
 		protected String doInBackground(Void... params) {
 			try {
-				Thread.sleep(2500);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -218,12 +230,59 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
 
 		@Override
 		protected void onPostExecute(String result) {
+			System.out.println("childrenList = " + result);
+			try {
+				JSONObject json = new JSONObject(result);
+				JSONArray list = json
+						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+				for (int i = 0; i < list.length(); i++) {
+					JSONObject object = (JSONObject) list.get(i);
+					String childId = object
+							.getString(HttpConstants.JSON_KEY_CHILD_ID);
+					String locationName = object.getJSONObject(
+							HttpConstants.JSON_KEY_LOCATION).getString(
+							HttpConstants.JSON_KEY_LOCATION_NAME);
+					updateLocationData(childId, locationName);
+					indoorLocatorFragment.updateListView(indoorLocatorData);
+				}
+
+			} catch (JSONException e) {
+				/*Toast.makeText(MainActivity.this,
+						getString(R.string.toast_invalid_username_or_password),
+						Toast.LENGTH_SHORT).show();*/
+				System.out.println("reportService/api/childrenList ---->> "
+						+ e.getMessage());
+			}
 			isRefreshing = false;
 			progressBar.setProgress(0);
 			bar.progressiveStop();
 			reportFragment.setRefreshing(false);
+			indoorLocatorFragment.setRefreshing(false);
 		}
 
+	}
+
+	private void updateLocationData(String childId, String locationName) {
+		ArrayList<String> childrenIdList = null;
+		if (indoorLocatorData.keySet().contains(locationName)) {
+			childrenIdList = indoorLocatorData.get(locationName);
+		} else {
+			childrenIdList = new ArrayList<String>();
+		}
+		childrenIdList.add(childId);
+		indoorLocatorData.put(locationName, childrenIdList);
+	}
+
+	private void updateProgress(int value) {
+		progressBar.setVisibility(View.VISIBLE);
+		progressBar.setProgress(progressBar.getProgress() + value);
+		if (progressBar.getProgress() >= 100) {
+			isRefreshing = true;
+			reportFragment.setRefreshing(true);
+			indoorLocatorFragment.setRefreshing(true);
+
+			new UpdateView().execute();
+		}
 	}
 
 	@Override
@@ -235,16 +294,6 @@ public class MainActivity extends FragmentActivity implements CallbackInterface 
 	public void cancelProgressBar() {
 		if (isRefreshing == false) {
 			progressBar.setProgress(0);
-		}
-	}
-
-	private void updateProgress(int value) {
-		progressBar.setVisibility(View.VISIBLE);
-		progressBar.setProgress(progressBar.getProgress() + value);
-		if (progressBar.getProgress() >= 100) {
-			isRefreshing = true;
-			reportFragment.setRefreshing(true);
-			new UpdateView().execute();
 		}
 	}
 }

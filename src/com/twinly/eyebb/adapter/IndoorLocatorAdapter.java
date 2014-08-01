@@ -13,13 +13,11 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.model.IndoorAera;
 
 public class IndoorLocatorAdapter extends BaseAdapter {
 	private Context context;
 	private Map<String, ArrayList<String>> data;
-	private String[] indoorAreaIds;
-	private Map<String, IndoorAera> indoorAeraMap;
+	private String[] locationNames;
 	private Map<String, Child> childrenMap;
 	private LayoutInflater inflater;
 
@@ -31,15 +29,13 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	}
 
 	public IndoorLocatorAdapter(Context context,
-			Map<String, ArrayList<String>> data,
-			Map<String, Child> childrenMap,
-			Map<String, IndoorAera> indoorAeraMap) {
+			Map<String, ArrayList<String>> data, Map<String, Child> childrenMap) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
 		this.childrenMap = childrenMap;
-		this.indoorAeraMap = indoorAeraMap;
-		this.indoorAreaIds = (String[]) data.keySet().toArray();
+		this.locationNames = (String[]) data.keySet().toArray(
+				new String[data.keySet().size()]);
 	}
 
 	@Override
@@ -84,12 +80,12 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		// clear the view
 		viewHolder.avatarContainer.removeAllViews();
 
-		String indoorAreaid = indoorAreaIds[position];
+		String locationName = locationNames[position];
 		// set the area name
-		viewHolder.areaName.setText(indoorAeraMap.get(indoorAreaid).getName());
-		ArrayList<String> childrenIds = data.get(indoorAreaid);
+		viewHolder.areaName.setText(locationName);
+		ArrayList<String> childrenIds = data.get(locationName);
 		// set the the number of children
-		viewHolder.childrenNum.setText(childrenIds.size());
+		viewHolder.childrenNum.setText(String.valueOf(childrenIds.size()));
 		for (int i = 0; i < childrenIds.size(); i++) {
 			// add the avatar to flowlayout
 			AvatarView avatarView = new AvatarView(context,
@@ -98,7 +94,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			viewHolder.avatarContainer.addView(avatarView.getInstance(), 0);
 
 			// update the child's area id
-			childrenMap.get(childrenIds.get(i)).setIndoorAreaId(indoorAreaid);
+			childrenMap.get(childrenIds.get(i)).setLocationName(locationName);
 		}
 	}
 

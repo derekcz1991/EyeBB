@@ -41,13 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		db.execSQL(tableCreate.toString());
 		
 		tableCreate = new StringBuffer();
-		tableCreate.append("create table if not exists indoor_area")
-						.append("(id integer primary key autoincrement,")
-						.append("area_id integer,")
-						.append("name text)");
-		db.execSQL(tableCreate.toString());
-		
-		tableCreate = new StringBuffer();
 		tableCreate.append("create table if not exists notification")
 						.append("(id integer primary key autoincrement,")
 						.append("notification_id integer,")

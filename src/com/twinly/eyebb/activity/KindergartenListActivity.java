@@ -135,7 +135,6 @@ public class KindergartenListActivity extends Activity {
 						mapList.add(map);
 					}
 
-					System.out.println(mapList);
 					SimpleAdapter adapter = new SimpleAdapter(
 							KindergartenListActivity.this, mapList,
 							R.layout.list_item_kindergarten,

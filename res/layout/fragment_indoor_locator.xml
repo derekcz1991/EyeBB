@@ -122,7 +122,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ListView
+    <com.twinly.eyebb.customview.PullToRefreshListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -134,6 +134,6 @@
         android:listSelector="@drawable/list_selector"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
-    </ListView>
+    </com.twinly.eyebb.customview.PullToRefreshListView>
 
 </RelativeLayout>

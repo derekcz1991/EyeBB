@@ -205,7 +205,9 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 	}
 
 	public void setRefreshing(boolean isRefreshing) {
-		performanceFragment.setRefreshing(isRefreshing);
+		if (performanceFragment != null) {
+			performanceFragment.setRefreshing(isRefreshing);
+		}
 	}
-	
+
 }

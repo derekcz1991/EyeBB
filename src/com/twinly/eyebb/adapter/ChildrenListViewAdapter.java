@@ -18,14 +18,12 @@ import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.model.IndoorAera;
 import com.twinly.eyebb.utils.CommonUtils;
 
 public class ChildrenListViewAdapter extends BaseAdapter {
 	private Context context;
 	private Map<String, Child> childrenMap;
 	private String[] childrenId;
-	private Map<String, IndoorAera> indoorAeraMap;
 	private LayoutInflater inflater;
 	private boolean showMoreInfo;
 
@@ -39,12 +37,10 @@ public class ChildrenListViewAdapter extends BaseAdapter {
 	}
 
 	public ChildrenListViewAdapter(Context context,
-			Map<String, Child> childrenMap,
-			Map<String, IndoorAera> indoorAeraMap, boolean showMoreInfo) {
+			Map<String, Child> childrenMap, boolean showMoreInfo) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.showMoreInfo = showMoreInfo;
-		this.indoorAeraMap = indoorAeraMap;
 		this.childrenMap = childrenMap;
 		this.childrenId = (String[]) childrenMap.keySet().toArray();
 	}
@@ -96,8 +92,7 @@ public class ChildrenListViewAdapter extends BaseAdapter {
 		viewHolder.name.setText(child.getName());
 		if (showMoreInfo) {
 			viewHolder.moreInfo.setVisibility(View.VISIBLE);
-			viewHolder.areaName.setText(indoorAeraMap.get(
-					child.getIndoorAreaId()).getName());
+			viewHolder.areaName.setText(child.getLocationName());
 			viewHolder.phone.setText(child.getPhone());
 			viewHolder.phone.setOnClickListener(new OnClickListener() {
 

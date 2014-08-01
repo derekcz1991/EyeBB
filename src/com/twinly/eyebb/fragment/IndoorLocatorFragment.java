@@ -1,61 +1,60 @@
 package com.twinly.eyebb.fragment;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.ChildrenListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
+import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
+import com.twinly.eyebb.customview.PullToRefreshListView;
+import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
+import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class IndoorLocatorFragment extends Fragment implements OnTouchListener {
-	private ListView listView;
+public class IndoorLocatorFragment extends Fragment implements
+		PullToRefreshListener {
+	private PullToRefreshListView listView;
+	private CallbackInterface callback;
+	private Map<String, Child> childrenMap;
 
-	//public static IndoorLocatorFragment newInstance(Hash)
+	public interface CallbackInterface {
+		public void updateProgressBar(int value);
+
+		public void cancelProgressBar();
+	}
+
+	public void setCallbackInterface(CallbackInterface callback) {
+		this.callback = callback;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_indoor_locator, container,
 				false);
-		listView = (ListView) v.findViewById(R.id.listView);
+		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
+		listView.setPullToRefreshListener(this);
+
+		childrenMap = DBChildren.getChildren(getActivity());
 		setUpListener(v);
 		return v;
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (SharePrefsUtils.isUpdateIndoorLocator(getActivity())) {
-			new UpdateView().execute();
-		}
-	}
-
-	class UpdateView extends AsyncTask<Void, Void, String> {
-
-		@Override
-		protected String doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-		}
-
+	public void updateListView(Map<String, ArrayList<String>> indoorLocatorData) {
+		IndoorLocatorAdapter adapter = new IndoorLocatorAdapter(getActivity(),
+				indoorLocatorData, childrenMap);
+		listView.setAdapter(adapter);
 	}
 
 	private void setUpListener(View v) {
@@ -100,9 +99,16 @@ public class IndoorLocatorFragment extends Fragment implements OnTouchListener {
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		System.out.println("-------------");
-		return false;
+	public void updateProgressBar(int value) {
+		callback.updateProgressBar(value);
 	}
 
+	@Override
+	public void cancelProgressBar() {
+		callback.cancelProgressBar();
+	}
+
+	public void setRefreshing(boolean isRefreshing) {
+		listView.setRefreshing(isRefreshing);
+	}
 }

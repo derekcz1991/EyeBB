@@ -83,6 +83,7 @@ public class PullToRefreshListView extends ListView {
 			break;
 
 		case MotionEvent.ACTION_CANCEL:
+			pullToRefreshListener.cancelProgressBar();
 			allowScroll = true;
 			break;
 

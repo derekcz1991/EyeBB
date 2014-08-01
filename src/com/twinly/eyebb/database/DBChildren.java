@@ -15,6 +15,9 @@ public class DBChildren {
 	}
 
 	public static void insert(Context context, Child child) {
+		if (updateIfExist(context, child)) {
+			return;
+		}
 		SQLiteDatabase db = getInstance(context);
 		ContentValues values = new ContentValues();
 		values.put("child_id", child.getChildId());
@@ -23,6 +26,25 @@ public class DBChildren {
 		values.put("phone", child.getPhone());
 		db.insertOrThrow("children", null, values);
 		db.close();
+	}
+
+	private static boolean updateIfExist(Context context, Child child) {
+		SQLiteDatabase db = getInstance(context);
+		// if exist the friend, update his information
+		ContentValues values = new ContentValues();
+		values.put("child_id", child.getChildId());
+		values.put("name", child.getName());
+		values.put("icon", child.getIcon());
+		values.put("phone", child.getPhone());
+		int result = db.update("children", values, "child_id=?",
+				new String[] { String.valueOf(child.getChildId()) });
+
+		db.close();
+		if (result == 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public static HashMap<String, Child> getChildren(Context context) {
