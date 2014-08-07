@@ -159,7 +159,7 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(),
 						ChildrenListActivity.class);
-				intent.putExtra("from", 2);
+				intent.putExtra("from", ActivityConstants.REPORT_FRAGMENT);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
 			}

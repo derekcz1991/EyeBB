@@ -49,8 +49,10 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/phone_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="16dp"
                     android:background="@drawable/btn_bg_green"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -73,7 +75,6 @@
                     android:id="@+id/btn_beep"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
                     android:background="@drawable/btn_bg_red"
                     android:gravity="center"
                     android:orientation="horizontal"

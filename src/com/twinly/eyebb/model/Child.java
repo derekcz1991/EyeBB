@@ -1,6 +1,12 @@
 package com.twinly.eyebb.model;
 
-public class Child {
+import java.io.Serializable;
+
+public class Child implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2L;
 	private long childId;
 	private String name;
 	private String icon;
@@ -9,6 +15,13 @@ public class Child {
 
 	public Child() {
 
+	}
+
+	public Child(long childId, String name, String icon) {
+		super();
+		this.childId = childId;
+		this.name = name;
+		this.icon = icon;
 	}
 
 	public Child(long childId, String name, String icon, String phone) {

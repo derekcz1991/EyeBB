@@ -189,8 +189,19 @@ public class LoginActivity extends Activity {
 						Child child = new Child(
 								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
 								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-								object.getString(HttpConstants.JSON_KEY_CHILD_ICON),
-								"");
+								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+						// get parents' phone
+						if (object.getString(HttpConstants.JSON_KEY_PARENTS)
+								.equals("null") == false) {
+							JSONArray parents = object
+									.getJSONArray(HttpConstants.JSON_KEY_PARENTS);
+							if (parents != null) {
+								JSONObject parent = (JSONObject) parents.get(0);
+								child.setPhone(parent
+										.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+							}
+						}
+
 						DBChildren.insert(LoginActivity.this, child);
 					}
 

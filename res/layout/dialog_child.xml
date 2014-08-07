@@ -17,6 +17,7 @@
         android:orientation="horizontal" >
 
         <com.twinly.eyebb.customview.CircleImageView
+            android:id="@+id/avatar"
             android:layout_width="88dp"
             android:layout_height="88dp"
             android:layout_marginRight="16dp"
@@ -48,8 +49,10 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/phone_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="16dp"
                     android:background="@drawable/btn_bg_green"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -72,7 +75,6 @@
                     android:id="@+id/maindialog_beep_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
                     android:background="@drawable/btn_bg_red"
                     android:gravity="center"
                     android:orientation="horizontal"

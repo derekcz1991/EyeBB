@@ -14,8 +14,7 @@
         android:divider="@null"
         android:dividerHeight="8dp"
         android:listSelector="@drawable/list_selector"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
+        android:padding="8dp" >
     </ListView>
 
 </LinearLayout>

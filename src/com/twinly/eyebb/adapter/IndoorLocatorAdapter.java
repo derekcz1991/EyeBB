@@ -1,13 +1,18 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
@@ -16,12 +21,12 @@ import com.twinly.eyebb.model.Child;
 
 public class IndoorLocatorAdapter extends BaseAdapter {
 	private Context context;
-	private Map<String, ArrayList<String>> data;
-	private String[] locationNames;
+	private List<Map.Entry<String, ArrayList<String>>> data;
 	private Map<String, Child> childrenMap;
 	private LayoutInflater inflater;
 
 	public final class ViewHolder {
+		public LinearLayout rootLayout;
 		public TextView icon;
 		public TextView areaName;
 		public TextView childrenNum;
@@ -32,10 +37,20 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			Map<String, ArrayList<String>> data, Map<String, Child> childrenMap) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
-		this.data = data;
 		this.childrenMap = childrenMap;
-		this.locationNames = (String[]) data.keySet().toArray(
-				new String[data.keySet().size()]);
+
+		this.data = new ArrayList<Map.Entry<String, ArrayList<String>>>(
+				data.entrySet());
+
+		Collections.sort(this.data,
+				new Comparator<Map.Entry<String, ArrayList<String>>>() {
+
+					@Override
+					public int compare(Entry<String, ArrayList<String>> lhs,
+							Entry<String, ArrayList<String>> rhs) {
+						return rhs.getValue().size() - lhs.getValue().size();
+					}
+				});
 	}
 
 	@Override
@@ -60,6 +75,8 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.list_item_indoor_locator,
 					parent, false);
 			viewHolder = new ViewHolder();
+			viewHolder.rootLayout = (LinearLayout) convertView
+					.findViewById(R.id.root);
 			viewHolder.icon = (TextView) convertView.findViewById(R.id.icon);
 			viewHolder.areaName = (TextView) convertView
 					.findViewById(R.id.area_name);
@@ -80,10 +97,10 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		// clear the view
 		viewHolder.avatarContainer.removeAllViews();
 
-		String locationName = locationNames[position];
+		String locationName = data.get(position).getKey();
 		// set the area name
 		viewHolder.areaName.setText(locationName);
-		ArrayList<String> childrenIds = data.get(locationName);
+		ArrayList<String> childrenIds = data.get(position).getValue();
 		// set the the number of children
 		viewHolder.childrenNum.setText(String.valueOf(childrenIds.size()));
 		for (int i = 0; i < childrenIds.size(); i++) {
@@ -93,8 +110,38 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 					viewHolder.avatarContainer);
 			viewHolder.avatarContainer.addView(avatarView.getInstance(), 0);
 
-			// update the child's area id
+			// update the child's location
 			childrenMap.get(childrenIds.get(i)).setLocationName(locationName);
+		}
+
+		if (locationName.contains("Sleeping")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_sleep);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_yellow01);
+		} else if (locationName.contains("Playground")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_play);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_blue01);
+		} else if (locationName.contains("Computer")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_pc);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_pink);
+		} else if (locationName.contains("Art")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_art);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_purple);
+		} else if (locationName.contains("Music")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_music);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_green02);
+		} else if (locationName.contains("Mess")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_food);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_green01);
+		} else if (locationName.contains("Class")) {
+			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_classroom);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_yellow02);
 		}
 	}
 

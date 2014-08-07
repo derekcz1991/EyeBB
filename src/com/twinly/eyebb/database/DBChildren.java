@@ -57,6 +57,7 @@ public class DBChildren {
 			child.setName(cursor.getString(cursor.getColumnIndex("name")));
 			child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
 			child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
+			child.setLocationName("");
 
 			map.put(String.valueOf(child.getChildId()), child);
 		}

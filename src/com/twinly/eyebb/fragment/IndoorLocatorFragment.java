@@ -16,10 +16,12 @@ import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.ChildrenListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.SerializableChildrenMap;
 import com.twinly.eyebb.utils.CommonUtils;
 
 public class IndoorLocatorFragment extends Fragment implements
@@ -27,6 +29,7 @@ public class IndoorLocatorFragment extends Fragment implements
 	private PullToRefreshListView listView;
 	private CallbackInterface callback;
 	private Map<String, Child> childrenMap;
+	private SerializableChildrenMap myMap;
 
 	public interface CallbackInterface {
 		public void updateProgressBar(int value);
@@ -47,6 +50,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		listView.setPullToRefreshListener(this);
 
 		childrenMap = DBChildren.getChildren(getActivity());
+		myMap = new SerializableChildrenMap();
 		setUpListener(v);
 		return v;
 	}
@@ -93,7 +97,16 @@ public class IndoorLocatorFragment extends Fragment implements
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
 								ChildrenListActivity.class);
-						//startActivity(intent);
+
+						myMap.setMap(childrenMap);
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("childrenMap", myMap);
+						intent.putExtras(bundle);
+						intent.putExtra("from",
+								ActivityConstants.INDOOR_FRAGMENT);
+						startActivityForResult(
+								intent,
+								ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
 					}
 				});
 	}

@@ -21,9 +21,11 @@ public class HttpConstants {
 	public static final String JSON_KEY_CHILD_ID = "childId";
 	public static final String JSON_KEY_CHILD_NAME = "name";
 	public static final String JSON_KEY_CHILD_ICON = "icon";
-	public static final String JSON_KEY_CHILD_PHONE = "phone";
+	public static final String JSON_KEY_CHILD_PHONE = "phoneNumber";
 
 	public static final String JSON_KEY_LOCATION = "loc";
 	public static final String JSON_KEY_LOCATION_NAME = "locationName";
 
+	public static final String JSON_KEY_PARENTS = "parents";
+	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
 }

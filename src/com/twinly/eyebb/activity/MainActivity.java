@@ -38,6 +38,7 @@ import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -72,6 +73,7 @@ public class MainActivity extends FragmentActivity implements
 		setUpProgressBar();
 		checkBluetooth();
 		indoorLocatorData = new HashMap<String, ArrayList<String>>();
+		SystemUtils.initImageLoader(getApplicationContext());
 	}
 
 	@Override
@@ -247,9 +249,6 @@ public class MainActivity extends FragmentActivity implements
 				}
 
 			} catch (JSONException e) {
-				/*Toast.makeText(MainActivity.this,
-						getString(R.string.toast_invalid_username_or_password),
-						Toast.LENGTH_SHORT).show();*/
 				System.out.println("reportService/api/childrenList ---->> "
 						+ e.getMessage());
 			}

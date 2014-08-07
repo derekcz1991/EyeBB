@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.twinly.eyebb.constant.Constants;
 
 public class SystemUtils {
@@ -26,25 +30,22 @@ public class SystemUtils {
 		}
 	}
 
-	/*public static void checkBluetooth(Context context) {
-		// TODO Auto-generated method stub
-		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
-		if (!context.getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(context, R.string.text_ble_not_supported,
-					Toast.LENGTH_SHORT).show();
-		}
+	public static void initImageLoader(Context context) {
+		// This configuration tuning is custom. You can tune every option, you may tune some of them,
+		// or you can create default configuration by
+		//  ImageLoaderConfiguration.createDefault(this);
+		// method.
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context).threadPriority(Thread.NORM_PRIORITY - 2)
+				.denyCacheImageMultipleSizesInMemory()
+				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+				.diskCacheSize(50 * 1024 * 1024)
+				// 50 Mb
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.writeDebugLogs() // Remove for release app
+				.build();
+		// Initialize ImageLoader with configuration.
+		ImageLoader.getInstance().init(config);
+	}
 
-		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
-		final BluetoothManager bluetoothManager = (BluetoothManager) context
-				.getSystemService(Context.BLUETOOTH_SERVICE);
-		BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
-
-		// 检查设备上是否支持蓝牙
-		if (mBluetoothAdapter == null) {
-			Toast.makeText(context,
-					R.string.text_error_bluetooth_not_supported,
-					Toast.LENGTH_SHORT).show();
-		}
-	}*/
 }
