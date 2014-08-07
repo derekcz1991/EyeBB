@@ -8,34 +8,30 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.ChildrenListViewAdapter;
-import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.adapter.KidsListViewAdapter;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.SerializableChildrenMap;
 
-public class ChildrenListActivity extends Activity {
+public class KidsListActivity extends Activity {
 	private ListView listView;
 	private Map<String, Child> childrenMap;
-	private ChildrenListViewAdapter adapter;
+	private KidsListViewAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_children_list);
-		if (getIntent().getIntExtra("from", 0) == ActivityConstants.REPORT_FRAGMENT) {
-			setTitle(getString(R.string.text_change_kids));
-		} else if (getIntent().getIntExtra("from", 0) == ActivityConstants.INDOOR_FRAGMENT) {
-			setTitle(getString(R.string.text_kids_list));
-		}
+		setTitle(getString(R.string.text_kids_list));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setDisplayShowHomeEnabled(false);
 
+		setContentView(R.layout.activity_kids_list);
+
 		Bundle bundle = getIntent().getExtras();
-		if (bundle != null) {
-			SerializableChildrenMap serializableMap = (SerializableChildrenMap) bundle
-					.get("childrenMap");
+		SerializableChildrenMap serializableMap = (SerializableChildrenMap) bundle
+				.get("childrenMap");
+		if (serializableMap != null) {
 			childrenMap = serializableMap.getMap();
-			adapter = new ChildrenListViewAdapter(this, childrenMap);
+			adapter = new KidsListViewAdapter(this, childrenMap);
 		}
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(adapter);

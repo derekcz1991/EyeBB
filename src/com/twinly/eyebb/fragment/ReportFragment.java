@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.activity.ChildrenListActivity;
+import com.twinly.eyebb.activity.ChangeKidsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.fragment.ReportPerformanceFragment.CallbackInterface;
@@ -158,10 +158,9 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(),
-						ChildrenListActivity.class);
-				intent.putExtra("from", ActivityConstants.REPORT_FRAGMENT);
+						ChangeKidsActivity.class);
 				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
+						ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY);
 			}
 		});
 	}
@@ -169,7 +168,7 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY) {
 			if (data == null) {
 				return;
 			}

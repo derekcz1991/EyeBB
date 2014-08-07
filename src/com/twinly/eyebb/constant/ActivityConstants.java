@@ -18,15 +18,12 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG = "update_report_activities_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG = "update_notice_flag";
 
-	public static final int INDOOR_FRAGMENT = 1;
-	public static final int REPORT_FRAGMENT = 2;
-
 	public static final int REQUEST_GO_TO_WELCOME_ACTIVITY = 100;
 	public static final int REQUEST_GO_TO_LOGIN_ACTIVITY = 101;
 	public static final int REQUEST_GO_TO_SIGN_UP_ACTIVITY = 102;
 	public static final int REQUEST_GO_TO_KINDERGARTEN_ACTIVITY = 103;
 	public static final int REQUEST_GO_TO_SETTING_ACTIVITY = 104;
-	public static final int REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY = 105;
+	public static final int REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY = 105;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;

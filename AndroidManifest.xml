@@ -157,7 +157,12 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.ChildrenListActivity"
+            android:name="com.twinly.eyebb.activity.KidsListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.ChangeKidsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

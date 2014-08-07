@@ -22,7 +22,7 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 
-public class ChildrenListViewAdapter extends BaseAdapter {
+public class KidsListViewAdapter extends BaseAdapter {
 	private Context context;
 	private Map<String, Child> childrenMap;
 	private String[] childrenId;
@@ -37,11 +37,9 @@ public class ChildrenListViewAdapter extends BaseAdapter {
 		public TextView phone;
 		public LinearLayout phoneBtn;
 		public LinearLayout btnBeep;
-		public LinearLayout moreInfo;
 	}
 
-	public ChildrenListViewAdapter(Context context,
-			Map<String, Child> childrenMap) {
+	public KidsListViewAdapter(Context context, Map<String, Child> childrenMap) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.childrenMap = childrenMap;
@@ -75,7 +73,7 @@ public class ChildrenListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_child, parent,
+			convertView = inflater.inflate(R.layout.list_item_kid, parent,
 					false);
 			viewHolder = new ViewHolder();
 			viewHolder.avatar = (CircleImageView) convertView
@@ -88,8 +86,6 @@ public class ChildrenListViewAdapter extends BaseAdapter {
 					.findViewById(R.id.phone_btn);
 			viewHolder.btnBeep = (LinearLayout) convertView
 					.findViewById(R.id.btn_beep);
-			viewHolder.moreInfo = (LinearLayout) convertView
-					.findViewById(R.id.more_info);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -108,7 +104,6 @@ public class ChildrenListViewAdapter extends BaseAdapter {
 					.getDrawable(R.drawable.hugh));
 		}
 		viewHolder.name.setText(child.getName());
-		viewHolder.moreInfo.setVisibility(View.VISIBLE);
 		viewHolder.locationName.setText("@ " + child.getLocationName());
 		viewHolder.phone.setText(child.getPhone());
 		if (viewHolder.phone.getText().toString().trim().length() == 0) {

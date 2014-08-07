@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
-import com.twinly.eyebb.activity.ChildrenListActivity;
+import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -49,7 +49,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 
-		childrenMap = DBChildren.getChildren(getActivity());
+		childrenMap = DBChildren.getChildrenMap(getActivity());
 		myMap = new SerializableChildrenMap();
 		setUpListener(v);
 		return v;
@@ -96,17 +96,13 @@ public class IndoorLocatorFragment extends Fragment implements
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
-								ChildrenListActivity.class);
+								KidsListActivity.class);
 
 						myMap.setMap(childrenMap);
 						Bundle bundle = new Bundle();
 						bundle.putSerializable("childrenMap", myMap);
 						intent.putExtras(bundle);
-						intent.putExtra("from",
-								ActivityConstants.INDOOR_FRAGMENT);
-						startActivityForResult(
-								intent,
-								ActivityConstants.REQUEST_GO_TO_CHILDREN_LIST_ACTIVITY);
+						startActivity(intent);
 					}
 				});
 	}
