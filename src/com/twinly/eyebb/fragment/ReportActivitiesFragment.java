@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.ActivityDetailsActivity;
@@ -13,6 +14,8 @@ import com.twinly.eyebb.customview.CircleImageView;
 
 public class ReportActivitiesFragment extends Fragment {
 	private CircleImageView img;
+	
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -1,4 +1,4 @@
-package com.twinly.eyebb.model;
+ package com.twinly.eyebb.model;
 
 import java.io.Serializable;
 

@@ -70,7 +70,9 @@
               <string name="text_error_username">用戶名格式錯誤！ \n(例如：A-Z a-z 0-9 _) 長度：3-30</string>
     <string name="text_error_email">郵件地址格式錯誤！</string>
     <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
-            
+                 <string name="text_loading">加載中...</string>
+                 
+                 
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>

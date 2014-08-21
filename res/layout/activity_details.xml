@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <!--
+<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <!-- tittle -->
+        tittle
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                 android:text="2014.07.13" />
         </LinearLayout>
 
-        <!-- image -->
+        image
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,7 +79,7 @@
                 android:layout_marginRight="8dp"
                 android:src="@drawable/btn_arrow_go_big" />
         </RelativeLayout>
-        <!-- details -->
+        details
 
         <ScrollView
             android:layout_width="match_parent"
@@ -98,5 +99,11 @@
     
             </ScrollView>
     </LinearLayout>
+    -->
+
+    <WebView
+        android:id="@+id/webview_show"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

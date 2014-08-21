@@ -3,15 +3,19 @@ package com.twinly.eyebb.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
+import com.eyebb.R;
+import com.twinly.eyebb.activity.MainActivity;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
@@ -32,16 +36,25 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	private final Context mContext;
 	private final TabHost mTabHost;
 	private final ViewPager mViewPager;
-	//private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+	// private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 	private final ArrayList<Integer> mFragments = new ArrayList<Integer>();
 	private IndoorLocatorFragment indoorLocatorFragment;
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
-
+	private TabsAdapterCallback callback;
+	
+	public interface TabsAdapterCallback {
+		public void onProfileTabClicked();
+	}
+	
+	public void setCallback(TabsAdapterCallback callback) {
+		this.callback = callback;
+	}
+	
 	static class DummyTabFactory implements TabHost.TabContentFactory {
 		private final Context mContext;
-
+	
 		public DummyTabFactory(Context context) {
 			mContext = context;
 		}
@@ -145,6 +158,16 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 
 		if (position == 2) {
 			reportFragment.refreshPerformanceFragment();
+		}
+		if (position == 3) {
+			callback.onProfileTabClicked();
+			
+//			System.out.println("positionpositionposition=>" + position);
+//			MainActivity ma = new MainActivity();
+//			View profileLabel = (View) LayoutInflater.from(ma).inflate(
+//					R.layout.tab_label, null);
+//			profileLabel.findViewById(R.id.notification_number).setVisibility(
+//					View.GONE);
 		}
 	}
 

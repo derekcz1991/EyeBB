@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eyebb.R;
+
 import com.twinly.eyebb.activity.NotificationActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -34,6 +35,8 @@ public class ProfileFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_profile, container, false);
 		((TextView) v.findViewById(R.id.username)).setText(SharePrefsUtils
 				.getLoginAccount(getActivity()));
+
+		
 		return v;
 	}
 

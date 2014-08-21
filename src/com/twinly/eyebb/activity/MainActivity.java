@@ -26,10 +26,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
+import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
@@ -45,7 +47,7 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements
 		ReportFragment.CallbackInterface,
-		IndoorLocatorFragment.CallbackInterface {
+		IndoorLocatorFragment.CallbackInterface, TabsAdapterCallback {
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -54,12 +56,12 @@ public class MainActivity extends FragmentActivity implements
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
+	private TextView noticeNum;
 
 	private Map<String, ArrayList<String>> indoorLocatorData;
 
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
-
 	private boolean isRefreshing;
 
 	@Override
@@ -97,9 +99,11 @@ public class MainActivity extends FragmentActivity implements
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setOffscreenPageLimit(3);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
+		mTabsAdapter.setCallback(this);
 
 		indoorLocatorFragment = new IndoorLocatorFragment();
 		indoorLocatorFragment.setCallbackInterface(this);
+		// mian
 		View mainLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
@@ -107,7 +111,10 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
 				indoorLocatorFragment);
+		mainLabel.findViewById(R.id.notification_number).setVisibility(
+				View.GONE);
 
+		// radar
 		radarTrackingFragment = new RadarTrackingFragment();
 		View trackingLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
@@ -116,7 +123,10 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
 				radarTrackingFragment);
+		trackingLabel.findViewById(R.id.notification_number).setVisibility(
+				View.GONE);
 
+		// report
 		reportFragment = new ReportFragment();
 		reportFragment.setCallbackInterface(this);
 		View reportLabel = (View) LayoutInflater.from(this).inflate(
@@ -126,7 +136,10 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
 				reportFragment);
+		reportLabel.findViewById(R.id.notification_number).setVisibility(
+				View.GONE);
 
+		// profile
 		profileFragment = new ProfileFragment();
 		View profileLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
@@ -135,6 +148,9 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
+		noticeNum = (TextView) profileLabel
+				.findViewById(R.id.notification_number);
+		noticeNum.setVisibility(View.VISIBLE);
 
 		mTabHost.setCurrentTab(0);
 		if (savedInstanceState != null) {
@@ -183,11 +199,13 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			Intent startMain = new Intent(Intent.ACTION_MAIN);
 			startMain.addCategory(Intent.CATEGORY_HOME);
 			startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(startMain);
+
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -294,5 +312,11 @@ public class MainActivity extends FragmentActivity implements
 		if (isRefreshing == false) {
 			progressBar.setProgress(0);
 		}
+	}
+
+	@Override
+	public void onProfileTabClicked() {
+		noticeNum.setVisibility(View.INVISIBLE);
+
 	}
 }
