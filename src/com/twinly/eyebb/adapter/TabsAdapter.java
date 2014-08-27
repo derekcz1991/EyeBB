@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -144,7 +145,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	}
 
 	@Override
-	public void onPageSelected(int position) {
+	public void onPageSelected(int position) throws NotFoundException {
 		// Unfortunately when TabHost changes the current tab, it kindly
 		// also takes care of putting focus on it when not in touch mode.
 		// The jerk.
@@ -156,10 +157,18 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mTabHost.setCurrentTab(position);
 		widget.setDescendantFocusability(oldFocusability);
 
-		if (position == 2) {
+		if(position == 1){
+			try {
+				radarTrackingFragment.checkIsBluetooth();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else if (position == 2) {
 			reportFragment.refreshPerformanceFragment();
 		}
-		if (position == 3) {
+		else if (position == 3) {
 			callback.onProfileTabClicked();
 			
 //			System.out.println("positionpositionposition=>" + position);

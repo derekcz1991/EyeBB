@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -35,10 +36,12 @@ public class ActivityDetailsActivity extends Activity {
 	private float startX;
 	private int imageHight = 350;
 	private WebView webViewDetails;
-	private String webViewDetailsURL = "http://codepen.io/mimoduo/pen/IkatC";
+	private String webViewDetailsURL = " http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
+			//"http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
 	private int width;
 
 	@SuppressLint("SetJavaScriptEnabled")
+	@JavascriptInterface
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);

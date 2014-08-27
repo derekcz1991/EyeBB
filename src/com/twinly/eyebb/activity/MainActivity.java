@@ -73,7 +73,7 @@ public class MainActivity extends FragmentActivity implements
 
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
-		checkBluetooth();
+		//checkBluetooth();
 		indoorLocatorData = new HashMap<String, ArrayList<String>>();
 		SystemUtils.initImageLoader(getApplicationContext());
 	}

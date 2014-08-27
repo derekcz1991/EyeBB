@@ -58,15 +58,8 @@ public class BeepDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				
-				if (isVibrate) {
-					vibrator.cancel();
-				}
-				if (isSound) {
-					mPlayer.stop();
-					mPlayer.setLooping(false);
-				}
-				finish();
+
+				stopALL();
 			}
 		});
 
@@ -112,5 +105,24 @@ public class BeepDialog extends Activity {
 
 		animation.setRepeatMode(Animation.REVERSE);
 		timer.setAnimation(animation);
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		System.out.println("onPause()");
+		stopALL();
+	}
+
+	private void stopALL() {
+		if (isVibrate) {
+			vibrator.cancel();
+		}
+		if (isSound) {
+			mPlayer.stop();
+			mPlayer.setLooping(false);
+		}
+		finish();
 	}
 }

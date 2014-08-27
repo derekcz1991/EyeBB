@@ -112,6 +112,11 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.ConnectDeviceDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.BusEnterDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
