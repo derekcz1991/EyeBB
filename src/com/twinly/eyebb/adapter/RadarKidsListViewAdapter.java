@@ -86,4 +86,22 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		}
 		viewHolder.name.setText(child.getName());
 	}
+	
+	
+	public View getRadarView(int position, View convertView, ViewGroup parent) {
+		ViewHolder viewHolder = null;
+		if (convertView == null) {
+			convertView = inflater.inflate(R.layout.fragment_radar_tracking_kids_listitem,
+					parent, false);
+			viewHolder = new ViewHolder();
+			viewHolder.avatar = (CircleImageView) convertView
+					.findViewById(R.id.radar_child_head_img);
+			viewHolder.name = (TextView) convertView.findViewById(R.id.radar_list_kids_name);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
+		setUpView(viewHolder, position);
+		return convertView;
+	}
 }

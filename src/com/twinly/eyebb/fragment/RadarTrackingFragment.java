@@ -16,14 +16,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +37,10 @@ import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.ServicesActivity;
 import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
+import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.customview.ListViewForScrollView;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -78,19 +85,27 @@ public class RadarTrackingFragment extends Fragment {
 	private String BeepDeviceUUID = "4D616361726F6E202020202020202020";
 	private int findDevice = 100;
 	private ArrayList<Device> device;
-	private ListView listView;
+	private ListViewForScrollView listView;
 	private RadarKidsListViewAdapter adapter;
-
+	private ScrollView radarScrollView;
+	private ArrayList<Child> data;
+	private CircleImageView headImage;
+	
 	@SuppressLint("NewApi")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		System.out.println("onCreateView");
 		View v = inflater.inflate(R.layout.fragment_radar_tracking, container,
 				false);
-		listView = (ListView) v.findViewById(R.id.radar_children_list);
+
+		listView = (ListViewForScrollView) v
+				.findViewById(R.id.radar_children_list);
 		adapter = new RadarKidsListViewAdapter(getActivity(),
 				DBChildren.getChildrenList(getActivity()));
 		listView.setAdapter(adapter);
+		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
+		radarScrollView.smoothScrollTo(0, 0);
+
 		// radarBeepBtn1 = v.findViewById(R.id.radar_beep_btn1);
 		// radarBeepBtn2 = v.findViewById(R.id.radar_beep_btn2);
 
@@ -99,35 +114,11 @@ public class RadarTrackingFragment extends Fragment {
 		listItem = new ArrayList<HashMap<String, Object>>();
 
 		if (SharePrefsUtils.getRole(getActivity()) == false) {
-			// radarBeepBtn1.setVisibility(View.GONE);
-			// radarBeepBtn2.setVisibility(View.GONE);
-			v.findViewById(R.id.avatar1).setVisibility(View.GONE);
-			v.findViewById(R.id.avatar2).setVisibility(View.GONE);
-			// ((TextView) v.findViewById(R.id.radar_text_missed_number))
-			// .setText("1");
-			// v.findViewById(R.id.newslist_item_layout_1)
-			// .setVisibility(View.GONE);
-			// v.findViewById(R.id.newslist_item_layout2).setVisibility(View.GONE);
+
 		} else {
 			((TextView) v.findViewById(R.id.radar_text_missed_number))
 					.setText("3");
 		}
-		// radarBeepBtn1.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// Intent intent = new Intent(getActivity(), BeepDialog.class);
-		// startActivity(intent);
-		// }
-		// });
-		// radarBeepBtn2.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// Intent intent = new Intent(getActivity(), BeepDialog.class);
-		// startActivity(intent);
-		// }
-		// });
 
 		// bluetooth
 		// connect device
@@ -149,7 +140,7 @@ public class RadarTrackingFragment extends Fragment {
 				getActivity().findViewById(R.id.connect_device_layout)
 						.setVisibility(View.GONE);
 				radarView.setAlpha(1);
-
+				radarAnim();
 				// if (scan_flag) {
 				// autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
 				// } else {
@@ -181,8 +172,23 @@ public class RadarTrackingFragment extends Fragment {
 			}
 		});
 
-	
 		return v;
+
+	}
+
+	private void addImageHead() {
+		for (int i = 0; i < data.size(); i++) {
+			final Child child = data.get(i);
+			if (TextUtils.isEmpty(child.getIcon()) == false) {
+				headImage = (CircleImageView) new ImageView(getActivity());
+				Image2.setImageResource(img);
+				// DensityUtil.px2dip(this, imageHight);
+				// Image2.setId(110); //注意这点 设置id
+				// Image2.setOnClickListener(this);
+				RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(
+						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			}
+		}
 
 	}
 
@@ -252,7 +258,7 @@ public class RadarTrackingFragment extends Fragment {
 			if (!mBluetoothAdapter.isEnabled()) {
 				openBluetooth();
 			} else {
-				radarAnim();
+
 				// if (isFirstDialog) {
 				// Intent intent = new Intent(getActivity(),
 				// ConnectDeviceDialog.class);
@@ -269,21 +275,6 @@ public class RadarTrackingFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		System.out.println("onActivityCreated");
-	
-		// radarBeepBtn = getActivity().findViewById(R.id.radar_beep_btn);
-
-		// radarBeepBtn.setOnClickListener(new View.OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// if (CommonUtils.isFastDoubleClick()) {
-		// return;
-		// } else {
-		// Intent intent = new Intent(getActivity(), BeepDialog.class);
-		// startActivity(intent);
-		// }
-		// }
-		// });
 
 		radarBeepAllBtn = getActivity().findViewById(R.id.radar_beep_all_btn);
 
