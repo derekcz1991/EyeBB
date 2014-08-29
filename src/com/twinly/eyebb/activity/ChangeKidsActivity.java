@@ -32,7 +32,6 @@ public class ChangeKidsActivity extends Activity {
 				DBChildren.getChildrenList(this));
 		listView.setAdapter(adapter);
 
-		//CHILD WAS SELECTED
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {

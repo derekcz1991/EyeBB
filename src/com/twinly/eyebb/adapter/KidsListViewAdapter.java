@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.customview.CircleImageView;
@@ -27,7 +26,6 @@ public class KidsListViewAdapter extends BaseAdapter {
 	private Map<String, Child> childrenMap;
 	private String[] childrenId;
 	private LayoutInflater inflater;
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 
 	public final class ViewHolder {
@@ -47,11 +45,6 @@ public class KidsListViewAdapter extends BaseAdapter {
 				new String[childrenMap.size()]);
 
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
 	}
 
 	@Override
@@ -98,7 +91,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 		final Child child = childrenMap.get(childrenId[position]);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					options, null);
+					CommonUtils.getDisplayImageOptions(), null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.hugh));

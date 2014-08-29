@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -32,7 +31,6 @@ public class ChildDialog extends Activity {
 	private CircleImageView avatar;
 	private String icon;
 
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
@@ -58,12 +56,8 @@ public class ChildDialog extends Activity {
 		}
 
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
-		imageLoader.displayImage(icon, avatar, options, animateFirstListener);
+		imageLoader.displayImage(icon, avatar,
+				CommonUtils.getDisplayImageOptions(), animateFirstListener);
 
 		phoneBtn.setOnClickListener(new OnClickListener() {
 

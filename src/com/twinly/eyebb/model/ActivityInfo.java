@@ -1,6 +1,12 @@
 package com.twinly.eyebb.model;
 
-public class ActivityInfo {
+import java.io.Serializable;
+
+public class ActivityInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3L;
 	private long childId;
 	private String title;
 	private String titleTc;

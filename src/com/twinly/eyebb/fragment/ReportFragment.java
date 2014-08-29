@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.ChangeKidsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -48,7 +47,6 @@ public class ReportFragment extends Fragment implements
 	private TextView blackDividerActivities;
 	private CircleImageView avatar;
 	private CallbackInterface callback;
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private Child child;
 
@@ -79,17 +77,13 @@ public class ReportFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report, container, false);
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
 		setUpView(v);
 		setUpListener(v);
 		return v;
 	}
 
 	private void setUpView(View v) {
+		// set the current child
 		child = DBChildren.getChildById(getActivity(),
 				SharePrefsUtils.getReportChildId(getActivity()));
 
@@ -97,8 +91,9 @@ public class ReportFragment extends Fragment implements
 				.beginTransaction();
 
 		Bundle bundle = new Bundle();
-		bundle.putSerializable("child", child);
+		bundle.putLong("childId", child.getChildId());
 
+		// setup ReportPerformanceFragment
 		performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
 				.findFragmentByTag("performance");
 		if (performanceFragment == null) {
@@ -112,6 +107,7 @@ public class ReportFragment extends Fragment implements
 			fragmentTransaction.show(performanceFragment);
 		}
 
+		// setup ReportActivitiesFragment
 		activitiesFragment = (ReportActivitiesFragment) getChildFragmentManager()
 				.findFragmentByTag("activities");
 		if (activitiesFragment == null) {
@@ -138,7 +134,8 @@ public class ReportFragment extends Fragment implements
 				.findViewById(R.id.black_divider_activities);
 		avatar = (CircleImageView) v.findViewById(R.id.avatar);
 
-		imageLoader.displayImage(child.getIcon(), avatar, options, null);
+		imageLoader.displayImage(child.getIcon(), avatar,
+				CommonUtils.getDisplayImageOptions(), null);
 	}
 
 	private void setUpListener(View v) {
@@ -221,11 +218,14 @@ public class ReportFragment extends Fragment implements
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK
 					&& data != null) {
+				// change a child to display
 				child = (Child) data.getSerializableExtra("child");
-				imageLoader
-						.displayImage(child.getIcon(), avatar, options, null);
+				imageLoader.displayImage(child.getIcon(), avatar,
+						CommonUtils.getDisplayImageOptions(), null);
 				SharePrefsUtils.setReportChildId(getActivity(),
 						child.getChildId());
+				reInitView();
+				updateView();
 			}
 		}
 	}
@@ -240,10 +240,17 @@ public class ReportFragment extends Fragment implements
 		callback.cancelProgressBar();
 	}
 
+	/**
+	 * Get newest the data from server and update the view 
+	 */
 	public void updateView() {
 		new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
+	/**
+	 * Set the listView state. The list cannot scroll when is refreshing, 
+	 * @param isRefreshing whether requesting server to update data
+	 */
 	public void setRefreshing(boolean isRefreshing) {
 		if (performanceFragment != null) {
 			performanceFragment.setRefreshing(isRefreshing);
@@ -251,6 +258,15 @@ public class ReportFragment extends Fragment implements
 		if (activitiesFragment != null) {
 			activitiesFragment.setRefreshing(isRefreshing);
 		}
+	}
+
+	/**
+	 * Re-initialize the view when change a child to display
+	 */
+	private void reInitView() {
+		performanceFragment.updateView(DBPerformance.getPerformanceByChildId(
+				getActivity(), child.getChildId()));
+		activitiesFragment.updateView(child.getChildId());
 	}
 
 	private class UpdateView extends AsyncTask<Void, Void, String> {
@@ -277,6 +293,11 @@ public class ReportFragment extends Fragment implements
 		}
 	}
 
+	/**
+	 * Update the performance fragment
+	 * @param json
+	 * @throws JSONException
+	 */
 	private void updatePerformance(JSONObject json) throws JSONException {
 		Performance performance = new Performance();
 		performance.setChildId(child.getChildId());
@@ -288,6 +309,11 @@ public class ReportFragment extends Fragment implements
 		performanceFragment.updateView(performance);
 	}
 
+	/**
+	 * Update the activity fragment
+	 * @param json
+	 * @throws JSONException
+	 */
 	private void updateActivity(JSONObject json) throws JSONException {
 		if (CommonUtils.isNotNull(json
 				.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO))) {
@@ -328,7 +354,7 @@ public class ReportFragment extends Fragment implements
 								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_ICON));
 				DBActivityInfo.insert(getActivity(), activityInfo);
 			}
-			activitiesFragment.updateView();
+			activitiesFragment.updateView(child.getChildId());
 		}
 	}
 }

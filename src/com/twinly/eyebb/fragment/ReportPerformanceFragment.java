@@ -18,7 +18,6 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBPerformance;
-import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Performance;
 import com.twinly.eyebb.model.PerformanceListItem;
 
@@ -29,7 +28,7 @@ public class ReportPerformanceFragment extends Fragment implements
 	private PerformanceListViewAdapter adapter;
 	private List<PerformanceListItem> list;
 	private CallbackInterface callback;
-	private Child child;
+	private long childId;
 
 	public interface CallbackInterface {
 		/**
@@ -55,12 +54,12 @@ public class ReportPerformanceFragment extends Fragment implements
 				container, false);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
-		
+
 		list = new ArrayList<PerformanceListItem>();
-		child = (Child) getArguments().getSerializable("child");
-		if (child != null) {
+		childId = getArguments().getLong("childId");
+		if (childId != 0) {
 			updateView(DBPerformance.getPerformanceByChildId(getActivity(),
-					child.getChildId()));
+					childId));
 		}
 
 		return v;
@@ -132,6 +131,10 @@ public class ReportPerformanceFragment extends Fragment implements
 
 	}
 
+	/**
+	 * Set the listView state. The list cannot scroll when is refreshing, 
+	 * @param isRefreshing whether requesting server to update data
+	 */
 	public void setRefreshing(boolean isRefreshing) {
 		listView.setRefreshing(isRefreshing);
 	}

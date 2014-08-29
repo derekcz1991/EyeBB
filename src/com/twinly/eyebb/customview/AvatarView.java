@@ -9,17 +9,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.ChildDialog;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class AvatarView {
 	private Context context;
 	private Child child;
 	private CircleImageView avatar;
 	private ViewGroup avatarViewItem;
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 
 	public AvatarView(Context context, Child child, ViewGroup viewGroup) {
@@ -27,11 +26,6 @@ public class AvatarView {
 		this.child = child;
 
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
 
 		setUpView(viewGroup);
 	}
@@ -45,7 +39,8 @@ public class AvatarView {
 				R.layout.item_avatar, viewGroup, false);
 		avatar = (CircleImageView) avatarViewItem.findViewById(R.id.avatar);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
-			imageLoader.displayImage(child.getIcon(), avatar, options, null);
+			imageLoader.displayImage(child.getIcon(), avatar,
+					CommonUtils.getDisplayImageOptions(), null);
 		} else {
 			avatar.setImageDrawable(context.getResources().getDrawable(
 					R.drawable.hugh));

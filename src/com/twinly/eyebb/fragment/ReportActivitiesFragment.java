@@ -18,7 +18,6 @@ import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBActivityInfo;
 import com.twinly.eyebb.model.ActivityInfo;
-import com.twinly.eyebb.model.Child;
 
 public class ReportActivitiesFragment extends Fragment implements
 		PullToRefreshListener {
@@ -27,7 +26,6 @@ public class ReportActivitiesFragment extends Fragment implements
 	private PullToRefreshListView listView;
 	private ActivitiesListViewAdapter adapter;
 	private CallbackInterface callback;
-	private Child child;
 
 	public interface CallbackInterface {
 		/**
@@ -49,12 +47,11 @@ public class ReportActivitiesFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		child = (Child) getArguments().getSerializable("child");
 		View v = inflater.inflate(R.layout.fragment_report_activities,
 				container, false);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
-		updateView();
+		updateView(getArguments().getLong("childId"));
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -62,15 +59,17 @@ public class ReportActivitiesFragment extends Fragment implements
 					int position, long id) {
 				Intent intent = new Intent(getActivity(),
 						ActivityDetailsActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("activityInfo",
+						(ActivityInfo) adapter.getItem(position));
 				startActivity(intent);
 			}
 		});
 		return v;
 	}
 
-	public void updateView() {
-		list = DBActivityInfo.getActivityInfoByChildId(getActivity(),
-				child.getChildId());
+	public void updateView(long childId) {
+		list = DBActivityInfo.getActivityInfoByChildId(getActivity(), childId);
 		adapter = new ActivitiesListViewAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
 	}
@@ -85,6 +84,10 @@ public class ReportActivitiesFragment extends Fragment implements
 		callback.cancelProgressBar();
 	}
 
+	/**
+	 * Set the listView state. The list cannot scroll when is refreshing, 
+	 * @param isRefreshing whether requesting server to update data
+	 */
 	public void setRefreshing(boolean isRefreshing) {
 		listView.setRefreshing(isRefreshing);
 	}

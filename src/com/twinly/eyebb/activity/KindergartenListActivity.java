@@ -38,7 +38,7 @@ public class KindergartenListActivity extends Activity {
 		setTitle(getString(R.string.text_select_kid_kindergarten));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 		setContentView(R.layout.activity_kindergarten);
 

@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
@@ -22,7 +21,6 @@ public class ActivitiesListViewAdapter extends BaseAdapter {
 	private Context context;
 	private List<ActivityInfo> list;
 	private LayoutInflater mInflater;
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 
 	private final class ViewHolder {
@@ -36,11 +34,6 @@ public class ActivitiesListViewAdapter extends BaseAdapter {
 		this.list = list;
 		mInflater = LayoutInflater.from(context);
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
 	}
 
 	@Override
@@ -94,7 +87,7 @@ public class ActivitiesListViewAdapter extends BaseAdapter {
 		viewHolder.date.setText(activityInfo.getDate());
 		if (CommonUtils.isNotNull(activityInfo.getIcon())) {
 			imageLoader.displayImage(activityInfo.getIcon(), viewHolder.icon,
-					options, null);
+					CommonUtils.getDisplayImageOptions(), null);
 		}
 	}
 }

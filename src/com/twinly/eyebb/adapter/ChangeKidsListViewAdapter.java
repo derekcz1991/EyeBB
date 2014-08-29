@@ -11,16 +11,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class ChangeKidsListViewAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<Child> data;
 	private LayoutInflater inflater;
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 
 	public final class ViewHolder {
@@ -33,11 +32,6 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 		this.context = context;
 		this.data = data;
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
 	}
 
 	@Override
@@ -77,7 +71,7 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 		final Child child = data.get(position);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					options, null);
+					CommonUtils.getDisplayImageOptions(), null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.hugh));
