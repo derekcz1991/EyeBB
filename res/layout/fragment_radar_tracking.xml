@@ -7,12 +7,12 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:fillViewport="true" >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:id="@+id/liner_radar"
@@ -165,6 +165,7 @@
                     android:id="@+id/radar"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:alpha="0.3"
                     android:background="@drawable/bg_white" >
 
                     <RelativeLayout
@@ -304,7 +305,10 @@
 
             <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
 
+
+            <!--
             <LinearLayout
+                android:alpha="0.3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -569,18 +573,19 @@
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
-
+            -->
             <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
 
             <ListView
-                android:id="@+id/news_list"
+                android:id="@+id/radar_children_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/liner_radar"
-                android:layout_marginTop="338dp"
-                android:cacheColorHint="#00000000"
-                android:divider="#FFf1f1e5"
-                android:dividerHeight="8dp" />
+                android:layout_height="match_parent"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@null"
+                android:dividerHeight="8dp"
+                android:listSelector="@drawable/list_selector"
+                android:padding="8dp" >
+            </ListView>
         </LinearLayout>
     </ScrollView>
 

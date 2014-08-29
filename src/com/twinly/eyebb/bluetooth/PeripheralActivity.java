@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.eyebb.R;
+import com.twinly.eyebb.activity.ServicesActivity;
 
 @SuppressLint("NewApi")
 public class PeripheralActivity extends Activity {

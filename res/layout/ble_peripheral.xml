@@ -11,7 +11,7 @@
     android:layout_height="wrap_content"
     android:textSize="15sp" />
 <ListView
-android:id="@+id/listView"
+android:id="@+id/listView_peripheral"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 android:orientation="vertical" />

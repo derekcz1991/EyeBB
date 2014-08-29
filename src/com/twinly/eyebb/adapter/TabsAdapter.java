@@ -158,12 +158,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		widget.setDescendantFocusability(oldFocusability);
 
 		if(position == 1){
-			try {
-				radarTrackingFragment.checkIsBluetooth();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//radarTrackingFragment.updateListView();
 		}
 		else if (position == 2) {
 			reportFragment.refreshPerformanceFragment();

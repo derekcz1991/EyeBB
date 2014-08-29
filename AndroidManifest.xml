@@ -186,7 +186,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
-
+    <activity
+            android:name="com.twinly.eyebb.activity.ServicesActivity"
+            android:screenOrientation="portrait"
+           >
+        </activity>
+        
+    <service android:name="com.twinly.eyebb.bluetooth.BluetoothLeService" android:enabled="true"/>
+    
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -200,6 +207,7 @@
         </receiver>
 
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
+        
     </application>
 
 </manifest>
