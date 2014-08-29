@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,9 +32,11 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+@SuppressLint("InflateParams")
 public class LoginActivity extends Activity {
 	private TextView forgetPasswordBtn;
 	private LayoutInflater inflater;
@@ -57,7 +60,7 @@ public class LoginActivity extends Activity {
 		setTitle(getString(R.string.btn_login));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 		kindergartenItem = (RelativeLayout) findViewById(R.id.kindergartenItem);
 		loginAccount = (EditText) findViewById(R.id.login_account);
@@ -191,8 +194,8 @@ public class LoginActivity extends Activity {
 								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
 								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
 						// get parents' phone
-						if (object.getString(HttpConstants.JSON_KEY_PARENTS)
-								.equals("null") == false) {
+						if (CommonUtils.isNotNull(object
+								.getString(HttpConstants.JSON_KEY_PARENTS))) {
 							JSONArray parents = object
 									.getJSONArray(HttpConstants.JSON_KEY_PARENTS);
 							if (parents != null) {
@@ -203,6 +206,11 @@ public class LoginActivity extends Activity {
 						}
 
 						DBChildren.insert(LoginActivity.this, child);
+						// set the first child as the current reporting child
+						if (i == 0) {
+							SharePrefsUtils.setReportChildId(
+									LoginActivity.this, child.getChildId());
+						}
 					}
 
 					if (loginAccount.getText().toString().equals("May")) {

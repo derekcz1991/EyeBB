@@ -14,8 +14,15 @@ public class PullToRefreshListView extends ListView {
 	private boolean allowScroll = true;
 
 	public interface PullToRefreshListener {
+		/**
+		 * Update the progressBar value when pull the listView
+		 * @param value current progress
+		 */
 		public void updateProgressBar(int value);
 
+		/**
+		 * Cancel update the progressBar when release the listView 
+		 */
 		public void cancelProgressBar();
 	}
 

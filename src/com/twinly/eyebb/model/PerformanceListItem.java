@@ -10,6 +10,16 @@ public class PerformanceListItem {
 	private int maxProgress;
 	private boolean flag;
 
+	/**
+	 * 
+	 * @param title daily, weekly...
+	 * @param subTitle playground, sleeping room...
+	 * @param titleBackground
+	 * @param progressBarstyle
+	 * @param time
+	 * @param progress
+	 * @param maxProgress
+	 */
 	public PerformanceListItem(String title, String subTitle,
 			int titleBackground, int progressBarstyle, int time, int progress,
 			int maxProgress) {

@@ -85,4 +85,22 @@ public class DBChildren {
 		db.close();
 		return childList;
 	}
+
+	public static Child getChildById(Context context, long childId) {
+		Child child = null;
+		SQLiteDatabase db = getInstance(context);
+		Cursor cursor = db.rawQuery("select * from children where child_id = "
+				+ childId, null);
+		if (cursor.moveToFirst()) {
+			child = new Child();
+			child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
+			child.setName(cursor.getString(cursor.getColumnIndex("name")));
+			child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
+			child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
+			child.setLocationName("");
+		}
+		cursor.close();
+		db.close();
+		return child;
+	}
 }

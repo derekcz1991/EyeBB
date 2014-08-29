@@ -132,6 +132,16 @@ public class SharePrefsUtils {
 				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, value);
 	}
 
+	public static long getReportChildId(Context context) {
+		return getLong(context,
+				ActivityConstants.SHARE_PREFS_ITEM_REPORT_CHILD_ID);
+	}
+
+	public static void setReportChildId(Context context, long value) {
+		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_REPORT_CHILD_ID,
+				value);
+	}
+
 	/**
 	 * @return Application's {@code SharedPreferences}.
 	 */
@@ -153,6 +163,10 @@ public class SharePrefsUtils {
 		return getPrefs(context).getInt(name, Integer.MIN_VALUE);
 	}
 
+	private static long getLong(Context context, String name) {
+		return getPrefs(context).getLong(name, Long.MIN_VALUE);
+	}
+
 	private static void setString(Context context, String name, String value) {
 		getPrefs(context).edit().putString(name, value).commit();
 	}
@@ -163,5 +177,9 @@ public class SharePrefsUtils {
 
 	private static void setInt(Context context, String name, int value) {
 		getPrefs(context).edit().putInt(name, value).commit();
+	}
+
+	private static void setLong(Context context, String name, long value) {
+		getPrefs(context).edit().putLong(name, value).commit();
 	}
 }

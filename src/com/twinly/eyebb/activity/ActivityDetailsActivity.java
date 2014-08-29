@@ -1,16 +1,11 @@
 package com.twinly.eyebb.activity;
 
-import java.lang.reflect.Field;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -19,15 +14,11 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ShareActionProvider;
 import android.widget.ViewFlipper;
-import android.widget.ZoomButtonsController;
 
 import com.eyebb.R;
-import com.twinly.eyebb.utils.DensityUtil;
-
 
 public class ActivityDetailsActivity extends Activity {
 	final Activity activity = this;
@@ -37,7 +28,7 @@ public class ActivityDetailsActivity extends Activity {
 	private int imageHight = 350;
 	private WebView webViewDetails;
 	private String webViewDetailsURL = " http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
-			//"http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
+	//"http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
 	private int width;
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -46,7 +37,7 @@ public class ActivityDetailsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);
 		setTitle(getString(R.string.text_activityDetails));
-		
+
 		webViewDetails = (WebView) findViewById(R.id.webview_show);
 		// 获取当前显示的界面大小
 		WebSettings webSettings = webViewDetails.getSettings();
@@ -66,9 +57,9 @@ public class ActivityDetailsActivity extends Activity {
 		webViewDetails.setHorizontalScrollBarEnabled(false);
 		webViewDetails.getSettings().setDomStorageEnabled(true);
 		webViewDetails.getSettings().setJavaScriptEnabled(true);
-	
+
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 		// addImageView(R.drawable.activity_details_img1);
 		// addImageView(R.drawable.activity_details_img2);
 		// addImageView(R.drawable.activity_details_img3);
@@ -95,12 +86,10 @@ public class ActivityDetailsActivity extends Activity {
 			}
 
 		});
-	
+
 		webViewDetails.loadUrl(webViewDetailsURL);
 
 	}
-
-	
 
 	private void init() {
 		// TODO Auto-generated method stub

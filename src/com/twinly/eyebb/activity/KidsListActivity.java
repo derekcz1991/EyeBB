@@ -22,7 +22,7 @@ public class KidsListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.text_kids_list));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 		setContentView(R.layout.activity_kids_list);
 

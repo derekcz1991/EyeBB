@@ -1,6 +1,13 @@
 package com.twinly.eyebb.fragment;
 
+import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,12 +18,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eyebb.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.ChangeKidsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.fragment.ReportPerformanceFragment.CallbackInterface;
+import com.twinly.eyebb.database.DBActivityInfo;
+import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.database.DBPerformance;
+import com.twinly.eyebb.model.ActivityInfo;
+import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.Performance;
+import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class ReportFragment extends Fragment implements CallbackInterface {
+public class ReportFragment extends Fragment implements
+		ReportPerformanceFragment.CallbackInterface,
+		ReportActivitiesFragment.CallbackInterface {
 
 	private ReportPerformanceFragment performanceFragment;
 	private ReportActivitiesFragment activitiesFragment;
@@ -26,14 +46,28 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 	private TextView tvActivities;
 	private TextView redDividerActivities;
 	private TextView blackDividerActivities;
-	private View reportChangeBtn;
-	private CircleImageView img;
+	private CircleImageView avatar;
 	private CallbackInterface callback;
+	private DisplayImageOptions options;
+	private ImageLoader imageLoader;
+	private Child child;
 
 	public interface CallbackInterface {
+		/**
+		 * Update the progressBar value when pull the listView
+		 * @param value current progress
+		 */
 		public void updateProgressBar(int value);
 
+		/**
+		 * Cancel update the progressBar when release the listView  
+		 */
 		public void cancelProgressBar();
+
+		/**
+		 * Reset the progressBar when finishing to update listView  
+		 */
+		public void resetProgressBar();
 	}
 
 	public void setCallbackInterface(CallbackInterface callback) {
@@ -44,21 +78,33 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report, container, false);
-		img = (CircleImageView) v.findViewById(R.id.img);
+		imageLoader = ImageLoader.getInstance();
+		options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_stub)
+				.showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
 		setUpView(v);
 		setUpListener(v);
 		return v;
 	}
 
 	private void setUpView(View v) {
+		child = DBChildren.getChildById(getActivity(),
+				SharePrefsUtils.getReportChildId(getActivity()));
 
 		FragmentTransaction fragmentTransaction = getChildFragmentManager()
 				.beginTransaction();
+
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("child", child);
 
 		performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
 				.findFragmentByTag("performance");
 		if (performanceFragment == null) {
 			performanceFragment = new ReportPerformanceFragment();
+
+			performanceFragment.setArguments(bundle);
 			fragmentTransaction.add(R.id.container, performanceFragment,
 					"performance");
 			performanceFragment.setCallbackInterface(this);
@@ -70,8 +116,10 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 				.findFragmentByTag("activities");
 		if (activitiesFragment == null) {
 			activitiesFragment = new ReportActivitiesFragment();
+			activitiesFragment.setArguments(bundle);
 			fragmentTransaction.add(R.id.container, activitiesFragment,
 					"activities");
+			activitiesFragment.setCallbackInterface(this);
 			fragmentTransaction.hide(activitiesFragment);
 		} else {
 			fragmentTransaction.hide(activitiesFragment);
@@ -88,6 +136,9 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 				.findViewById(R.id.red_divider_activities);
 		blackDividerActivities = (TextView) v
 				.findViewById(R.id.black_divider_activities);
+		avatar = (CircleImageView) v.findViewById(R.id.avatar);
+
+		imageLoader.displayImage(child.getIcon(), avatar, options, null);
 	}
 
 	private void setUpListener(View v) {
@@ -140,55 +191,41 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 
 					}
 				});
+
+		v.findViewById(R.id.report_change_btn).setOnClickListener(
+				new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(getActivity(),
+								ChangeKidsActivity.class);
+						startActivityForResult(
+								intent,
+								ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY);
+					}
+				});
 	}
 
+	/**
+	 * when switch tab to Report, reload the performance to show the progressbar animation.
+	 */
 	public void refreshPerformanceFragment() {
-		if (performanceFragment != null)
-			performanceFragment.updateView();
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		reportChangeBtn = getActivity().findViewById(R.id.report_change_btn);
-
-		reportChangeBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(),
-						ChangeKidsActivity.class);
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY);
-			}
-		});
+		if (performanceFragment != null) {
+			//performanceFragment.updateAdapter();
+		}
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY) {
-			if (data == null) {
-				return;
-			}
-			int index = data.getIntExtra("index", 0);
-			switch (index) {
-			case 2:
-				img.setImageResource(R.drawable.hugh);
-				activitiesFragment.updateAvatar((R.drawable.hugh));
-				performanceFragment.updateIndex(0);
-				break;
-			case 0:
-				img.setImageResource(R.drawable.head_img2);
-				activitiesFragment.updateAvatar((R.drawable.head_img2));
-				performanceFragment.updateIndex(1);
-				break;
-			case 1:
-				img.setImageResource(R.drawable.head_img3);
-				activitiesFragment.updateAvatar((R.drawable.head_img3));
-				performanceFragment.updateIndex(2);
-				break;
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK
+					&& data != null) {
+				child = (Child) data.getSerializableExtra("child");
+				imageLoader
+						.displayImage(child.getIcon(), avatar, options, null);
+				SharePrefsUtils.setReportChildId(getActivity(),
+						child.getChildId());
 			}
 		}
 	}
@@ -203,10 +240,95 @@ public class ReportFragment extends Fragment implements CallbackInterface {
 		callback.cancelProgressBar();
 	}
 
+	public void updateView() {
+		new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	}
+
 	public void setRefreshing(boolean isRefreshing) {
 		if (performanceFragment != null) {
 			performanceFragment.setRefreshing(isRefreshing);
 		}
+		if (activitiesFragment != null) {
+			activitiesFragment.setRefreshing(isRefreshing);
+		}
 	}
 
+	private class UpdateView extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("childId", String.valueOf(child.getChildId()));
+			return HttpRequestUtils.get("reportService/api/stat", map);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			System.out.println("report = " + result);
+			try {
+				JSONObject json = new JSONObject(result);
+				updatePerformance(json);
+				updateActivity(json);
+
+			} catch (JSONException e) {
+				System.out.println("reportService/api/stat ---->> "
+						+ e.getMessage());
+			}
+		}
+	}
+
+	private void updatePerformance(JSONObject json) throws JSONException {
+		Performance performance = new Performance();
+		performance.setChildId(child.getChildId());
+		performance.setDaily(json
+				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_DAILY));
+		performance.setWeekly(json
+				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_WEEKLY));
+		DBPerformance.insert(getActivity(), performance);
+		performanceFragment.updateView(performance);
+	}
+
+	private void updateActivity(JSONObject json) throws JSONException {
+		if (CommonUtils.isNotNull(json
+				.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO))) {
+			// delete activityInfo saved before of this child
+			DBActivityInfo.deleteByChildId(getActivity(), child.getChildId());
+
+			JSONArray activityInfolist = json
+					.getJSONArray(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO);
+			// save new activityInfo
+			for (int i = 0; i < activityInfolist.length(); i++) {
+				JSONObject item = (JSONObject) activityInfolist.get(i);
+				ActivityInfo activityInfo = new ActivityInfo();
+				activityInfo.setChildId(SharePrefsUtils
+						.getReportChildId(getActivity()));
+				activityInfo
+						.setTitle(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_TITLE));
+				activityInfo
+						.setTitleSc(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_SC));
+				activityInfo
+						.setTitleTc(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_TC));
+				activityInfo
+						.setUrl(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_URL));
+				activityInfo
+						.setUrlSc(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC));
+				activityInfo
+						.setUrlTc(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_URL_TC));
+				activityInfo
+						.setDate(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_DATE));
+				activityInfo
+						.setIcon(item
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_ICON));
+				DBActivityInfo.insert(getActivity(), activityInfo);
+			}
+			activitiesFragment.updateView();
+		}
+	}
 }

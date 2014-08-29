@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
 public class AboutActivity extends Activity {
 	private ImageView logo;
 	// sharedPreferences
@@ -34,14 +32,14 @@ public class AboutActivity extends Activity {
 
 		// check logo
 		logo = (ImageView) findViewById(R.id.logo_img);
-        //version
+		//version
 		try {
-			version =  getVersionName();
+			version = getVersionName();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		version_txt = (TextView) findViewById(R.id.version);
 		version_txt.setText(version);
 		checkLogo();
@@ -49,7 +47,7 @@ public class AboutActivity extends Activity {
 		setTitle(getString(R.string.text_about));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 	}
 

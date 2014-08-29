@@ -1,13 +1,5 @@
 package com.twinly.eyebb.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -17,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -33,7 +24,6 @@ import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
 import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
@@ -58,8 +48,6 @@ public class MainActivity extends FragmentActivity implements
 	private ProfileFragment profileFragment;
 	private TextView noticeNum;
 
-	private Map<String, ArrayList<String>> indoorLocatorData;
-
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
@@ -74,8 +62,8 @@ public class MainActivity extends FragmentActivity implements
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 		//checkBluetooth();
-		indoorLocatorData = new HashMap<String, ArrayList<String>>();
 		SystemUtils.initImageLoader(getApplicationContext());
+		new HttpRequestUtils();
 	}
 
 	@Override
@@ -92,6 +80,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
+	@SuppressLint("InflateParams")
 	private void setUpTab(Bundle savedInstanceState) {
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
 		mTabHost.setup();
@@ -227,84 +216,19 @@ public class MainActivity extends FragmentActivity implements
 		bar.setVisibility(View.INVISIBLE);
 	}
 
-	class UpdateView extends AsyncTask<Void, Void, String> {
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			bar.setVisibility(View.VISIBLE);
-			bar.progressiveStart();
-			indoorLocatorData.clear();
-		}
-
-		@Override
-		protected String doInBackground(Void... params) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return HttpRequestUtils.get("reportService/api/childrenList", null);
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			System.out.println("childrenList = " + result);
-			try {
-				JSONObject json = new JSONObject(result);
-				JSONArray list = json
-						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-				for (int i = 0; i < list.length(); i++) {
-					JSONObject object = (JSONObject) list.get(i);
-					String childId = object
-							.getString(HttpConstants.JSON_KEY_CHILD_ID);
-					String locationName = object.getJSONObject(
-							HttpConstants.JSON_KEY_LOCATION).getString(
-							HttpConstants.JSON_KEY_LOCATION_NAME);
-					updateLocationData(childId, locationName);
-					indoorLocatorFragment.updateListView(indoorLocatorData);
-				}
-
-			} catch (JSONException e) {
-				System.out.println("reportService/api/childrenList ---->> "
-						+ e.getMessage());
-			}
-			isRefreshing = false;
-			progressBar.setProgress(0);
-			bar.progressiveStop();
-			reportFragment.setRefreshing(false);
-			indoorLocatorFragment.setRefreshing(false);
-		}
-
-	}
-
-	private void updateLocationData(String childId, String locationName) {
-		ArrayList<String> childrenIdList = null;
-		if (indoorLocatorData.keySet().contains(locationName)) {
-			childrenIdList = indoorLocatorData.get(locationName);
-		} else {
-			childrenIdList = new ArrayList<String>();
-		}
-		childrenIdList.add(childId);
-		indoorLocatorData.put(locationName, childrenIdList);
-	}
-
-	private void updateProgress(int value) {
+	@Override
+	public void updateProgressBar(int value) {
 		progressBar.setVisibility(View.VISIBLE);
 		progressBar.setProgress(progressBar.getProgress() + value);
 		if (progressBar.getProgress() >= 100) {
 			isRefreshing = true;
 			reportFragment.setRefreshing(true);
-			indoorLocatorFragment.setRefreshing(true);
 
-			new UpdateView().execute();
+			bar.setVisibility(View.VISIBLE);
+			bar.progressiveStart();
+			indoorLocatorFragment.updateListView();
+			reportFragment.updateView();
 		}
-	}
-
-	@Override
-	public void updateProgressBar(int value) {
-		updateProgress(value);
 	}
 
 	@Override
@@ -315,8 +239,15 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
+	public void resetProgressBar() {
+		isRefreshing = false;
+		progressBar.setProgress(0);
+		bar.progressiveStop();
+		reportFragment.setRefreshing(false);
+	}
+
+	@Override
 	public void onProfileTabClicked() {
 		noticeNum.setVisibility(View.INVISIBLE);
-
 	}
 }

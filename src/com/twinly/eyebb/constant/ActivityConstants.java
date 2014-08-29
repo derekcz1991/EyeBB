@@ -1,7 +1,7 @@
 package com.twinly.eyebb.constant;
 
 public class ActivityConstants {
-	// sharepreference item name
+	// share_preference item name
 	public static final String SHARE_PREFERENCES_NAME = "EyeBB";
 	public static final String SHARE_PREFS_ITEM_APP_VERSION = "app_version";
 	public static final String SHARE_PREFS_ITEM_IS_LOGIN = "is_login";
@@ -17,7 +17,10 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG = "update_report_performance_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG = "update_report_activities_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG = "update_notice_flag";
-
+	
+	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
+	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";
+	
 	public static final int REQUEST_GO_TO_WELCOME_ACTIVITY = 100;
 	public static final int REQUEST_GO_TO_LOGIN_ACTIVITY = 101;
 	public static final int REQUEST_GO_TO_SIGN_UP_ACTIVITY = 102;

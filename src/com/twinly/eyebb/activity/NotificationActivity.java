@@ -21,7 +21,7 @@ public class NotificationActivity extends Activity {
 		setTitle(getString(R.string.text_notificationDetails));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 		Intent intent = getIntent();
 		child = intent.getIntExtra("child", 1);

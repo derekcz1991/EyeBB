@@ -46,9 +46,8 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return null;
+	public Child getItem(int position) {
+		return data.get(position);
 	}
 
 	@Override

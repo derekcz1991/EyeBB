@@ -1,0 +1,100 @@
+package com.twinly.eyebb.adapter;
+
+import java.util.List;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import com.eyebb.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.model.ActivityInfo;
+import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.SystemUtils;
+
+public class ActivitiesListViewAdapter extends BaseAdapter {
+	private Context context;
+	private List<ActivityInfo> list;
+	private LayoutInflater mInflater;
+	private DisplayImageOptions options;
+	private ImageLoader imageLoader;
+
+	private final class ViewHolder {
+		private CircleImageView icon;
+		private TextView title;
+		private TextView date;
+	}
+
+	public ActivitiesListViewAdapter(Context context, List<ActivityInfo> list) {
+		this.context = context;
+		this.list = list;
+		mInflater = LayoutInflater.from(context);
+		imageLoader = ImageLoader.getInstance();
+		options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_stub)
+				.showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
+	}
+
+	@Override
+	public int getCount() {
+		return list.size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View v = convertView;
+		ViewHolder viewHolder;
+		if (convertView == null) {
+			v = mInflater.inflate(R.layout.list_item_activity_info, parent,
+					false);
+			viewHolder = new ViewHolder();
+			viewHolder.icon = (CircleImageView) v.findViewById(R.id.icon);
+			viewHolder.title = (TextView) v.findViewById(R.id.title);
+			viewHolder.date = (TextView) v.findViewById(R.id.date);
+			v.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) v.getTag();
+		}
+		setUpView(viewHolder, position);
+		return v;
+	}
+
+	private void setUpView(final ViewHolder viewHolder, final int position) {
+		ActivityInfo activityInfo = list.get(position);
+		switch (SystemUtils.getLocale(context)) {
+		case Constants.LOCALE_CN:
+			viewHolder.title.setText(activityInfo.getTitleSc());
+			break;
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_TW:
+			viewHolder.title.setText(activityInfo.getTitleTc());
+			break;
+		default:
+			viewHolder.title.setText(activityInfo.getTitle());
+			break;
+		}
+		viewHolder.date.setText(activityInfo.getDate());
+		if (CommonUtils.isNotNull(activityInfo.getIcon())) {
+			imageLoader.displayImage(activityInfo.getIcon(), viewHolder.icon,
+					options, null);
+		}
+	}
+}

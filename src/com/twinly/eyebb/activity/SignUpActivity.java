@@ -35,7 +35,7 @@ public class SignUpActivity extends Activity {
 		setTitle(getString(R.string.btn_sign_up));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 		// sharedPreferences for signup
 		SandVpreferences = getSharedPreferences("signup", MODE_PRIVATE);

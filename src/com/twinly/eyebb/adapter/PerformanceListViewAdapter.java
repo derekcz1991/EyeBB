@@ -93,6 +93,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 					.getDrawable(list.get(position).getProgressBarstyle()));
 
 			// progress bar animation
+			System.out.println(list.get(position).isFlag());
 			if (list.get(position).isFlag() == false) {
 				list.get(position).setFlag(true);
 				new AsyncTask<Void, Integer, Void>() {

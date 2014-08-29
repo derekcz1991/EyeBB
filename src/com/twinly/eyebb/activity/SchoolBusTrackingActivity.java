@@ -46,7 +46,7 @@ public class SchoolBusTrackingActivity extends FragmentActivity {
 		setTitle(getString(R.string.text_school_bus_tracking));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 
 		setUpMapIfNeeded();
 	}

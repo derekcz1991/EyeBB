@@ -3,7 +3,8 @@ package com.twinly.eyebb.constant;
 public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
-	public static final String SERVER_URL = "http://158.182.246.221:8089/";
+	//public static final String SERVER_URL = "http://158.182.246.221:8089/";
+	public static final String SERVER_URL = "http://158.182.246.224:8080/";
 
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "连接服务器失败";
@@ -28,4 +29,19 @@ public class HttpConstants {
 
 	public static final String JSON_KEY_PARENTS = "parents";
 	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
+
+	public static final String JSON_KEY_LAST_UPDATE_TIME = "lastUpdateTime";
+
+	public static final String JSON_KEY_REPORT_PERFORMANCE_DAILY = "dailyFigure";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_WEEKLY = "weeklyFigure";
+
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO = "activityInfos";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE = "title";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_TC = "titleTc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_SC = "titleSc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL = "activity";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_TC = "activityTc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC = "activitySc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_ICON = "icon";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
 }

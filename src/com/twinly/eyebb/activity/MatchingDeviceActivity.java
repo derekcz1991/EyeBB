@@ -45,7 +45,7 @@ public class MatchingDeviceActivity extends Activity {
 		setTitle(getString(R.string.text_matching_device));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setIcon(android.R.color.transparent);
 		
 		// sharedPreferences for signup
 		SandVpreferences = getSharedPreferences("signup", MODE_PRIVATE);

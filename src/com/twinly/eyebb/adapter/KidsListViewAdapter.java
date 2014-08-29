@@ -28,7 +28,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 	private String[] childrenId;
 	private LayoutInflater inflater;
 	private DisplayImageOptions options;
-	private ImageLoader imageLoader = ImageLoader.getInstance();
+	private ImageLoader imageLoader;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;

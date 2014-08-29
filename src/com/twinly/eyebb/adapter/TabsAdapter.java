@@ -3,20 +3,16 @@ package com.twinly.eyebb.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
-import com.eyebb.R;
-import com.twinly.eyebb.activity.MainActivity;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;

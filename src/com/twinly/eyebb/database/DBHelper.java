@@ -33,25 +33,45 @@ public class DBHelper extends SQLiteOpenHelper {
 		tableCreate = new StringBuffer();
 		tableCreate.append("create table if not exists children")
 				.append("(id integer primary key autoincrement,")
-				.append("child_id integer,").append("name text,")
-				.append("icon text,").append("phone text)");
+				.append("child_id integer,")
+				.append("name text,")
+				.append("icon text,")
+				.append("phone text)");
 		db.execSQL(tableCreate.toString());
 
 		tableCreate = new StringBuffer();
+		tableCreate.append("create table if not exists performance")
+			.append("(id integer primary key autoincrement,")
+			.append("child_id integer,")
+			.append("daily text,")
+			.append("weekly text,")
+			.append("monthly text,")
+			.append("last_update_date text)");
+		db.execSQL(tableCreate.toString());
+			
+		tableCreate = new StringBuffer();
+		tableCreate.append("create table if not exists activity_infos")
+				.append("(id integer primary key autoincrement,")
+				.append("child_id integer,")
+				.append("title text,")
+				.append("title_tc text,")
+				.append("title_sc text,")
+				.append("url text,")
+				.append("url_tc text,")
+				.append("url_sc text,")
+				.append("date text,")
+				.append("icon text)");
+		db.execSQL(tableCreate.toString());
+		
+		/*tableCreate = new StringBuffer();
 		tableCreate.append("create table if not exists notification")
 				.append("(id integer primary key autoincrement,")
 				.append("notification_id integer,").append("title text,")
 				.append("date integer,").append("icon text,")
 				.append("url text,").append("is_read boolean)");
-
-		tableCreate = new StringBuffer();
-		tableCreate.append("create table if not exists activity_details")
-				.append("(id integer primary key autoincrement,")
-				.append("activity_detials_id integer,").append("title text,")
-				.append("date integer,").append("icon text,")
-				.append("url text,").append("is_read boolean)");
-
-		db.execSQL(tableCreate.toString());
+		db.execSQL(tableCreate.toString());*/
+		
+		
 	}
 
 	@Override
