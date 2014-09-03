@@ -26,8 +26,18 @@ public class MatchingVerificationActivity extends Activity {
 	// sharedPreferences
 	private SharedPreferences SandVpreferences;
 	private SharedPreferences.Editor editor;
-	
+
 	private String dateOfBirth;
+
+	private String submitDateOfBirth;
+	private String submitUserName;
+	private String submitPassword;
+	private String submitEmail;
+	private int submitKinderGartenId;
+	private String submitKinderGartenNameEns;
+	private String submitDeviceUUID;
+	private String submitDeviceMajor;
+	private String submitDeviceMinor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,7 @@ public class MatchingVerificationActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
-		
+
 		// sharedPreferences for signup
 		SandVpreferences = getSharedPreferences("signup", MODE_PRIVATE);
 		editor = SandVpreferences.edit();
@@ -47,19 +57,19 @@ public class MatchingVerificationActivity extends Activity {
 		int monthOfYear = calendar.get(Calendar.MONTH);
 		int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-		
 		datePicker = (DatePicker) findViewById(R.id.datePicker);
 		datePicker.init(year, monthOfYear, dayOfMonth,
 				new OnDateChangedListener() {
 					public void onDateChanged(DatePicker view, int year,
 							int monthOfYear, int dayOfMonth) {
-//						Toast.makeText(
-//								MatchingVerificationActivity.this,
-//								"当前日期为" + year + "年" + monthOfYear + "月"
-//										+ dayOfMonth + "日", Toast.LENGTH_SHORT)
-//								.show();
+						// Toast.makeText(
+						// MatchingVerificationActivity.this,
+						// "当前日期为" + year + "年" + monthOfYear + "月"
+						// + dayOfMonth + "日", Toast.LENGTH_SHORT)
+						// .show();
 						monthOfYear = monthOfYear + 1;
-						dateOfBirth = dayOfMonth + "/" + monthOfYear + "/" + year;
+						dateOfBirth = dayOfMonth + "/" + monthOfYear + "/"
+								+ year;
 						System.out.println("dateOfBirth==>" + dateOfBirth);
 						editor.putString("dateOfBirth", dateOfBirth);
 						editor.commit();
@@ -72,6 +82,44 @@ public class MatchingVerificationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				submitDateOfBirth = SandVpreferences.getString("dateOfBirth",
+						"1990/12/08");
+				submitUserName = SandVpreferences.getString("usrname",
+						"usrname");
+				submitPassword = SandVpreferences.getString("password",
+						"password");
+				submitEmail = SandVpreferences.getString("email", "email");
+				submitKinderGartenId = SandVpreferences.getInt(
+						"kindergartenId", 0);
+				submitKinderGartenNameEns = SandVpreferences.getString(
+						"nameEns", "nameEns");
+				submitDeviceUUID = SandVpreferences.getString(
+						"submitDeviceUUID", "submitDeviceUUID");
+				submitDeviceMajor = SandVpreferences.getString(
+						"submitDeviceMajor", "submitDeviceMajor");
+				submitDeviceMinor = SandVpreferences.getString(
+						"submitDeviceMinor", "submitDeviceMinor");
+
+				System.out
+						.println("submitDateOfBirth + submitUserName + submitPassword + submitEmail + submitKinderGartenId + submitKinderGartenNameEns=>"
+								+ submitDateOfBirth
+								+ " "
+								+ submitUserName
+								+ " "
+								+ submitPassword
+								+ " "
+								+ submitEmail
+								+ " "
+								+ submitKinderGartenId
+								+ " "
+								+ submitKinderGartenNameEns);
+				System.out
+						.println("submitDeviceUUID + submitDeviceMajor + submitDeviceMinor=>"
+								+ submitDeviceUUID
+								+ " "
+								+ submitDeviceMajor
+								+ " " + submitDeviceMinor);
+
 				Intent intent = new Intent(MatchingVerificationActivity.this,
 						VerifyDialog.class);
 				startActivity(intent);

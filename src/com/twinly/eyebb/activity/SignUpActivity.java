@@ -46,9 +46,6 @@ public class SignUpActivity extends Activity {
 		ed_email = (EditText) findViewById(R.id.ed_email);
 		ed_password = (EditText) findViewById(R.id.ed_password);
 
-	
-		
-		
 		btnContinue = (Button) findViewById(R.id.btn_continue);
 		btnContinue.setOnClickListener(new OnClickListener() {
 
@@ -59,7 +56,8 @@ public class SignUpActivity extends Activity {
 				username = ed_username.getText().toString();
 				email = ed_email.getText().toString();
 				password = ed_password.getText().toString();
-				System.out.println("username + email + password" + username + email + password);
+				System.out.println("username + email + password" + username
+						+ " " + email + " " + password);
 				if (isUsername(username)) {
 
 					if (isEmail(email)) {
@@ -69,7 +67,7 @@ public class SignUpActivity extends Activity {
 							editor.putString("email", email);
 							editor.putString("password", password);
 							editor.commit();
-							
+
 							Intent intent = new Intent(SignUpActivity.this,
 									MatchingDeviceActivity.class);
 							startActivity(intent);
@@ -88,7 +86,8 @@ public class SignUpActivity extends Activity {
 
 				} else {
 					Toast.makeText(SignUpActivity.this,
-							R.string.text_error_username, Toast.LENGTH_SHORT).show();
+							R.string.text_error_username, Toast.LENGTH_SHORT)
+							.show();
 				}
 
 			}

@@ -101,8 +101,10 @@ public class RadarTrackingFragment extends Fragment {
 	private int initY;
 	private int addX;
 	private int addY;
-	private int missingChildNum;
-	private int unMissingChildNum;
+	private String missingChildNum;
+	private String unMissingChildNum;
+	private TextView missingChildNumTxt;
+	private TextView unMissingChildNumTxt;
 	private Boolean isClickConnection = false;
 
 	@SuppressLint("NewApi")
@@ -127,9 +129,11 @@ public class RadarTrackingFragment extends Fragment {
 		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
 		radarScrollView.smoothScrollTo(0, 0);
 
-		// radarBeepBtn1 = v.findViewById(R.id.radar_beep_btn1);
-		// radarBeepBtn2 = v.findViewById(R.id.radar_beep_btn2);
-
+		missingChildNumTxt = (TextView) v.findViewById(R.id.radar_text_missed_number);
+		unMissingChildNumTxt = (TextView) v.findViewById(R.id.radar_text_supervised_number);
+		
+		
+		
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
@@ -240,7 +244,7 @@ public class RadarTrackingFragment extends Fragment {
 			CircleImageView cim = new CircleImageView(getActivity());
 
 			// 0 is missing 1 is unmiss
-			int imMiss = 1;
+			int imMiss = 0;
 			HeadPosition(imMiss, cim);
 
 			// Uri uri = Uri.parse(child.getIcon());
@@ -280,6 +284,9 @@ public class RadarTrackingFragment extends Fragment {
 		int toporBottom = 1 + (int) (Math.random() * 2);
 
 		if (imMiss == 0) {
+			missingChildNum = "2";
+			missingChildNumTxt.setText(missingChildNum);
+			
 			cim.setBorderColor(getResources().getColor(R.color.red));
 			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
 
