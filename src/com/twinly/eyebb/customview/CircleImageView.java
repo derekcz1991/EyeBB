@@ -13,8 +13,10 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 import com.eyebb.R;
 
@@ -51,6 +53,17 @@ public class CircleImageView extends ImageView {
 
     public CircleImageView(Context context) {
         super(context);
+        init();
+    }
+
+    private void init() {
+        super.setScaleType(SCALE_TYPE);
+        mReady = true;
+
+        if (mSetupPending) {
+            setup();
+            mSetupPending = false;
+        }
     }
 
     public CircleImageView(Context context, AttributeSet attrs) {
@@ -74,6 +87,7 @@ public class CircleImageView extends ImageView {
             setup();
             mSetupPending = false;
         }
+        init();
     }
 
     @Override
@@ -234,5 +248,6 @@ public class CircleImageView extends ImageView {
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
+
 
 }

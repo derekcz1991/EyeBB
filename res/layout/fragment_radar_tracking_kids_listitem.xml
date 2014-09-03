@@ -61,7 +61,7 @@
     </RelativeLayout>
 
       <LinearLayout
-          android:id="@+id/radar_beep_all_btn"
+          android:id="@+id/radar_item_beep_btn"
           android:layout_width="wrap_content"
           android:layout_height="32dp"
           android:layout_alignParentRight="true"

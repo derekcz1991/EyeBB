@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +8,7 @@
     <ScrollView
         android:id="@+id/radar_scrollview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:id="@+id/liner_radar"
@@ -59,7 +59,9 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_white"
                 android:gravity="center_horizontal"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" >
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -157,12 +159,23 @@
             </LinearLayout>
             <!-- finish connect -->
 
+
+            <!--
             <RelativeLayout
-                android:id="@+id/radar"
+                android:id="@+id/radar_view"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.3"
                 android:background="@drawable/bg_white" >
+
+                <com.twinly.eyebb.customview.CircleImageView
+                    android:id="@+id/radar_child_scan_head_img"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/hugh"
+                    app:border_color="@color/red"
+                    app:border_width="2dp" />
 
                 <RelativeLayout
                     android:id="@+id/layout_circle"
@@ -179,13 +192,15 @@
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/bg_radar_circle" />
 
-                    <com.twinly.eyebb.customview.CircleImageView
+                    
+                         <com.twinly.eyebb.customview.CircleImageView
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_marginLeft="8dp"
                         android:src="@drawable/hugh"
                         app:border_color="@color/red"
                         app:border_width="2dp" />
+                   
 
                     <ImageView
                         android:id="@+id/bg_radar_rotate_img"
@@ -276,23 +291,196 @@
                         android:text="@string/text_Missed" />
                 </RelativeLayout>
             </RelativeLayout>
+            -->
+            <!--
+                  <com.twinly.eyebb.customview.RadarLinearLayoutForListView
+                android:id="@+id/radar_radar_list"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:alpha="0.3"
+                android:orientation="vertical" >
+            </com.twinly.eyebb.customview.RadarLinearLayoutForListView>
+            -->
 
-            <com.twinly.eyebb.customview.ListViewForScrollView
+
+            <!-- radar -->
+
+            <RelativeLayout
+                android:id="@+id/radar_view"
+                android:layout_width="fill_parent"
+                android:layout_height="240dp"
+                android:alpha="0.3"
+                android:background="@drawable/bg_white" >
+
+                <!--
+                     <com.twinly.eyebb.customview.CircleImageView
+                    android:id="@+id/radar_child_scan_head_img"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/hugh"
+                    app:border_color="@color/red"
+                    app:border_width="2dp" />
+                -->
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RelativeLayout
+                        android:id="@+id/layout_circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:paddingBottom="20dp"                      
+                        android:paddingTop="20dp" >
+
+                        <ImageView
+                            android:id="@+id/radar_circle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/bg_radar_circle" />
+
+                        <!--
+           <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/radar_child_head_0"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/hugh"
+                app:border_color="@color/red"
+                app:border_width="2dp" /> 
+                        -->
+
+             <!--            <com.twinly.eyebb.customview.CircleImageView
+                            android:id="@+id/radar_child_head_1"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/hugh"
+                            app:border_color="@color/red"
+                            app:border_width="2dp" /> -->
+
+                        <ImageView
+                            android:id="@+id/bg_radar_rotate_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/bg_radar_rotate" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_supervised"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="18dp" >
+
+                        <LinearLayout
+                            android:id="@+id/layout_supervised_liner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/radar_text_supervised_number_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_radar_supervised" />
+
+                            <TextView
+                                android:id="@+id/radar_text_supervised_number"
+                                style="@style/DarkGreyText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:text="0" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/radar_text_supervised"
+                            style="@style/DarkGreyText_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/layout_supervised_liner"
+                            android:text="@string/text_Supervised" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_missed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:paddingBottom="8dp"
+                        android:paddingRight="4dp" >
+
+                        <LinearLayout
+                            android:id="@+id/layout_missed_liner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/radar_text_missed_number_img"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="4dp"
+                                android:src="@drawable/ic_radar_missed" />
+
+                            <TextView
+                                android:id="@+id/radar_text_missed_number"
+                                style="@style/DarkGreyText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="15dp"
+                                android:text="1" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/radar_text_missed"
+                            style="@style/DarkGreyText_12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/layout_missed_liner"
+                            android:text="@string/text_Missed" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+            <!-- radar -->
+
+            <com.twinly.eyebb.customview.LinearLayoutForListView
                 android:id="@+id/radar_children_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:cacheColorHint="@color/transparent"
-                android:divider="@null"
-                android:dividerHeight="8dp" >
-            </com.twinly.eyebb.customview.ListViewForScrollView> 
+                android:alpha="0.3"
+                android:orientation="vertical" >
+            </com.twinly.eyebb.customview.LinearLayoutForListView>
+
+            <!--
+                 <TextView
+                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="10"
+                android:text="11s"/>
+            -->
+
         </LinearLayout>
     </ScrollView>
 
+    <!-- footer -->
+
     <LinearLayout
+        android:id="@+id/radar_foot_beep_btn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:clickable="true"
         android:gravity="center"
         android:orientation="vertical" >
 
@@ -327,4 +515,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

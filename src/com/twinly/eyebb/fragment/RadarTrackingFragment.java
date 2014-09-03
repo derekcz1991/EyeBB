@@ -12,16 +12,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -33,16 +36,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.ServicesActivity;
-import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.customview.ListViewForScrollView;
+import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RadarTrackingFragment extends Fragment {
@@ -50,18 +55,14 @@ public class RadarTrackingFragment extends Fragment {
 	ArrayList<HashMap<String, Object>> mKidsData;
 	ImageView radar_rotate;
 	private View radarBeepAllBtn;
-	private View radarBeepBtn;
-	private View radarBeepBtn1;
-	private View radarBeepBtn2;
 
 	private View btnConfirm;
 	private View btnCancel;
 	private View btnStatus;
-	private View radarView;
+
 	private BluetoothAdapter mBluetoothAdapter;
 	private final static int BLE_VERSION = 18;
 	private static final int REQUEST_ENABLE_BT = 1;
-	private boolean isFirstDialog = true;
 
 	// bluetooth
 	private boolean scan_flag = false;
@@ -85,24 +86,44 @@ public class RadarTrackingFragment extends Fragment {
 	private String BeepDeviceUUID = "4D616361726F6E202020202020202020";
 	private int findDevice = 100;
 	private ArrayList<Device> device;
-	private ListViewForScrollView listView;
-	private RadarKidsListViewAdapter adapter;
+	private LinearLayoutForListView ChildlistView;
+	private RadarKidsListViewAdapter Childadapter;
 	private ScrollView radarScrollView;
-	private ArrayList<Child> data;
-	private CircleImageView headImage;
-	
+	// private CircleImageView circleImageView;
+	private View RadarView;
+	private LayoutInflater inflater;
+	private ArrayList<Child> ChildData;
+	private ImageLoader imageLoader;
+	private DisplayImageOptions options;
+	private int getScreenWidth;
+	private int DipGetScreenWidth;
+	private int initX;
+	private int initY;
+	private int addX;
+	private int addY;
+	private int missingChildNum;
+	private int unMissingChildNum;
+	private Boolean isClickConnection = false;
+
 	@SuppressLint("NewApi")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		System.out.println("onCreateView");
+
 		View v = inflater.inflate(R.layout.fragment_radar_tracking, container,
 				false);
 
-		listView = (ListViewForScrollView) v
+		ChildlistView = (LinearLayoutForListView) v
 				.findViewById(R.id.radar_children_list);
-		adapter = new RadarKidsListViewAdapter(getActivity(),
+		Childadapter = new RadarKidsListViewAdapter(getActivity(),
 				DBChildren.getChildrenList(getActivity()));
-		listView.setAdapter(adapter);
+		ChildlistView.setAdapter(Childadapter);
+		ChildlistView.setClickable(false);
+
+		RadarView = v.findViewById(R.id.radar_view);
+
+		radarBeepAllBtn = v.findViewById(R.id.radar_beep_all_btn);
+
 		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
 		radarScrollView.smoothScrollTo(0, 0);
 
@@ -125,7 +146,22 @@ public class RadarTrackingFragment extends Fragment {
 		btnConfirm = v.findViewById(R.id.btn_confirm);
 		btnCancel = v.findViewById(R.id.btn_cancel);
 		btnStatus = v.findViewById(R.id.connection_status_btn);
-		radarView = v.findViewById(R.id.radar);
+
+		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (isClickConnection) {
+					if (CommonUtils.isFastDoubleClick()) {
+						return;
+					} else {
+						Intent intent = new Intent(getActivity(),
+								BeepDialog.class);
+						startActivity(intent);
+					}
+				}
+			}
+		});
 
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
@@ -137,9 +173,16 @@ public class RadarTrackingFragment extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				isClickConnection = true;
+
 				getActivity().findViewById(R.id.connect_device_layout)
 						.setVisibility(View.GONE);
-				radarView.setAlpha(1);
+
+				ChildlistView.setAlpha(1);
+				RadarView.setAlpha(1);
+
+				ChildlistView.setClickable(true);
+
 				radarAnim();
 				// if (scan_flag) {
 				// autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
@@ -168,28 +211,181 @@ public class RadarTrackingFragment extends Fragment {
 			public void onClick(View v) {
 				getActivity().findViewById(R.id.connect_device_layout)
 						.setVisibility(View.VISIBLE);
+				isClickConnection = false;
 
 			}
 		});
 
+		addImageHead(v);
 		return v;
 
 	}
 
-	private void addImageHead() {
-		for (int i = 0; i < data.size(); i++) {
-			final Child child = data.get(i);
-			if (TextUtils.isEmpty(child.getIcon()) == false) {
-				headImage = (CircleImageView) new ImageView(getActivity());
-				Image2.setImageResource(img);
-				// DensityUtil.px2dip(this, imageHight);
-				// Image2.setId(110); //注意这点 设置id
-				// Image2.setOnClickListener(this);
-				RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			}
+	@SuppressLint("ResourceAsColor")
+	private void addImageHead(View v) {
+		// 手动添加imageview
+		options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_stub)
+				.showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+				.cacheOnDisk(true).considerExifParams(true).build();
+		imageLoader = ImageLoader.getInstance();
+		ChildData = DBChildren.getChildrenList(getActivity());
+		for (int i = 0; i < ChildData.size(); i++) {
+			Child child = ChildData.get(i);
+
+			RelativeLayout mainLayout = (RelativeLayout) v
+					.findViewById(R.id.radar_view);
+
+			CircleImageView cim = new CircleImageView(getActivity());
+
+			// 0 is missing 1 is unmiss
+			int imMiss = 1;
+			HeadPosition(imMiss, cim);
+
+			// Uri uri = Uri.parse(child.getIcon());
+			// ImageView cim = new ImageView(getActivity());
+			// layoutParams.leftMargin = 30;
+			// layoutParams.topMargin = 100;
+
+			mainLayout.addView(cim);
+			// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
+			imageLoader.displayImage(child.getIcon(), cim, options, null);
+
 		}
 
+	}
+
+	@SuppressLint("NewApi")
+	private void HeadPosition(int imMiss, CircleImageView cim) {
+		// // 初始化為中心
+
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+						getActivity(), 32));
+
+		cim.setX(DensityUtil.dip2px(getActivity(), 160));
+
+		getScreenWidth = getScreenInfo();
+		// 24 = 8邊框 + 16ImageView
+		DipGetScreenWidth = getScreenWidth / 2
+				- DensityUtil.dip2px(getActivity(), 24);
+		// 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+		// int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+		// System.out.println("tete" + te);
+		initX = DipGetScreenWidth;
+		initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+
+		int RightorLeft = 1 + (int) (Math.random() * 2);
+		int toporBottom = 1 + (int) (Math.random() * 2);
+
+		if (imMiss == 0) {
+			cim.setBorderColor(getResources().getColor(R.color.red));
+			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+
+			int missX = (int) (Math.random() * 120);
+			int missY = (int) (Math.random() * 120);
+
+			System.out.println("addY + addx :" + missX * missX + " " + missY
+					* missY + " " + DensityUtil.dip2px(getActivity(), 14400)
+					+ " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
+					+ 90 + (int) (Math.random() * 30));
+			if ((missX * missX + missY * missY) < 14000
+					&& (missX * missX + missY * missY) > 10000) {
+				addX = DensityUtil.dip2px(getActivity(), missX);
+				addY = DensityUtil.dip2px(getActivity(), missY);
+				System.out.println("啊啊啊啊啊啊 ");
+
+				if (toporBottom == 1) {
+					initY = initY - addY;
+
+					if (RightorLeft == 1) {
+						initX = initX + addX;
+					} else if (RightorLeft == 2) {
+						initX = initX - addX;
+					}
+				} else if (toporBottom == 2) {
+					initY = initY + addY;
+
+					if (RightorLeft == 1) {
+						initX = initX + addX;
+					} else if (RightorLeft == 2) {
+						initX = initX - addX;
+					}
+				}
+
+				System.out.println("initX + initY :" + initX + " " + initY);
+
+				cim.setX(initX);
+				cim.setY(initY);
+			} else {
+				HeadPosition(imMiss, cim);
+			}
+
+		} else if (imMiss == 1) {
+			cim.setBorderColor(getResources().getColor(R.color.white));
+			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+
+			addX = DensityUtil.dip2px(getActivity(),
+					(int) (Math.random() * 100));
+			addY = DensityUtil.dip2px(getActivity(),
+					(int) (Math.random() * 100));
+
+			if ((addX * addX + addY * addY) <= DensityUtil.dip2px(
+					getActivity(), 7225)) {
+				if (toporBottom == 1) {
+					initY = initY - addY;
+
+					if (RightorLeft == 1) {
+						initX = initX + addX;
+					} else if (RightorLeft == 2) {
+						initX = initX - addX;
+					}
+				} else if (toporBottom == 2) {
+					initY = initY + addY;
+
+					if (RightorLeft == 1) {
+						initX = initX + addX;
+					} else if (RightorLeft == 2) {
+						initX = initX - addX;
+					}
+				}
+
+				System.out.println("initX + initY :" + initX + " " + initY);
+				cim.setX(initX);
+				cim.setY(initY);
+			} else {
+				HeadPosition(imMiss, cim);
+			}
+
+		}
+
+		cim.setLayoutParams(layoutParams);
+	}
+
+	private int getScreenInfo() {
+		// TODO Auto-generated method stub
+		WindowManager wm = (WindowManager) getActivity().getSystemService(
+				Context.WINDOW_SERVICE);
+
+		int width = wm.getDefaultDisplay().getWidth();
+		int height = wm.getDefaultDisplay().getHeight();
+		System.out.println("widthwidthwidthwidth=>" + width);
+		return width;
+	}
+
+	public Bitmap getBitmapFromUri(Uri uri) {
+		try {
+			// 读取uri所在的图片
+			Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity()
+					.getContentResolver(), uri);
+			return bitmap;
+		} catch (Exception e) {
+			Log.e("[Android]", e.getMessage());
+			Log.e("[Android]", "目录为：" + uri);
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@SuppressLint("NewApi")
@@ -209,7 +405,7 @@ public class RadarTrackingFragment extends Fragment {
 		// }
 
 		if (mBluetoothAdapter.isEnabled()) {
-			radarAnim();
+			// radarAnim();
 
 		}
 
@@ -268,29 +464,6 @@ public class RadarTrackingFragment extends Fragment {
 
 			}
 		}
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onActivityCreated(savedInstanceState);
-		System.out.println("onActivityCreated");
-
-		radarBeepAllBtn = getActivity().findViewById(R.id.radar_beep_all_btn);
-
-		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (CommonUtils.isFastDoubleClick()) {
-					return;
-				} else {
-					Intent intent = new Intent(getActivity(), BeepDialog.class);
-					startActivity(intent);
-				}
-			}
-		});
-
 	}
 
 	private void radarAnim() {
