@@ -195,6 +195,12 @@
             android:name="com.twinly.eyebb.bluetooth.BluetoothLeService"
             android:enabled="true" />
 
+        <activity
+            android:name="com.twinly.eyebb.bluetooth.DeviceListAcitivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >

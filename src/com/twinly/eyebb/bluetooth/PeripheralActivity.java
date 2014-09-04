@@ -88,19 +88,19 @@ public class PeripheralActivity extends Activity {
 			}
 		});
 
-		scanBtn = (Button) findViewById(R.id.scanButton);
-		scanBtn.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				firstScan = true;
-				if (scan_flag) {
-					scanLeDevice(false);
-				} else {
-					scanLeDevice(true);
-				}
-			}
-		});
+//		scanBtn = (Button) findViewById(R.id.scanButton);
+//		scanBtn.setOnClickListener(new Button.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				// TODO Auto-generated method stub
+//				firstScan = true;
+//				if (scan_flag) {
+//					scanLeDevice(false);
+//				} else {
+//					scanLeDevice(true);
+//				}
+//			}
+//		});
 
 		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 		if (!getPackageManager().hasSystemFeature(

@@ -66,8 +66,10 @@
 	<string name="text_radar_status_disconnection">Disconnection</string>
     <string name="text_radar_status_start_connected">Start to Connect</string>
      <string name="text_radar_status_connection">Connection</string>
-	<string name="text_connect_device">connect to your baby\&apos; device?</string>
-    
+	<string name="text_connect_device">Connect to your baby\&apos; device?</string>
+    <string name="text_select_device">Please select your device.</string>
+    <string name="text_device_list">Device list</string>
+      
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

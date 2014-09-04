@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
 
 public class RadarKidsListViewAdapter extends BaseAdapter {
@@ -108,7 +109,12 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					System.out.println("positionposition = > " + position + "");
+					if (CommonUtils.isFastDoubleClick()) {
+						return;
+					}else{
+						System.out.println("positionposition = > " + position + "");
+					}
+					
 				}
 			});
 			

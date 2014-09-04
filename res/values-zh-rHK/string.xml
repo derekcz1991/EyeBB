@@ -75,7 +75,9 @@
     <string name="text_radar_status_start_connected">連接開始</string>
      <string name="text_radar_status_connection">連接中</string>
     	<string name="text_connect_device">開始連接baby的設備?</string> 
-    
+      <string name="text_select_device">請選擇您的設備.</string>
+       <string name="text_device_list">設備列表</string>
+      
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
