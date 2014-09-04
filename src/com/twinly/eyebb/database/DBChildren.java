@@ -54,12 +54,7 @@ public class DBChildren {
 		Cursor cursor = db.rawQuery("select * from children", null);
 		while (cursor.moveToNext()) {
 			Child child = new Child();
-			child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
-			child.setName(cursor.getString(cursor.getColumnIndex("name")));
-			child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
-			child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
-			child.setLocationName("");
-
+			createChild(child, cursor);
 			map.put(String.valueOf(child.getChildId()), child);
 		}
 		cursor.close();
@@ -73,12 +68,7 @@ public class DBChildren {
 		Cursor cursor = db.rawQuery("select * from children", null);
 		while (cursor.moveToNext()) {
 			Child child = new Child();
-			child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
-			child.setName(cursor.getString(cursor.getColumnIndex("name")));
-			child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
-			child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
-			child.setLocationName("");
-
+			createChild(child, cursor);
 			childList.add(child);
 		}
 		cursor.close();
@@ -93,14 +83,22 @@ public class DBChildren {
 				+ childId, null);
 		if (cursor.moveToFirst()) {
 			child = new Child();
-			child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
-			child.setName(cursor.getString(cursor.getColumnIndex("name")));
-			child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
-			child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
-			child.setLocationName("");
+			createChild(child, cursor);
 		}
 		cursor.close();
 		db.close();
+		return child;
+	}
+
+	private static Child createChild(Child child, Cursor cursor) {
+		child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
+		child.setName(cursor.getString(cursor.getColumnIndex("name")));
+		child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
+		child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
+		child.setPhone(cursor.getString(cursor.getColumnIndex("uuid")));
+		child.setPhone(cursor.getString(cursor.getColumnIndex("major")));
+		child.setPhone(cursor.getString(cursor.getColumnIndex("minor")));
+		child.setLocationName("");
 		return child;
 	}
 }
