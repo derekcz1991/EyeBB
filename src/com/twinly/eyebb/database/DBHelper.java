@@ -36,7 +36,10 @@ public class DBHelper extends SQLiteOpenHelper {
 				.append("child_id integer,")
 				.append("name text,")
 				.append("icon text,")
-				.append("phone text)");
+				.append("phone text,")
+				.append("uuid text,")
+				.append("major text,")
+				.append("minor text)");
 		db.execSQL(tableCreate.toString());
 
 		tableCreate = new StringBuffer();
