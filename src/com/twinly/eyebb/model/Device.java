@@ -2,17 +2,10 @@ package com.twinly.eyebb.model;
 
 public class Device {
 	private String name;// 参数名
-	private String value;// 参数值
-
-	public Device() {
-		super();
-	}
-
-	public Device(String name, String value) {
-		super();
-		this.name = name;
-		this.value = value;
-	}
+	private String uuid;
+	private String address;
+	private int major;
+	private int minor;
 
 	public String getName() {
 		return name;
@@ -22,42 +15,36 @@ public class Device {
 		this.name = name;
 	}
 
-	public String getValue() {
-		return value;
+	public String getUuid() {
+		return uuid;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
-	@Override
-	public String toString() {
-		return "Parameter [name=" + name + ", value=" + value + "]";
+	public String getAddress() {
+		return address;
 	}
 
-	@Override
-	public boolean equals(Object arg0) {
-		if (null == arg0) {
-			return false;
-		}
-		if (this == arg0) {
-			return true;
-		}
-		if (arg0 instanceof Parameter) {
-			Parameter param = (Parameter) arg0;
-
-			return this.getName().equals(param.getName())
-					&& this.getValue().equals(param.getValue());
-		}
-		return false;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public int compareTo(Device param) {
-		int compared;
-		compared = name.compareTo(param.getName());
-		if (0 == compared) {
-			compared = value.compareTo(param.getValue());
-		}
-		return compared;
+	public int getMajor() {
+		return major;
 	}
+
+	public void setMajor(int major) {
+		this.major = major;
+	}
+
+	public int getMinor() {
+		return minor;
+	}
+
+	public void setMinor(int minor) {
+		this.minor = minor;
+	}
+
 }

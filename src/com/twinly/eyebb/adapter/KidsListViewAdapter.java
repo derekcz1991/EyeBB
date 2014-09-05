@@ -120,14 +120,18 @@ public class KidsListViewAdapter extends BaseAdapter {
 				if (CommonUtils.isFastDoubleClick()) {
 					return;
 				} else {
-//					if(child.beacon == null){
-//						
-//					}else{
-//						Intent intent = new Intent(context, BeepDialog.class);
-//						context.startActivity(intent);
-//					}
-				
-					Intent intent = new Intent(context, DeviceListAcitivity.class);
+					// if(child.beacon == null){
+					//
+					// }else{
+					// Intent intent = new Intent(context, BeepDialog.class);
+					// context.startActivity(intent);
+					// }
+
+					Intent intent = new Intent(context,
+							DeviceListAcitivity.class);
+					intent.putExtra("childID", child.getChildId());
+					System.out.println("child.getChildId()=>"
+							+ child.getChildId());
 					context.startActivity(intent);
 				}
 			}

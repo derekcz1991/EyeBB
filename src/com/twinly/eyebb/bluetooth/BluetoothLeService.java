@@ -143,7 +143,8 @@ public class BluetoothLeService extends Service {
 		sendBroadcast(intent);
 	}
 
-	private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
+	private void broadcastUpdate(final String action,
+			final BluetoothGattCharacteristic characteristic) {
 		final Intent intent = new Intent(action);
 
 		// This is special handling for the Heart Rate Measurement profile. Data
@@ -170,11 +171,13 @@ public class BluetoothLeService extends Service {
 			if (data != null && data.length > 0) {
 				final StringBuilder stringBuilder = new StringBuilder(
 						data.length);
-				for (byte byteChar : data){
+				for (byte byteChar : data) {
 					stringBuilder.append(String.format("%02X", byteChar));
 				}
-				//System.out.println("ppp" + new String(data) + "\n" + stringBuilder.toString());
-				//intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
+				// System.out.println("ppp" + new String(data) + "\n" +
+				// stringBuilder.toString());
+				// intent.putExtra(EXTRA_DATA, new String(data) + "\n" +
+				// stringBuilder.toString());
 				intent.putExtra(EXTRA_DATA, stringBuilder.toString());
 			}
 		}
@@ -249,10 +252,22 @@ public class BluetoothLeService extends Service {
 			return false;
 		}
 
-		// Previously connected device. Try to reconnect. (��ǰ���ӵ��豸�� ������������)
-		if (mBluetoothDeviceAddress != null
-				&& address.equals(mBluetoothDeviceAddress)
-				&& mBluetoothGatt != null) {
+		// Previously connected device. Try to reconnect. (��ǰ���ӵ��豸��
+		// ������������)
+		// if (mBluetoothDeviceAddress != null
+		// && address.equals(mBluetoothDeviceAddress)
+		// && mBluetoothGatt != null) {
+		// Log.d(TAG,
+		// "Trying to use an existing mBluetoothGatt for connection.");
+		// if (mBluetoothGatt.connect()) {
+		// mConnectionState = STATE_CONNECTING;
+		// return true;
+		// } else {
+		// return false;
+		// }
+		// }
+		if (mBluetoothDeviceAddress != null && mBluetoothGatt != null
+				&& address.equals(mBluetoothDeviceAddress)) {
 			Log.d(TAG,
 					"Trying to use an existing mBluetoothGatt for connection.");
 			if (mBluetoothGatt.connect()) {
@@ -393,8 +408,8 @@ public class BluetoothLeService extends Service {
 
 		return mBluetoothGatt.readRemoteRssi();
 	}
-	
-	public boolean discoverServices(){
+
+	public boolean discoverServices() {
 		if (mBluetoothGatt == null)
 			return false;
 		return mBluetoothGatt.discoverServices();

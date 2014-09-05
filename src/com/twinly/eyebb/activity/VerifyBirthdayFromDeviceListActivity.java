@@ -1,5 +1,6 @@
 package com.twinly.eyebb.activity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -17,12 +18,14 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.model.Parameter;
+import com.twinly.eyebb.utils.SyncHttpUtils;
 
-public class MatchingVerificationActivity extends Activity {
+public class VerifyBirthdayFromDeviceListActivity extends Activity {
 	private DatePicker datePicker;
 	private Calendar calendar;
 	private Button btnVerify;
-
+	private ArrayList<Parameter> params;
 	// sharedPreferences
 	private SharedPreferences SandVpreferences;
 	private SharedPreferences.Editor editor;
@@ -40,6 +43,7 @@ public class MatchingVerificationActivity extends Activity {
 	private String submitDeviceMinor;
 	private long childIDfromDeviceList;
 	private String fromDeviceList = "list";
+	private String getDeviceMajorAndMinorURL = "http://158.182.246.221:8089/reportService/api/configBeaconRel";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +59,17 @@ public class MatchingVerificationActivity extends Activity {
 		editor = SandVpreferences.edit();
 
 		Intent intent = getIntent();
-//		fromDeviceList = intent.getStringExtra("fromDeviceList");
-//		if (fromDeviceList != null || !fromDeviceList.equals("")) {
-//			if (fromDeviceList.equals("DeviceListAcitivity")) {
-//				System.out.println("DeviceListAcitivityDeviceListAcitivity=>");
-//			}
-//		}
-//
-//		childIDfromDeviceList = intent
-//				.getLongExtra("ChildIDfromDeviceList", 10);
-//
-//		System.out.println("ChildIDfromDeviceList=>" + childIDfromDeviceList);
+		fromDeviceList = intent.getStringExtra("fromDeviceList");
+		if (fromDeviceList != null || !fromDeviceList.equals("")) {
+			if (fromDeviceList.equals("DeviceListAcitivity")) {
+				System.out.println("DeviceListAcitivityDeviceListAcitivity=>");
+			}
+		}
+
+		childIDfromDeviceList = intent
+				.getLongExtra("ChildIDfromDeviceList", 10);
+
+		System.out.println("ChildIDfromDeviceList=>" + childIDfromDeviceList);
 
 		calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
@@ -134,13 +138,40 @@ public class MatchingVerificationActivity extends Activity {
 								+ " "
 								+ submitDeviceMajor
 								+ " " + submitDeviceMinor);
-
-				Intent intent = new Intent(MatchingVerificationActivity.this,
+				new Thread(postToServerRunnable).start();
+				
+				Intent intent = new Intent(
+						VerifyBirthdayFromDeviceListActivity.this,
 						VerifyDialog.class);
 				startActivity(intent);
 
 			}
+
 		});
+	}
+
+	Runnable postToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			postToServer(childIDfromDeviceList);
+		}
+	};
+
+	private void postToServer(long childIDfromDeviceList) {
+		// TODO Auto-generated method stub
+		SyncHttpUtils syncHttp = new SyncHttpUtils();
+		params = new ArrayList<Parameter>();
+		System.out.println(childIDfromDeviceList + "");
+		params.add(new Parameter("childId", childIDfromDeviceList + ""));
+
+		try {
+			// String retStr = GetPostUtil.sendPost(url, postMessage);
+			String retStr = syncHttp
+					.httpPost(getDeviceMajorAndMinorURL, params);
+			System.out.println("retStrpost======>" + retStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

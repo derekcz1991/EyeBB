@@ -2,11 +2,16 @@ package com.twinly.eyebb.bluetooth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.MatchingVerificationActivity;
 import com.twinly.eyebb.activity.ServicesActivity;
+import com.twinly.eyebb.activity.VerifyBirthdayFromDeviceListActivity;
+import com.twinly.eyebb.model.Device;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -46,13 +51,21 @@ public class DeviceListAcitivity extends Activity {
 
 	private static final int POSTDELAYTIME = 29000;
 	private static final int SCANTIME = 30000;
-	// true 为第一次扫描
-	Boolean firstScan = true;
-	int if_has = 1; // 1为有
+	// true 更新
+	private Boolean isUpadate = false;
+
+	int if_has = 0; // 1为有
 	String UUID;
-	List<String> UUID_temp = new ArrayList<String>();
+	List<String> address_temp = new ArrayList<String>();
+
 	int UUID_i = 0;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
+
+	private String ourDeviceUUID = "4D616361726F6E202020202020202020";
+	private int ourDefaultMajor = 8224;
+	private int ourDefaultMinor = 8197;
+	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
+	private long ChildIDfromKidsList;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +80,6 @@ public class DeviceListAcitivity extends Activity {
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
-
 		listItem = new ArrayList<HashMap<String, Object>>();
 
 		listItemAdapter = new SimpleAdapter(this, listItem,
@@ -86,19 +98,23 @@ public class DeviceListAcitivity extends Activity {
 				if (device == null)
 					return;
 				final Intent intent = new Intent();
+				final Intent getIntent = getIntent();
 				intent.setClass(DeviceListAcitivity.this,
-						MatchingVerificationActivity.class);
-				
-				
-				
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-						device.getName());
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-						device.getAddress());
+						VerifyBirthdayFromDeviceListActivity.class);
+				ChildIDfromKidsList = getIntent.getLongExtra("childID", 0);
+				System.out.println("ChildIDfromKidsList=>"
+						+ ChildIDfromKidsList);
+				intent.putExtra("ChildIDfromDeviceList",
+						ChildIDfromKidsList);
+				String fromDeviceList = "DeviceListAcitivity";
+				intent.putExtra("fromDeviceList",
+						fromDeviceList);
+	
 				if (scan_flag) {
 					scanLeDevice(false);
 				}
 				startActivity(intent);
+				finish();
 			}
 		});
 
@@ -118,6 +134,10 @@ public class DeviceListAcitivity extends Activity {
 			Toast.makeText(this, R.string.text_error_bluetooth_not_supported,
 					Toast.LENGTH_SHORT).show();
 		}
+		
+//		if (scan_flag) {
+//			scanLeDevice(false);
+//		}
 
 		if (scan_flag) {
 			autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
@@ -127,36 +147,12 @@ public class DeviceListAcitivity extends Activity {
 
 	}
 
-	private class autoConnection extends Thread {
-		@Override
-		public void run() {
-			// 测试自动连接功能
-			if (mLeDevices.size() > 0) {
-				BluetoothDevice device = mLeDevices.get(0);
-
-				Intent intent = new Intent();
-				intent.setClass(DeviceListAcitivity.this,
-						ServicesActivity.class);
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-						device.getName());
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-						device.getAddress());
-				if (scan_flag) {
-					scanLeDevice(false);
-				}
-				startActivity(intent);
-			}
-
-		}
-	}
-
 	Runnable autoScan = new Runnable() {
 		@Override
 		public void run() {
 			while (true) {
-				// firstScan = true;
 				if (scan_flag) {
-					firstScan = true;
+
 					scanLeDevice(false);
 
 				} else {
@@ -174,25 +170,23 @@ public class DeviceListAcitivity extends Activity {
 		}
 	};
 
-	private void addItem(String devname, String address) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("image", R.drawable.ble_icon);
-		map.put("title", devname);
-		map.put("text", address);
-		listItem.add(map);
-		listItemAdapter.notifyDataSetChanged();
-	}
+	// private void addItem(String devname, String address) {
+	// HashMap<String, Object> map = new HashMap<String, Object>();
+	// map.put("image", R.drawable.ble_icon);
+	// map.put("title", devname);
+	// map.put("text", address);
+	// listItem.add(map);
+	// listItemAdapter.notifyDataSetChanged();
+	// }
 
 	private void deleteItem() {
 		int size = listItem.size();
 		if (size > 0) {
 
-			// HANDLER
-			Message msg = handler.obtainMessage();
-			msg.what = DELETE_SCAN;
-			handler.sendMessage(msg);
+			listItem.remove(listItem.size() - 1);
+			listItemAdapter.notifyDataSetChanged();
 		}
-		mLeDevices.clear();
+		// mLeDevices.clear();
 	}
 
 	@Override
@@ -269,16 +263,8 @@ public class DeviceListAcitivity extends Activity {
 				break;
 
 			case DELETE_SCAN:
-				// scanBtn.setText("刪除");
-				int size = listItem.size();
-				if (size > 0) {
-
-					listItem.clear();
-					UUID_temp.clear();
-					listItemAdapter.notifyDataSetChanged();
-
-				}
-				firstScan = true;
+				listItem.clear();
+				listItemAdapter.notifyDataSetChanged();
 				mLeDevices.clear();
 				break;
 
@@ -298,59 +284,36 @@ public class DeviceListAcitivity extends Activity {
 				public void run() {
 					int majorid, minorid;
 
-					UUID = bytesToHex(scanRecord, 9, 16);
-
-					majorid = scanRecord[25] * 256 + scanRecord[26];
-					minorid = scanRecord[27] * 256 + scanRecord[28];
-					// System.out.println("111111111firstScan======>" +
-					// firstScan
-					// + "  UUID======>" + bytesToHex(scanRecord, 9, 16));
-
-					if (firstScan) {
-
-						addItem(device.getName(), device.getAddress()
-								+ " UUID:" + bytesToHex(scanRecord, 9, 16)
-								+ " MajorID:" + majorid + " MinorID:" + minorid
-								+ " RSSI:" + rssi);
-						mLeDevices.add(device);
-
-						UUID_temp.add(UUID);
-
-						firstScan = false;
-					} else {
-
-						for (int i = 0; i < UUID_temp.size(); i++) {
-							if (UUID.equals(UUID_temp.get(i))) {
-								// System.out.println(firstScan
-								// +"   ==UUID_temp.size()======>" +
-								// UUID_temp.size()
-								// + "  UUID======>" + bytesToHex(scanRecord, 9,
-								// 16)+"   UUIDTEMP==>" + UUID_temp.get(i) + i);
-								if_has = 1;
-								break;
-							} else {
-								if_has = 0;
-
-								// System.out.println("111");
+					Device newDevice = new Device();
+					newDevice.setAddress(device.getAddress());
+					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
+					newDevice.setMinor(scanRecord[27] * 256 + scanRecord[28]);
+					newDevice.setName(device.getName());
+					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
+					if (bytesToHex(scanRecord, 9, 16).equals(ourDeviceUUID)) {
+						if (deviceMap.put(device.getAddress(), newDevice) == null) {
+							Iterator<Entry<String, Device>> it = deviceMap
+									.entrySet().iterator();
+							listItem.clear();
+							while (it.hasNext()) {
+								HashMap<String, Object> map = new HashMap<String, Object>();
+								Map.Entry<String, Device> entry = it.next();
+								map.put("image", R.drawable.ble_icon);
+								map.put("title", entry.getValue().getName());
+								map.put("text", entry.getValue().getAddress()
+										+ " UUID:" + entry.getValue().getUuid()
+										+ " MajorID:"
+										+ entry.getValue().getMajor()
+										+ " MinorID:"
+										+ entry.getValue().getMinor()
+										+ " RSSI:" + rssi);
+								listItem.add(map);
+								mLeDevices.add(device);
 							}
-
-						}
-
-						if (if_has == 0) {
-							UUID_temp.add(UUID);
-							addItem(device.getName(), device.getAddress()
-									+ " UUID:" + bytesToHex(scanRecord, 9, 16)
-									+ " MajorID:" + majorid + " MinorID:"
-									+ minorid + " RSSI:" + rssi);
-							mLeDevices.add(device);
+							listItemAdapter.notifyDataSetChanged();
 						}
 					}
-					// System.out.println("firstScan======>" + firstScan
-					// + "  UUID======>" + bytesToHex(scanRecord, 9, 16));
 
-					// addItem(device.getName(),device.getAddress()+" UUID:"+bytesToHex(scanRecord,9,16)+" MajorID:"+majorid+" MinorID:"+minorid+" RSSI:"+rssi);
-					// mLeDevices.add(device);
-					// firstScan = false;
 				}
 			});
 		}
@@ -380,6 +343,9 @@ public class DeviceListAcitivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
+			if (scan_flag) {
+				scanLeDevice(false);
+			}
 			finish();
 			return true;
 		}
