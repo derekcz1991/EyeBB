@@ -86,7 +86,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-             <activity
+        <activity
             android:name="com.twinly.eyebb.activity.VerifyBirthdayFromDeviceListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -108,6 +108,11 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.ChildDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.ErrorDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
@@ -192,8 +197,14 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.ServicesActivity"
-            android:screenOrientation="portrait" >
+            android:name="com.twinly.eyebb.bluetooth.ServicesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.bluetooth.CharacteristicsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
         </activity>
 
         <service

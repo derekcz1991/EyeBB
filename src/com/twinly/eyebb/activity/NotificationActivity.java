@@ -51,16 +51,16 @@ public class NotificationActivity extends Activity {
 			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details1));
 			break;
 
-		case 2:
-			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details2));
-			tittle.setText(R.string.child2_notification_tittle);
-			content.setText(R.string.child2_notification);
-			break;
-		case 3:
-			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details3));
-			tittle.setText(R.string.child3_notification_tittle);
-			content.setText(R.string.child3_notification);
-			break;
+//		case 2:
+//			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details2));
+//			tittle.setText(R.string.child2_notification_tittle);
+//			content.setText(R.string.child2_notification);
+//			break;
+//		case 3:
+//			detailsImage.setBackground(getResources().getDrawable(R.drawable.notification_details3));
+//			tittle.setText(R.string.child3_notification_tittle);
+//			content.setText(R.string.child3_notification);
+//			break;
 
 		default:
 			break;

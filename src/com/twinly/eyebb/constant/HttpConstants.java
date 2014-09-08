@@ -7,7 +7,7 @@ public class HttpConstants {
 	//public static final String SERVER_URL = "http://158.182.246.224:8080/";
 
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
-	public static final String HTTP_POST_RESPONSE_EXCEPTION = "连接服务器失败";
+	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
 	public static final String LOGIN = "j_spring_security_check";
 	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
@@ -44,4 +44,6 @@ public class HttpConstants {
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC = "activitySc";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_ICON = "icon";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
+	
+	public static final String UPDATE_DEVICE_FROM_CHILD_LIST = "childId";
 }

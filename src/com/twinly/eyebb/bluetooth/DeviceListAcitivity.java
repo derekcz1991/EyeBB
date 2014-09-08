@@ -8,22 +8,35 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.eyebb.R;
+import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.MatchingVerificationActivity;
-import com.twinly.eyebb.activity.ServicesActivity;
 import com.twinly.eyebb.activity.VerifyBirthdayFromDeviceListActivity;
+import com.twinly.eyebb.activity.VerifyDialog;
+import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Device;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,6 +80,22 @@ public class DeviceListAcitivity extends Activity {
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 	private long ChildIDfromKidsList;
 
+	private String getDeviceMajorAndMinorURL = "reportService/api/configBeaconRel";
+	private Dialog dialog;
+	private String major;
+	private String minor;
+	final static int START_PROGRASSS_BAR = 1;
+	final static int STOP_PROGRASSS_BAR = 2;
+	private final String LIST_NAME = "NAME";
+	private final String LIST_UUID = "UUID";
+
+	private Boolean isWhileLoop = true;
+	private Boolean isConnectError = false;
+
+	// sharedPreferences
+	private SharedPreferences MajorAndMinorPreferences;
+	private SharedPreferences.Editor editor;
+
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,7 +106,14 @@ public class DeviceListAcitivity extends Activity {
 
 		setContentView(R.layout.ble_peripheral);
 		BaseApp.getInstance().addActivity(this);
+		Constans.gattServiceData.clear();
+		Constans.gattServiceObject.clear();
 
+		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
+				MODE_PRIVATE);
+		editor = MajorAndMinorPreferences.edit();
+
+	
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
@@ -93,6 +129,8 @@ public class DeviceListAcitivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+				System.out.println("isConnectError=>" + isConnectError);
+
 				final BluetoothDevice device = mLeDevices.get(arg2);
 				System.out.println("arg2-PERI========>" + arg2);
 				if (device == null)
@@ -100,22 +138,38 @@ public class DeviceListAcitivity extends Activity {
 				final Intent intent = new Intent();
 				final Intent getIntent = getIntent();
 				intent.setClass(DeviceListAcitivity.this,
-						VerifyBirthdayFromDeviceListActivity.class);
+						ServicesActivity.class);
 				ChildIDfromKidsList = getIntent.getLongExtra("childID", 0);
 				System.out.println("ChildIDfromKidsList=>"
 						+ ChildIDfromKidsList);
-				intent.putExtra("ChildIDfromDeviceList",
-						ChildIDfromKidsList);
-				String fromDeviceList = "DeviceListAcitivity";
-				intent.putExtra("fromDeviceList",
-						fromDeviceList);
-	
+
+				editor.putInt("runNum", 1);
+				editor.commit();
+
+				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+						device.getName());
+				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+						device.getAddress());
+
+				new Thread(postToServerRunnable).start();
+
+				System.out.println("new Thread(postToServerRunnable).start();");
 				if (scan_flag) {
 					scanLeDevice(false);
 				}
+
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+				}
+
+				autoScanHandler.removeCallbacks(autoScan);
+				mHandler.removeCallbacks(scanLeDeviceRunable);
+				mBluetoothAdapter.stopLeScan(mLeScanCallback);
+				isWhileLoop = false;
 				startActivity(intent);
 				finish();
 			}
+
 		});
 
 		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
@@ -134,12 +188,14 @@ public class DeviceListAcitivity extends Activity {
 			Toast.makeText(this, R.string.text_error_bluetooth_not_supported,
 					Toast.LENGTH_SHORT).show();
 		}
-		
-//		if (scan_flag) {
-//			scanLeDevice(false);
-//		}
+
+		// if (scan_flag) {
+		// scanLeDevice(false);
+		// }
 
 		if (scan_flag) {
+			System.out
+					.println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
 			autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
 		} else {
 			new Thread(autoScan).start();
@@ -150,7 +206,7 @@ public class DeviceListAcitivity extends Activity {
 	Runnable autoScan = new Runnable() {
 		@Override
 		public void run() {
-			while (true) {
+			while (isWhileLoop) {
 				if (scan_flag) {
 
 					scanLeDevice(false);
@@ -203,27 +259,29 @@ public class DeviceListAcitivity extends Activity {
 		}
 	}
 
+	Runnable scanLeDeviceRunable = new Runnable() {
+		@SuppressLint("NewApi")
+		@Override
+		public void run() {
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			// scan_flag = false;
+
+			// HANDLER
+			Message msg = handler.obtainMessage();
+			msg.what = START_SCAN;
+			handler.sendMessage(msg);
+
+			// new autoConnection().start();
+			// autoScan.start();
+
+		}
+	};
+
 	@SuppressLint("NewApi")
-	private void scanLeDevice(final boolean enable) {
+	public void scanLeDevice(final boolean enable) {
 		if (enable) {
 			// Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(new Runnable() {
-				@SuppressLint("NewApi")
-				@Override
-				public void run() {
-					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					// scan_flag = false;
-
-					// HANDLER
-					Message msg = handler.obtainMessage();
-					msg.what = START_SCAN;
-					handler.sendMessage(msg);
-
-					// new autoConnection().start();
-					// autoScan.start();
-				}
-
-			}, POSTDELAYTIME);
+			mHandler.postDelayed(scanLeDeviceRunable, POSTDELAYTIME);
 
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 
@@ -250,6 +308,7 @@ public class DeviceListAcitivity extends Activity {
 
 	Handler handler = new Handler() {
 
+		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case START_SCAN:
@@ -266,6 +325,20 @@ public class DeviceListAcitivity extends Activity {
 				listItem.clear();
 				listItemAdapter.notifyDataSetChanged();
 				mLeDevices.clear();
+				break;
+			case START_PROGRASSS_BAR:
+				dialog = LoadingDialog.createLoadingDialog(
+						DeviceListAcitivity.this,
+						getString(R.string.toast_loading));
+				dialog.show();
+				break;
+
+			case STOP_PROGRASSS_BAR:
+				// Toast.makeText(DeviceListAcitivity.this,
+				// R.string.text_connect_error,
+				// Toast.LENGTH_LONG);
+				dialog.dismiss();
+
 				break;
 
 			}
@@ -330,15 +403,17 @@ public class DeviceListAcitivity extends Activity {
 		return sbuf.toString();
 	}
 
-	// @Override
-	// public boolean onKeyDown(int keyCode, KeyEvent event) {
-	// // TODO Auto-generated method stub
-	// if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-	// Constans.exit_ask(this);
-	// return true;
-	// }
-	// return super.onKeyDown(keyCode, event);
-	// }
+	Runnable postToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			// HANDLER
+			Message msg = handler.obtainMessage();
+			msg.what = START_PROGRASSS_BAR;
+			handler.sendMessage(msg);
+			postToServer(ChildIDfromKidsList);
+
+		}
+	};
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -351,5 +426,62 @@ public class DeviceListAcitivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@SuppressLint("ShowToast")
+	@SuppressWarnings("unused")
+	private void postToServer(long childIDfromDeviceList) {
+		// TODO Auto-generated method stub
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("childId", String.valueOf(childIDfromDeviceList));
+
+		try {
+			// String retStr = GetPostUtil.sendPost(url, postMessage);
+			String retStr = HttpRequestUtils.post(getDeviceMajorAndMinorURL,
+					map);
+			System.out.println("retStrpost======>" + retStr);
+			if (retStr.equals("retStr.equals => "
+					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+					|| retStr.equals("") || retStr.length() == 0) {
+				System.out
+						.println("connect errorerrorerrorerrorerrorerrorerrorerrorerror");
+
+				dialog.dismiss();
+
+			} else {
+				major = retStr.substring(0, retStr.indexOf(":"));
+				minor = retStr.substring(retStr.indexOf(":") + 1,
+						retStr.length());
+				System.out.println("retStrpost======>" + major + " " + minor);
+				editor.putString("major", major);
+				editor.putString("minor", minor);
+				editor.commit();
+
+				dialog.dismiss();
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			Message msg = handler.obtainMessage();
+			msg.what = STOP_PROGRASSS_BAR;
+			handler.sendMessage(msg);
+
+		}
+
+		// Intent BLEintent = new Intent();
+		// BLEintent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+		// device.getName());
+		// BLEintent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+		// device.getAddress());
+		//
+		if (dialog != null && dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}
+
+	// service
 
 }

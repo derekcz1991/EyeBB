@@ -1,25 +1,21 @@
 package com.twinly.eyebb.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.bluetooth.BluetoothLeService;
-import com.twinly.eyebb.bluetooth.Constans;
 
-public class VerifyDialog extends Activity {
+public class ErrorDialog extends Activity {
 	private TextView btnVerify;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.dialog_verify);
+		setContentView(R.layout.dialog_error);
 
 		
 		btnVerify = (TextView) findViewById(R.id.btn_verify);

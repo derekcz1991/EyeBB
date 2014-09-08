@@ -77,7 +77,7 @@
                  	<string name="text_connect_device">開始連接baby的設備?</string> 
                  	 <string name="text_select_device">請選擇您的設備.</string>
      <string name="text_device_list">設備列表</string>
-      
+      <string name="text_connect_error">連接錯誤,請檢查你的網絡</string>
                  	
                  	
     <string name="btn_sign_up">註冊</string>
@@ -95,6 +95,7 @@
     
     <string name="toast_login">登錄中&#8230;</string>
         <string name="toast_signup">註冊中&#8230;</string>
+        <string name="toast_loading">讀取中&#8230;</string>
     <string name="toast_please_select_kindergartens">請選擇幼稚園</string>
     <string name="toast_invalid_username_or_password">帳號或密碼錯誤</string>
 

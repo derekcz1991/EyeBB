@@ -2,11 +2,16 @@ package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +23,10 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Parameter;
-import com.twinly.eyebb.utils.SyncHttpUtils;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class VerifyBirthdayFromDeviceListActivity extends Activity {
 	private DatePicker datePicker;
@@ -32,18 +39,23 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 
 	private String dateOfBirth;
 
-	private String submitDateOfBirth;
-	private String submitUserName;
-	private String submitPassword;
-	private String submitEmail;
-	private int submitKinderGartenId;
-	private String submitKinderGartenNameEns;
-	private String submitDeviceUUID;
-	private String submitDeviceMajor;
-	private String submitDeviceMinor;
+	final static int START_PROGRASSS_BAR = 1;
+	final static int STOP_PROGRASSS_BAR = 2;
+	// private String submitDateOfBirth;
+	// private String submitUserName;
+	// private String submitPassword;
+	// private String submitEmail;
+	// private int submitKinderGartenId;
+	// private String submitKinderGartenNameEns;
+	// private String submitDeviceUUID;
+	// private String submitDeviceMajor;
+	// private String submitDeviceMinor;
 	private long childIDfromDeviceList;
 	private String fromDeviceList = "list";
-	private String getDeviceMajorAndMinorURL = "http://158.182.246.221:8089/reportService/api/configBeaconRel";
+	private String getDeviceMajorAndMinorURL = "reportService/api/configBeaconRel";
+	private Dialog dialog;
+	private String major;
+	private String minor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,49 +113,53 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				submitDateOfBirth = SandVpreferences.getString("dateOfBirth",
-						"1990/12/08");
-				submitUserName = SandVpreferences.getString("usrname",
-						"usrname");
-				submitPassword = SandVpreferences.getString("password",
-						"password");
-				submitEmail = SandVpreferences.getString("email", "email");
-				submitKinderGartenId = SandVpreferences.getInt(
-						"kindergartenId", 0);
-				submitKinderGartenNameEns = SandVpreferences.getString(
-						"nameEns", "nameEns");
-				submitDeviceUUID = SandVpreferences.getString(
-						"submitDeviceUUID", "submitDeviceUUID");
-				submitDeviceMajor = SandVpreferences.getString(
-						"submitDeviceMajor", "submitDeviceMajor");
-				submitDeviceMinor = SandVpreferences.getString(
-						"submitDeviceMinor", "submitDeviceMinor");
-
-				System.out
-						.println("submitDateOfBirth + submitUserName + submitPassword + submitEmail + submitKinderGartenId + submitKinderGartenNameEns=>"
-								+ submitDateOfBirth
-								+ " "
-								+ submitUserName
-								+ " "
-								+ submitPassword
-								+ " "
-								+ submitEmail
-								+ " "
-								+ submitKinderGartenId
-								+ " "
-								+ submitKinderGartenNameEns);
-				System.out
-						.println("submitDeviceUUID + submitDeviceMajor + submitDeviceMinor=>"
-								+ submitDeviceUUID
-								+ " "
-								+ submitDeviceMajor
-								+ " " + submitDeviceMinor);
+				// submitDateOfBirth = SandVpreferences.getString("dateOfBirth",
+				// "1990/12/08");
+				// submitUserName = SandVpreferences.getString("usrname",
+				// "usrname");
+				// submitPassword = SandVpreferences.getString("password",
+				// "password");
+				// submitEmail = SandVpreferences.getString("email", "email");
+				// submitKinderGartenId = SandVpreferences.getInt(
+				// "kindergartenId", 0);
+				// submitKinderGartenNameEns = SandVpreferences.getString(
+				// "nameEns", "nameEns");
+				// submitDeviceUUID = SandVpreferences.getString(
+				// "submitDeviceUUID", "submitDeviceUUID");
+				// submitDeviceMajor = SandVpreferences.getString(
+				// "submitDeviceMajor", "submitDeviceMajor");
+				// submitDeviceMinor = SandVpreferences.getString(
+				// "submitDeviceMinor", "submitDeviceMinor");
+				//
+				// System.out
+				// .println("submitDateOfBirth + submitUserName + submitPassword + submitEmail + submitKinderGartenId + submitKinderGartenNameEns=>"
+				// + submitDateOfBirth
+				// + " "
+				// + submitUserName
+				// + " "
+				// + submitPassword
+				// + " "
+				// + submitEmail
+				// + " "
+				// + submitKinderGartenId
+				// + " "
+				// + submitKinderGartenNameEns);
+				// System.out
+				// .println("submitDeviceUUID + submitDeviceMajor + submitDeviceMinor=>"
+				// + submitDeviceUUID
+				// + " "
+				// + submitDeviceMajor
+				// + " " + submitDeviceMinor);
 				new Thread(postToServerRunnable).start();
-				
+
 				Intent intent = new Intent(
 						VerifyBirthdayFromDeviceListActivity.this,
 						VerifyDialog.class);
+				
+
 				startActivity(intent);
+				
+				finish();
 
 			}
 
@@ -153,24 +169,54 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 	Runnable postToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
+			// HANDLER
+			Message msg = handler.obtainMessage();
+			msg.what = START_PROGRASSS_BAR;
+			handler.sendMessage(msg);
 			postToServer(childIDfromDeviceList);
+	
+		}
+	};
+
+	Handler handler = new Handler() {
+
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case START_PROGRASSS_BAR:
+				dialog = LoadingDialog.createLoadingDialog(
+						VerifyBirthdayFromDeviceListActivity.this,
+						getString(R.string.toast_loading));
+				dialog.show();
+				break;
+
+			case STOP_PROGRASSS_BAR:
+				dialog.dismiss();
+				break;
+			}
 		}
 	};
 
 	private void postToServer(long childIDfromDeviceList) {
 		// TODO Auto-generated method stub
-		SyncHttpUtils syncHttp = new SyncHttpUtils();
-		params = new ArrayList<Parameter>();
-		System.out.println(childIDfromDeviceList + "");
-		params.add(new Parameter("childId", childIDfromDeviceList + ""));
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("childId", String.valueOf(childIDfromDeviceList));
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = syncHttp
-					.httpPost(getDeviceMajorAndMinorURL, params);
+			String retStr = HttpRequestUtils.post(getDeviceMajorAndMinorURL,
+					map);
 			System.out.println("retStrpost======>" + retStr);
+			major = retStr.substring(0, retStr.indexOf(":"));
+			minor = retStr.substring(retStr.indexOf(":") + 1, retStr.length());
+			System.out.println("retStrpost======>" + major + " " + minor);
+		
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		if (dialog != null && dialog.isShowing()) {
+			dialog.dismiss();
 		}
 	}
 
