@@ -206,6 +206,17 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
+        
+          <activity
+            android:name="com.twinly.eyebb.bluetooth.RadarServicesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
 
         <service
             android:name="com.twinly.eyebb.bluetooth.BluetoothLeService"

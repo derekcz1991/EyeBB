@@ -18,6 +18,7 @@ import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -29,7 +30,18 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
+	private RadarKidsListViewAdapterCallback callback;
 
+	public interface RadarKidsListViewAdapterCallback {
+		public void onStartToBeepClicked(int position);
+
+		// public void onStartToBeepClicked(int rssi, String getAddress,
+		// String getName);
+	}
+
+	public void setCallback(RadarKidsListViewAdapterCallback callback) {
+		this.callback = callback;
+	}
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -71,23 +83,25 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		ViewHolder viewHolderavatarRadar = null;
 		if (convertView == null) {
 			convertView = inflater.inflate(
-					R.layout.fragment_radar_tracking_kids_listitem, parent,false
-					);
-			
-//			View radarLayout = inflater.inflate(
-//					R.layout.fragment_radar_tracking, null);			
-//			RelativeLayout mainLayout = (RelativeLayout) radarLayout
-//					.findViewById(R.id.layout_circle);
-//			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-//					DensityUtil.dip2px(context, 32),
-//					DensityUtil.dip2px(context, 32));
-			
+					R.layout.fragment_radar_tracking_kids_listitem, parent,
+					false);
+
+			// View radarLayout = inflater.inflate(
+			// R.layout.fragment_radar_tracking, null);
+			// RelativeLayout mainLayout = (RelativeLayout) radarLayout
+			// .findViewById(R.id.layout_circle);
+			// RelativeLayout.LayoutParams layoutParams = new
+			// RelativeLayout.LayoutParams(
+			// DensityUtil.dip2px(context, 32),
+			// DensityUtil.dip2px(context, 32));
+
 			viewHolder = new ViewHolder();
 			viewHolder.avatar = (CircleImageView) convertView
 					.findViewById(R.id.radar_child_head_img);
 			viewHolderavatarRadar = new ViewHolder();
 
-			viewHolder.beepBtn = convertView.findViewById(R.id.radar_item_beep_btn);
+			viewHolder.beepBtn = convertView
+					.findViewById(R.id.radar_item_beep_btn);
 
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_name);
@@ -103,21 +117,23 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		final Child child = data.get(position);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 
-			
 			viewHolder.beepBtn.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					if (CommonUtils.isFastDoubleClick()) {
 						return;
-					}else{
-						System.out.println("positionposition = > " + position + "");
+					} else {
+						System.out.println("positionposition = > " + position
+								+ "");
+						callback.onStartToBeepClicked(position);
+
 					}
-					
+
 				}
 			});
-			
+
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					options, null);
 

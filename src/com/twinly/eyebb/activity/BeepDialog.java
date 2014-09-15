@@ -31,9 +31,13 @@ public class BeepDialog extends Activity {
 
 	// sharedPreferences
 	SharedPreferences SandVpreferences;
+	private SharedPreferences.Editor editor;
+
 	// boolean sound and vibrate
 	private Boolean isSound;
 	private Boolean isVibrate;
+	private Boolean isStart = false;
+	public static BeepDialog instance = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,12 @@ public class BeepDialog extends Activity {
 		SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
 		isSound = SandVpreferences.getBoolean("sound", true);
 		isVibrate = SandVpreferences.getBoolean("vibrate", true);
+
+		isStart = true;
+		editor = SandVpreferences.edit();
+		editor.putBoolean("isStartBeepDialog", isStart);
+		editor.commit();
+		instance = this;
 
 		// secText = (TextView) findViewById(R.id.sec_text);
 		getTime();

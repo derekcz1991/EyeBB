@@ -2,7 +2,10 @@ package com.twinly.eyebb.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -10,8 +13,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources.NotFoundException;
+import android.content.res.Resources.Theme;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,13 +41,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.google.android.gms.drive.internal.v;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
+import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
+import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
+import com.twinly.eyebb.bluetooth.RadarServicesActivity;
 import com.twinly.eyebb.bluetooth.ServicesActivity;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
+import com.twinly.eyebb.customview.LoadingDialog;
+
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
@@ -50,14 +62,13 @@ import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class RadarTrackingFragment extends Fragment {
+public class RadarTrackingFragment extends Fragment implements
+		RadarKidsListViewAdapterCallback {
 	private SimpleAdapter mkidsListAdapter;
 	ArrayList<HashMap<String, Object>> mKidsData;
 	ImageView radar_rotate;
 	private View radarBeepAllBtn;
 
-	private View btnConfirm;
-	private View btnCancel;
 	private View btnStatus;
 
 	private BluetoothAdapter mBluetoothAdapter;
@@ -75,23 +86,21 @@ public class RadarTrackingFragment extends Fragment {
 	private final static int START_SCAN = 4;
 	private final static int STOP_SCAN = 5;
 	private final static int DELETE_SCAN = 6;
+	private final static int STATERTOBEEP = 7;
 	private String UUID;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
 	List<String> UUID_temp = new ArrayList<String>();
-	private int if_has = 1; // 1为有
-	SimpleAdapter listItemAdapter; // ListView的适配器
+
+	// SimpleAdapter Childadapter; // ListView的适配器
 	ArrayList<HashMap<String, Object>> listItem; // ListView的数据源，这里是一个HashMap的列表
 	ListView myList; // ListView控件
-	private String BeepDeviceMACAddress = "";
-	private String BeepDeviceUUID = "4D616361726F6E202020202020202020";
-	private int findDevice = 100;
-	private ArrayList<Device> device;
+
 	private LinearLayoutForListView ChildlistView;
 	private RadarKidsListViewAdapter Childadapter;
 	private ScrollView radarScrollView;
 	// private CircleImageView circleImageView;
 	private View RadarView;
-	private LayoutInflater inflater;
+
 	private ArrayList<Child> ChildData;
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
@@ -106,11 +115,29 @@ public class RadarTrackingFragment extends Fragment {
 	private TextView missingChildNumTxt;
 	private TextView unMissingChildNumTxt;
 	private Boolean isClickConnection = false;
+	private Boolean isWhileLoop = true;
+	private TextView confirmRadarBtn;
+	// 判斷confirmRadarBtn是否被點擊
+	private Boolean isConfirmRadarBtn = false;
 
+	private SharedPreferences MajorAndMinorPreferences;
+	private SharedPreferences SandVpreferences;
+	private SharedPreferences.Editor editor;
+	// device map
+	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
+
+	private boolean startToScan = false;
+	private Device newDevice;
+
+	@SuppressWarnings("static-access")
 	@SuppressLint("NewApi")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		System.out.println("onCreateView");
+
+		MajorAndMinorPreferences = getActivity().getSharedPreferences(
+				"MajorAndMinor", getActivity().MODE_PRIVATE);
+		editor = MajorAndMinorPreferences.edit();
 
 		View v = inflater.inflate(R.layout.fragment_radar_tracking, container,
 				false);
@@ -119,6 +146,8 @@ public class RadarTrackingFragment extends Fragment {
 				.findViewById(R.id.radar_children_list);
 		Childadapter = new RadarKidsListViewAdapter(getActivity(),
 				DBChildren.getChildrenList(getActivity()));
+		Childadapter.setCallback(this);
+
 		ChildlistView.setAdapter(Childadapter);
 		ChildlistView.setClickable(false);
 
@@ -129,11 +158,13 @@ public class RadarTrackingFragment extends Fragment {
 		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
 		radarScrollView.smoothScrollTo(0, 0);
 
-		missingChildNumTxt = (TextView) v.findViewById(R.id.radar_text_missed_number);
-		unMissingChildNumTxt = (TextView) v.findViewById(R.id.radar_text_supervised_number);
-		
-		
-		
+		missingChildNumTxt = (TextView) v
+				.findViewById(R.id.radar_text_missed_number);
+		unMissingChildNumTxt = (TextView) v
+				.findViewById(R.id.radar_text_supervised_number);
+
+		confirmRadarBtn = (TextView) v.findViewById(R.id.confirm_radar_btn);
+
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
@@ -147,8 +178,8 @@ public class RadarTrackingFragment extends Fragment {
 
 		// bluetooth
 		// connect device
-		btnConfirm = v.findViewById(R.id.btn_confirm);
-		btnCancel = v.findViewById(R.id.btn_cancel);
+		// btnConfirm = v.findViewById(R.id.btn_confirm);
+		// btnCancel = v.findViewById(R.id.btn_cancel);
 		btnStatus = v.findViewById(R.id.connection_status_btn);
 
 		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
@@ -167,44 +198,58 @@ public class RadarTrackingFragment extends Fragment {
 			}
 		});
 
-		btnConfirm.setOnClickListener(new OnClickListener() {
+		// 點擊這裡i
+		confirmRadarBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				try {
-					checkIsBluetooth();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				// TODO Auto-generated method stub
+				if (!isConfirmRadarBtn) {
+					isConfirmRadarBtn = true;
+					confirmRadarBtn.setBackground(getResources().getDrawable(
+							R.drawable.ic_selected));
+
+					try {
+						checkIsBluetooth();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					isClickConnection = true;
+					isWhileLoop = true;
+
+					ChildlistView.setAlpha(1);
+					RadarView.setAlpha(1);
+
+					ChildlistView.setClickable(true);
+
+					radarAnim();
+
+					// bluetooth
+
+					if (scan_flag) {
+						System.out
+								.println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
+						autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
+					} else {
+						new Thread(autoScan).start();
+					}
+				} else {
+					isConfirmRadarBtn = false;
+					confirmRadarBtn.setBackground(getResources().getDrawable(
+							R.drawable.ic_selected_off));
+
+					ChildlistView.setAlpha((float) 0.3);
+					RadarView.setAlpha((float) 0.3);
+					scan_flag = false;
+					// autoScanHandler.removeCallbacks(autoScan);
+					// mHandler.removeCallbacks(scanLeDeviceRunable);
+					// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					isWhileLoop = false;
+					// 清除動畫
+					radar_rotate.clearAnimation();
+
 				}
-				isClickConnection = true;
-
-				getActivity().findViewById(R.id.connect_device_layout)
-						.setVisibility(View.GONE);
-
-				ChildlistView.setAlpha(1);
-				RadarView.setAlpha(1);
-
-				ChildlistView.setClickable(true);
-
-				radarAnim();
-				// if (scan_flag) {
-				// autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
-				// } else {
-				// new Thread(autoScan).start();
-				// }
-
-				// bluetooth
-
-			}
-		});
-
-		btnCancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				getActivity().findViewById(R.id.connect_device_layout)
-						.setVisibility(View.GONE);
 
 			}
 		});
@@ -286,22 +331,22 @@ public class RadarTrackingFragment extends Fragment {
 		if (imMiss == 0) {
 			missingChildNum = "2";
 			missingChildNumTxt.setText(missingChildNum);
-			
+
 			cim.setBorderColor(getResources().getColor(R.color.red));
 			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
 
 			int missX = (int) (Math.random() * 120);
 			int missY = (int) (Math.random() * 120);
 
-			System.out.println("addY + addx :" + missX * missX + " " + missY
-					* missY + " " + DensityUtil.dip2px(getActivity(), 14400)
-					+ " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
-					+ 90 + (int) (Math.random() * 30));
+			// System.out.println("addY + addx :" + missX * missX + " " + missY
+			// * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
+			// + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
+			// + 90 + (int) (Math.random() * 30));
 			if ((missX * missX + missY * missY) < 14000
 					&& (missX * missX + missY * missY) > 10000) {
 				addX = DensityUtil.dip2px(getActivity(), missX);
 				addY = DensityUtil.dip2px(getActivity(), missY);
-				System.out.println("啊啊啊啊啊啊 ");
+				// System.out.println("啊啊啊啊啊啊 ");
 
 				if (toporBottom == 1) {
 					initY = initY - addY;
@@ -377,7 +422,7 @@ public class RadarTrackingFragment extends Fragment {
 
 		int width = wm.getDefaultDisplay().getWidth();
 		int height = wm.getDefaultDisplay().getHeight();
-		System.out.println("widthwidthwidthwidth=>" + width);
+		// System.out.println("widthwidthwidthwidth=>" + width);
 		return width;
 	}
 
@@ -498,10 +543,9 @@ public class RadarTrackingFragment extends Fragment {
 	Runnable autoScan = new Runnable() {
 		@Override
 		public void run() {
-			while (true) {
-				// firstScan = true;
+			while (isWhileLoop) {
 				if (scan_flag) {
-					firstScan = true;
+
 					scanLeDevice(false);
 
 				} else {
@@ -519,27 +563,48 @@ public class RadarTrackingFragment extends Fragment {
 		}
 	};
 
+	// private void addItem(String devname, String address) {
+	// HashMap<String, Object> map = new HashMap<String, Object>();
+	// map.put("image", R.drawable.ble_icon);
+	// map.put("title", devname);
+	// map.put("text", address);
+	// listItem.add(map);
+	// Childadapter.notifyDataSetChanged();
+	// }
+
+	private void deleteItem() {
+		int size = listItem.size();
+		if (size > 0) {
+
+			listItem.remove(listItem.size() - 1);
+			Childadapter.notifyDataSetChanged();
+		}
+		// mLeDevices.clear();
+	}
+
+	Runnable scanLeDeviceRunable = new Runnable() {
+		@SuppressLint("NewApi")
+		@Override
+		public void run() {
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			// scan_flag = false;
+
+			// HANDLER
+			Message msg = handler.obtainMessage();
+			msg.what = START_SCAN;
+			handler.sendMessage(msg);
+
+			// new autoConnection().start();
+			// autoScan.start();
+
+		}
+	};
+
 	@SuppressLint("NewApi")
-	private void scanLeDevice(final boolean enable) {
+	public void scanLeDevice(final boolean enable) {
 		if (enable) {
 			// Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(new Runnable() {
-				@SuppressLint("NewApi")
-				@Override
-				public void run() {
-					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					// scan_flag = false;
-
-					// HANDLER
-					Message msg = handler.obtainMessage();
-					msg.what = START_SCAN;
-					handler.sendMessage(msg);
-
-					// new autoConnection().start();
-					// autoScan.start();
-				}
-
-			}, POSTDELAYTIME);
+			mHandler.postDelayed(scanLeDeviceRunable, POSTDELAYTIME);
 
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 
@@ -561,7 +626,33 @@ public class RadarTrackingFragment extends Fragment {
 
 			// autoScan.start();
 		}
+
 	}
+
+	Handler handler = new Handler() {
+
+		@SuppressLint("ShowToast")
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case START_SCAN:
+				// scanBtn.setText("開始");
+				// scanBtn.setText("start scan");
+				break;
+
+			case STOP_SCAN:
+				// scanBtn.setText("結束");
+				// scanBtn.setText("stop scan");
+				break;
+
+			case DELETE_SCAN:
+				listItem.clear();
+				Childadapter.notifyDataSetChanged();
+				mLeDevices.clear();
+				break;
+
+			}
+		}
+	};
 
 	@SuppressLint("NewApi")
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -569,123 +660,55 @@ public class RadarTrackingFragment extends Fragment {
 		@Override
 		public void onLeScan(final BluetoothDevice device, final int rssi,
 				final byte[] scanRecord) {
-			getActivity().runOnUiThread(new Runnable() {
+
+			Thread thread = new Thread(new Runnable() {
 
 				@Override
 				public void run() {
 					int majorid, minorid;
-					// System.out.println("scanRecordscanRecordscanRecordscanRecord"
-					// + Arrays.toString(scanRecord));
-					UUID = bytesToHex(scanRecord, 9, 16);
+					System.out.println("rssi=>" + rssi);
 
-					majorid = scanRecord[25] * 256 + scanRecord[26];
-					minorid = scanRecord[27] * 256 + scanRecord[28];
-					// System.out.println("111111111firstScan======>" +
-					// firstScan
-					// + "  UUID======>" + bytesToHex(scanRecord, 9, 16));
+					// System.out.println("device = >" + device.getName() + " "
+					// + device.getAddress());
+					// onStartToBeepClicked();
+					// startToBeep();
+					startToScan = true;
+					RSSIforBeep(rssi, device);
 
-					// record the UUID
-
-					// if (is_autoConnection) {
-					// new autoConnection().start();
-					//
-					// }
-					System.out.println("BeepDeviceMACAddress=>"
-							+ BeepDeviceMACAddress);
-					if (BeepDeviceMACAddress.length() > 10) {
-						System.out.println("mLeDevices.get().getAddress()=>"
-								+ device.getAddress());
-						System.out.println("UUID=>" + UUID);
-						new autoConnection().start();
-					}
-
-					HashMap<String, String> hashMap = new HashMap<String, String>();
-					if (firstScan) {
-
-						addItem(device.getName(), device.getAddress()
-								+ " UUID:" + bytesToHex(scanRecord, 9, 16)
-								+ " MajorID:" + majorid + " MinorID:" + minorid
-								+ " RSSI:" + rssi);
-						System.out
-								.println("firstScanfirstScanfirstScanfirstScanfirstScan");
-						mLeDevices.add(device);
-						firstScan = false;
-
-						UUID_temp.add(UUID);
-
-						if (mLeDevices.size() > 0) {
-							if (bytesToHex(scanRecord, 9, 16).equals(
-									BeepDeviceUUID)) {
-								BeepDeviceMACAddress = device.getAddress();
-								System.out.println("BeepDeviceMACAddress22=>"
-										+ BeepDeviceMACAddress);
-							}
-						}
-
-					} else {
-
-						for (int i = 0; i < UUID_temp.size(); i++) {
-							if (UUID.equals(UUID_temp.get(i))) {
-								// System.out.println(firstScan
-								// +"   ==UUID_temp.size()======>" +
-								// UUID_temp.size()
-								// + "  UUID======>" + bytesToHex(scanRecord, 9,
-								// 16)+"   UUIDTEMP==>" + UUID_temp.get(i) + i);
-								if_has = 1;
-								break;
-							} else {
-								if_has = 0;
-
-								// System.out.println("111");
-							}
-
-						}
-
-						if (if_has == 0) {
-							UUID_temp.add(UUID);
-							addItem(device.getName(), device.getAddress()
-									+ " UUID:" + bytesToHex(scanRecord, 9, 16)
-									+ " MajorID:" + majorid + " MinorID:"
-									+ minorid + " RSSI:" + rssi);
+					newDevice = new Device();
+					newDevice.setAddress(device.getAddress());
+					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
+					newDevice.setMinor(scanRecord[27] * 256 + scanRecord[28]);
+					newDevice.setName(device.getName());
+					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
+					newDevice.setRssi(rssi);
+					// if (bytesToHex(scanRecord, 9, 16).equals(
+					// Constants.OURDEVICEUUID)) {
+					if (deviceMap.put(device.getAddress(), newDevice) != null) {
+						Iterator<Entry<String, Device>> it = deviceMap
+								.entrySet().iterator();
+						// listItem.clear();
+						while (it.hasNext()) {
+							HashMap<String, Object> map = new HashMap<String, Object>();
+							Map.Entry<String, Device> entry = it.next();
+							map.put("image", R.drawable.ble_icon);
+							map.put("title", entry.getValue().getName());
+							map.put("text", entry.getValue().getAddress()
+									+ " UUID:" + entry.getValue().getUuid()
+									+ " MajorID:" + entry.getValue().getMajor()
+									+ " MinorID:" + entry.getValue().getMinor()
+									+ " RSSI:" + rssi);
+							listItem.add(map);
 							mLeDevices.add(device);
-
 						}
+						Childadapter.notifyDataSetChanged();
 					}
-
-					// System.out.println("firstScan======>" + firstScan
-
 				}
+
+				// }
+
 			});
-		}
-	};
-
-	Handler handler = new Handler() {
-
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case START_SCAN:
-
-				break;
-
-			case STOP_SCAN:
-
-				break;
-
-			case DELETE_SCAN:
-
-				int size = listItem.size();
-				if (size > 0) {
-
-					listItem.clear();
-					UUID_temp.clear();
-					listItemAdapter.notifyDataSetChanged();
-
-				}
-				firstScan = true;
-				mLeDevices.clear();
-				break;
-
-			}
+			thread.start();
 		}
 	};
 
@@ -698,58 +721,81 @@ public class RadarTrackingFragment extends Fragment {
 			sbuf.append(Integer.toHexString(intVal).toUpperCase());
 		}
 		return sbuf.toString();
+	}
+
+	@Override
+	public void onStartToBeepClicked(int position) {
+		// TODO Auto-generated method stub
+		// startToBeepThread.start();
+		startToBeep(position);
+	}
+
+	private void startToBeep(int position) {
+
+		// System.out
+		// .println("deviceMap.get(mLeDevices.get(position).getAddress()).getRssi()=>"
+		// + deviceMap.get(mLeDevices.get(position).getAddress())
+		// .getRssi());
+		// System.out.println("startToScan=>" + startToScan);
+
+		if (startToScan) {
+			startToScan = false;
+			editor.putInt("runNumRadar", 1);
+			editor.commit();
+
+			Intent beepIntent = new Intent();
+
+			beepIntent.setClass(getActivity(), RadarServicesActivity.class);
+
+			beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
+					"Macaron");
+			beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
+					"44:A6:E5:00:04:E2");
+			if (scan_flag) {
+				scanLeDevice(false);
+			}
+
+			startActivity(beepIntent);
+
+		}
 
 	}
 
-	private void addItem(String devname, String address) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("image", R.drawable.btn_arrow_go);
-		map.put("title", devname);
-		map.put("text", address);
-		listItem.add(map);
-		listItemAdapter.notifyDataSetChanged();
+	@SuppressWarnings("static-access")
+	private void RSSIforBeep(int rssi, BluetoothDevice device) {
+		// TODO Auto-generated method stub
+		SandVpreferences = getActivity().getSharedPreferences(
+				"soundAndVibrate", getActivity().MODE_PRIVATE);
+		Boolean isStart = false;
+		isStart = SandVpreferences.getBoolean("isStartBeepDialog", false);
 
-		System.out.println("listItemlistItemlistItelistItem=>"
-				+ listItem.size());
-	}
+		if (rssi < Constants.BEEP_RSSI) {
+			if (device.getAddress().equals("44:A6:E5:00:04:E2")) {
+				editor.putInt("runNumRadar", 1);
+				editor.commit();
 
-	public class autoConnection extends Thread {
-		@Override
-		public void run() {
-			// 测试自动连接功能
-			if (mLeDevices.size() > 0) {
+				final Intent intent = new Intent();
 
-				for (int i = 0; i < mLeDevices.size(); i++) {
-					System.out.println(mLeDevices.get(i));
-					if (mLeDevices.get(i).getAddress()
-							.equals(BeepDeviceMACAddress)) {
-						// System.out.println("mLeDevices.get(i).getUuids()=>"
-						// + mLeDevices.get(i).getUuids());
-						findDevice = i;
-						break;
-					}
-				}
-				if (findDevice != 100) {
-					System.out.println("findDevice=====> " + findDevice);
-					//
-					BluetoothDevice device = mLeDevices.get(findDevice);
-					System.out.println("device.getName()=====> "
-							+ device.getName());
-					System.out.println("device.getAddress()=====> "
-							+ device.getAddress());
-					Intent intent = new Intent();
-					intent.setClass(getActivity(), ServicesActivity.class);
-					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-							device.getName());
-					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-							device.getAddress());
-					if (scan_flag) {
-						scanLeDevice(false);
-					}
-					findDevice = 100;
-					startActivity(intent);
+				// intent.setClass(getActivity(), RadarServicesActivity.class);
+				intent.setClass(getActivity(), BeepDialog.class);
+
+				intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
+						device.getName());
+				intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
+						device.getAddress());
+
+				if (scan_flag) {
+					scanLeDevice(false);
 				}
 
+				startActivity(intent);
+			}
+		} else {
+			if (isStart) {
+				BeepDialog.instance.finish();
+				editor = SandVpreferences.edit();
+				editor.putBoolean("isStartBeepDialog", false);
+				editor.commit();
 			}
 
 		}
