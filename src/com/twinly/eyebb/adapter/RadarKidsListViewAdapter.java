@@ -2,6 +2,7 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		public CircleImageView avatar;
 		public TextView name;
 		public View beepBtn;
+		public TextView status;
 	}
 
 	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
@@ -77,6 +79,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		return position;
 	}
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
@@ -98,6 +101,9 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.avatar = (CircleImageView) convertView
 					.findViewById(R.id.radar_child_head_img);
+			// 設置item圖片為白色
+			viewHolder.avatar.setBorderColor(convertView.getResources()
+					.getColor(R.color.white));
 			viewHolderavatarRadar = new ViewHolder();
 
 			viewHolder.beepBtn = convertView
@@ -105,6 +111,11 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_name);
+
+			viewHolder.status = (TextView) convertView
+					.findViewById(R.id.radar_list_kids_missd);
+			viewHolder.status.setVisibility(View.GONE);
+
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();

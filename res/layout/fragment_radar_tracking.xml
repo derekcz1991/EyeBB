@@ -251,7 +251,11 @@
                 android:alpha="0.3"
                 android:background="@drawable/bg_white" >
 
-                <!--
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <!--
                      <com.twinly.eyebb.customview.CircleImageView
                     android:id="@+id/radar_child_scan_head_img"
                     android:layout_width="32dp"
@@ -260,11 +264,7 @@
                     android:src="@drawable/hugh"
                     app:border_color="@color/red"
                     app:border_width="2dp" />
-                -->
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    -->
 
                     <RelativeLayout
                         android:id="@+id/layout_circle"
@@ -396,6 +396,7 @@
             </RelativeLayout>
             <!-- radar -->
 
+    
             <com.twinly.eyebb.customview.LinearLayoutForListView
                 android:id="@+id/radar_children_list"
                 android:layout_width="match_parent"

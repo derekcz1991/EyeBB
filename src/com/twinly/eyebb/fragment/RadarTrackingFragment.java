@@ -79,14 +79,17 @@ public class RadarTrackingFragment extends Fragment implements
 	private boolean scan_flag = false;
 	// true 为第一次扫描
 	private Boolean firstScan = true;
-	private static final int SCANTIME = 5000;
-	private static final int POSTDELAYTIME = 4500;
+	private static final int SCANTIME = 100000;
+	private static final int POSTDELAYTIME = 95000;
 	private Handler mHandler;
 	private Handler autoScanHandler;
 	private final static int START_SCAN = 4;
 	private final static int STOP_SCAN = 5;
 	private final static int DELETE_SCAN = 6;
 	private final static int STATERTOBEEP = 7;
+	private final static int SCAN_CHILD_FOR_LIST = 8;
+	private final static int ADD_IMAGE_HEAD = 9;
+
 	private String UUID;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
 	List<String> UUID_temp = new ArrayList<String>();
@@ -101,7 +104,6 @@ public class RadarTrackingFragment extends Fragment implements
 	// private CircleImageView circleImageView;
 	private View RadarView;
 
-	private ArrayList<Child> ChildData;
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
 	private int getScreenWidth;
@@ -128,8 +130,16 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private boolean startToScan = false;
 	private Device newDevice;
+	private ArrayList<Child> ChildData;
+	private ArrayList<Child> scanedChildData;
+	private ArrayList<Child> HeadImageChildData;
+	private ArrayList<Child> TempHeadImageChildData;
+	private Child child;
+	private View v;
+	private Boolean firstAddImageHead = true;
 
-	@SuppressWarnings("static-access")
+	private static RadarTrackingFragment RadarTrackingFragmentInstance = null;
+
 	@SuppressLint("NewApi")
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -139,19 +149,15 @@ public class RadarTrackingFragment extends Fragment implements
 				"MajorAndMinor", getActivity().MODE_PRIVATE);
 		editor = MajorAndMinorPreferences.edit();
 
-		View v = inflater.inflate(R.layout.fragment_radar_tracking, container,
-				false);
+		v = inflater
+				.inflate(R.layout.fragment_radar_tracking, container, false);
+		RadarTrackingFragmentInstance = this;
 
+		ChildData = DBChildren.getChildrenList(getActivity());
 		ChildlistView = (LinearLayoutForListView) v
 				.findViewById(R.id.radar_children_list);
-		Childadapter = new RadarKidsListViewAdapter(getActivity(),
-				DBChildren.getChildrenList(getActivity()));
-		Childadapter.setCallback(this);
 
-		
-		ChildlistView.setAdapter(Childadapter);
-
-		//listview初始化為看不見
+		// listview初始化為看不見
 		ChildlistView.setVisibility(View.GONE);
 
 		RadarView = v.findViewById(R.id.radar_view);
@@ -218,18 +224,16 @@ public class RadarTrackingFragment extends Fragment implements
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					//阻止底部button點擊
+					// 阻止底部button點擊
 					isClickConnection = true;
-					//開始循環掃描
+					// 開始循環掃描
 					isWhileLoop = true;
 
-					//顯示list
+					// 顯示list
 					ChildlistView.setVisibility(View.VISIBLE);
-					//list透明為正常
+					// list透明為正常
 					ChildlistView.setAlpha(1);
 					RadarView.setAlpha(1);
-
-				
 
 					radarAnim();
 
@@ -247,16 +251,16 @@ public class RadarTrackingFragment extends Fragment implements
 					confirmRadarBtn.setBackground(getResources().getDrawable(
 							R.drawable.ic_selected_off));
 
-					//listview消失
+					// listview消失
 					ChildlistView.setVisibility(View.GONE);
-					
+
 					ChildlistView.setAlpha((float) 0.3);
 					RadarView.setAlpha((float) 0.3);
 					scan_flag = false;
 					// autoScanHandler.removeCallbacks(autoScan);
 					// mHandler.removeCallbacks(scanLeDeviceRunable);
 					// mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					//關閉循環掃描
+					// 關閉循環掃描
 					isWhileLoop = false;
 					// 清除動畫
 					radar_rotate.clearAnimation();
@@ -277,7 +281,6 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 		});
 
-		addImageHead(v);
 		return v;
 
 	}
@@ -291,34 +294,62 @@ public class RadarTrackingFragment extends Fragment implements
 				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader = ImageLoader.getInstance();
-		ChildData = DBChildren.getChildrenList(getActivity());
-		for (int i = 0; i < ChildData.size(); i++) {
-			Child child = ChildData.get(i);
+		RelativeLayout mainLayout = (RelativeLayout) v
+				.findViewById(R.id.radar_view);
+		CircleImageView cim = new CircleImageView(getActivity());
+		HeadImageChildData = scanedChildData;
+		if (firstAddImageHead) {
+			TempHeadImageChildData = HeadImageChildData;
+			firstAddImageHead = false;
+			for (int i = 0; i < TempHeadImageChildData.size(); i++) {
+				Child child = TempHeadImageChildData.get(i);
 
-			RelativeLayout mainLayout = (RelativeLayout) v
-					.findViewById(R.id.radar_view);
+				// 0 is missing 1 is unmiss
+				int imMiss = 1;
+				HeadPosition(imMiss, cim, TempHeadImageChildData.size());
+				
+				mainLayout.addView(cim);
+				// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
+				imageLoader.displayImage(child.getIcon(), cim, options, null);
 
-			CircleImageView cim = new CircleImageView(getActivity());
+			}
+		}
+		boolean isChange = false;
 
-			// 0 is missing 1 is unmiss
-			int imMiss = 0;
-			HeadPosition(imMiss, cim);
+		for (int x = 0; x < HeadImageChildData.size(); x++) {
+			for (int y = 0; y < TempHeadImageChildData.size(); y++) {
 
-			// Uri uri = Uri.parse(child.getIcon());
-			// ImageView cim = new ImageView(getActivity());
-			// layoutParams.leftMargin = 30;
-			// layoutParams.topMargin = 100;
+				if (TempHeadImageChildData.get(y).getChildId() == HeadImageChildData
+						.get(x).getChildId()) {
 
-			mainLayout.addView(cim);
-			// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
-			imageLoader.displayImage(child.getIcon(), cim, options, null);
+				} else {
+					TempHeadImageChildData.add(HeadImageChildData.get(x));
+					isChange = true;
+				}
+			}
+
+		}
+
+		if (isChange) {
+			for (int i = 0; i < TempHeadImageChildData.size(); i++) {
+				Child child = TempHeadImageChildData.get(i);
+
+				// 0 is missing 1 is unmiss
+				int imMiss = 0;
+				HeadPosition(imMiss, cim, TempHeadImageChildData.size());
+
+				mainLayout.addView(cim);
+				// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
+				imageLoader.displayImage(child.getIcon(), cim, options, null);
+
+			}
 
 		}
 
 	}
 
 	@SuppressLint("NewApi")
-	private void HeadPosition(int imMiss, CircleImageView cim) {
+	private void HeadPosition(int imMiss, CircleImageView cim, int getPeople) {
 		// // 初始化為中心
 
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -341,7 +372,7 @@ public class RadarTrackingFragment extends Fragment implements
 		int toporBottom = 1 + (int) (Math.random() * 2);
 
 		if (imMiss == 0) {
-			missingChildNum = "2";
+			missingChildNum = "0";
 			missingChildNumTxt.setText(missingChildNum);
 
 			cim.setBorderColor(getResources().getColor(R.color.red));
@@ -383,13 +414,15 @@ public class RadarTrackingFragment extends Fragment implements
 				cim.setX(initX);
 				cim.setY(initY);
 			} else {
-				HeadPosition(imMiss, cim);
+				HeadPosition(imMiss, cim, getPeople);
 			}
 
 		} else if (imMiss == 1) {
 			cim.setBorderColor(getResources().getColor(R.color.white));
 			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
-
+			unMissingChildNum = "0";
+			unMissingChildNum = getPeople + "";
+			unMissingChildNumTxt.setText(unMissingChildNum);
 			addX = DensityUtil.dip2px(getActivity(),
 					(int) (Math.random() * 100));
 			addY = DensityUtil.dip2px(getActivity(),
@@ -419,7 +452,7 @@ public class RadarTrackingFragment extends Fragment implements
 				cim.setX(initX);
 				cim.setY(initY);
 			} else {
-				HeadPosition(imMiss, cim);
+				HeadPosition(imMiss, cim, getPeople);
 			}
 
 		}
@@ -575,25 +608,6 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 	};
 
-	// private void addItem(String devname, String address) {
-	// HashMap<String, Object> map = new HashMap<String, Object>();
-	// map.put("image", R.drawable.ble_icon);
-	// map.put("title", devname);
-	// map.put("text", address);
-	// listItem.add(map);
-	// Childadapter.notifyDataSetChanged();
-	// }
-
-	private void deleteItem() {
-		int size = listItem.size();
-		if (size > 0) {
-
-			listItem.remove(listItem.size() - 1);
-			Childadapter.notifyDataSetChanged();
-		}
-		// mLeDevices.clear();
-	}
-
 	Runnable scanLeDeviceRunable = new Runnable() {
 		@SuppressLint("NewApi")
 		@Override
@@ -662,6 +676,21 @@ public class RadarTrackingFragment extends Fragment implements
 				mLeDevices.clear();
 				break;
 
+			case SCAN_CHILD_FOR_LIST:
+				Childadapter = new RadarKidsListViewAdapter(getActivity(),
+						scanedChildData);
+				Childadapter.setCallback(RadarTrackingFragmentInstance);
+				ChildlistView.setAdapter(Childadapter);
+
+				Childadapter.notifyDataSetChanged();
+				addImageHead(v);
+
+				break;
+
+			case ADD_IMAGE_HEAD:
+
+				break;
+
 			}
 		}
 	};
@@ -678,15 +707,15 @@ public class RadarTrackingFragment extends Fragment implements
 				@Override
 				public void run() {
 					int majorid, minorid;
-					System.out.println("rssi=>" + rssi);
-
+					// System.out.println("rssi=>" + rssi);
+					Child radarChild = new Child();
 					// System.out.println("device = >" + device.getName() + " "
 					// + device.getAddress());
 					// onStartToBeepClicked();
 					// startToBeep();
 					startToScan = true;
 					RSSIforBeep(rssi, device);
-
+					scanedChildData = new ArrayList<Child>();
 					newDevice = new Device();
 					newDevice.setAddress(device.getAddress());
 					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
@@ -703,17 +732,44 @@ public class RadarTrackingFragment extends Fragment implements
 						while (it.hasNext()) {
 							HashMap<String, Object> map = new HashMap<String, Object>();
 							Map.Entry<String, Device> entry = it.next();
-							map.put("image", R.drawable.ble_icon);
-							map.put("title", entry.getValue().getName());
-							map.put("text", entry.getValue().getAddress()
-									+ " UUID:" + entry.getValue().getUuid()
-									+ " MajorID:" + entry.getValue().getMajor()
-									+ " MinorID:" + entry.getValue().getMinor()
-									+ " RSSI:" + rssi);
-							listItem.add(map);
-							mLeDevices.add(device);
+
+							System.out.println("device.getAddress()"
+									+ device.getAddress());
+							for (int i = 0; i < ChildData.size(); i++) {
+								child = ChildData.get(i);
+
+								if (child.getMacAddress().equals(
+										device.getAddress())) {
+
+									System.out
+											.println("child.getMacAddress()=>"
+													+ child.getMacAddress());
+									map.put("image", R.drawable.ble_icon);
+									map.put("title", entry.getValue().getName());
+									map.put("text", entry.getValue()
+											.getAddress()
+											+ " UUID:"
+											+ entry.getValue().getUuid()
+											+ " MajorID:"
+											+ entry.getValue().getMajor()
+											+ " MinorID:"
+											+ entry.getValue().getMinor()
+											+ " RSSI:" + rssi);
+									scanedChildData.add(child);
+									listItem.add(map);
+									mLeDevices.add(device);
+
+									// HANDLER
+									Message msg = handler.obtainMessage();
+									msg.what = SCAN_CHILD_FOR_LIST;
+									handler.sendMessage(msg);
+
+								}
+
+							}
+
 						}
-						Childadapter.notifyDataSetChanged();
+
 					}
 				}
 
@@ -744,6 +800,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	/**
 	 * 現在少一層device address判斷 會有bug
+	 * 
 	 * @param position
 	 */
 	public void startToBeep(int position) {
@@ -753,15 +810,15 @@ public class RadarTrackingFragment extends Fragment implements
 		// + deviceMap.get(mLeDevices.get(position).getAddress())
 		// .getRssi());
 		// System.out.println("startToScan=>" + startToScan);
-//		boolean writeCharaSuccess = MajorAndMinorPreferences.getBoolean(
-//				"writeCharaSuccess", true);
+		// boolean writeCharaSuccess = MajorAndMinorPreferences.getBoolean(
+		// "writeCharaSuccess", true);
 		if (startToScan) {
-			//if (writeCharaSuccess) 
+			// if (writeCharaSuccess)
 			{
 				startToScan = false;
 				editor.putInt("runNumRadar", 1);
 				editor.commit();
-				
+
 				editor.putBoolean("writeCharaSuccess", false);
 				editor.commit();
 
