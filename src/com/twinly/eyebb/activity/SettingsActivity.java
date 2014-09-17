@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SettingsActivity extends Activity {
@@ -233,10 +234,7 @@ public class SettingsActivity extends Activity {
 
 	public void onLogoutClicked(View view) {
 		SharePrefsUtils.setLogin(this, false);
-		SharePrefsUtils.setRole(this, false);
-		Intent i = getBaseContext().getPackageManager()
-				.getLaunchIntentForPackage(getBaseContext().getPackageName());
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(i);
+		setResult(ActivityConstants.RESULT_LOGOUT);
+		finish();
 	}
 }

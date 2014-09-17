@@ -91,7 +91,11 @@ public class ReportFragment extends Fragment implements
 				.beginTransaction();
 
 		Bundle bundle = new Bundle();
-		bundle.putLong("childId", child.getChildId());
+		if (child != null) {
+			bundle.putLong("childId", child.getChildId());
+		} else {
+			bundle.putLong("childId", -1);
+		}
 
 		// setup ReportPerformanceFragment
 		performanceFragment = (ReportPerformanceFragment) getChildFragmentManager()
@@ -134,8 +138,11 @@ public class ReportFragment extends Fragment implements
 				.findViewById(R.id.black_divider_activities);
 		avatar = (CircleImageView) v.findViewById(R.id.avatar);
 
-		imageLoader.displayImage(child.getIcon(), avatar,
-				CommonUtils.getDisplayImageOptions(), null);
+		if (child != null) {
+			imageLoader.displayImage(child.getIcon(), avatar,
+					CommonUtils.getDisplayImageOptions(), null);
+		}
+
 	}
 
 	private void setUpListener(View v) {
@@ -244,7 +251,9 @@ public class ReportFragment extends Fragment implements
 	 * Get newest the data from server and update the view 
 	 */
 	public void updateView() {
-		new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		if(child != null) {
+			new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}
 	}
 
 	/**

@@ -1,5 +1,9 @@
 package com.twinly.eyebb.utils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.Locale;
+
 import android.text.TextUtils;
 
 import com.eyebb.R;
@@ -45,5 +49,18 @@ public class CommonUtils {
 
 	public static DisplayImageOptions getDisplayImageOptions() {
 		return opitons;
+	}
+
+	public static String getSHAHashValue(String password) {
+		String passwordSHA256 = "";
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(password.getBytes());
+			BigInteger bigInt = new BigInteger(1, md.digest());
+			passwordSHA256 = bigInt.toString(16).toUpperCase(Locale.US);
+		} catch (Exception e) {
+			return null;
+		}
+		return passwordSHA256;
 	}
 }

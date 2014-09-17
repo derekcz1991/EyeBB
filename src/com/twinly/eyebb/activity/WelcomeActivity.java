@@ -91,7 +91,9 @@ public class WelcomeActivity extends Activity {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY
 				|| requestCode == ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
-				setResult(ActivityConstants.RESULT_RESULT_OK);
+				//setResult(ActivityConstants.RESULT_RESULT_OK);
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
 				finish();
 			}
 		}

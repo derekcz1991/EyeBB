@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:hint="@string/text_login_account"
+                android:longClickable="false"
                 android:singleLine="true" />
         </LinearLayout>
 
@@ -68,6 +69,7 @@
                 android:background="@color/transparent"
                 android:hint="@string/text_password"
                 android:inputType="textPassword"
+                android:longClickable="false"
                 android:singleLine="true" />
         </LinearLayout>
 

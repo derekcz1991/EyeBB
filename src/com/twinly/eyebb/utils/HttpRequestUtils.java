@@ -118,7 +118,6 @@ public class HttpRequestUtils {
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
-			Log.e(TAG, e.getMessage());
 			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
 		}
 	}

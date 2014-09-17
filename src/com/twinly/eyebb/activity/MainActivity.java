@@ -28,8 +28,6 @@ import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
-import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
@@ -56,28 +54,18 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		checkLogin();
 		setContentView(R.layout.activity_main);
 
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 		//checkBluetooth();
 		SystemUtils.initImageLoader(getApplicationContext());
-		new HttpRequestUtils();
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("tab", mTabHost.getCurrentTabTag());
-	}
-
-	private void checkLogin() {
-		if (SharePrefsUtils.isLogin(this) == false) {
-			Intent intent = new Intent(this, WelcomeActivity.class);
-			startActivityForResult(intent,
-					ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY);
-		}
 	}
 
 	@SuppressLint("InflateParams")
@@ -92,7 +80,7 @@ public class MainActivity extends FragmentActivity implements
 
 		indoorLocatorFragment = new IndoorLocatorFragment();
 		indoorLocatorFragment.setCallbackInterface(this);
-		// mian
+		// main
 		View mainLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(

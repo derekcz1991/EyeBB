@@ -7,8 +7,8 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_IS_LOGIN = "is_login";
 	public static final String SHARE_PREFS_ITEM_REGISTRATION_ID = "registrationId";
 	public static final String SHARE_PREFS_ITEM_LOGIN_ACCOUNT = "login_account";
+	public static final String SHARE_PREFS_ITEM_PASSWORD = "password";
 	public static final String SHARE_PREFS_ITEM_LANGUAGE = "language";
-	public static final String SHARE_PREFS_ITEM_ROLE = "role";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_ID = "kindergarten_id";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC = "kindergarten_name_tc";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC = "kindergarten_name_sc";

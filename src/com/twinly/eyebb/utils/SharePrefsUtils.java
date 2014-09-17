@@ -18,6 +18,14 @@ public class SharePrefsUtils {
 				value);
 	}
 
+	public static String getPassword(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_ITEM_PASSWORD);
+	}
+
+	public static void setPassowrd(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_ITEM_PASSWORD, value);
+	}
+
 	public static Boolean isLogin(Context context) {
 		return getBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_LOGIN,
 				false);
@@ -25,15 +33,6 @@ public class SharePrefsUtils {
 
 	public static void setLogin(Context context, boolean value) {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_LOGIN, value);
-	}
-
-	public static boolean getRole(Context context) {
-		return getBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_ROLE,
-				false);
-	}
-
-	public static void setRole(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_ROLE, value);
 	}
 
 	public static int getKindergartenId(Context context) {

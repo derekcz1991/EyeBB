@@ -77,6 +77,16 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:name="com.twinly.eyebb.activity.LancherActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.WelcomeActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -100,11 +110,6 @@
             android:name="com.twinly.eyebb.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.ChildDialog"

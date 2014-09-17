@@ -46,6 +46,7 @@ public class LoginActivity extends Activity {
 	private RelativeLayout kindergartenItem;
 	private EditText loginAccount;
 	private EditText password;
+	private String hashPassword;
 	private TextView kindergarten;
 
 	private int kindergartenId = -1;
@@ -164,6 +165,10 @@ public class LoginActivity extends Activity {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
+				hashPassword = CommonUtils.getSHAHashValue(password.getText()
+						.toString());
+				System.out.println("hashPassword = " + hashPassword);
+				//hashPassword = password.getText().toString();
 				dialog = LoadingDialog.createLoadingDialog(LoginActivity.this,
 						getString(R.string.toast_login));
 				dialog.show();
@@ -173,7 +178,7 @@ public class LoginActivity extends Activity {
 			protected String doInBackground(Void... params) {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("j_username", loginAccount.getText().toString());
-				map.put("j_password", password.getText().toString());
+				map.put("j_password", hashPassword);
 				map.put("kId", String.valueOf(kindergartenId));
 
 				return HttpRequestUtils.post(HttpConstants.LOGIN, map);
@@ -215,14 +220,11 @@ public class LoginActivity extends Activity {
 						}
 					}
 
-					if (loginAccount.getText().toString().equals("May")) {
-						SharePrefsUtils.setRole(LoginActivity.this, true);
-					} else {
-						SharePrefsUtils.setRole(LoginActivity.this, false);
-					}
 					SharePrefsUtils.setLogin(LoginActivity.this, true);
 					SharePrefsUtils.setLoginAccount(LoginActivity.this,
 							loginAccount.getText().toString());
+					SharePrefsUtils.setPassowrd(LoginActivity.this,
+							hashPassword);
 					SharePrefsUtils.setKindergartenId(LoginActivity.this,
 							kindergartenId);
 					SharePrefsUtils.setKindergartenNameEn(LoginActivity.this,

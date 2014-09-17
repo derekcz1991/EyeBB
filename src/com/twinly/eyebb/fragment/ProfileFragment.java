@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 
+import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.NotificationActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -36,7 +37,6 @@ public class ProfileFragment extends Fragment {
 		((TextView) v.findViewById(R.id.username)).setText(SharePrefsUtils
 				.getLoginAccount(getActivity()));
 
-		
 		return v;
 	}
 
@@ -125,7 +125,10 @@ public class ProfileFragment extends Fragment {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_SETTING_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_LOGOUT) {
-
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), LancherActivity.class);
+				startActivity(intent);
+				getActivity().finish();
 			}
 		}
 	}

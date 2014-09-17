@@ -57,7 +57,7 @@ public class ReportPerformanceFragment extends Fragment implements
 
 		list = new ArrayList<PerformanceListItem>();
 		childId = getArguments().getLong("childId");
-		if (childId != 0) {
+		if (childId != -1) {
 			updateView(DBPerformance.getPerformanceByChildId(getActivity(),
 					childId));
 		}

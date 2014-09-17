@@ -138,12 +138,9 @@ public class RadarTrackingFragment extends Fragment {
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
 
-		if (SharePrefsUtils.getRole(getActivity()) == false) {
 
-		} else {
-			((TextView) v.findViewById(R.id.radar_text_missed_number))
+		((TextView) v.findViewById(R.id.radar_text_missed_number))
 					.setText("3");
-		}
 
 		// bluetooth
 		// connect device
