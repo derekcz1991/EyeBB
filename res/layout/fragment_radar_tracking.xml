@@ -252,8 +252,9 @@
                 android:background="@drawable/bg_white" >
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:id="@+id/miss_radar_view"
+                    android:layout_width="fill_parent"
+                    android:layout_height="240dp" >
 
                     <!--
                      <com.twinly.eyebb.customview.CircleImageView
@@ -397,7 +398,7 @@
             <!-- radar -->
 
             <com.twinly.eyebb.customview.LinearLayoutForListView
-                android:id="@+id/radar_children_list"
+                android:id="@+id/radar_children_list_miss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.3"
@@ -405,7 +406,7 @@
             </com.twinly.eyebb.customview.LinearLayoutForListView>
 
             <com.twinly.eyebb.customview.LinearLayoutForListView
-                android:id="@+id/radar_children_list_miss"
+                android:id="@+id/radar_children_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.3"
