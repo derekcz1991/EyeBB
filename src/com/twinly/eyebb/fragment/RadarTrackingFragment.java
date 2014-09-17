@@ -307,7 +307,7 @@ public class RadarTrackingFragment extends Fragment implements
 				// 0 is missing 1 is unmiss
 				int imMiss = 1;
 				HeadPosition(imMiss, cim, TempHeadImageChildData.size());
-				
+
 				mainLayout.addView(cim);
 				// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
 				imageLoader.displayImage(child.getIcon(), cim, options, null);
@@ -874,10 +874,13 @@ public class RadarTrackingFragment extends Fragment implements
 
 		} else {
 			if (isStart) {
-				BeepDialog.instance.finish();
-				editor = SandVpreferences.edit();
-				editor.putBoolean("isStartBeepDialog", false);
-				editor.commit();
+				if (BeepDialog.instance != null) {
+					BeepDialog.instance.finish();
+					editor = SandVpreferences.edit();
+					editor.putBoolean("isStartBeepDialog", false);
+					editor.commit();
+				}
+
 			}
 
 		}
