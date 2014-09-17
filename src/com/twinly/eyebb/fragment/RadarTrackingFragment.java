@@ -45,6 +45,7 @@ import com.google.android.gms.drive.internal.v;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.BeepDialog;
+import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
 import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
@@ -88,7 +89,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private final static int DELETE_SCAN = 6;
 	private final static int STATERTOBEEP = 7;
 	private final static int SCAN_CHILD_FOR_LIST = 8;
-	private final static int ADD_IMAGE_HEAD = 9;
+	private final static int MISS_CHILD_FOR_LIST = 9;
 
 	private String UUID;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
@@ -100,6 +101,11 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private LinearLayoutForListView ChildlistView;
 	private RadarKidsListViewAdapter Childadapter;
+
+	// miss children
+	private LinearLayoutForListView MissChildlistView;
+	private MissRadarKidsListViewAdapter MissChildadapter;
+
 	private ScrollView radarScrollView;
 	// private CircleImageView circleImageView;
 	private View RadarView;
@@ -131,10 +137,11 @@ public class RadarTrackingFragment extends Fragment implements
 	private boolean startToScan = false;
 	private Device newDevice;
 	private ArrayList<Child> ChildData;
-	private ArrayList<Child> scanedChildData;
+	private ArrayList<Child> ScanedChildData;
 	private ArrayList<Child> HeadImageChildData;
 	private ArrayList<Child> TempHeadImageChildData;
 	private Child child;
+	private ArrayList<Child> MissChildData;
 	private View v;
 	private Boolean firstAddImageHead = true;
 
@@ -156,9 +163,11 @@ public class RadarTrackingFragment extends Fragment implements
 		ChildData = DBChildren.getChildrenList(getActivity());
 		ChildlistView = (LinearLayoutForListView) v
 				.findViewById(R.id.radar_children_list);
-
+		MissChildlistView = (LinearLayoutForListView) v
+				.findViewById(R.id.radar_children_list_miss);
 		// listview初始化為看不見
 		ChildlistView.setVisibility(View.GONE);
+		MissChildlistView.setVisibility(View.GONE);
 
 		RadarView = v.findViewById(R.id.radar_view);
 
@@ -178,9 +187,7 @@ public class RadarTrackingFragment extends Fragment implements
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
 
-
-		((TextView) v.findViewById(R.id.radar_text_missed_number))
-					.setText("3");
+		((TextView) v.findViewById(R.id.radar_text_missed_number)).setText("3");
 
 		// bluetooth
 		// connect device
@@ -228,8 +235,10 @@ public class RadarTrackingFragment extends Fragment implements
 
 					// 顯示list
 					ChildlistView.setVisibility(View.VISIBLE);
+					MissChildlistView.setVisibility(View.VISIBLE);
 					// list透明為正常
 					ChildlistView.setAlpha(1);
+					MissChildlistView.setAlpha(1);
 					RadarView.setAlpha(1);
 
 					radarAnim();
@@ -250,8 +259,9 @@ public class RadarTrackingFragment extends Fragment implements
 
 					// listview消失
 					ChildlistView.setVisibility(View.GONE);
-
+					MissChildlistView.setVisibility(View.GONE);
 					ChildlistView.setAlpha((float) 0.3);
+					MissChildlistView.setAlpha((float) 0.3);
 					RadarView.setAlpha((float) 0.3);
 					scan_flag = false;
 					// autoScanHandler.removeCallbacks(autoScan);
@@ -294,7 +304,7 @@ public class RadarTrackingFragment extends Fragment implements
 		RelativeLayout mainLayout = (RelativeLayout) v
 				.findViewById(R.id.radar_view);
 		CircleImageView cim = new CircleImageView(getActivity());
-		HeadImageChildData = scanedChildData;
+		HeadImageChildData = ScanedChildData;
 		if (firstAddImageHead) {
 			TempHeadImageChildData = HeadImageChildData;
 			firstAddImageHead = false;
@@ -670,22 +680,29 @@ public class RadarTrackingFragment extends Fragment implements
 			case DELETE_SCAN:
 				listItem.clear();
 				Childadapter.notifyDataSetChanged();
+				MissChildadapter.notifyDataSetChanged();
 				mLeDevices.clear();
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
 				Childadapter = new RadarKidsListViewAdapter(getActivity(),
-						scanedChildData);
+						ScanedChildData);
 				Childadapter.setCallback(RadarTrackingFragmentInstance);
 				ChildlistView.setAdapter(Childadapter);
 
 				Childadapter.notifyDataSetChanged();
+
 				addImageHead(v);
 
 				break;
 
-			case ADD_IMAGE_HEAD:
-
+			case MISS_CHILD_FOR_LIST:
+				MissChildadapter = new MissRadarKidsListViewAdapter(
+						getActivity(), MissChildData);
+				MissChildlistView.setAdapter(MissChildadapter);
+				MissChildadapter.notifyDataSetChanged();
+				
+				//addImageHead(v);
 				break;
 
 			}
@@ -712,7 +729,8 @@ public class RadarTrackingFragment extends Fragment implements
 					// startToBeep();
 					startToScan = true;
 					RSSIforBeep(rssi, device);
-					scanedChildData = new ArrayList<Child>();
+					ScanedChildData = new ArrayList<Child>();
+					MissChildData = new ArrayList<Child>();
 					newDevice = new Device();
 					newDevice.setAddress(device.getAddress());
 					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
@@ -731,7 +749,7 @@ public class RadarTrackingFragment extends Fragment implements
 							Map.Entry<String, Device> entry = it.next();
 
 							System.out.println("device.getAddress()"
-									+ device.getAddress());
+									+ device.getAddress() + " " + ChildData.size());
 							for (int i = 0; i < ChildData.size(); i++) {
 								child = ChildData.get(i);
 
@@ -752,13 +770,20 @@ public class RadarTrackingFragment extends Fragment implements
 											+ " MinorID:"
 											+ entry.getValue().getMinor()
 											+ " RSSI:" + rssi);
-									scanedChildData.add(child);
+									ScanedChildData.add(child);
 									listItem.add(map);
 									mLeDevices.add(device);
 
 									// HANDLER
 									Message msg = handler.obtainMessage();
 									msg.what = SCAN_CHILD_FOR_LIST;
+									handler.sendMessage(msg);
+
+								} else {
+									MissChildData.add(child);
+									// HANDLER
+									Message msg = handler.obtainMessage();
+									msg.what = MISS_CHILD_FOR_LIST;
 									handler.sendMessage(msg);
 
 								}

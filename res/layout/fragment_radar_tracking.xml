@@ -396,9 +396,16 @@
             </RelativeLayout>
             <!-- radar -->
 
-    
             <com.twinly.eyebb.customview.LinearLayoutForListView
                 android:id="@+id/radar_children_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.3"
+                android:orientation="vertical" >
+            </com.twinly.eyebb.customview.LinearLayoutForListView>
+
+            <com.twinly.eyebb.customview.LinearLayoutForListView
+                android:id="@+id/radar_children_list_miss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.3"
