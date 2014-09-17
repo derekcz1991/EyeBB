@@ -9,8 +9,8 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.bluetooth.BluetoothLeService;
-import com.twinly.eyebb.bluetooth.Constans;
+
+
 
 public class VerifyDialog extends Activity {
 	private TextView btnVerify;

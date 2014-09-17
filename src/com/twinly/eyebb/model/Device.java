@@ -6,6 +6,7 @@ public class Device {
 	private String address;
 	private int major;
 	private int minor;
+	private int rssi;
 
 	public String getName() {
 		return name;
@@ -45,6 +46,14 @@ public class Device {
 
 	public void setMinor(int minor) {
 		this.minor = minor;
+	}
+
+	public int getRssi() {
+		return rssi;
+	}
+
+	public void setRssi(int rssi) {
+		this.rssi = rssi;
 	}
 
 }

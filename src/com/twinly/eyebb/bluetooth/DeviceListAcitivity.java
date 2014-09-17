@@ -12,6 +12,7 @@ import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.MatchingVerificationActivity;
 import com.twinly.eyebb.activity.VerifyBirthdayFromDeviceListActivity;
 import com.twinly.eyebb.activity.VerifyDialog;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Device;
@@ -62,8 +63,8 @@ public class DeviceListAcitivity extends Activity {
 	private BluetoothAdapter mBluetoothAdapter;
 	private static final int REQUEST_ENABLE_BT = 1;
 
-	private static final int POSTDELAYTIME = 29000;
-	private static final int SCANTIME = 30000;
+	private static final int POSTDELAYTIME = 10000;
+	private static final int SCANTIME = 10500;
 	// true 更新
 	private Boolean isUpadate = false;
 
@@ -74,9 +75,6 @@ public class DeviceListAcitivity extends Activity {
 	int UUID_i = 0;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
 
-	private String ourDeviceUUID = "4D616361726F6E202020202020202020";
-	private int ourDefaultMajor = 8224;
-	private int ourDefaultMinor = 8197;
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 	private long ChildIDfromKidsList;
 
@@ -96,6 +94,8 @@ public class DeviceListAcitivity extends Activity {
 	private SharedPreferences MajorAndMinorPreferences;
 	private SharedPreferences.Editor editor;
 
+	private String MACaddress4submit;
+
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,14 +106,13 @@ public class DeviceListAcitivity extends Activity {
 
 		setContentView(R.layout.ble_peripheral);
 		BaseApp.getInstance().addActivity(this);
-		Constans.gattServiceData.clear();
-		Constans.gattServiceObject.clear();
+		Constants.gattServiceData.clear();
+		Constants.gattServiceObject.clear();
 
 		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
 				MODE_PRIVATE);
 		editor = MajorAndMinorPreferences.edit();
 
-	
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
@@ -150,7 +149,7 @@ public class DeviceListAcitivity extends Activity {
 						device.getName());
 				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
 						device.getAddress());
-
+				MACaddress4submit = device.getAddress();
 				new Thread(postToServerRunnable).start();
 
 				System.out.println("new Thread(postToServerRunnable).start();");
@@ -194,13 +193,12 @@ public class DeviceListAcitivity extends Activity {
 		// }
 
 		if (scan_flag) {
-			System.out
-					.println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
+
 			autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);
 		} else {
 			new Thread(autoScan).start();
 		}
-
+		// new Thread(autoScan).start();
 	}
 
 	Runnable autoScan = new Runnable() {
@@ -280,7 +278,7 @@ public class DeviceListAcitivity extends Activity {
 	@SuppressLint("NewApi")
 	public void scanLeDevice(final boolean enable) {
 		if (enable) {
-			// Stops scanning after a pre-defined scan period.
+			// // Stops scanning after a pre-defined scan period.
 			mHandler.postDelayed(scanLeDeviceRunable, POSTDELAYTIME);
 
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
@@ -290,7 +288,6 @@ public class DeviceListAcitivity extends Activity {
 			Message msg = handler.obtainMessage();
 			msg.what = STOP_SCAN;
 			handler.sendMessage(msg);
-			// scanBtn.setText(R.string.stop_scan);
 
 		} else {
 
@@ -356,15 +353,17 @@ public class DeviceListAcitivity extends Activity {
 				@Override
 				public void run() {
 					int majorid, minorid;
-
+					System.out
+							.println(" BluetoothAdapter.LeScanCallback mLeScanCallback");
 					Device newDevice = new Device();
 					newDevice.setAddress(device.getAddress());
 					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
 					newDevice.setMinor(scanRecord[27] * 256 + scanRecord[28]);
 					newDevice.setName(device.getName());
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
-					if (bytesToHex(scanRecord, 9, 16).equals(ourDeviceUUID)) {
-						if (deviceMap.put(device.getAddress(), newDevice) == null) {
+					if (bytesToHex(scanRecord, 9, 16).equals(
+							Constants.OURDEVICEUUID)) {
+						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
 							listItem.clear();
@@ -384,6 +383,7 @@ public class DeviceListAcitivity extends Activity {
 								mLeDevices.add(device);
 							}
 							listItemAdapter.notifyDataSetChanged();
+
 						}
 					}
 
@@ -421,6 +421,7 @@ public class DeviceListAcitivity extends Activity {
 			if (scan_flag) {
 				scanLeDevice(false);
 			}
+			isWhileLoop = false;
 			finish();
 			return true;
 		}
@@ -434,6 +435,8 @@ public class DeviceListAcitivity extends Activity {
 
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("childId", String.valueOf(childIDfromDeviceList));
+		map.put("macAddress", MACaddress4submit);
+		System.out.println("MACaddress4submit=>" + MACaddress4submit);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
@@ -482,6 +485,22 @@ public class DeviceListAcitivity extends Activity {
 		}
 	}
 
-	// service
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		autoScanHandler.removeCallbacks(autoScan);
+		mHandler.removeCallbacks(scanLeDeviceRunable);
+		isWhileLoop = false;
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		autoScanHandler.removeCallbacks(autoScan);
+		mHandler.removeCallbacks(scanLeDeviceRunable);
+		isWhileLoop = false;
+	}
 
 }

@@ -119,19 +119,19 @@ public class KidsListViewAdapter extends BaseAdapter {
 				if (CommonUtils.isFastDoubleClick()) {
 					return;
 				} else {
-					// if(child.beacon == null){
-					//
-					// }else{
-					// Intent intent = new Intent(context, BeepDialog.class);
-					// context.startActivity(intent);
-					// }
+					if (child.getMacAddress().length() > 0) {
+						System.out.println("THIS CHILD ID:"
+								+ child.getChildId() + " MACADDRESS:"
+								+ child.getMacAddress());
+					} else {
+						Intent intent = new Intent(context,
+								DeviceListAcitivity.class);
+						intent.putExtra("childID", child.getChildId());
+						System.out.println("child.getChildId()=>"
+								+ child.getChildId());
+						context.startActivity(intent);
+					}
 
-					Intent intent = new Intent(context,
-							DeviceListAcitivity.class);
-					intent.putExtra("childID", child.getChildId());
-					System.out.println("child.getChildId()=>"
-							+ child.getChildId());
-					context.startActivity(intent);
 				}
 			}
 		});

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.VerifyDialog;
+import com.twinly.eyebb.constant.Constants;
 
 public class CharacteristicsActivity extends Activity {
 
@@ -88,17 +89,17 @@ public class CharacteristicsActivity extends Activity {
 					uuid = characteristic.getUuid().toString();
 					uuid = uuid.substring(4, 8);
 					charaidx = arg2;
-					Constans.mBluetoothLeService
+					Constants.mBluetoothLeService
 							.readCharacteristic(characteristic);
 				}
 			}
 		});
 
-		gattService = Constans.gattServiceObject.get(servidx);
+		gattService = Constants.gattServiceObject.get(servidx);
 
 		Thread disconverThread = new Thread() {
 			public void run() {
-				status_text.setText(Constans.gattServiceData.get(servidx).get(
+				status_text.setText(Constants.gattServiceData.get(servidx).get(
 						"NAME")
 						+ ": Discovering Characteristics...");
 				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
@@ -128,7 +129,7 @@ public class CharacteristicsActivity extends Activity {
 					gattCharacteristicGroupData.add(currentCharaData);
 					addItem(name, uuid);
 				}
-				status_text.setText(Constans.gattServiceData.get(servidx).get(
+				status_text.setText(Constants.gattServiceData.get(servidx).get(
 						"NAME")
 						+ ": Discovered");
 			}

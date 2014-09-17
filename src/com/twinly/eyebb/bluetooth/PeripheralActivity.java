@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.Constants;
 
 @SuppressLint("NewApi")
 public class PeripheralActivity extends Activity {
@@ -349,7 +350,7 @@ public class PeripheralActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			Constans.exit_ask(this);
+			Constants.exit_ask(this);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
