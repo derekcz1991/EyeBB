@@ -29,6 +29,7 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -62,6 +63,9 @@ public class BluetoothLeService extends Service {
 
 	public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID
 			.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
+
+	private SharedPreferences MajorAndMinorPreferences;
+	private SharedPreferences.Editor editor;
 
 	// Implements callback methods for GATT events that the app cares about. For
 	// example,
@@ -133,7 +137,15 @@ public class BluetoothLeService extends Service {
 
 		public void onCharacteristicWrite(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
+
+			MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
+					MODE_PRIVATE);
+			editor = MajorAndMinorPreferences.edit();
+
 			System.out.println("--------write success----- status:" + status);
+
+			editor.putBoolean("writeCharaSuccess", true);
+			editor.commit();
 
 		};
 	};

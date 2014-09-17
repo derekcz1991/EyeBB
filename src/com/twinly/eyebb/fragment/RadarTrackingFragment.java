@@ -148,8 +148,11 @@ public class RadarTrackingFragment extends Fragment implements
 				DBChildren.getChildrenList(getActivity()));
 		Childadapter.setCallback(this);
 
+		
 		ChildlistView.setAdapter(Childadapter);
-		ChildlistView.setClickable(false);
+
+		//listview初始化為看不見
+		ChildlistView.setVisibility(View.GONE);
 
 		RadarView = v.findViewById(R.id.radar_view);
 
@@ -215,13 +218,18 @@ public class RadarTrackingFragment extends Fragment implements
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					//阻止底部button點擊
 					isClickConnection = true;
+					//開始循環掃描
 					isWhileLoop = true;
 
+					//顯示list
+					ChildlistView.setVisibility(View.VISIBLE);
+					//list透明為正常
 					ChildlistView.setAlpha(1);
 					RadarView.setAlpha(1);
 
-					ChildlistView.setClickable(true);
+				
 
 					radarAnim();
 
@@ -239,12 +247,16 @@ public class RadarTrackingFragment extends Fragment implements
 					confirmRadarBtn.setBackground(getResources().getDrawable(
 							R.drawable.ic_selected_off));
 
+					//listview消失
+					ChildlistView.setVisibility(View.GONE);
+					
 					ChildlistView.setAlpha((float) 0.3);
 					RadarView.setAlpha((float) 0.3);
 					scan_flag = false;
 					// autoScanHandler.removeCallbacks(autoScan);
 					// mHandler.removeCallbacks(scanLeDeviceRunable);
 					// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					//關閉循環掃描
 					isWhileLoop = false;
 					// 清除動畫
 					radar_rotate.clearAnimation();
@@ -730,37 +742,50 @@ public class RadarTrackingFragment extends Fragment implements
 		startToBeep(position);
 	}
 
-	private void startToBeep(int position) {
+	/**
+	 * 現在少一層device address判斷 會有bug
+	 * @param position
+	 */
+	public void startToBeep(int position) {
 
 		// System.out
 		// .println("deviceMap.get(mLeDevices.get(position).getAddress()).getRssi()=>"
 		// + deviceMap.get(mLeDevices.get(position).getAddress())
 		// .getRssi());
 		// System.out.println("startToScan=>" + startToScan);
-
+//		boolean writeCharaSuccess = MajorAndMinorPreferences.getBoolean(
+//				"writeCharaSuccess", true);
 		if (startToScan) {
-			startToScan = false;
-			editor.putInt("runNumRadar", 1);
-			editor.commit();
+			//if (writeCharaSuccess) 
+			{
+				startToScan = false;
+				editor.putInt("runNumRadar", 1);
+				editor.commit();
+				
+				editor.putBoolean("writeCharaSuccess", false);
+				editor.commit();
 
-			Intent beepIntent = new Intent();
+				Intent beepIntent = new Intent();
 
-			beepIntent.setClass(getActivity(), RadarServicesActivity.class);
+				beepIntent.setClass(getActivity(), RadarServicesActivity.class);
 
-			beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
-					"Macaron");
-			beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
-					"44:A6:E5:00:04:E2");
-			if (scan_flag) {
-				scanLeDevice(false);
+				beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
+						"Macaron");
+				beepIntent.putExtra(
+						RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
+						"44:A6:E5:00:04:E2");
+				if (scan_flag) {
+					scanLeDevice(false);
+				}
+
+				startActivity(beepIntent);
 			}
-
-			startActivity(beepIntent);
 
 		}
 
 	}
 
+	// 應該加入頭像
 	@SuppressWarnings("static-access")
 	private void RSSIforBeep(int rssi, BluetoothDevice device) {
 		// TODO Auto-generated method stub
@@ -770,26 +795,26 @@ public class RadarTrackingFragment extends Fragment implements
 		isStart = SandVpreferences.getBoolean("isStartBeepDialog", false);
 
 		if (rssi < Constants.BEEP_RSSI) {
-			if (device.getAddress().equals("44:A6:E5:00:04:E2")) {
-				editor.putInt("runNumRadar", 1);
-				editor.commit();
 
-				final Intent intent = new Intent();
+			editor.putInt("runNumRadar", 1);
+			editor.commit();
 
-				// intent.setClass(getActivity(), RadarServicesActivity.class);
-				intent.setClass(getActivity(), BeepDialog.class);
+			final Intent intent = new Intent();
 
-				intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
-						device.getName());
-				intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
-						device.getAddress());
+			// intent.setClass(getActivity(), RadarServicesActivity.class);
+			intent.setClass(getActivity(), BeepDialog.class);
 
-				if (scan_flag) {
-					scanLeDevice(false);
-				}
+			intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
+					device.getName());
+			intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
+					device.getAddress());
 
-				startActivity(intent);
+			if (scan_flag) {
+				scanLeDevice(false);
 			}
+
+			startActivity(intent);
+
 		} else {
 			if (isStart) {
 				BeepDialog.instance.finish();

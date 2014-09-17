@@ -12,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -43,6 +44,7 @@ public class RadarCharacteristicsActivity extends Activity {
 	ArrayList<BluetoothGattCharacteristic> charas = new ArrayList<BluetoothGattCharacteristic>();
 
 	private String uuid;
+	
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class RadarCharacteristicsActivity extends Activity {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_characteristics);
 
+	
 		BaseApp.getInstance().addActivity(this);
 
 		status_text = (TextView) findViewById(R.id.characteristics_status);
@@ -129,15 +132,12 @@ public class RadarCharacteristicsActivity extends Activity {
 					currentCharaData.put("UUID", uuid);
 					gattCharacteristicGroupData.add(currentCharaData);
 					addItem(name, uuid);
-					
-					
+
 				}
 				status_text.setText(Constants.gattServiceData.get(servidx).get(
 						"NAME")
 						+ ": Discovered");
 
-
-				
 			}
 		};
 		disconverThread.start();
@@ -156,15 +156,13 @@ public class RadarCharacteristicsActivity extends Activity {
 		// unregisterReceiver(mGattUpdateReceiver);
 		// finish();
 		// 蜂鳴開始
-		final BluetoothGattCharacteristic characteristic = charas
-				.get(0);
+		final BluetoothGattCharacteristic characteristic = charas.get(0);
 		final int charaProp = characteristic.getProperties();
 		if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
 			uuid = characteristic.getUuid().toString();
 			uuid = uuid.substring(4, 8);
 			charaidx = 0;
-			Constants.mBluetoothLeService
-					.readCharacteristic(characteristic);
+			Constants.mBluetoothLeService.readCharacteristic(characteristic);
 		}
 	}
 
@@ -198,20 +196,13 @@ public class RadarCharacteristicsActivity extends Activity {
 	@SuppressLint("NewApi")
 	private void modify1001(String data) {
 		// TODO Auto-generated method stub
+
 		data = "01";
 
 		BluetoothGattCharacteristic characteristic = charas.get(charaidx);
 		characteristic.setValue(BLEUtils.HexString2Bytes(data));
 		Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
 
-//		Intent intentToVerify = new Intent();
-
-//		intentToVerify.setClass(RadarCharacteristicsActivity.this,
-//				VerifyDialog.class);
-		// 關掉BLE服務
-
-//		startActivity(intentToVerify);
-//		unregisterReceiver(mGattUpdateReceiver);
 		finish();
 
 	}
