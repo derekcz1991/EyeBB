@@ -2,6 +2,8 @@ package com.twinly.eyebb.model;
 
 import java.io.Serializable;
 
+import com.twinly.eyebb.utils.CommonUtils;
+
 public class Child implements Serializable {
 	/**
 	 * 
@@ -11,10 +13,8 @@ public class Child implements Serializable {
 	private String name;
 	private String icon;
 	private String phone;
-	private String uuid;
-	private String major;
-	private String minor;
 
+	private String macAddress;
 	private boolean isMissing;
 	private String locationName; // dynamic changing
 
@@ -61,28 +61,16 @@ public class Child implements Serializable {
 		this.phone = phone;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getMacAddress() {
+		return macAddress;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	public String getMajor() {
-		return major;
-	}
-
-	public void setMajor(String major) {
-		this.major = major;
-	}
-
-	public String getMinor() {
-		return minor;
-	}
-
-	public void setMinor(String minor) {
-		this.minor = minor;
+	public void setMacAddress(String macAddress) {
+		if (CommonUtils.isNotNull(macAddress)) {
+			this.macAddress = macAddress;
+		} else {
+			this.macAddress = "";
+		}
 	}
 
 	public boolean isMissing() {

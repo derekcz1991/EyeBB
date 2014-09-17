@@ -25,6 +25,7 @@ public class DBChildren {
 		values.put("name", child.getName());
 		values.put("icon", child.getIcon());
 		values.put("phone", child.getPhone());
+		values.put("mac_address", child.getMacAddress());
 		db.insertOrThrow("children", null, values);
 		db.close();
 	}
@@ -37,6 +38,7 @@ public class DBChildren {
 		values.put("name", child.getName());
 		values.put("icon", child.getIcon());
 		values.put("phone", child.getPhone());
+		values.put("mac_address", child.getMacAddress());
 		int result = db.update("children", values, "child_id=?",
 				new String[] { String.valueOf(child.getChildId()) });
 
@@ -95,9 +97,8 @@ public class DBChildren {
 		child.setName(cursor.getString(cursor.getColumnIndex("name")));
 		child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
 		child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
-		child.setPhone(cursor.getString(cursor.getColumnIndex("uuid")));
-		child.setPhone(cursor.getString(cursor.getColumnIndex("major")));
-		child.setPhone(cursor.getString(cursor.getColumnIndex("minor")));
+		child.setMacAddress(cursor.getString(cursor
+				.getColumnIndex("mac_address")));
 		child.setLocationName("");
 		return child;
 	}

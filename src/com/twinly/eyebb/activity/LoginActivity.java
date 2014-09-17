@@ -193,6 +193,8 @@ public class LoginActivity extends Activity {
 								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
 								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
 								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+						child.setMacAddress(object
+								.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
 						// get parents' phone
 						if (CommonUtils.isNotNull(object
 								.getString(HttpConstants.JSON_KEY_PARENTS))) {

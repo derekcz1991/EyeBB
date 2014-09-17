@@ -16,9 +16,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
-import com.twinly.eyebb.bluetooth.PeripheralActivity;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -101,6 +99,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 		viewHolder.name.setText(child.getName());
 		viewHolder.locationName.setText("@ " + child.getLocationName());
 		viewHolder.phone.setText(child.getPhone());
+		System.out.println(child.getMacAddress());
 		if (viewHolder.phone.getText().toString().trim().length() == 0) {
 			viewHolder.phoneBtn.setVisibility(View.GONE);
 		}
