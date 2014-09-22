@@ -3,6 +3,8 @@ package com.twinly.eyebb.bluetooth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+
 import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.constant.Constants;
@@ -54,11 +57,14 @@ public class RadarServicesActivity extends Activity {
 	ListView myList; // ListView控件
 
 	TextView status_text;
-
+	// 做計時器 自動關閉activity 放置阻塞主線程
+	private Timer timer;
+	// 控制時間
+	private int keepTim = 0;
 	private Dialog dialog;
-	final static int START_PROGRASSS_BAR = 1;
-	final static int STOP_PROGRASSS_BAR = 2;
-
+	public final static int START_PROGRASSS_BAR = 1;
+	public final static int STOP_PROGRASSS_BAR = 2;
+	public static final int FINISH_ACTIVITY = 3;
 	// sharedPreferences
 	private SharedPreferences MajorAndMinorPreferences;
 	private SharedPreferences.Editor editor;
@@ -154,6 +160,32 @@ public class RadarServicesActivity extends Activity {
 		// }
 	}
 
+	// 倒計時
+	TimerTask task = new TimerTask() {
+		public void run() {
+			Message message = new Message();
+			message.what = FINISH_ACTIVITY;
+			handler.sendMessage(message);
+		}
+	};
+
+	Runnable finishConnection = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (Constants.mBluetoothLeService != null) {
+				Constants.mBluetoothLeService.disconnect();
+			}
+			mConnected = false;
+			RadarServicesActivity.this.finish();
+		}
+	};
+
 	Handler handler = new Handler() {
 
 		public void handleMessage(Message msg) {
@@ -169,6 +201,14 @@ public class RadarServicesActivity extends Activity {
 			case STOP_PROGRASSS_BAR:
 				dialog.dismiss();
 				break;
+
+			case FINISH_ACTIVITY:
+				keepTim++;
+				if (keepTim == 3) {
+					new Thread(finishConnection).start();
+				}
+
+				break;
 			}
 		}
 	};
@@ -183,6 +223,10 @@ public class RadarServicesActivity extends Activity {
 							RadarCharacteristicsActivity.class);
 					intentToChara.putExtra("servidx", i);
 					System.out.println("servidxservidx=>" + i);
+
+					timer = new Timer(true);
+					timer.schedule(task, 1000, 1000); // 延时1000ms后执行，1000ms执行一次
+
 					if (dialog != null && dialog.isShowing()) {
 						dialog.dismiss();
 					}
@@ -192,7 +236,7 @@ public class RadarServicesActivity extends Activity {
 					RadarServicesActivity.this.finish();
 				}
 			}
-		
+
 		}
 	}
 

@@ -31,18 +31,19 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
-//	private RadarKidsListViewAdapterCallback callback;
-//
-//	public interface RadarKidsListViewAdapterCallback {
-//		public void onStartToBeepClicked(int position);
-//
-//		// public void onStartToBeepClicked(int rssi, String getAddress,
-//		// String getName);
-//	}
-//
-//	public void setCallback(RadarKidsListViewAdapterCallback callback) {
-//		this.callback = callback;
-//	}
+
+	// private RadarKidsListViewAdapterCallback callback;
+	//
+	// public interface RadarKidsListViewAdapterCallback {
+	// public void onStartToBeepClicked(int position);
+	//
+	// // public void onStartToBeepClicked(int rssi, String getAddress,
+	// // String getName);
+	// }
+	//
+	// public void setCallback(RadarKidsListViewAdapterCallback callback) {
+	// this.callback = callback;
+	// }
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -101,9 +102,9 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.avatar = (CircleImageView) convertView
 					.findViewById(R.id.radar_child_head_img);
-//			// 設置item圖片為白色
-//			viewHolder.avatar.setBorderColor(convertView.getResources()
-//					.getColor(R.color.white));
+			// // 設置item圖片為白色
+			// viewHolder.avatar.setBorderColor(convertView.getResources()
+			// .getColor(R.color.white));
 			viewHolderavatarRadar = new ViewHolder();
 
 			viewHolder.beepBtn = convertView
@@ -114,7 +115,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 
 			viewHolder.status = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_missd);
-			//viewHolder.status.setVisibility(View.GONE);
+			// viewHolder.status.setVisibility(View.GONE);
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -125,34 +126,30 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 	}
 
 	private void setUpView(ViewHolder viewHolder, final int position) {
-		final Child child = data.get(position);
-		if (TextUtils.isEmpty(child.getIcon()) == false) {
+		if (data.size() > position) {
+			System.out.println("POITION MISS = >" + position);
 
-			viewHolder.beepBtn.setOnClickListener(new OnClickListener() {
+			Child child = null;
+			try {
+				child = data.get(position);
+			} catch (Exception e) {
+				setUpView(viewHolder, position);
+				e.printStackTrace();
+			}
+			if (child != null) {
+				if (TextUtils.isEmpty(child.getIcon()) == false) {
 
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					if (CommonUtils.isFastDoubleClick()) {
-						return;
-					} else {
-						System.out.println("positionposition = > " + position
-								+ "");
-						//callback.onStartToBeepClicked(position);
+					imageLoader.displayImage(child.getIcon(),
+							viewHolder.avatar, options, null);
 
-					}
-
+				} else {
+					viewHolder.avatar.setImageDrawable(context.getResources()
+							.getDrawable(R.drawable.hugh));
 				}
-			});
+				viewHolder.name.setText(child.getName());
+			}
 
-			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					options, null);
-
-		} else {
-			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.hugh));
 		}
-		viewHolder.name.setText(child.getName());
 	}
 
 }

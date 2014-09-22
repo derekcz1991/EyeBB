@@ -3,6 +3,8 @@ package com.twinly.eyebb.bluetooth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,6 +16,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +31,7 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.VerifyDialog;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 
 public class RadarCharacteristicsActivity extends Activity {
@@ -42,9 +47,13 @@ public class RadarCharacteristicsActivity extends Activity {
 	BluetoothGattService gattService;
 	ArrayList<HashMap<String, String>> gattCharacteristicGroupData = new ArrayList<HashMap<String, String>>();
 	ArrayList<BluetoothGattCharacteristic> charas = new ArrayList<BluetoothGattCharacteristic>();
+	// 做計時器 自動關閉activity 放置阻塞主線程
+	private Timer timer;
+	// 控制時間
+	private int keepTim = 0;
 
 	private String uuid;
-	
+	public static final int FINISH_ACTIVITY = 1;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +62,6 @@ public class RadarCharacteristicsActivity extends Activity {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_characteristics);
 
-	
 		BaseApp.getInstance().addActivity(this);
 
 		status_text = (TextView) findViewById(R.id.characteristics_status);
@@ -192,6 +200,47 @@ public class RadarCharacteristicsActivity extends Activity {
 		}
 
 	};
+	// 倒計時
+	TimerTask task = new TimerTask() {
+		public void run() {
+			Message message = new Message();
+			message.what = FINISH_ACTIVITY;
+			handler.sendMessage(message);
+		}
+	};
+
+	Runnable finishConnection = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (Constants.mBluetoothLeService != null) {
+				Constants.mBluetoothLeService.disconnect();
+			}
+
+			RadarCharacteristicsActivity.this.finish();
+		}
+	};
+	Handler handler = new Handler() {
+
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+
+			case FINISH_ACTIVITY:
+
+				keepTim++;
+				if (keepTim == 3) {
+					new Thread(finishConnection).start();
+				}
+
+				break;
+			}
+		}
+	};
 
 	@SuppressLint("NewApi")
 	private void modify1001(String data) {
@@ -202,6 +251,8 @@ public class RadarCharacteristicsActivity extends Activity {
 		BluetoothGattCharacteristic characteristic = charas.get(charaidx);
 		characteristic.setValue(BLEUtils.HexString2Bytes(data));
 		Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
+		timer = new Timer(true);
+		timer.schedule(task, 1000, 1000); // 延时1000ms后执行，1000ms执行一次
 
 		finish();
 
