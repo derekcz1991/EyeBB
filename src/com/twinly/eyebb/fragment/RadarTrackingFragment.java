@@ -2,10 +2,14 @@ package com.twinly.eyebb.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -16,7 +20,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources.NotFoundException;
-import android.content.res.Resources.Theme;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,27 +44,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.google.android.gms.drive.internal.v;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
-import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;
-import com.twinly.eyebb.bluetooth.ServicesActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
-import com.twinly.eyebb.customview.LoadingDialog;
-
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RadarTrackingFragment extends Fragment implements
 		RadarKidsListViewAdapterCallback {
@@ -89,10 +86,9 @@ public class RadarTrackingFragment extends Fragment implements
 	private final static int START_SCAN = 4;
 	private final static int STOP_SCAN = 5;
 	private final static int DELETE_SCAN = 6;
-	private final static int STATERTOBEEP = 7;
+	private final static int SOS_TASK = 7;
 	private final static int SCAN_CHILD_FOR_LIST = 8;
-	private final static int MISS_CHILD_FOR_LIST = 9;
-	private final static int MISS_ALL_CHILD_FOR_LIST = 10;
+
 	private String UUID;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
 	List<String> UUID_temp = new ArrayList<String>();
@@ -156,12 +152,10 @@ public class RadarTrackingFragment extends Fragment implements
 	RelativeLayout MissMainLayout = null;
 	RelativeLayout mainLayout = null;
 
-	private boolean isfisrtMiss = true;
-	private int scanSize = 0;
-	private int missSize;
 	private boolean isInit = true;
-	private boolean isMiss = true;
-	private boolean isScan;
+	private boolean isInitHead = true;
+	private int keepTim = 0;
+	Timer timer = new Timer(true);
 
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
@@ -190,8 +184,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 		ScanedChildDataID = new ArrayList<String>();
 		MissChildDataID = new ArrayList<String>();
-
-		MissChildData = DBChildren.getChildrenList(getActivity());
 
 		// ScanedChildData.clear();
 		// MissChildData.clear();
@@ -328,8 +320,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private void chageTheAllData() {
 
-		ScanedChildDataID.clear();
-		MissChildDataID.clear();
 		for (int i = 0; i < ScanedChildData.size(); i++) {
 			ScanedChildDataID.add(ScanedChildData.get(i).getChildId() + "");
 
@@ -376,45 +366,18 @@ public class RadarTrackingFragment extends Fragment implements
 
 		}
 
-		// HeadImageChildData = scanedChildData2;
-		// if (firstAddImageHead) {
-		// TempHeadImageChildData = (ArrayList<Child>) HeadImageChildData
-		// .clone();
-		// firstAddImageHead = false;
-		//
-		// }
-		//
-		//
-		// for (int x = 0; x < HeadImageChildData.size(); x++) {
-		// for (int y = 0; y < TempHeadImageChildData.size(); y++) {
-		//
-		// if (HeadImageChildData.get(x) != null
-		// && TempHeadImageChildData.get(y).getChildId() == HeadImageChildData
-		// .get(x).getChildId()) {
-		//
-		// } else {
-		// if (HeadImageChildData.get(x) != null) {
-		// TempHeadImageChildData.add(HeadImageChildData.get(x));
-		// }
-		// // isChange = true;
-		//
-		// if (x == HeadImageChildData.size() - 1
-		// && y == TempHeadImageChildData.size() - 1) {
-		//
-		// TempHeadImageChildData.add(HeadImageChildData.get(x));
-		// // isChange = true;
-		// }
-		// }
-		// }
-		//
-		// }
-
 		return TempHeadImageChildData.size();
 
 	}
 
-	private void removeImageHead(ArrayList<Child> scanedChildData) {
-		mainLayout.removeViews(1, addImageHead(scanedChildData));
+	private void removeImageHead(int scanedChildDataNum) {
+
+		try {
+			mainLayout.removeViews(1, scanedChildDataNum);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -428,25 +391,10 @@ public class RadarTrackingFragment extends Fragment implements
 		imageLoader = ImageLoader.getInstance();
 		MissTempHeadImageChildData = new ArrayList<Child>();
 		MissHeadImageChildData = new ArrayList<Child>();
-		System.out.println("addMissImageHead");
-		//
-		// MissHeadImageChildData = missChildData2;
-		// // System.out.println("MissChild==>" + missChildData2.size());
-		// // System.out.println("MissHeadImageChildData===> "
-		// // + MissHeadImageChildData.size());
-		// if (MissfirstAddImageHead) {
-		//
-		// MissTempHeadImageChildData = (ArrayList<Child>)
-		// MissHeadImageChildData
-		// .clone();
-		//
-		// MissfirstAddImageHead = false;
-		//
-		// }
 
 		for (int i = 0; i < missChildData2.size(); i++) {
-			System.out.println("MissTempHeadImageChildData isChange===> "
-					+ missChildData2.size());
+			// System.out.println("MissTempHeadImageChildData isChange===> "
+			// + missChildData2.size());
 			Child child = missChildData2.get(i);
 			MissMainLayout = (RelativeLayout) v
 					.findViewById(R.id.miss_radar_view);
@@ -461,77 +409,20 @@ public class RadarTrackingFragment extends Fragment implements
 
 		}
 
-		//
-		// if (MissHeadImageChildData.size() > 0
-		// && MissTempHeadImageChildData.size() > 0) {
-		// for (int x = 0; x < MissHeadImageChildData.size(); x++) {
-		// // System.out.println("MissHeadImageChildData=>"
-		// // + MissHeadImageChildData.size());
-		// for (int y = 0; y < MissTempHeadImageChildData.size(); y++) {
-		// // System.out.println("MissTempHeadImageChildData===> "
-		// // + MissTempHeadImageChildData.size());
-		// if (MissHeadImageChildData.get(x) != null
-		// && MissTempHeadImageChildData.get(y).getChildId() ==
-		// MissHeadImageChildData
-		// .get(x).getChildId()) {
-		// break;
-		//
-		// } else {
-		//
-		// if (x == MissHeadImageChildData.size() - 1
-		// && y == MissTempHeadImageChildData.size() - 1) {
-		// // System.out
-		// // .println("MissTempHeadImageChildDatass===> "
-		// // + MissTempHeadImageChildData.get(y)
-		// // .getChildId());
-		// MissTempHeadImageChildData
-		// .add(MissHeadImageChildData.get(x));
-		// // isChange = true;
-		// }
-		// }
-		// }
-		//
-		// }
-		// }
-
-		// MissHeadImageChildData.clear();
 		return MissTempHeadImageChildData.size();
 
 	}
 
-	private void removeMissImageHead(ArrayList<Child> MissChildData) {
-		MissMainLayout.removeViews(2, addMissImageHead(MissChildData));
-	}
+	private void removeMissImageHead(int missChildDataNum) {
 
-	private void addInitImageHead() {
-		// 手动添加imageview
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
-		imageLoader = ImageLoader.getInstance();
-
-		System.out.println("ChildData.size()" + ChildData.size());
-		for (int i = 0; i < ChildData.size(); i++) {
-			Child child = ChildData.get(i);
-			CircleImageView InitCim = new CircleImageView(getActivity());
-			InitMainLayout = (RelativeLayout) v
-					.findViewById(R.id.init_radar_view);
-			// 0 is missing 1 is unmiss
-			int imMiss = 0;
-			HeadPosition(imMiss, InitCim, ChildData.size());
-
-			InitMainLayout.addView(InitCim);
-
-			// InitMainLayout.removeViewAt(3);
-			imageLoader.displayImage(child.getIcon(), InitCim, options, null);
-
+		try {
+			System.out.println("number=> " + missChildDataNum);
+			MissMainLayout.removeViews(1, missChildDataNum);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 	}
-
-
 
 	@SuppressLint("NewApi")
 	private void HeadPosition(int imMiss, CircleImageView cim, int getPeople) {
@@ -629,7 +520,7 @@ public class RadarTrackingFragment extends Fragment implements
 					}
 				}
 
-				System.out.println("initX + initY :" + initX + " " + initY);
+				// System.out.println("initX + initY :" + initX + " " + initY);
 				cim.setX(initX);
 				cim.setY(initY);
 			} else {
@@ -855,62 +746,68 @@ public class RadarTrackingFragment extends Fragment implements
 			case DELETE_SCAN:
 				listItem.clear();
 				mLeDevices.clear();
+				// ScanedChildData.clear();
+				// MissChildData.clear();
 				// 改變所有數據
-				chageTheAllData();
+				// chageTheAllData();
 
-				ScanedChildData.clear();
-				MissChildData.clear();
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
 
-				if (isInit) {
+				removeDuplicateWithOrder(ScanedChildData);
+				MissChildData = DBChildren.getChildrenList(getActivity());
 
-				} else {
-//					removeMissImageHead(MissChildData);
-//					removeImageHead(ScanedChildData);
+				for (int x = 0; x < ScanedChildData.size(); x++) {
+					for (int y = 0; y < MissChildData.size(); y++) {
+						if (ScanedChildData.get(x).getChildId() == MissChildData
+								.get(y).getChildId()) {
+							MissChildData.remove(y);
+							break;
+						}
+
+					}
 				}
 
-				isInit = false;
-				// addImageHead(v);
-				// addMissImageHead(v);
+				System.out.println("MissChildDataMissChildData=>"
+						+ MissChildData.size());
+
+				if (isInitHead) {
+
+				} else {
+					if (MajorAndMinorPreferences.getInt("MissChildData", 0) > 0)
+						removeMissImageHead(MajorAndMinorPreferences.getInt(
+								"MissChildData", 0));
+					if (MajorAndMinorPreferences.getInt("ScanedChildData", 0) > 0)
+						removeImageHead(MajorAndMinorPreferences.getInt(
+								"ScanedChildData", 0));
+
+				}
+
+				isInitHead = false;
+
 				if (ScanedChildData.size() >= 0)
 					missingChildNumTxt.setText(MissChildData.size() + "");
 				if (MissChildData.size() >= 0)
 					unMissingChildNumTxt.setText(ScanedChildData.size() + "");
 
-				chageTheAllData();
+				editor.putInt("MissChildData", MissChildData.size());
+				editor.putInt("ScanedChildData", ScanedChildData.size());
+				// System.out.println("AAA=>" + MissChildData.size() + " "
+				// + MajorAndMinorPreferences.getInt("MissChildData", 0));
+				editor.commit();
+
+				if (ScanedChildData.size() > 0 || MissChildData.size() > 0) {
+
+					addMissImageHead(MissChildData);
+					addImageHead(ScanedChildData);
+					chageTheAllData();
+
+				}
 
 				// radar頭像
-
-//				addMissImageHead(MissChildData);
-//				addImageHead(ScanedChildData);
-				break;
-
-			case MISS_CHILD_FOR_LIST:
-				if (isfisrtMiss) {
-					addInitImageHead();
-					isfisrtMiss = false;
-					//isInit = true;
-				}
-				missingChildNumTxt.setText(ScanedChildData.size());
-				unMissingChildNumTxt.setText(MissChildData.size());
-
-				chageTheAllData();
-				break;
-
-			case MISS_ALL_CHILD_FOR_LIST:
-				if (isMiss) {
-					MissChildadapter = new MissRadarKidsListViewAdapter(
-							getActivity(), ChildData);
-					MissChildlistView.setAdapter(MissChildadapter);
-					MissChildadapter.notifyDataSetChanged();
-					//isInit = true;
-					isMiss = false;
-					addInitImageHead();
-
-					break;
-				}
+				ScanedChildData.clear();
+				MissChildData.clear();
 
 			}
 		}
@@ -955,11 +852,11 @@ public class RadarTrackingFragment extends Fragment implements
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
 							listItem.clear();
-					
-							isMiss = true;
+
 							// MissChildData.clear();
 							while (it.hasNext()) {
 								HashMap<String, Object> map = new HashMap<String, Object>();
+
 								Map.Entry<String, Device> entry = it.next();
 
 								// System.out.println("device.getAddress()"
@@ -975,11 +872,10 @@ public class RadarTrackingFragment extends Fragment implements
 
 									if (child.getMacAddress().equals(
 											entry.getValue().getAddress())) {
-										ScanedChildData.clear();
-										MissChildData.clear();
-										MissChildData = DBChildren
-												.getChildrenList(getActivity());
-										scanSize = 0;
+										// ScanedChildData.clear();
+										// MissChildData.clear();
+										// MissChildData = DBChildren
+										// .getChildrenList(getActivity());
 
 										RSSIforBeep(rssi, device);
 										// System.out
@@ -999,9 +895,10 @@ public class RadarTrackingFragment extends Fragment implements
 												+ " RSSI:" + rssi);
 										ScanedChildData.add(child);
 
-										if (MissChildData.size() > i) {
-											MissChildData.remove(i);
-										}
+										// if (MissChildData.size() > i && i >
+										// 0) {
+										// MissChildData.remove(child);
+										// }
 
 										// 改變所有數據
 										// chageTheAllData();
@@ -1009,37 +906,27 @@ public class RadarTrackingFragment extends Fragment implements
 										// + ScanedChildData.size() + " "
 										// + MissChildData.size());
 
-									
 										listItem.add(map);
 										mLeDevices.add(device);
-										scanSize = ScanedChildData.size();
 
 										// Message msg =
 										// handler.obtainMessage();
 										// msg.what = SCAN_CHILD_FOR_LIST;
 										// handler.sendMessage(msg);
 
-										if (MissChildData.size() == 0) {
-											isfisrtMiss = true;
-										}
-
 									}
 
 								}
 
 							}
-							// System.out.println("ScanedChildData22=>"
-							// + ScanedChildData.size() + " "
-							// + MissChildData.size());
-							// 改變所有數據
 
 						}
 					}
-					// HANDLER
-
-					Message msg = handler.obtainMessage();
-					msg.what = SCAN_CHILD_FOR_LIST;
-					handler.sendMessage(msg);
+					if (isInit) {
+						// 0 秒钟后开始 5 秒钟为周期 重复执行
+						timer.schedule(task, 500, 5000);
+						isInit = false;
+					}
 
 				}
 
@@ -1048,6 +935,45 @@ public class RadarTrackingFragment extends Fragment implements
 			});
 			thread.start();
 		}
+	};
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void removeDuplicateWithOrder(List list) {
+		Set set = new HashSet();
+		List newList = new ArrayList();
+		for (Iterator iter = list.iterator(); iter.hasNext();) {
+			Object element = iter.next();
+			if (set.add(element))
+				newList.add(element);
+		}
+		list.clear();
+		list.addAll(newList);
+		// System.out.println(" remove duplicate " + list);
+	}
+
+	// @SuppressWarnings({ "rawtypes", "unchecked" })
+	// public static void removeDuplicateMissedOrder(List list, List newList) {
+	// Set set = new HashSet();
+	// newList = new ArrayList();
+	// for (Iterator iter = list.iterator(); iter.hasNext();) {
+	// Object element = iter.next();
+	// if (set.add(element))
+	// newList.add(element);
+	// }
+	// list.clear();
+	// list.addAll(newList);
+	// // System.out.println(" remove duplicate " + list);
+	// }
+
+	TimerTask task = new TimerTask() {
+
+		public void run() {
+			Message msg = handler.obtainMessage();
+			msg.what = SCAN_CHILD_FOR_LIST;
+			handler.sendMessage(msg);
+
+		}
+
 	};
 
 	public static String bytesToHex(byte[] bytes, int begin, int length) {
@@ -1101,6 +1027,7 @@ public class RadarTrackingFragment extends Fragment implements
 	@SuppressWarnings("static-access")
 	private void RSSIforBeep(int rssi, BluetoothDevice device) {
 		// TODO Auto-generated method stub
+
 		SandVpreferences = getActivity().getSharedPreferences(
 				"soundAndVibrate", getActivity().MODE_PRIVATE);
 		Boolean isStart = false;
@@ -1108,26 +1035,30 @@ public class RadarTrackingFragment extends Fragment implements
 
 		if (rssi < Constants.BEEP_RSSI) {
 
-			editor.putInt("runNumRadar", 1);
-			editor.commit();
+			keepTim++;
+			System.out.println("keepTim=>" + keepTim);
+			if (keepTim == 2) {
+				if (scan_flag) {
+					scanLeDevice(false);
+				}
+				editor.putInt("runNumRadar", 1);
+				editor.commit();
+				final Intent SOSintent = new Intent();
+				// intent.setClass(getActivity(), RadarServicesActivity.class);
+				SOSintent.setClass(getActivity(), BeepDialog.class);
 
-			final Intent intent = new Intent();
+				SOSintent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
+						device.getName());
+				SOSintent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
+						device.getAddress());
 
-			// intent.setClass(getActivity(), RadarServicesActivity.class);
-			intent.setClass(getActivity(), BeepDialog.class);
-
-			intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
-					device.getName());
-			intent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
-					device.getAddress());
-
-			if (scan_flag) {
-				scanLeDevice(false);
+				startActivity(SOSintent);
 			}
 
-			startActivity(intent);
-
 		} else {
+
+			keepTim = 0;
+
 			if (isStart) {
 				if (BeepDialog.instance != null) {
 					BeepDialog.instance.finish();
@@ -1140,5 +1071,4 @@ public class RadarTrackingFragment extends Fragment implements
 
 		}
 	}
-
 }

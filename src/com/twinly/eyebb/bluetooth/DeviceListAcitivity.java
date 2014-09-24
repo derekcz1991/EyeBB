@@ -381,6 +381,8 @@ public class DeviceListAcitivity extends Activity {
 										+ " RSSI:" + rssi);
 								listItem.add(map);
 								mLeDevices.add(device);
+								System.out.println("mLeDevicesmLeDevices=>"
+										+ listItem.size());
 							}
 							listItemAdapter.notifyDataSetChanged();
 

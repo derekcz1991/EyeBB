@@ -22,6 +22,7 @@ import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
+import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
@@ -113,7 +114,8 @@ public class IndoorLocatorFragment extends Fragment implements
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
 								KidsListActivity.class);
-
+//						Intent intent = new Intent(getActivity(),
+//								DeviceListAcitivity.class);
 						myMap.setMap(childrenMap);
 						Bundle bundle = new Bundle();
 						bundle.putSerializable("childrenMap", myMap);
