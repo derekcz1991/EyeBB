@@ -40,6 +40,7 @@
     <string name="text_settings_notifications">功能</string>
     <string name="text_enableSound">開啟聲音</string>
     <string name="text_enableVibration">開啟震動</string>
+        <string name="text_AutomaticRefresh">開啟自動刷新</string>
     <string name="text_language">語言</string>
     <string name="text_english">English</string>
     <string name="text_chinese">繁體中文</string>
