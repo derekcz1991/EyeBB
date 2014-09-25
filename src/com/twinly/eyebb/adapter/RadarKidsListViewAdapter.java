@@ -35,7 +35,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private ArrayList<String> dataID;
 
 	public interface RadarKidsListViewAdapterCallback {
-		public void onStartToBeepClicked();
+		public void onStartToBeepClicked(int position);
 
 		// public void onStartToBeepClicked(int rssi, String getAddress,
 		// String getName);
@@ -160,7 +160,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 										System.out
 												.println("positionposition = > "
 														+ position + "");
-										callback.onStartToBeepClicked();
+										callback.onStartToBeepClicked(position);
 
 									}
 
