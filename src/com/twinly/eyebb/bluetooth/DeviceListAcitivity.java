@@ -378,7 +378,7 @@ public class DeviceListAcitivity extends Activity {
 										+ entry.getValue().getMajor()
 										+ " MinorID:"
 										+ entry.getValue().getMinor()
-										+ " RSSI:" + rssi);
+										+ " RSSI:" + entry.getValue().getRssi());
 								listItem.add(map);
 								mLeDevices.add(device);
 								System.out.println("mLeDevicesmLeDevices=>"

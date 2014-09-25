@@ -885,7 +885,7 @@ public class RadarTrackingFragment extends Fragment implements
 												+ entry.getValue().getMajor()
 												+ " MinorID:"
 												+ entry.getValue().getMinor()
-												+ " RSSI:" + rssi);
+												+ " RSSI:" + entry.getValue().getRssi());
 										ScanedChildData.add(child);
 
 										listItem.add(map);
