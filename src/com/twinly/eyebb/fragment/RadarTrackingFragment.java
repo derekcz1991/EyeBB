@@ -752,7 +752,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 			case SCAN_CHILD_FOR_LIST:
 
-				removeDuplicateWithOrder(ScanedChildData);
+				//removeDuplicateWithOrder(ScanedChildData);
 				for (int i = 0; i < ScanedChildData.size(); ++i)
 					for (int j = i + 1; j < ScanedChildData.size(); ++j) {
 						if (ScanedChildData.get(i).equals(
@@ -779,10 +779,10 @@ public class RadarTrackingFragment extends Fragment implements
 				if (isInitHead) {
 
 				} else {
-					if (MajorAndMinorPreferences.getInt("MissChildData", 0) > 0)
+					if (MajorAndMinorPreferences.getInt("MissChildData", 0) >= 0)
 						removeMissImageHead(MajorAndMinorPreferences.getInt(
 								"MissChildData", 0));
-					if (MajorAndMinorPreferences.getInt("ScanedChildData", 0) > 0)
+					if (MajorAndMinorPreferences.getInt("ScanedChildData", 0) >= 0)
 						removeImageHead(MajorAndMinorPreferences.getInt(
 								"ScanedChildData", 0));
 
@@ -795,13 +795,13 @@ public class RadarTrackingFragment extends Fragment implements
 				if (ScanedChildData.size() >= 0)
 					unMissingChildNumTxt.setText(ScanedChildData.size() + "");
 
-				if (ScanedChildData.size() > 0) {
+				if (ScanedChildData.size() >= 0) {
 					addImageHead(ScanedChildData);
 					editor.putInt("ScanedChildData", ScanedChildData.size());
 					// System.out.println("AAA=>" + MissChildData.size() + " "
 					// + MajorAndMinorPreferences.getInt("MissChildData", 0));
 				}
-				if (MissChildData.size() > 0) {
+				if (MissChildData.size() >= 0) {
 					addMissImageHead(MissChildData);
 					editor.putInt("MissChildData", MissChildData.size());
 				}
