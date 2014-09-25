@@ -753,6 +753,12 @@ public class RadarTrackingFragment extends Fragment implements
 			case SCAN_CHILD_FOR_LIST:
 
 				removeDuplicateWithOrder(ScanedChildData);
+				for (int i = 0; i < ScanedChildData.size(); ++i)
+					for (int j = i + 1; j < ScanedChildData.size(); ++j) {
+						if (ScanedChildData.get(i).equals(
+								ScanedChildData.get(j)))
+							ScanedChildData.remove(j);
+					}
 
 				MissChildData = DBChildren.getChildrenList(getActivity());
 
@@ -885,7 +891,8 @@ public class RadarTrackingFragment extends Fragment implements
 												+ entry.getValue().getMajor()
 												+ " MinorID:"
 												+ entry.getValue().getMinor()
-												+ " RSSI:" + rssi);
+												+ " RSSI:"
+												+ entry.getValue().getRssi());
 										ScanedChildData.add(child);
 
 										listItem.add(map);
