@@ -15,7 +15,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.ActivityInfo;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.SystemUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class ActivitiesListViewAdapter extends BaseAdapter {
 	private Context context;
@@ -72,7 +72,7 @@ public class ActivitiesListViewAdapter extends BaseAdapter {
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		ActivityInfo activityInfo = list.get(position);
-		switch (SystemUtils.getLocale(context)) {
+		switch (SharePrefsUtils.getLanguage(context)) {
 		case Constants.LOCALE_CN:
 			viewHolder.title.setText(activityInfo.getTitleSc());
 			break;

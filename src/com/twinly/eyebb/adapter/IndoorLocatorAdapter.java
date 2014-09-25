@@ -1,11 +1,8 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,7 +39,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		this.data = new ArrayList<Map.Entry<String, ArrayList<String>>>(
 				data.entrySet());
 
-		Collections.sort(this.data,
+		/*Collections.sort(this.data,
 				new Comparator<Map.Entry<String, ArrayList<String>>>() {
 
 					@Override
@@ -50,7 +47,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 							Entry<String, ArrayList<String>> rhs) {
 						return rhs.getValue().size() - lhs.getValue().size();
 					}
-				});
+				});*/
 	}
 
 	@Override

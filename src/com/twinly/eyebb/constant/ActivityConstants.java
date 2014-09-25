@@ -17,10 +17,13 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG = "update_report_performance_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG = "update_report_activities_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG = "update_notice_flag";
-	
+	public static final String SHARE_PREFS_ITEM_AUDO_UPDATE = "auto_update";
+	public static final String SHARE_PREFS_ITEM_SOUND = "sound";
+	public static final String SHARE_PREFS_ITEM_VIBRATE = "vibrate";
+
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";
-	
+
 	public static final int REQUEST_GO_TO_WELCOME_ACTIVITY = 100;
 	public static final int REQUEST_GO_TO_LOGIN_ACTIVITY = 101;
 	public static final int REQUEST_GO_TO_SIGN_UP_ACTIVITY = 102;
@@ -30,4 +33,6 @@ public class ActivityConstants {
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;
+	public static final int RESULT_AUTO_UPDATE_ON = 202;
+	public static final int RESULT_AUTO_UPDATE_OFF = 203;
 }

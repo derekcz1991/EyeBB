@@ -1,5 +1,8 @@
 package com.twinly.eyebb.customview;
 
+import com.twinly.eyebb.utils.SharePrefsUtils;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -66,6 +69,9 @@ public class PullToRefreshListView extends ListView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if (SharePrefsUtils.isAutoUpdate(getContext())) {
+			return true;
+		}
 		if (isRefreshing) {
 			return true;
 		}

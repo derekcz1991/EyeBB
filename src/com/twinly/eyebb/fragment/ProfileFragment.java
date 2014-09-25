@@ -23,12 +23,22 @@ public class ProfileFragment extends Fragment {
 	private View notificationDetailsBtn;
 	private View notificationDetailsBtn2;
 	private View notificationDetailsBtn3;
-
+	private CallbackInterface callback;
 	//没用的东西
 	int child;
 	TextView v1;
 	TextView v2;
 	TextView v3;
+
+	public interface CallbackInterface {
+		public void stopAutoRefresh();
+
+		public void startAutoRefresh();
+	}
+
+	public void setCallbackInterface(CallbackInterface callback) {
+		this.callback = callback;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,8 +139,11 @@ public class ProfileFragment extends Fragment {
 				intent.setClass(getActivity(), LancherActivity.class);
 				startActivity(intent);
 				getActivity().finish();
+			} else if (resultCode == ActivityConstants.RESULT_AUTO_UPDATE_ON) {
+				callback.startAutoRefresh();
+			} else if (resultCode == ActivityConstants.RESULT_AUTO_UPDATE_OFF) {
+				callback.stopAutoRefresh();
 			}
 		}
 	}
-
 }

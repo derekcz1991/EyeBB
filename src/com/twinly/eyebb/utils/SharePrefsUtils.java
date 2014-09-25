@@ -46,7 +46,7 @@ public class SharePrefsUtils {
 	}
 
 	public static String getKindergartenName(Context context) {
-		int locale = SystemUtils.getLocale(context);
+		int locale = SharePrefsUtils.getLanguage(context);
 		switch (locale) {
 		case Constants.LOCALE_CN:
 			return getString(context,
@@ -139,6 +139,48 @@ public class SharePrefsUtils {
 	public static void setReportChildId(Context context, long value) {
 		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_REPORT_CHILD_ID,
 				value);
+	}
+
+	public static boolean isAutoUpdate(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_AUDO_UPDATE, false);
+	}
+
+	public static void setAutoUpdate(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_AUDO_UPDATE,
+				value);
+	}
+
+	public static boolean isSoundOn(Context context) {
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_SOUND,
+				true);
+	}
+
+	public static void setSoundOn(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_SOUND, value);
+	}
+
+	public static boolean isVibrateOn(Context context) {
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_VIBRATE,
+				true);
+	}
+
+	public static void setVibrateOn(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_VIBRATE, value);
+	}
+
+	public static int getLanguage(Context context) {
+		int language = getInt(context,
+				ActivityConstants.SHARE_PREFS_ITEM_LANGUAGE);
+		if (language < 0) {
+			language = SystemUtils.getLocale(context);
+			setLanguage(context, language);
+		}
+		return language;
+	}
+
+	public static void setLanguage(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_LANGUAGE, value);
 	}
 
 	/**

@@ -1,35 +1,22 @@
 package com.twinly.eyebb.activity;
 
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class WelcomeActivity extends Activity {
 	private ImageView logo;
-	// sharedPreferences
-	SharedPreferences languagePreferences;
-	private int language;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		languagePreferences = getSharedPreferences("soundAndVibrate",
-				MODE_PRIVATE);
-		language = languagePreferences.getInt("language",
-				SettingsActivity.ENGLISH);
-
-		checkLanguage();
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_welcome);
@@ -61,27 +48,15 @@ public class WelcomeActivity extends Activity {
 	}
 
 	private void checkLogo() {
-		if (language == 1) {
-			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
-		} else if (language == 2) {
+		switch (SharePrefsUtils.getLanguage(this)) {
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
-		}
-	}
-
-	private void checkLanguage() {
-		// TODO Auto-generated method stub
-		Resources resources = getResources();
-		Configuration config = resources.getConfiguration();
-		DisplayMetrics dm = resources.getDisplayMetrics();
-
-		if (language == 1) {
-			config.locale = Locale.ENGLISH;
-			resources.updateConfiguration(config, dm);
-
-		} else if (language == 2) {
-			config.locale = Locale.TRADITIONAL_CHINESE;
-			resources.updateConfiguration(config, dm);
-
+			break;
+		default:
+			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
+			break;
 		}
 	}
 
@@ -91,7 +66,6 @@ public class WelcomeActivity extends Activity {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY
 				|| requestCode == ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
-				//setResult(ActivityConstants.RESULT_RESULT_OK);
 				Intent intent = new Intent(this, MainActivity.class);
 				startActivity(intent);
 				finish();
@@ -99,9 +73,4 @@ public class WelcomeActivity extends Activity {
 		}
 	}
 
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
 }

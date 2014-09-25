@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,7 @@ import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
@@ -35,7 +37,8 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements
 		ReportFragment.CallbackInterface,
-		IndoorLocatorFragment.CallbackInterface, TabsAdapterCallback {
+		IndoorLocatorFragment.CallbackInterface,
+		ProfileFragment.CallbackInterface, TabsAdapterCallback {
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -49,6 +52,8 @@ public class MainActivity extends FragmentActivity implements
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
+	private boolean autoUpdateFlag;
+	private AutoUpdateTask autoUpdateTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +65,30 @@ public class MainActivity extends FragmentActivity implements
 		setUpProgressBar();
 		//checkBluetooth();
 		SystemUtils.initImageLoader(getApplicationContext());
+
+		if (SharePrefsUtils.isAutoUpdate(this)) {
+			autoUpdateFlag = true;
+			autoUpdateTask = new AutoUpdateTask();
+			autoUpdateTask.execute();
+		}
 	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString("tab", mTabHost.getCurrentTabTag());
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		bar.setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		autoUpdateFlag = false;
 	}
 
 	@SuppressLint("InflateParams")
@@ -118,6 +141,7 @@ public class MainActivity extends FragmentActivity implements
 
 		// profile
 		profileFragment = new ProfileFragment();
+		profileFragment.setCallbackInterface(this);
 		View profileLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		profileLabel.findViewById(R.id.label).setBackgroundResource(
@@ -189,22 +213,6 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
-		super.onActivityResult(requestCode, resultCode, arg2);
-		if (requestCode == ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY) {
-			if (resultCode != ActivityConstants.RESULT_RESULT_OK) {
-				finish();
-			}
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		bar.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
 	public void updateProgressBar(int value) {
 		progressBar.setVisibility(View.VISIBLE);
 		progressBar.setProgress(progressBar.getProgress() + value);
@@ -214,7 +222,7 @@ public class MainActivity extends FragmentActivity implements
 
 			bar.setVisibility(View.VISIBLE);
 			bar.progressiveStart();
-			indoorLocatorFragment.updateListView();
+			indoorLocatorFragment.updateView();
 			reportFragment.updateView();
 		}
 	}
@@ -238,4 +246,51 @@ public class MainActivity extends FragmentActivity implements
 	public void onProfileTabClicked() {
 		noticeNum.setVisibility(View.INVISIBLE);
 	}
+
+	@Override
+	public void stopAutoRefresh() {
+		autoUpdateFlag = false;
+		autoUpdateTask.cancel(true);
+	}
+
+	@Override
+	public void startAutoRefresh() {
+		autoUpdateFlag = true;
+		autoUpdateTask = new AutoUpdateTask();
+		autoUpdateTask.execute();
+	}
+
+	private class AutoUpdateTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while (autoUpdateFlag) {
+				if (indoorLocatorFragment != null) {
+					indoorLocatorFragment.updateView();
+				}
+				if (reportFragment != null) {
+					reportFragment.updateView();
+				}
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
+		super.onActivityResult(requestCode, resultCode, arg2);
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY) {
+			if (resultCode != ActivityConstants.RESULT_RESULT_OK) {
+				finish();
+			}
+		}
+	}
+
 }

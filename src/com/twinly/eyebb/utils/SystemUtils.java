@@ -16,6 +16,7 @@ public class SystemUtils {
 		Resources resources = context.getResources();
 		Configuration config = resources.getConfiguration();
 
+		System.out.println("--->>" + config.locale);
 		if (config.locale.toString().equals("zh_TW")
 				|| config.locale.toString().equals("zh")) {
 			return Constants.LOCALE_TW;

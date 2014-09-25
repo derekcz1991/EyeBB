@@ -1,31 +1,23 @@
 package com.twinly.eyebb.activity;
 
-import com.eyebb.R;
-
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-
 import android.os.Bundle;
-
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.eyebb.R;
+import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.utils.SharePrefsUtils;
+
 public class AboutActivity extends Activity {
 	private ImageView logo;
-	// sharedPreferences
-	SharedPreferences languagePreferences;
-	private int language;
 	private String version;
 	private TextView version_txt;
 
 	protected void onCreate(Bundle savedInstanceState) {
-		languagePreferences = getSharedPreferences("soundAndVibrate",
-				MODE_PRIVATE);
-		language = languagePreferences.getInt("language",
-				SettingsActivity.ENGLISH);
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
@@ -42,7 +34,7 @@ public class AboutActivity extends Activity {
 
 		version_txt = (TextView) findViewById(R.id.version);
 		version_txt.setText(version);
-		checkLogo();
+		setLogo();
 
 		setTitle(getString(R.string.text_about));
 
@@ -51,11 +43,16 @@ public class AboutActivity extends Activity {
 
 	}
 
-	private void checkLogo() {
-		if (language == 1) {
-			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
-		} else if (language == 2) {
+	private void setLogo() {
+		switch (SharePrefsUtils.getLanguage(this)) {
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
+			break;
+		default:
+			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
+			break;
 		}
 	}
 
