@@ -3,6 +3,7 @@ package com.twinly.eyebb.activity;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -22,6 +23,7 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class SettingsActivity extends Activity {
 
 	private View tittlebarBackBtn;
+	private LinearLayout refreshTimeView;
 	private TextView englishSelected;
 	private TextView chineseSelected;
 	private TextView enableSoundSelected;
@@ -31,12 +33,13 @@ public class SettingsActivity extends Activity {
 	private LinearLayout enableAutoUpdate;
 	private TextView enableAutoUpdateSelected;
 	private boolean isAutoUpdate;
-
+	private TextView refreshTimeNumber;
+	public static SettingsActivity instance = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
-
+		instance = this;
 		tittlebarBackBtn = this.findViewById(R.id.tittlebar_back_btn);
 		enableAutoUpdate = (LinearLayout) findViewById(R.id.enable_auto_update);
 		enableAutoUpdateSelected = (TextView) findViewById(R.id.enable_auto_update_selected);
@@ -45,7 +48,9 @@ public class SettingsActivity extends Activity {
 		chineseSelected = (TextView) findViewById(R.id.chinese_selected);
 		englishSelected = (TextView) findViewById(R.id.english_selected);
 		aboutBtn = findViewById(R.id.about_btn);
-
+		refreshTimeView = (LinearLayout) findViewById(R.id.refresh_time_view);
+		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
+		
 		setupView();
 
 		tittlebarBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,9 +110,12 @@ public class SettingsActivity extends Activity {
 					enableVibrationSelected
 							.setBackgroundResource(R.drawable.ic_selected_off);
 					SharePrefsUtils.setVibrateOn(SettingsActivity.this, false);
+					// update time bar miss
+					refreshTimeView.setVisibility(View.GONE);
 				} else {
 					enableVibrationSelected
 							.setBackgroundResource(R.drawable.ic_selected);
+					refreshTimeView.setVisibility(View.VISIBLE);
 					SharePrefsUtils.setVibrateOn(SettingsActivity.this, true);
 				}
 			}
@@ -123,17 +131,30 @@ public class SettingsActivity extends Activity {
 			}
 		});
 
-		enableAutoUpdate.setOnClickListener(new OnClickListener() {
+		refreshTimeView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(SettingsActivity.this,RefreshTimeDialog.class);
+				startActivity(intent);
+			}
+		});
+
+		enableAutoUpdateSelected.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (SharePrefsUtils.isAutoUpdate(SettingsActivity.this)) {
 					enableAutoUpdateSelected
 							.setBackgroundResource(R.drawable.ic_selected_off);
+					// update time bar miss
+					refreshTimeView.setVisibility(View.GONE);
 					SharePrefsUtils.setAutoUpdate(SettingsActivity.this, false);
 				} else {
 					enableAutoUpdateSelected
 							.setBackgroundResource(R.drawable.ic_selected);
+					refreshTimeView.setVisibility(View.VISIBLE);
 					SharePrefsUtils.setAutoUpdate(SettingsActivity.this, true);
 				}
 			}
@@ -145,10 +166,14 @@ public class SettingsActivity extends Activity {
 		isAutoUpdate = SharePrefsUtils.isAutoUpdate(this);
 		if (isAutoUpdate) {
 			enableAutoUpdateSelected
-					.setBackgroundResource(R.drawable.ic_selected);
+					.setBackgroundResource(R.drawable.ic_selected);		
+			refreshTimeView.setVisibility(View.VISIBLE);
+			refreshTimeNumber.setText(SharePrefsUtils.refreshTime(this));
+			
 		} else {
 			enableAutoUpdateSelected
 					.setBackgroundResource(R.drawable.ic_selected_off);
+			refreshTimeView.setVisibility(View.GONE);
 		}
 
 		// sound

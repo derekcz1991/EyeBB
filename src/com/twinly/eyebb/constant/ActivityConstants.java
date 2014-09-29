@@ -19,8 +19,12 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG = "update_notice_flag";
 	public static final String SHARE_PREFS_ITEM_AUDO_UPDATE = "auto_update";
 	public static final String SHARE_PREFS_ITEM_SOUND = "sound";
+	public static final String SHARE_PREFS_ITEM_START_BEEP = "isStartBeepDialog";
+	public static final String SHARE_PREFS_ITEM_RUN_NUM_RADAR = "runNumRadar";
 	public static final String SHARE_PREFS_ITEM_VIBRATE = "vibrate";
-
+	public static final String SHARE_PREFS_INIT_HEAD = "init_head";
+	public static final String SHARE_PREFS_REFRESH_TIME = "refresh_time";
+	
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";
 

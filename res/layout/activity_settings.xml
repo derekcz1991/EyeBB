@@ -108,7 +108,39 @@
                             android:background="@drawable/ic_selected" />
                     </LinearLayout>
                 </LinearLayout>
+ 				 <!-- refresh time -->
 
+                <LinearLayout
+                    android:id="@+id/refresh_time_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/settings_column_center"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/refresh_time"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/text_refreshTime" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right" >
+
+                        <TextView
+                            android:id="@+id/refresh_time_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            style="@style/DarkGreyText_18"
+                            android:text="@string/text_refreshDefaultTime" />
+                    </LinearLayout>
+                </LinearLayout>
+                
                 <!-- sound -->
 
                 <LinearLayout

@@ -25,9 +25,18 @@ public class Constants {
 	
 	//public static final String OURDEVICEUUID = "4D616361726F6E202020202020202020";
 	public static final String OURDEVICEUUID =  "4D616361726F6E051250002003020A00";
-	public static final int BEEP_RSSI = -90;
+	public static final int BEEP_RSSI = -80;
+	public static final int SCANTIME = 1000000;
+	public static final int POSTDELAYTIME = 950000;
+	public static int DELAY = 0;
+	public static final int PERIOD = 5000;
+	// private static final int SCANTIME = 5000;
+	// private static final int POSTDELAYTIME = 4500;
+	
 	private int DEFAULT_MAJOR = 0;
 	private int DEFAULT_MINOR = 0;
+	
+	
 	
 	public static boolean DEBUG = true;
 	

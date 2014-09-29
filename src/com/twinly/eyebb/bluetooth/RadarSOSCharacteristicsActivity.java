@@ -36,7 +36,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 
-public class RadarCharacteristicsActivity extends Activity {
+public class RadarSOSCharacteristicsActivity extends Activity {
 
 	SimpleAdapter listItemAdapter; // ListView的适配器
 	ArrayList<HashMap<String, Object>> listItem; // ListView的数据源，这里是一个HashMap的列表
@@ -81,7 +81,7 @@ public class RadarCharacteristicsActivity extends Activity {
 		if (servidx == -1) {
 			Toast.makeText(this, "Characteristics Index Error!",
 					Toast.LENGTH_LONG).show();
-			RadarCharacteristicsActivity.this.finish();
+			RadarSOSCharacteristicsActivity.this.finish();
 		}
 
 		listItem = new ArrayList<HashMap<String, Object>>();
@@ -222,7 +222,7 @@ public class RadarCharacteristicsActivity extends Activity {
 		@Override
 		public void run() {
 
-			RadarCharacteristicsActivity.this.finish();
+			RadarSOSCharacteristicsActivity.this.finish();
 		}
 	};
 	Handler handler = new Handler() {
@@ -256,7 +256,12 @@ public class RadarCharacteristicsActivity extends Activity {
 
 		editor.putInt("startDialog", 1);
 		editor.commit();
-		finish();
+		final Intent SOSintent = new Intent();
+		SOSintent.setClass(this, BeepDialog.class);
+		
+
+		startActivity(SOSintent);
+
 	}
 
 	@Override
@@ -293,7 +298,7 @@ public class RadarCharacteristicsActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			RadarCharacteristicsActivity.this.finish();
+			RadarSOSCharacteristicsActivity.this.finish();
 			System.out.println("=========>onKeyDown");
 			return true;
 		}

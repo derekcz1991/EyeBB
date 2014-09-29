@@ -127,7 +127,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 
 	private void setUpView(ViewHolder viewHolder, final int position) {
 		if (data.size() > position) {
-			System.out.println("POITION MISS = >" + position);
+			//System.out.println("POITION MISS = >" + position);
 
 			Child child = null;
 			try {

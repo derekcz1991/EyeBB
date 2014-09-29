@@ -3,6 +3,7 @@ package com.twinly.eyebb.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.eyebb.R.string;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 
@@ -121,6 +122,15 @@ public class SharePrefsUtils {
 				value);
 	}
 
+	public static boolean isInitHead(Context context) {
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD,
+				true);
+	}
+
+	public static void setInitHead(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD, value);
+	}
+
 	public static boolean isUpdateNotice(Context context) {
 		return getBoolean(context,
 				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, true);
@@ -181,6 +191,33 @@ public class SharePrefsUtils {
 
 	public static void setLanguage(Context context, int value) {
 		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_LANGUAGE, value);
+	}
+
+	public static boolean isStartBeepDialog(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_START_BEEP, false);
+	}
+
+	public static void setStartBeepDialog(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_START_BEEP,
+				value);
+	}
+
+	public static String refreshTime(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_REFRESH_TIME);
+	}
+
+	public static void setRefreshTime(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_REFRESH_TIME, value);
+	}
+
+	public static int CancelConnectBleServiceTimes(Context context) {
+		return getInt(context, ActivityConstants.SHARE_PREFS_ITEM_RUN_NUM_RADAR);
+	}
+
+	public static void setCancelConnectBleServiceTimes(Context context,
+			int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_RUN_NUM_RADAR, value);
 	}
 
 	/**

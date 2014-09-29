@@ -63,7 +63,7 @@ public class MainActivity extends FragmentActivity implements
 
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
-		//checkBluetooth();
+		// checkBluetooth();
 		SystemUtils.initImageLoader(getApplicationContext());
 
 		if (SharePrefsUtils.isAutoUpdate(this)) {
@@ -272,7 +272,26 @@ public class MainActivity extends FragmentActivity implements
 					reportFragment.updateView();
 				}
 				try {
-					Thread.sleep(5000);
+					// refresh time
+					long refreshTime = 5;
+					try {
+						if (Long.parseLong(SharePrefsUtils
+								.refreshTime(MainActivity.this)) > 0) {
+							refreshTime = Long.parseLong(SharePrefsUtils
+									.refreshTime(MainActivity.this)) * 1000;
+						} else {
+							SharePrefsUtils.setRefreshTime(MainActivity.this,
+									refreshTime + "");
+							refreshTime = refreshTime * 1000;
+						}
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						SharePrefsUtils.setRefreshTime(MainActivity.this,
+								refreshTime + "");
+						refreshTime = refreshTime * 1000;
+						e.printStackTrace();
+					}
+					Thread.sleep(refreshTime);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -280,7 +299,6 @@ public class MainActivity extends FragmentActivity implements
 			}
 			return null;
 		}
-
 	}
 
 	@Override

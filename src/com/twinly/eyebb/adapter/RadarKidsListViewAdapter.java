@@ -52,12 +52,11 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		public TextView status;
 	}
 
-	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data,
-			ArrayList<String> scanedChildDataID) {
+	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
-		this.dataID = scanedChildDataID;
+
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
@@ -128,55 +127,52 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	}
 
 	private void setUpView(ViewHolder viewHolder, final int position) {
-		System.out.println("position=>" + position);
-//		for (int i = 0; i < dataID.size(); i++) {
-//			System.out.println("data.get(Integer.parseInt(dataID.get(i)))= > "
-//					+ Integer.parseInt(dataID.get(i)) );
-//			final Child child = data.get(Integer.parseInt(dataID.get(i)));
-			
-			
-			if (data.size() > position ) {
-				// final Child child = data.get(position);
-				
-				Child child = null;
-				try {
-					child = data.get(position);
-				} catch (Exception e) {
-					setUpView(viewHolder, position);
-					e.printStackTrace();
-				}
-				
-				if (TextUtils.isEmpty(child.getIcon()) == false) {
+		// System.out.println("position=>" + position);
+		// for (int i = 0; i < dataID.size(); i++) {
+		// System.out.println("data.get(Integer.parseInt(dataID.get(i)))= > "
+		// + Integer.parseInt(dataID.get(i)) );
+		// final Child child = data.get(Integer.parseInt(dataID.get(i)));
 
-					viewHolder.beepBtn
-							.setOnClickListener(new OnClickListener() {
+		if (data.size() > position) {
+			// final Child child = data.get(position);
 
-								@Override
-								public void onClick(View v) {
-									// TODO Auto-generated method stub
-									if (CommonUtils.isFastDoubleClick()) {
-										return;
-									} else {
-										System.out
-												.println("positionposition = > "
-														+ position + "");
-										callback.onStartToBeepClicked(position);
+			Child child = null;
+			try {
+				child = data.get(position);
+			} catch (Exception e) {
+				setUpView(viewHolder, position);
+				e.printStackTrace();
+			}
 
-									}
+			if (TextUtils.isEmpty(child.getIcon()) == false) {
 
-								}
-							});
+				viewHolder.beepBtn.setOnClickListener(new OnClickListener() {
 
-					imageLoader.displayImage(child.getIcon(),
-							viewHolder.avatar, options, null);
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						if (CommonUtils.isFastDoubleClick()) {
+							return;
+						} else {
+							System.out.println("positionposition = > "
+									+ position + "");
+							callback.onStartToBeepClicked(position);
 
-				} else {
-					viewHolder.avatar.setImageDrawable(context.getResources()
-							.getDrawable(R.drawable.hugh));
-				}
-				viewHolder.name.setText(child.getName());
+						}
 
-//			}
+					}
+				});
+
+				imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
+						options, null);
+
+			} else {
+				viewHolder.avatar.setImageDrawable(context.getResources()
+						.getDrawable(R.drawable.hugh));
+			}
+			viewHolder.name.setText(child.getName());
+
+			// }
 
 		}
 	}

@@ -43,8 +43,8 @@ import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class RadarServicesActivity extends Activity {
-	private final static String TAG = RadarServicesActivity.class
+public class RadarSOSServicesActivity extends Activity {
+	private final static String TAG = RadarSOSServicesActivity.class
 			.getSimpleName();
 
 	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
@@ -83,7 +83,6 @@ public class RadarServicesActivity extends Activity {
 	@SuppressLint({ "NewApi", "ShowToast" })
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_services);
@@ -91,7 +90,7 @@ public class RadarServicesActivity extends Activity {
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
-		dialog = LoadingDialog.createLoadingDialog(RadarServicesActivity.this,
+		dialog = LoadingDialog.createLoadingDialog(RadarSOSServicesActivity.this,
 				getString(R.string.toast_loading));
 		dialog.show();
 //
@@ -121,7 +120,19 @@ public class RadarServicesActivity extends Activity {
 		myList = (ListView) findViewById(R.id.services_listView);
 		myList.setAdapter(listItemAdapter);
 
-
+		// myList.setOnItemClickListener(new OnItemClickListener() {
+		// @Override
+		// public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+		// long arg3) {
+		// final Intent intent = new Intent();
+		// intent.setClass(ServicesActivity.this,
+		// CharacteristicsActivity.class);
+		// intent.putExtra("servidx", arg2);
+		// System.out.println("servidxservidx=>" + arg2);
+		// startActivity(intent);
+		//
+		// }
+		// });
 
 		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 		boolean bll = bindService(gattServiceIntent, mServiceConnection,
@@ -129,10 +140,26 @@ public class RadarServicesActivity extends Activity {
 		if (!bll) {
 			Toast.makeText(this, "Bind Service Failed!", Toast.LENGTH_SHORT)
 					.show();
-			RadarServicesActivity.this.finish();
+			RadarSOSServicesActivity.this.finish();
 		}
 
-
+		// Message msg = handler.obtainMessage();
+		// msg.what = START_PROGRASSS_BAR;
+		// handler.sendMessage(msg);
+		//
+		// if (major.equals("-1") || minor.equals("-1")) {
+		// Toast.makeText(this, R.string.text_connect_error, Toast.LENGTH_LONG);
+		// if (dialog != null)
+		// dialog.dismiss();
+		//
+		// editor.putBoolean("connectFail", true);
+		// editor.commit();
+		// Intent intentKidsListActivity = new
+		// Intent(RadarServicesActivity.this,
+		// ErrorDialog.class);
+		// startActivity(intentKidsListActivity);
+		// finish();
+		// }
 	}
 
 	// 倒計時
@@ -157,7 +184,7 @@ public class RadarServicesActivity extends Activity {
 				Constants.mBluetoothLeService.disconnect();
 			}
 			mConnected = false;
-			RadarServicesActivity.this.finish();
+			RadarSOSServicesActivity.this.finish();
 		}
 	};
 
@@ -168,7 +195,7 @@ public class RadarServicesActivity extends Activity {
 
 			case START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialog(
-						RadarServicesActivity.this,
+						RadarSOSServicesActivity.this,
 						getString(R.string.toast_loading));
 				dialog.show();
 				break;
@@ -194,8 +221,8 @@ public class RadarServicesActivity extends Activity {
 			for (int i = 0; i < listItem.size(); i++) {
 				if (listItem.get(i).get("text").equals("1000")) {
 					final Intent intentToChara = new Intent();
-					intentToChara.setClass(RadarServicesActivity.this,
-							RadarCharacteristicsActivity.class);
+					intentToChara.setClass(RadarSOSServicesActivity.this,
+							RadarSOSCharacteristicsActivity.class);
 					intentToChara.putExtra("servidx", i);
 					System.out.println("servidxservidx=>" + i);
 
@@ -208,7 +235,7 @@ public class RadarServicesActivity extends Activity {
 
 					startActivity(intentToChara);
 
-					RadarServicesActivity.this.finish();
+					RadarSOSServicesActivity.this.finish();
 				}
 			}
 
@@ -261,7 +288,7 @@ public class RadarServicesActivity extends Activity {
 					.equals(action)) {
 				mConnected = false;
 				status_text.setText(mDeviceName + ": Disconnected");
-				RadarServicesActivity.this.finish();
+				RadarSOSServicesActivity.this.finish();
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {
 				// Show all the supported services and characteristics on the
@@ -386,7 +413,7 @@ public class RadarServicesActivity extends Activity {
 				Constants.mBluetoothLeService.disconnect();
 			}
 			mConnected = false;
-			RadarServicesActivity.this.finish();
+			RadarSOSServicesActivity.this.finish();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

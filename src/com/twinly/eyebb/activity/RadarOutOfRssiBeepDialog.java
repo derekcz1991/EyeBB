@@ -17,8 +17,9 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.eyebb.R;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class BeepDialog extends Activity {
+public class RadarOutOfRssiBeepDialog extends Activity {
 	// record the time
 	private Chronometer timer;
 	private TextView secText;
@@ -36,9 +37,10 @@ public class BeepDialog extends Activity {
 	// boolean sound and vibrate
 	private Boolean isSound;
 	private Boolean isVibrate;
-	private Boolean isStart = false;
-	//public static BeepDialog instance = null;
 
+	public static RadarOutOfRssiBeepDialog instance = null;
+
+    Boolean isStart = false;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,12 +49,18 @@ public class BeepDialog extends Activity {
 		SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
 		isSound = SandVpreferences.getBoolean("sound", true);
 		isVibrate = SandVpreferences.getBoolean("vibrate", true);
+		//isStart = true;
+	//	SharePrefsUtils.setStartBeepDialog(this, isStart);
+		
 
 		isStart = true;
 		editor = SandVpreferences.edit();
 		editor.putBoolean("isStartBeepDialog", isStart);
 		editor.commit();
-		//instance = this;
+//		editor = SandVpreferences.edit();
+//		editor.putBoolean("isStartBeepDialog", isStart);
+//		editor.commit();
+		instance = this;
 
 		// secText = (TextView) findViewById(R.id.sec_text);
 		getTime();
@@ -99,7 +107,7 @@ public class BeepDialog extends Activity {
 		aManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
 		mPlayer = new MediaPlayer();
-		mPlayer = MediaPlayer.create(BeepDialog.this, R.raw.beep);
+		mPlayer = MediaPlayer.create(RadarOutOfRssiBeepDialog.this, R.raw.beep);
 		mPlayer.setLooping(true);
 		mPlayer.start();
 	}

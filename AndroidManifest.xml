@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    
     <!-- phone call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -117,12 +119,23 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.RefreshTimeDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.ErrorDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.BeepDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
@@ -211,14 +224,23 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
-        
-          <activity
+        <activity
             android:name="com.twinly.eyebb.bluetooth.RadarServicesActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.bluetooth.RadarSOSServicesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.bluetooth.RadarSOSCharacteristicsActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
@@ -246,6 +268,22 @@
         </receiver>
 
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
+        <service
+            android:name="com.twinly.eyebb.service.BleServicesService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.twinly.eyebb.service.BLE_SERVICES_SERVICES" >
+                </action>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.twinly.eyebb.service.BleCharacteristicsService"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES" >
+                </action>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
