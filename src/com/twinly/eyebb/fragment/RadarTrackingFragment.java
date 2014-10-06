@@ -164,12 +164,11 @@ public class RadarTrackingFragment extends Fragment implements
 
 	public static Intent beepIntent;
 	private int beepTime = 0;
-	
-	//開啟防丟器
+
+	// 開啟防丟器
 	private TextView openAntiTheft;
 	private boolean openAnti = false;
-	
-	
+
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -178,7 +177,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 		MajorAndMinorPreferences = getActivity().getSharedPreferences(
 				"MajorAndMinor", getActivity().MODE_PRIVATE);
-	
 
 		v = inflater
 				.inflate(R.layout.fragment_radar_tracking, container, false);
@@ -196,7 +194,6 @@ public class RadarTrackingFragment extends Fragment implements
 		ScanedTempChildData = new ArrayList<Child>();
 		MissChildData = new ArrayList<Child>();
 
-	
 		// ScanedChildData.clear();
 		// MissChildData.clear();
 
@@ -264,16 +261,17 @@ public class RadarTrackingFragment extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				
-				if(openAnti){
+
+				if (openAnti) {
 					openAnti = false;
-					openAntiTheft.setText(getResources().getString(R.string.text_radar_status_start_connected));
-				}else{
+					openAntiTheft.setText(getResources().getString(
+							R.string.text_radar_status_disconnection));
+				} else {
 					openAnti = true;
-					openAntiTheft.setText(getResources().getString(R.string.text_radar_status_disconnection));
+					openAntiTheft.setText(getResources().getString(
+							R.string.text_radar_status_start_connected));
 				}
-				
-				
+
 			}
 		});
 
@@ -286,7 +284,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		super.onDestroy();
 
-		//getActivity().stopService(beepIntent);
+		// getActivity().stopService(beepIntent);
 	}
 
 	public void btnConfirmConnect() {
@@ -989,10 +987,10 @@ public class RadarTrackingFragment extends Fragment implements
 									if (child.getMacAddress().equals(
 											entry.getValue().getAddress())) {
 
-										if(openAnti){
+										if (openAnti) {
 											RSSIforBeep(rssi, device);
 										}
-									
+
 										// System.out
 										// .println("child.getMacAddress()=>"
 										// + child.getMacAddress());
@@ -1112,8 +1110,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 	@SuppressLint("NewApi")
 	public void startToBeep(int position) {
-
-		
 
 		boolean isFinish = SharePrefsUtils.isfinishBeep(getActivity());
 
