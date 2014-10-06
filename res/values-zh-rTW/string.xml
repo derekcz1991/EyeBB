@@ -72,9 +72,9 @@
     <string name="text_error_email">郵件地址格式錯誤！</string>
     <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
                  <string name="text_loading">加載中...</string>
-<string name="text_radar_status_disconnection">連接斷開</string>
-    <string name="text_radar_status_start_connected">連接開始</string>
-     <string name="text_radar_status_connection">連接中</string>
+	<string name="text_radar_status_disconnection">關閉防丟器</string>
+    <string name="text_radar_status_start_connected">開啟防丟器</string>
+   
                  	<string name="text_connect_device">開始連接baby的設備?</string> 
                  	 <string name="text_select_device">請選擇您的設備.</string>
      <string name="text_device_list">設備列表</string>

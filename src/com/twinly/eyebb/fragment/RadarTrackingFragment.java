@@ -131,8 +131,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private Boolean isConfirmRadarBtn = false;
 
 	private SharedPreferences MajorAndMinorPreferences;
-	private SharedPreferences SandVpreferences;
-	private SharedPreferences.Editor editor;
+
 	// device map
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 
@@ -140,15 +139,10 @@ public class RadarTrackingFragment extends Fragment implements
 	private ArrayList<Child> ScanedChildData;
 	private static ArrayList<Child> ScanedTempChildData;
 	private ArrayList<Child> BeepTempChildData;
-	private ArrayList<Child> HeadImageChildData;
-	private ArrayList<Child> TempHeadImageChildData;
 
-	private ArrayList<String> ScanedChildDataID;
 	private Child child;
 	private ArrayList<Child> MissChildData;
-	private ArrayList<String> MissChildDataID;
-	private ArrayList<Child> MissHeadImageChildData;
-	private ArrayList<Child> MissTempHeadImageChildData;
+
 	private View v;
 	private Boolean firstAddImageHead = true;
 	private Boolean MissfirstAddImageHead = true;
@@ -170,7 +164,12 @@ public class RadarTrackingFragment extends Fragment implements
 
 	public static Intent beepIntent;
 	private int beepTime = 0;
-
+	
+	//開啟防丟器
+	private TextView openAntiTheft;
+	private boolean openAnti = false;
+	
+	
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -179,7 +178,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 		MajorAndMinorPreferences = getActivity().getSharedPreferences(
 				"MajorAndMinor", getActivity().MODE_PRIVATE);
-		editor = MajorAndMinorPreferences.edit();
+	
 
 		v = inflater
 				.inflate(R.layout.fragment_radar_tracking, container, false);
@@ -197,16 +196,14 @@ public class RadarTrackingFragment extends Fragment implements
 		ScanedTempChildData = new ArrayList<Child>();
 		MissChildData = new ArrayList<Child>();
 
-		ScanedChildDataID = new ArrayList<String>();
-		MissChildDataID = new ArrayList<String>();
-
+	
 		// ScanedChildData.clear();
 		// MissChildData.clear();
 
 		RadarView = v.findViewById(R.id.radar_view);
 
 		radarBeepAllBtn = v.findViewById(R.id.radar_beep_all_btn);
-
+		openAntiTheft = (TextView) v.findViewById(R.id.connection_status_txt);
 		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
 		radarScrollView.smoothScrollTo(0, 0);
 
@@ -263,14 +260,20 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 		});
 
-		btnStatus.setOnClickListener(new OnClickListener() {
+		openAntiTheft.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				getActivity().findViewById(R.id.connect_device_layout)
-						.setVisibility(View.VISIBLE);
-				isClickConnection = false;
-
+				
+				if(openAnti){
+					openAnti = false;
+					openAntiTheft.setText(getResources().getString(R.string.text_radar_status_start_connected));
+				}else{
+					openAnti = true;
+					openAntiTheft.setText(getResources().getString(R.string.text_radar_status_disconnection));
+				}
+				
+				
 			}
 		});
 
@@ -283,7 +286,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		super.onDestroy();
 
-		getActivity().stopService(beepIntent);
+		//getActivity().stopService(beepIntent);
 	}
 
 	public void btnConfirmConnect() {
@@ -986,7 +989,10 @@ public class RadarTrackingFragment extends Fragment implements
 									if (child.getMacAddress().equals(
 											entry.getValue().getAddress())) {
 
-										RSSIforBeep(rssi, device);
+										if(openAnti){
+											RSSIforBeep(rssi, device);
+										}
+									
 										// System.out
 										// .println("child.getMacAddress()=>"
 										// + child.getMacAddress());

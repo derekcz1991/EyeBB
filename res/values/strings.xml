@@ -68,9 +68,9 @@
     <string name="text_error_email">The Email is not in the correct format!</string>
     <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:8-30</string>
     <string name="text_loading">Loading...</string>
-	<string name="text_radar_status_disconnection">Disconnection</string>
-    <string name="text_radar_status_start_connected">Start to Connect</string>
-     <string name="text_radar_status_connection">Connection</string>
+	<string name="text_radar_status_disconnection">Close the anti-theft</string>
+    <string name="text_radar_status_start_connected">Open the anti-theft</string>
+   
 	<string name="text_connect_device">Connect to your baby\&apos; device?</string>
     <string name="text_select_device">Please select your device.</string>
     <string name="text_device_list">Device list</string>
