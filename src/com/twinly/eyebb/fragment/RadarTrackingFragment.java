@@ -263,13 +263,13 @@ public class RadarTrackingFragment extends Fragment implements
 			public void onClick(View v) {
 
 				if (openAnti) {
-					openAnti = false;
+					openAnti = false;	
 					openAntiTheft.setText(getResources().getString(
-							R.string.text_radar_status_disconnection));
+							R.string.text_radar_status_start_connected));
 				} else {
 					openAnti = true;
 					openAntiTheft.setText(getResources().getString(
-							R.string.text_radar_status_start_connected));
+							R.string.text_radar_status_disconnection));
 				}
 
 			}
