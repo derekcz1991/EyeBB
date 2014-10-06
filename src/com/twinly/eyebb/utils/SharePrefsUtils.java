@@ -131,6 +131,25 @@ public class SharePrefsUtils {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD, value);
 	}
 
+	public static boolean isfinishBeep(Context context) {
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP,
+				false);
+	}
+
+	public static void setfinishBeep(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP, value);
+	}
+
+	public static int isConnectBleService(Context context) {
+		return getInt(context,
+				ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE);
+	}
+
+	public static void setConnectBleService(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE,
+				value);
+	}
+
 	public static boolean isUpdateNotice(Context context) {
 		return getBoolean(context,
 				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, true);

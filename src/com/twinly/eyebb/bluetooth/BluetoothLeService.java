@@ -37,6 +37,11 @@ import android.util.Log;
 import java.util.List;
 import java.util.UUID;
 
+import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.fragment.RadarTrackingFragment;
+import com.twinly.eyebb.service.BleServicesService;
+import com.twinly.eyebb.utils.SharePrefsUtils;
+
 /**
  * Service for managing connection and data communication with a GATT server
  * hosted on a given Bluetooth LE device.
@@ -64,8 +69,7 @@ public class BluetoothLeService extends Service {
 	public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID
 			.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
 
-	private SharedPreferences MajorAndMinorPreferences;
-	private SharedPreferences.Editor editor;
+	
 
 	// Implements callback methods for GATT events that the app cares about. For
 	// example,
@@ -138,15 +142,24 @@ public class BluetoothLeService extends Service {
 		public void onCharacteristicWrite(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
 
-			MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
-					MODE_PRIVATE);
-			editor = MajorAndMinorPreferences.edit();
+			boolean isFisish = SharePrefsUtils.isfinishBeep(BluetoothLeService.this);
 
-			System.out.println("--------write success----- status:" + status);
+			if(isFisish){
+				System.out.println("--------write success----- status:" + status);
+				System.out.println("====> ending");
+				if (Constants.mBluetoothLeService != null) {
+					Constants.mBluetoothLeService.disconnect();
+					Constants.mBluetoothLeService = null;
+				}  
+				
 
-			editor.putBoolean("writeCharaSuccess", true);
-			editor.commit();
-
+				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
+				
+				stopService(BleServicesService.intentToChara);
+				stopService(RadarTrackingFragment.beepIntent);
+				
+			}
+		
 		};
 	};
 
@@ -282,6 +295,7 @@ public class BluetoothLeService extends Service {
 				&& address.equals(mBluetoothDeviceAddress)) {
 			Log.d(TAG,
 					"Trying to use an existing mBluetoothGatt for connection.");
+			System.out.println("Trying to use an existing mBluetoothGatt for connection.");
 			if (mBluetoothGatt.connect()) {
 				mConnectionState = STATE_CONNECTING;
 				return true;
@@ -336,11 +350,13 @@ public class BluetoothLeService extends Service {
 
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			Log.w(TAG, "BluetoothAdapter not initialized");
+			System.out.println("BluetoothAdapter not initialized");
 			return;
 		}
 
 		mBluetoothGatt.writeCharacteristic(characteristic);
 
+		//stopService(RadarTrackingFragment.beepIntent);
 	}
 
 	/**

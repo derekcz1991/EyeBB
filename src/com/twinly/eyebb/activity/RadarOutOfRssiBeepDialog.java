@@ -32,7 +32,7 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 
 	// sharedPreferences
 	SharedPreferences SandVpreferences;
-	private SharedPreferences.Editor editor;
+	
 
 	// boolean sound and vibrate
 	private Boolean isSound;
@@ -40,7 +40,8 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 
 	public static RadarOutOfRssiBeepDialog instance = null;
 
-    Boolean isStart = false;
+	public static boolean isStart  = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,12 +55,7 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 		
 
 		isStart = true;
-		editor = SandVpreferences.edit();
-		editor.putBoolean("isStartBeepDialog", isStart);
-		editor.commit();
-//		editor = SandVpreferences.edit();
-//		editor.putBoolean("isStartBeepDialog", isStart);
-//		editor.commit();
+
 		instance = this;
 
 		// secText = (TextView) findViewById(R.id.sec_text);

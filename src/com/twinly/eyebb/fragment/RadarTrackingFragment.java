@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -51,6 +52,7 @@ import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
 import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
+import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarSOSServicesActivity;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;
 import com.twinly.eyebb.constant.Constants;
@@ -60,6 +62,7 @@ import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.service.BleCharacteristicsService;
+import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -87,7 +90,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private final static int START_SCAN = 4;
 	private final static int STOP_SCAN = 5;
 	private final static int DELETE_SCAN = 6;
-	private final static int SOS_TASK = 7;
+	private final static int BEEPTIMEOUT = 7;
 	private final static int SCAN_CHILD_FOR_LIST = 8;
 
 	private String UUID;
@@ -133,10 +136,10 @@ public class RadarTrackingFragment extends Fragment implements
 	// device map
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 
-	private Device newDevice;
 	private ArrayList<Child> ChildData;
 	private ArrayList<Child> ScanedChildData;
-	private ArrayList<Child> ScanedTempChildData;
+	private static ArrayList<Child> ScanedTempChildData;
+	private ArrayList<Child> BeepTempChildData;
 	private ArrayList<Child> HeadImageChildData;
 	private ArrayList<Child> TempHeadImageChildData;
 
@@ -155,7 +158,7 @@ public class RadarTrackingFragment extends Fragment implements
 	RelativeLayout mainLayout = null;
 
 	private boolean isInit = true;
-	private boolean isInitHead = true;
+	private boolean isFirstBeep = true;
 	private int keepTim = 0;
 	Timer timer = null;
 	TimerTask task = null;
@@ -164,6 +167,9 @@ public class RadarTrackingFragment extends Fragment implements
 	Thread BLEScanThread;
 	// 控制timetask
 	private boolean buttonCancel = true;
+
+	public static Intent beepIntent;
+	private int beepTime = 0;
 
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
@@ -249,6 +255,7 @@ public class RadarTrackingFragment extends Fragment implements
 				// TODO Auto-generated method stub
 				if (!isConfirmRadarBtn) {
 					btnConfirmConnect();
+					SharePrefsUtils.setfinishBeep(getActivity(), false);
 				} else {
 					btnCancelConnect();
 				}
@@ -271,12 +278,20 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
-	private void btnConfirmConnect() {
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
+		getActivity().stopService(beepIntent);
+	}
+
+	public void btnConfirmConnect() {
 		isConfirmRadarBtn = true;
 		confirmRadarBtn.setBackground(getResources().getDrawable(
 				R.drawable.ic_selected));
 
-		//checkIsBluetoothOpen 判斷藍芽是否打開 如果沒打開則返回到初始界面
+		// checkIsBluetoothOpen 判斷藍芽是否打開 如果沒打開則返回到初始界面
 		boolean checkIsBluetoothOpen = false;
 		try {
 			checkIsBluetoothOpen = checkIsBluetooth();
@@ -386,13 +401,19 @@ public class RadarTrackingFragment extends Fragment implements
 		System.out.println("onResume()");
 		// ScanedChildData.clear();
 		// MissChildData.clear();
-		listItem.clear();
-		mLeDevices.clear();
+		// listItem.clear();
+		// mLeDevices.clear();
 		final BluetoothManager bluetoothManager = (BluetoothManager) getActivity()
 				.getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
 
-		//
+		if (scan_flag) {
+			// System.out
+			// .println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
+			autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
+		} else {
+			new Thread(autoScan).start();
+		}
 		// // // 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
 		// if (!mBluetoothAdapter.isEnabled() || mBluetoothAdapter == null) {
 		// openBluetooth();
@@ -401,7 +422,7 @@ public class RadarTrackingFragment extends Fragment implements
 		if (mBluetoothAdapter.isEnabled()) {
 
 		}
-		scan_flag = false;
+		// scan_flag = false;
 	}
 
 	@Override
@@ -745,49 +766,35 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 	};
 
-	Runnable scanLeDeviceRunable = new Runnable() {
-		@SuppressLint("NewApi")
-		@Override
-		public void run() {
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-			// scan_flag = false;
-
-			// HANDLER
-			Message msg = handler.obtainMessage();
-			msg.what = START_SCAN;
-			handler.sendMessage(msg);
-
-			// new autoConnection().start();
-			// autoScan.start();
-
-		}
-	};
+	// Runnable scanLeDeviceRunable = new Runnable() {
+	// @SuppressLint("NewApi")
+	// @Override
+	// public void run() {
+	// // mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	// // scan_flag = false;
+	//
+	// // HANDLER
+	// Message msg = handler.obtainMessage();
+	// msg.what = START_SCAN;
+	// handler.sendMessage(msg);
+	//
+	// // new autoConnection().start();
+	// // autoScan.start();
+	//
+	// }
+	// };
 
 	@SuppressLint("NewApi")
 	public void scanLeDevice(final boolean enable) {
 		if (enable) {
 			// Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(scanLeDeviceRunable, Constants.POSTDELAYTIME);
+			// mHandler.postDelayed(scanLeDeviceRunable,
+			// Constants.POSTDELAYTIME);
 
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 
 			scan_flag = true;
 
-			Message msg = handler.obtainMessage();
-			msg.what = STOP_SCAN;
-			handler.sendMessage(msg);
-			// scanBtn.setText(R.string.stop_scan);
-
-		} else {
-
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-			scan_flag = false;
-			//
-			// Message msg = handler.obtainMessage();
-			// msg.what = DELETE_SCAN;
-			// handler.sendMessage(msg);
-
-			// autoScan.start();
 		}
 
 	}
@@ -816,31 +823,18 @@ public class RadarTrackingFragment extends Fragment implements
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case START_SCAN:
-				// scanBtn.setText("開始");
-				// scanBtn.setText("start scan");
-				break;
 
-			case STOP_SCAN:
-				// scanBtn.setText("結束");
-				// scanBtn.setText("stop scan");
-				break;
-
-			case DELETE_SCAN:
-
-				// ScanedChildData = removeDuplicateWithOrder(ScanedChildData);
-				// ScanedChildData.clear();
-				// MissChildData.clear();
-				// 改變所有數據
-				// chageTheAllData();
-
+			case BEEPTIMEOUT:
+				getActivity().stopService(BleServicesService.intentToChara);
+				getActivity().stopService(beepIntent);
+				SharePrefsUtils.setfinishBeep(getActivity(), false);
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
 
 				// System.out.println("ScanedChildData1=>"
 				// + ScanedChildData.size());
-
+				// System.out.println("SCAN_CHILD_FOR_LIST");
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
 						.clone();
 
@@ -852,6 +846,9 @@ public class RadarTrackingFragment extends Fragment implements
 					removeDuplicateList(ScanedTempChildData);
 					e.printStackTrace();
 				}
+
+				BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
+						.clone();
 
 				if (SharePrefsUtils.isInitHead(getActivity())) {
 					SharePrefsUtils.setInitHead(getActivity(), false);
@@ -952,7 +949,7 @@ public class RadarTrackingFragment extends Fragment implements
 					// System.out
 					// .println(" BluetoothAdapter.LeScanCallback mLeScanCallback ");
 
-					newDevice = new Device();
+					Device newDevice = new Device();
 					newDevice.setAddress(device.getAddress());
 					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
 					newDevice.setMinor(scanRecord[27] * 256 + scanRecord[28]);
@@ -1023,15 +1020,12 @@ public class RadarTrackingFragment extends Fragment implements
 
 				}
 
-				// }
-
 			});
 			BLEScanThread.start();
 		}
 	};
 
 	private void stopTimer() {
-
 		if (timer != null) {
 			timer.cancel();
 			timer.purge();
@@ -1042,8 +1036,6 @@ public class RadarTrackingFragment extends Fragment implements
 			task.cancel();
 			task = null;
 		}
-
-		// Constants.DELAY = 1000000;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -1075,7 +1067,20 @@ public class RadarTrackingFragment extends Fragment implements
 	public void onStartToBeepClicked(int position) {
 		// TODO Auto-generated method stub
 		// startToBeepThread.start();
+
+		if (isFirstBeep) {
+			timer.schedule(BeepTask, 0, 1000);
+		} else {
+			if (SharePrefsUtils.isfinishBeep(getActivity())) {
+				getActivity().stopService(BleServicesService.intentToChara);
+				getActivity().stopService(beepIntent);
+
+			}
+
+		}
+		beepTime = 0;
 		startToBeep(position);
+
 	}
 
 	/**
@@ -1085,120 +1090,94 @@ public class RadarTrackingFragment extends Fragment implements
 	 * 
 	 * @param position
 	 */
+	TimerTask BeepTask = new TimerTask() {
+		public void run() {
+			beepTime++;
+			System.out.println("beepTime==>" + beepTime);
+			if (beepTime == 6) {
+				Message msg = handler.obtainMessage();
+				msg.what = BEEPTIMEOUT;
+				handler.sendMessage(msg);
+				beepTime = 0;
+				BeepTask.cancel();
+			}
+		}
+	};
+
+	@SuppressLint("NewApi")
 	public void startToBeep(int position) {
 
-		if (ScanedChildData.size() > 0) {
+		
 
-			// editor.putInt("runNumRadar", 1);
-			// editor.commit();
-			SharePrefsUtils.setCancelConnectBleServiceTimes(getActivity(), 1);
+		boolean isFinish = SharePrefsUtils.isfinishBeep(getActivity());
 
-			editor.putBoolean("writeCharaSuccess", false);
-			editor.commit();
+		if (isFinish) {
 
-			Intent beepIntent = new Intent();
+		} else {
+			System.out.println("BeepTempChildData.size()==>"
+					+ BeepTempChildData.size());
+			if (BeepTempChildData.size() > 0) {
+				isFirstBeep = false;
 
-		//	beepIntent.setClass(getActivity(), BleCharacteristicsService.class);
+				beepIntent = new Intent();
 
-			beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_NAME,
-					"Macaron");
-			beepIntent.putExtra(RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
-					ScanedChildData.get(position).getMacAddress());
-			beepIntent.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
-			// if (scan_flag) {
-			// scanLeDevice(false);
-			// }
+				beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+						"Macaron");
+				beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+						BeepTempChildData.get(position).getMacAddress());
+				System.out
+						.println("BeepTempChildData.get(position).getMacAddress()==>"
+								+ BeepTempChildData.get(position)
+										.getMacAddress());
+				beepIntent
+						.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
+				// if (scan_flag) {
+				// scanLeDevice(false);
+				// }
+				SharePrefsUtils.setConnectBleService(getActivity(), 1);
+				SharePrefsUtils.setfinishBeep(getActivity(), true);
 
-			// startActivity(beepIntent);
-			getActivity().startService(beepIntent);
+				getActivity().startService(beepIntent);
+
+			}
+
 		}
 
 	}
 
 	// 應該加入頭像
-	@SuppressWarnings("static-access")
+
 	private void RSSIforBeep(int rssi, BluetoothDevice device) {
 		// TODO Auto-generated method stub
 
-		SandVpreferences = getActivity().getSharedPreferences(
-				"soundAndVibrate", getActivity().MODE_PRIVATE);
-		boolean isStart = SandVpreferences.getBoolean("isStartBeepDialog",
-				false);
-
-		MajorAndMinorPreferences = getActivity().getSharedPreferences(
-				"MajorAndMinor", getActivity().MODE_PRIVATE);
-
-		// isStart = SharePrefsUtils.isStartBeepDialog(getActivity());
-		// isRadarOutOfRssiBeepDialogStart = RadarOutOfRssiBeepDialog.isStart;
-		// isStart = RadarOutOfRssiBeepDialog.isStart;
 		if (rssi < Constants.BEEP_RSSI) {
 
 			keepTim++;
 			// System.out.println("keepTim=>" + keepTim);
-			if (keepTim == 3) {
-				// // if (scan_flag) {
-				// // scanLeDevice(false);
-				// // }
-				//
-				// //
-				// SharePrefsUtils.setCancelConnectBleServiceTimes(getActivity(),
-				// // 1);
-
-				// SharePrefsUtils.setCancelConnectBleServiceTimes(getActivity(),
-				// 1);
-
-				editor.putBoolean("writeCharaSuccess", false);
-				editor.commit();
+			if (keepTim == 10) {
 
 				Intent beepIntent = new Intent();
 
 				beepIntent.setClass(getActivity(),
 						RadarOutOfRssiBeepDialog.class);
-				//
-				// beepIntent.putExtra(
-				// RadarSOSServicesActivity.EXTRAS_DEVICE_NAME, "Macaron");
-				// beepIntent.putExtra(
-				// RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
-				// device.getAddress());
-				//
+
 				startActivity(beepIntent);
 
-				// if (MajorAndMinorPreferences.getInt("startDialog", 2) == 1) {
-				// final Intent SOSintent = new Intent();
-				// // intent.setClass(getActivity(),
-				// // RadarServicesActivity.class);
-				// SOSintent.setClass(getActivity(),
-				// RadarOutOfRssiBeepDialog.class);
-				//
-				// SOSintent.putExtra(
-				// RadarServicesActivity.EXTRAS_DEVICE_NAME,
-				// device.getName());
-				// SOSintent.putExtra(
-				// RadarServicesActivity.EXTRAS_DEVICE_ADDRESS,
-				// device.getAddress());
-				//
-				// startActivity(SOSintent);
-				// }
+			}
+
+		} else {
+
+			keepTim = 0;
+
+			if (RadarOutOfRssiBeepDialog.isStart) {
+				if (RadarOutOfRssiBeepDialog.instance != null) {
+					RadarOutOfRssiBeepDialog.instance.finish();
+
+					RadarOutOfRssiBeepDialog.isStart = false;
+				}
 
 			}
 
 		}
-		// else {
-		//
-		// keepTim = 0;
-		//
-		// if (isStart) {
-		// if (RadarOutOfRssiBeepDialog.instance != null) {
-		// RadarOutOfRssiBeepDialog.instance.finish();
-		// editor = SandVpreferences.edit();
-		// editor.putBoolean("isStartBeepDialog", false);
-		// editor.commit();
-		// // SharePrefsUtils.setStartBeepDialog(getActivity(), false);
-		// // RadarOutOfRssiBeepDialog.isStart = false;
-		// }
-		//
-		// }
-		//
-		// }
 	}
 }

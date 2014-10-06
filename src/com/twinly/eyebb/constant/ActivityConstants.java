@@ -23,6 +23,8 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_RUN_NUM_RADAR = "runNumRadar";
 	public static final String SHARE_PREFS_ITEM_VIBRATE = "vibrate";
 	public static final String SHARE_PREFS_INIT_HEAD = "init_head";
+	public static final String SHARE_PREFS_FINISH_BEEP = "finish_beep";
+	public static final String SHARE_PREFS_CONNECT_BLE_SERVICE = "connect_ble_service";
 	public static final String SHARE_PREFS_REFRESH_TIME = "refresh_time";
 	
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";

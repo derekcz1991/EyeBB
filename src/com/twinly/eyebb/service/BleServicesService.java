@@ -45,7 +45,7 @@ public class BleServicesService extends Service {
 
 	private final String LIST_NAME = "NAME";
 	private final String LIST_UUID = "UUID";
-
+	public static Intent intentToChara = new Intent();;
 	SimpleAdapter listItemAdapter; // ListView的适配器
 	ArrayList<HashMap<String, Object>> listItem; // ListView的数据源，这里是一个HashMap的列表
 	ListView myList; // ListView控件
@@ -77,7 +77,7 @@ public class BleServicesService extends Service {
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
-		System.out.println("onBind()");
+		System.out.println("Service onBind()");
 		return null;
 	}
 
@@ -86,12 +86,68 @@ public class BleServicesService extends Service {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		System.out.println("Service onCreate");
-		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-		if (Constants.mBluetoothLeService != null) {
-			final boolean result = Constants.mBluetoothLeService
-					.connect(mDeviceAddress);
-			System.out.println("Connect request result=" + result);
-		}
+		// registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+		// if (Constants.mBluetoothLeService != null) {
+		// final boolean result = Constants.mBluetoothLeService
+		// .connect(mDeviceAddress);
+		// System.out.println("Connect request result=" + result);
+		// }
+	}
+
+	@Override
+	public int onStartCommand(final Intent intent, int flags, int startId) {
+		// TODO Auto-generated method stub
+
+		new Thread() {
+			public void run() {
+
+				if (intent == null) {
+					stopSelf();
+				}
+				mDeviceName = "";
+				mDeviceAddress = "";
+
+				mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+				mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+
+				System.out.println("mDeviceName:" + mDeviceName
+						+ " mDeviceAddress:" + mDeviceAddress);
+
+				registerReceiver(mGattUpdateReceiver,
+						makeGattUpdateIntentFilter());
+				if (Constants.mBluetoothLeService != null) {
+					final boolean result = Constants.mBluetoothLeService
+							.connect(mDeviceAddress);
+					System.out.println("Connect request result=" + result);
+				}
+
+				Constants.gattServiceData.clear();
+				Constants.gattServiceObject.clear();
+
+				// status_text = (TextView) findViewById(R.id.services_status);
+
+				listItem = new ArrayList<HashMap<String, Object>>();
+				// listItemAdapter = new SimpleAdapter(this, listItem,
+				// R.layout.ble_services_listview,
+				// new String[] { "title", "text" }, new int[] {
+				// R.id.services_ItemTitle, R.id.services_ItemText });
+				// myList = (ListView) findViewById(R.id.services_listView);
+				// myList.setAdapter(listItemAdapter);
+
+				Intent gattServiceIntent = new Intent(BleServicesService.this,
+						BluetoothLeService.class);
+				boolean bll = bindService(gattServiceIntent,
+						mServiceConnection, BIND_AUTO_CREATE);
+				if (!bll) {
+					// Toast.makeText(this, "Bind Service Failed!",
+					// Toast.LENGTH_SHORT)
+					// .show();
+					System.out.println("Bind Service Failed!");
+				}
+			};
+		}.start();
+
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	@Override
@@ -100,32 +156,6 @@ public class BleServicesService extends Service {
 		// TODO Auto-generated method stub
 		super.onStart(intent, startId);
 		System.out.println("Service onStart");
-		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-		mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-		System.out.println("mDeviceName:" + mDeviceName + " mDeviceAddress:"
-				+ mDeviceAddress);
-
-		Constants.gattServiceData.clear();
-		Constants.gattServiceObject.clear();
-
-		// status_text = (TextView) findViewById(R.id.services_status);
-
-		listItem = new ArrayList<HashMap<String, Object>>();
-		// listItemAdapter = new SimpleAdapter(this, listItem,
-		// R.layout.ble_services_listview,
-		// new String[] { "title", "text" }, new int[] {
-		// R.id.services_ItemTitle, R.id.services_ItemText });
-		// myList = (ListView) findViewById(R.id.services_listView);
-		// myList.setAdapter(listItemAdapter);
-
-		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-		boolean bll = bindService(gattServiceIntent, mServiceConnection,
-				BIND_AUTO_CREATE);
-		if (!bll) {
-			Toast.makeText(this, "Bind Service Failed!", Toast.LENGTH_SHORT)
-					.show();
-
-		}
 
 	}
 
@@ -134,9 +164,26 @@ public class BleServicesService extends Service {
 		// TODO Auto-generated method stub
 		System.out.println("Service onDestroy");
 		super.onDestroy();
+		try {
+			if (Constants.mBluetoothLeService != null) {
+				Constants.mBluetoothLeService.disconnect();
+			}
+			unregisterReceiver(mGattUpdateReceiver);
+			unbindService(mServiceConnection);
+			mConnected = false;
+			Constants.mBluetoothLeService = null;
+			// if (Constants.mBluetoothLeService != null) {
+			// Constants.mBluetoothLeService.disconnect();
+			// }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Server Receiver not registered");
+			e.printStackTrace();
+		}
 
-		unbindService(mServiceConnection);
-		Constants.mBluetoothLeService = null;
+		// Constants.mBluetoothLeService = null;
+
+		// stopSelf();
 	}
 
 	Runnable finishConnection = new Runnable() {
@@ -156,6 +203,7 @@ public class BleServicesService extends Service {
 		}
 	};
 
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
 		public void handleMessage(Message msg) {
@@ -172,25 +220,29 @@ public class BleServicesService extends Service {
 		}
 	};
 
-	public class autoConnection extends Thread {
-		@Override
-		public void run() {
-			for (int i = 0; i < listItem.size(); i++) {
-				if (listItem.get(i).get("text").equals("1000")) {
-					final Intent intentToChara = new Intent();
-
-					intentToChara.putExtra("servidx", i);
-					System.out.println("servidxservidx=>" + i);
-
-					intentToChara
-							.setAction("com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES");
-
-					startService(intentToChara);
-				}
-			}
-
-		}
-	}
+	// public class autoConnection extends Thread {
+	// @Override
+	// public void run() {
+	// for (int i = 0; i < listItem.size(); i++) {
+	// if (listItem.get(i).get("text").toString().equals("1000")) {
+	// final Intent intentToChara = new Intent();
+	//
+	// intentToChara.putExtra(
+	// BleCharacteristicsService.EXTRAS_SERVICE_NAME, i);
+	// System.out.println("servidxservidx=>" + i);
+	// System.out.println("servidxservidx=>"
+	// + listItem.get(i).get("text").toString());
+	//
+	// intentToChara
+	// .setAction("com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES");
+	//
+	// startService(intentToChara);
+	// // Constants.mBluetoothLeService = null;
+	// }
+	// }
+	//
+	// }
+	// }
 
 	// Code to manage Service lifecycle.
 	private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -204,6 +256,7 @@ public class BleServicesService extends Service {
 			if (!Constants.mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				// BleServicesService.this.finish();
+				stopSelf();
 			}
 			// Automatically connects to the device upon successful start-up
 			// initialization.
@@ -235,9 +288,13 @@ public class BleServicesService extends Service {
 				Constants.mBluetoothLeService.discoverServices();
 				// status_text.setText(mDeviceName +
 				// ": Discovering services...");
+				System.out.println("(BluetoothLeService.ACTION_GATT_CONNECTED");
 			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
 					.equals(action)) {
 				mConnected = false;
+				stopSelf();
+				System.out
+						.println("BluetoothLeService.ACTION_GATT_DISCONNECTED");
 				// status_text.setText(mDeviceName + ": Disconnected");
 				// RadarServicesActivity.this.finish();
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
@@ -245,17 +302,17 @@ public class BleServicesService extends Service {
 				// Show all the supported services and characteristics on the
 				// user interface.
 				// status_text.setText(mDeviceName + ": Discovered");
-				displayGattServices(Constants.mBluetoothLeService
-						.getSupportedGattServices());
+				int connect_ble_service = SharePrefsUtils
+						.isConnectBleService(BleServicesService.this);
 
-				// int num = MajorAndMinorPreferences.getInt("runNumRadar", 1);
-				int num = SharePrefsUtils.CancelConnectBleServiceTimes(context);
-				System.out.println("numnumnumnum" + num);
-				if (num == 1) {
-					new autoConnection().start();
-					// editor.putInt("runNumRadar", 2);
-					// editor.commit();
-					SharePrefsUtils.setCancelConnectBleServiceTimes(context, 2);
+				if (connect_ble_service == 1) {
+					displayGattServices(Constants.mBluetoothLeService
+							.getSupportedGattServices());
+					connect_ble_service++;
+					// SharePrefsUtils.setConnectBleService(BleServicesService.this,
+					// connect_ble_service);
+					System.out
+							.println("BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED");
 				}
 
 			}
@@ -296,27 +353,71 @@ public class BleServicesService extends Service {
 		// ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
 		// Loops through available GATT Services.
-		for (BluetoothGattService gattService : gattServices) {
+		for (int i = 0; i < gattServices.size(); i++) {
 			HashMap<String, String> currentServiceData = new HashMap<String, String>();
-			uuid = gattService.getUuid().toString();
-			uuid = uuid.substring(4, 8);
-			boolean exist = false;
-			for (HashMap<String, String> sItem : Constants.gattServiceData) {
-				if (sItem.get(LIST_UUID).equals(uuid)) {
-					exist = true;
-					break;
-				}
-			}
-			if (exist) {
-				continue;
-			}
-			name = SampleGattAttributes.lookup(uuid, "Unknow Service");
+			// uuid = gattServices.get(i).getUuid().toString();
+			// uuid = uuid.substring(4, 8);
+			// boolean exist = false;
+			// for (HashMap<String, String> sItem : Constants.gattServiceData) {
+			// if (sItem.get(LIST_UUID).equals(uuid)) {
+			// exist = true;
+			// break;
+			// }
+			// }
+			// if (exist) {
+			// continue;
+			// }
+			// name = SampleGattAttributes.lookup(uuid, "Unknow Service");
 			currentServiceData.put(LIST_NAME, name);
 			currentServiceData.put(LIST_UUID, uuid);
 			Constants.gattServiceData.add(currentServiceData);
-			Constants.gattServiceObject.add(gattService);
-			addItem(name, uuid);
+			Constants.gattServiceObject.add(gattServices.get(i));
+			// S addItem(name, uuid);
+			// System.out.println("gattServices.get(i).getUuid()==>"
+			// + gattServices.get(i).getUuid());
+
+			if (gattServices.get(i).getUuid().toString()
+					.equals(Constants.APPLICATION_UUID)) {
+			
+
+				intentToChara.putExtra(
+						BleCharacteristicsService.EXTRAS_SERVICE_NAME, i);
+				System.out.println("servidxservidx=>" + i);
+				// System.out.println("servidxservidx=>"
+				// + listItem.get(i).get("text").toString());
+
+				intentToChara
+						.setAction("com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES");
+
+				startService(intentToChara);
+				// Constants.mBluetoothLeService = null;
+
+				break;
+			}
 		}
+
+		// for (BluetoothGattService gattService : gattServices) {
+		// HashMap<String, String> currentServiceData = new HashMap<String,
+		// String>();
+		// uuid = gattService.getUuid().toString();
+		// uuid = uuid.substring(4, 8);
+		// boolean exist = false;
+		// for (HashMap<String, String> sItem : Constants.gattServiceData) {
+		// if (sItem.get(LIST_UUID).equals(uuid)) {
+		// exist = true;
+		// break;
+		// }
+		// }
+		// if (exist) {
+		// continue;
+		// }
+		// name = SampleGattAttributes.lookup(uuid, "Unknow Service");
+		// currentServiceData.put(LIST_NAME, name);
+		// currentServiceData.put(LIST_UUID, uuid);
+		// Constants.gattServiceData.add(currentServiceData);
+		// Constants.gattServiceObject.add(gattService);
+		// addItem(name, uuid);
+		// }
 
 	}
 

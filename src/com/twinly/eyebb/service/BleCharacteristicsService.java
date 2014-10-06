@@ -11,6 +11,7 @@ import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
 import com.twinly.eyebb.bluetooth.SampleGattAttributes;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.utils.BLEUtils;
 
 import android.annotation.SuppressLint;
@@ -42,6 +43,7 @@ public class BleCharacteristicsService extends Service {
 
 	int servidx, charaidx;
 
+	private boolean loopToFindChars = true;
 	BluetoothGattService gattService;
 	ArrayList<HashMap<String, String>> gattCharacteristicGroupData = new ArrayList<HashMap<String, String>>();
 	ArrayList<BluetoothGattCharacteristic> charas = new ArrayList<BluetoothGattCharacteristic>();
@@ -49,12 +51,12 @@ public class BleCharacteristicsService extends Service {
 	private Timer timer;
 	// 控制時間
 	private int keepTim = 0;
-
-	private String uuid;
+	String uuid = null;
+	String name = null;
+	// private String uuid;
 	public static final int FINISH_ACTIVITY = 1;
-
-	private SharedPreferences MajorAndMinorPreferences;
-	private SharedPreferences.Editor editor;
+	public static final String EXTRAS_SERVICE_NAME = "SERVICE_NAME";
+	private int beepUUID = -1;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -66,10 +68,104 @@ public class BleCharacteristicsService extends Service {
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
-		super.onCreate();
-		registerReceiver(mGattUpdateReceiver, new IntentFilter(
-				BluetoothLeService.ACTION_DATA_AVAILABLE));
+		// registerReceiver(mGattUpdateReceiver, new IntentFilter(
+		// BluetoothLeService.ACTION_DATA_AVAILABLE));
+
 		System.out.println("chara onCreate");
+
+		super.onCreate();
+	}
+
+	@SuppressLint("NewApi")
+	@Override
+	public int onStartCommand(final Intent intent, int flags, int startId) {
+		// TODO Auto-generated method stub
+
+		System.out.println("char onStartCommand");
+		new Thread() {
+			public void run() {
+				registerReceiver(mGattUpdateReceiver, new IntentFilter(
+						BluetoothLeService.ACTION_DATA_AVAILABLE));
+
+				if (intent == null) {
+					// unregisterReceiver(mGattUpdateReceiver);
+					stopSelf();
+				} else {
+
+					servidx = intent.getIntExtra(EXTRAS_SERVICE_NAME, -1);
+					System.out.println("servidx char=>" + servidx);
+
+					listItem = new ArrayList<HashMap<String, Object>>();
+
+					gattService = Constants.gattServiceObject.get(servidx);
+
+					Thread disconverThread = new Thread() {
+						@SuppressLint("NewApi")
+						public void run() {
+
+							// System.out.println("disconverThread ");
+							List<BluetoothGattCharacteristic> gattCharacteristics = gattService
+									.getCharacteristics();
+
+							// System.out.println("disconverThread. ");
+							// Loops through available Characteristics.
+							if (gattCharacteristics == null) {
+								System.out.println("gattCharacteristics NULL");
+							}
+
+							for (int i = 0; i < gattCharacteristics.size(); i++) {
+								charas.add(gattCharacteristics.get(i));
+								// System.out.println("disconverThread1 ");
+								HashMap<String, String> currentCharaData = new HashMap<String, String>();
+								// System.out.println("disconverThread2 ");
+								uuid = gattCharacteristics.get(i).getUuid()
+										.toString();
+								// System.out.println("disconverThread3 ");
+								uuid = uuid.substring(4, 8);
+								// System.out.println("uuid char==>" + uuid);
+
+								name = SampleGattAttributes.lookup(uuid,
+										"Unknow");
+								currentCharaData.put("NAME", name);
+								currentCharaData.put("UUID", uuid);
+								gattCharacteristicGroupData
+										.add(currentCharaData);
+								addItem(name, uuid);
+								// System.out.println("gattCharacteristic=>" +
+								// gattCharacteristics.get(i).toString());
+								if (uuid.equals(Constants.BEEP_CHAR_UUID)) {
+									final BluetoothGattCharacteristic characteristic = gattCharacteristics
+											.get(i);
+									final int charaProp = characteristic
+											.getProperties();
+									if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+										// uuid =
+										// characteristic.getUuid().toString();
+										System.out.println(" charas uuid ==>"
+												+ uuid + "  " + i);
+										// uuid = uuid.substring(4, 8);
+										// uuid = uuid;
+										charaidx = i;
+										Constants.mBluetoothLeService
+												.readCharacteristic(characteristic);
+
+										break;
+									}
+								}
+							}
+
+						}
+					};
+					disconverThread.start();
+
+					// registerReceiver(mGattUpdateReceiver, new IntentFilter(
+					// BluetoothLeService.ACTION_DATA_AVAILABLE));
+				}
+
+			};
+		}.start();
+
+		return super.onStartCommand(intent, flags, startId);
 
 	}
 
@@ -78,83 +174,10 @@ public class BleCharacteristicsService extends Service {
 	@Deprecated
 	public void onStart(Intent intent, int startId) {
 		// TODO Auto-generated method stub
-		super.onStart(intent, startId);
+
 		System.out.println("chara onStart");
-		
-		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
-				MODE_PRIVATE);
-		editor = MajorAndMinorPreferences.edit();
 
-		servidx = intent.getIntExtra("servidx", -1);
-
-		if (servidx == -1) {
-			Toast.makeText(this, "Characteristics Index Error!",
-					Toast.LENGTH_LONG).show();
-
-		}
-
-		listItem = new ArrayList<HashMap<String, Object>>();
-
-		gattService = Constants.gattServiceObject.get(servidx);
-
-		Thread disconverThread = new Thread() {
-			@SuppressLint("NewApi")
-			public void run() {
-				// status_text.setText(Constants.gattServiceData.get(servidx).get(
-				// "NAME")
-				// + ": Discovering Characteristics...");
-				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
-						.getCharacteristics();
-
-				String uuid = null;
-				String name = null;
-				// Loops through available Characteristics.
-				for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
-					charas.add(gattCharacteristic);
-					HashMap<String, String> currentCharaData = new HashMap<String, String>();
-					uuid = gattCharacteristic.getUuid().toString();
-					uuid = uuid.substring(4, 8);
-					boolean exist = false;
-					for (HashMap<String, String> sItem : gattCharacteristicGroupData) {
-						if (sItem.get("UUID").equals(uuid)) {
-							exist = true;
-							break;
-						}
-					}
-					if (exist) {
-						continue;
-					}
-					name = SampleGattAttributes.lookup(uuid, "Unknow");
-					currentCharaData.put("NAME", name);
-					currentCharaData.put("UUID", uuid);
-					gattCharacteristicGroupData.add(currentCharaData);
-					addItem(name, uuid);
-
-				}
-				// status_text.setText(Constants.gattServiceData.get(servidx).get(
-				// "NAME")
-				// + ": Discovered");
-
-			}
-		};
-		disconverThread.start();
-
-		registerReceiver(mGattUpdateReceiver, new IntentFilter(
-				BluetoothLeService.ACTION_DATA_AVAILABLE));
-
-		if (charas.size() > 0) {
-			// 蜂鳴開始
-			final BluetoothGattCharacteristic characteristic = charas.get(0);
-			final int charaProp = characteristic.getProperties();
-			if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-				uuid = characteristic.getUuid().toString();
-				System.out.println(" charas uuid ==>" + uuid);
-				uuid = uuid.substring(4, 8);
-				charaidx = 0;
-				Constants.mBluetoothLeService
-						.readCharacteristic(characteristic);
-			}
-		}
+		super.onStart(intent, startId);
 
 	}
 
@@ -162,7 +185,20 @@ public class BleCharacteristicsService extends Service {
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		unregisterReceiver(mGattUpdateReceiver);
+		System.out.println("chara onDestroy");
+		try {
+			unregisterReceiver(mGattUpdateReceiver);
+
+			// if (Constants.mBluetoothLeService != null) {
+			// Constants.mBluetoothLeService.disconnect();
+			// }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("Char Receiver not registered");
+			e.printStackTrace();
+		}
+
+		stopSelf();
 	}
 
 	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
@@ -176,7 +212,7 @@ public class BleCharacteristicsService extends Service {
 				System.out.println("data========>" + data);
 				System.out.println("uuid========>" + uuid);
 				if (uuid.equals("1001")) {
-					System.out.println("this is 1001" + data + "=>16/ "
+					System.out.println("this is 1001" + data + " "
 							+ Integer.parseInt(data, 16));
 					modify1001(data);
 				} else if (uuid.equals("1004")) {
@@ -191,55 +227,54 @@ public class BleCharacteristicsService extends Service {
 		}
 
 	};
-	// // 倒計時
-	// TimerTask task = new TimerTask() {
-	// public void run() {
-	// Message message = new Message();
-	// message.what = FINISH_ACTIVITY;
-	// handler.sendMessage(message);
-	// }
-	// };
 
-	Runnable finishConnection = new Runnable() {
+	Runnable rinModify1001 = new Runnable() {
+		@SuppressLint("NewApi")
 		@Override
 		public void run() {
 
 			// RadarCharacteristicsActivity.this.finish();
+			String data = "01";
+
+			BluetoothGattCharacteristic characteristic = charas.get(charaidx);
+			System.out
+					.println("BluetoothGattCharacteristic characteristic = charas.get(charaidx);"
+							+ " ==>"
+							+ charaidx
+							+ " "
+							+ charas.get(charaidx).toString());
+			characteristic.setValue(BLEUtils.HexString2Bytes(data));
+
+			Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
+			System.out
+					.println("Constants.mBluetoothLeService.wirteCharacteristic(characteristic);");
 		}
 	};
-
-	// Handler handler = new Handler() {
-	//
-	// public void handleMessage(Message msg) {
-	// switch (msg.what) {
-	//
-	// case FINISH_ACTIVITY:
-	//
-	// keepTim++;
-	// if (keepTim == 3) {
-	// new Thread(finishConnection).start();
-	// }
-	//
-	// break;
-	// }
-	// }
-	// };
 
 	@SuppressLint("NewApi")
 	private void modify1001(String data) {
 		// TODO Auto-generated method stub
 
-		data = "01";
+		new Thread(rinModify1001).start();
+		// unregisterReceiver(mGattUpdateReceiver);
+		//
+		// // mConnected = false;
 
-		BluetoothGattCharacteristic characteristic = charas.get(charaidx);
-		characteristic.setValue(BLEUtils.HexString2Bytes(data));
-		Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
-		// timer = new Timer(true);
-		// timer.schedule(task, 1000, 1000); // 延时1000ms后执行，1000ms执行一次
-
-		// editor.putInt("startDialog", 1);
-		// editor.commit();
-		// //finish();
+		// data = "01";
+		// // System.out.println("BLEUtils.HexString2Bytes(data)====>"
+		// // + BLEUtils.HexString2Bytes(data));
+		// BluetoothGattCharacteristic characteristic = charas.get(charaidx);
+		// System.out
+		// .println("BluetoothGattCharacteristic characteristic = charas.get(charaidx);"
+		// + " ==>"
+		// + charaidx
+		// + " "
+		// + charas.get(charaidx).toString());
+		// characteristic.setValue(BLEUtils.HexString2Bytes(data));
+		//
+		// Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
+		// System.out
+		// .println("Constants.mBluetoothLeService.wirteCharacteristic(characteristic);");
 	}
 
 	private void addItem(String devname, String address) {
