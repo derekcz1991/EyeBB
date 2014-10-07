@@ -37,6 +37,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -166,7 +167,8 @@ public class RadarTrackingFragment extends Fragment implements
 	private int beepTime = 0;
 
 	// 開啟防丟器
-	private TextView openAntiTheft;
+	private LinearLayout openAntiTheft;
+	private TextView openAntiTheftTX;
 	private boolean openAnti = false;
 
 	@SuppressWarnings("static-access")
@@ -200,7 +202,6 @@ public class RadarTrackingFragment extends Fragment implements
 		RadarView = v.findViewById(R.id.radar_view);
 
 		radarBeepAllBtn = v.findViewById(R.id.radar_beep_all_btn);
-		openAntiTheft = (TextView) v.findViewById(R.id.connection_status_txt);
 		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
 		radarScrollView.smoothScrollTo(0, 0);
 
@@ -212,13 +213,17 @@ public class RadarTrackingFragment extends Fragment implements
 				.findViewById(R.id.radar_text_missed_number);
 		unMissingChildNumTxt = (TextView) v
 				.findViewById(R.id.radar_text_supervised_number);
-
+		
 		confirmRadarBtn = (TextView) v.findViewById(R.id.confirm_radar_btn);
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
 
+		//防丟器
+		openAntiTheft = (LinearLayout) v.findViewById(R.id.connection_status_btn);
+		openAntiTheftTX = (TextView)v.findViewById(R.id.connection_status_txt);
+		
 		// bluetooth
 		// connect device
 		// btnConfirm = v.findViewById(R.id.btn_confirm);
@@ -264,11 +269,11 @@ public class RadarTrackingFragment extends Fragment implements
 
 				if (openAnti) {
 					openAnti = false;	
-					openAntiTheft.setText(getResources().getString(
+					openAntiTheftTX.setText(getResources().getString(
 							R.string.text_radar_status_start_connected));
 				} else {
 					openAnti = true;
-					openAntiTheft.setText(getResources().getString(
+					openAntiTheftTX.setText(getResources().getString(
 							R.string.text_radar_status_disconnection));
 				}
 

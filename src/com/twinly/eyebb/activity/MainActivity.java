@@ -250,7 +250,8 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void stopAutoRefresh() {
 		autoUpdateFlag = false;
-		autoUpdateTask.cancel(true);
+		if (autoUpdateTask != null)
+			autoUpdateTask.cancel(true);
 	}
 
 	@Override
