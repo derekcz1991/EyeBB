@@ -64,6 +64,7 @@ public class DBPerformance {
 			performance.setLastUpdateDate(cursor.getString(cursor
 					.getColumnIndex("last_update_date")));
 		}
+		db.close();
 		return performance;
 	}
 }

@@ -1,5 +1,6 @@
 package com.twinly.eyebb.adapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -32,7 +33,9 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 	public PerformanceListViewAdapter(Context context,
 			List<PerformanceListItem> list) {
 		this.context = context;
-		this.list = list;
+		this.list = new ArrayList<PerformanceListItem>();
+		this.list.addAll(list);
+		//this.list = list;
 		mInflater = LayoutInflater.from(context);
 	}
 
@@ -93,27 +96,26 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 					.getDrawable(list.get(position).getProgressBarstyle()));
 
 			// progress bar animation
-			System.out.println(list.get(position).isFlag());
 			if (list.get(position).isFlag() == false) {
 				list.get(position).setFlag(true);
+				//viewHolder.progressBar.setProgress(list.get(position).getProgress());
 				new AsyncTask<Void, Integer, Void>() {
 
 					@Override
 					protected Void doInBackground(Void... params) {
 						int progress = 0;
-						try {
+						/*try {
 							Thread.sleep(100);
 						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						}
+						}*/
 						while (progress < list.get(position).getProgress()) {
 							progress += 4;
 							publishProgress(progress);
 							try {
 								Thread.sleep(10);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}

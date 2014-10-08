@@ -69,7 +69,6 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 
 	private void setUpView(ViewHolder viewHolder, int position) {
 		final Child child = data.get(position);
-		System.out.println("position-1=>" + position);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					CommonUtils.getDisplayImageOptions(), null);

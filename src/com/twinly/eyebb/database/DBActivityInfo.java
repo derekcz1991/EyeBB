@@ -66,5 +66,6 @@ public class DBActivityInfo {
 		SQLiteDatabase db = getInstance(context);
 		db.delete("activity_infos", "child_id=?",
 				new String[] { String.valueOf(childId) });
+		db.close();
 	}
 }

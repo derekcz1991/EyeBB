@@ -251,7 +251,7 @@ public class ReportFragment extends Fragment implements
 	 * Get newest the data from server and update the view 
 	 */
 	public void updateView() {
-		if(child != null) {
+		if (child != null) {
 			new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
