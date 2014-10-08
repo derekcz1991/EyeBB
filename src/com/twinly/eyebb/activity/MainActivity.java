@@ -244,7 +244,7 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onProfileTabClicked() {
-		noticeNum.setVisibility(View.INVISIBLE);
+		//noticeNum.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
