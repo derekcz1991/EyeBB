@@ -439,7 +439,13 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 
 		}
-		// scan_flag = false;
+		
+
+		ScanedTempChildData.clear();
+		ScanedChildData.clear();
+		MissChildData.clear();
+		listItem.clear();
+		mLeDevices.clear();
 	}
 
 	@Override

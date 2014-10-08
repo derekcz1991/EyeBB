@@ -37,8 +37,10 @@ import android.util.Log;
 import java.util.List;
 import java.util.UUID;
 
+import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -156,7 +158,13 @@ public class BluetoothLeService extends Service {
 				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
 
 				BeepAllForRadarDialog.BeepAlli++;
-
+				BeepAllForRadarDialog.StartAllBeepFlag = true;
+				LoadingDialog
+						.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
+								+ "\n"
+								+ BeepAllForRadarDialog.BeepAlli
+								+ "/"
+								+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
 				stopService(BleServicesService.intentToChara);
 				stopService(RadarTrackingFragment.beepIntent);
 

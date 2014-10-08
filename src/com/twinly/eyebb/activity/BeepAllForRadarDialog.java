@@ -34,6 +34,8 @@ public class BeepAllForRadarDialog extends Activity {
 	public static int BeepAlli = 0;
 	public static boolean BeepAllFlag = true;
 	public static BeepAllForRadarDialog instance = null;
+	public static boolean StartAllBeepFlag = true;
+	public static int BeepAllTempChildDataSize = 0;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -62,9 +64,9 @@ public class BeepAllForRadarDialog extends Activity {
 				msg.what = Constants.START_PROGRASSS_BAR;
 				handler.sendMessage(msg);
 				// open thread
-				if (btnBeepAll == null) {
-					btnBeepAll.start();
-				}
+
+				btnBeepAll.start();
+
 			}
 		});
 
@@ -112,8 +114,9 @@ public class BeepAllForRadarDialog extends Activity {
 			case Constants.START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialogCanCancel(
 						BeepAllForRadarDialog.this,
-						getString(R.string.toast_loading) + "\n" + BeepAlli + "/"
-								+ BeepAllTempChildData.size());
+						getString(R.string.toast_loading) + "\n" + BeepAlli
+								+ "/" + BeepAllTempChildData.size());
+				BeepAllTempChildDataSize = BeepAllTempChildData.size();
 				dialog.show();
 
 				dialog.setOnKeyListener(new OnKeyListener() {
@@ -159,54 +162,67 @@ public class BeepAllForRadarDialog extends Activity {
 			// firstly pop the dialog
 			while (BeepAllFlag) {
 
-				boolean isFinish = SharePrefsUtils
-						.isfinishBeep(BeepAllForRadarDialog.this);
+				if (StartAllBeepFlag) {
 
-				if (isFinish) {
+					StartAllBeepFlag = false;
+					boolean isFinish = SharePrefsUtils
+							.isfinishBeep(BeepAllForRadarDialog.this);
+					if (BeepAlli < BeepAllTempChildData.size()) {
+						if (isFinish) {
 
-				} else {
-					for (; BeepAlli < BeepAllTempChildData.size();) {
-						System.out.println("BeepAllTempChildData.size()==>"
-								+ BeepAllTempChildData.size());
-						if (BeepAllTempChildData.size() > 0) {
-							// isFirstBeep = false;
+						} else {
+							// for (; BeepAlli < BeepAllTempChildData.size();) {
 
-							Intent beepIntent = new Intent();
+							System.out.println("BeepAllTempChildData.size()==>"
+									+ BeepAllTempChildData.size());
+							if (BeepAllTempChildData.size() > 0) {
+								// isFirstBeep = false;
 
-							beepIntent.putExtra(
-									BleServicesService.EXTRAS_DEVICE_NAME,
-									"Macaron");
-							beepIntent.putExtra(
-									BleServicesService.EXTRAS_DEVICE_ADDRESS,
-									BeepAllTempChildData.get(BeepAlli)
-											.getMacAddress());
-							System.out
-									.println("BeepTempChildData.get(position).getMacAddress()==>"
-											+ BeepAllTempChildData
-													.get(BeepAlli)
-													.getMacAddress());
-							beepIntent
-									.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
-							// if (scan_flag) {
-							// scanLeDevice(false);
-							// }
-							SharePrefsUtils.setConnectBleService(
-									BeepAllForRadarDialog.this, 1);
-							SharePrefsUtils.setfinishBeep(
-									BeepAllForRadarDialog.this, true);
+								Intent beepIntent = new Intent();
 
-							startService(beepIntent);
+								beepIntent.putExtra(
+										BleServicesService.EXTRAS_DEVICE_NAME,
+										"Macaron");
+								beepIntent
+										.putExtra(
+												BleServicesService.EXTRAS_DEVICE_ADDRESS,
+												BeepAllTempChildData.get(
+														BeepAlli)
+														.getMacAddress());
+								System.out
+										.println("BeepTempChildData.get(position).getMacAddress()==>"
+												+ BeepAllTempChildData.get(
+														BeepAlli)
+														.getMacAddress());
+								beepIntent
+										.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
+								// if (scan_flag) {
+								// scanLeDevice(false);
+								// }
+								SharePrefsUtils.setConnectBleService(
+										BeepAllForRadarDialog.this, 1);
+								SharePrefsUtils.setfinishBeep(
+										BeepAllForRadarDialog.this, true);
 
+								startService(beepIntent);
+							}
 						}
 
+					} else {
+						BeepAllFlag = false;
+						BeepAlli = 0;
+						StartAllBeepFlag = true;
+
+						if (dialog != null && dialog.isShowing()) {
+							dialog.dismiss();
+						}
+						finish();
 					}
 
 				}
 
 			}
-			if (dialog != null && dialog.isShowing()) {
-				dialog.dismiss();
-			}
+
 		}
 	});
 
