@@ -264,6 +264,7 @@ public class RadarTrackingFragment extends Fragment implements
 					SharePrefsUtils.setfinishBeep(getActivity(), false);
 				} else {
 					btnCancelConnect();
+					closeBluetooth();
 				}
 
 			}
@@ -301,7 +302,7 @@ public class RadarTrackingFragment extends Fragment implements
 	}
 
 	public void btnConfirmConnect() {
-		
+
 		confirmRadarBtn.setBackground(getResources().getDrawable(
 				R.drawable.ic_selected));
 
@@ -318,8 +319,8 @@ public class RadarTrackingFragment extends Fragment implements
 			isClickConnection = true;
 			// 開始循環掃描
 			isWhileLoop = true;
-			
-			//確定點擊開啟button
+
+			// 確定點擊開啟button
 			isConfirmRadarBtn = true;
 
 			// 重新啟動timetask
@@ -756,6 +757,15 @@ public class RadarTrackingFragment extends Fragment implements
 				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 			}
 		}
+	}
+
+	private void closeBluetooth() {
+		// 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
+		if (mBluetoothAdapter.isEnabled()) {
+			mBluetoothAdapter.disable();// 关闭蓝牙
+
+		}
+
 	}
 
 	// 下面為bluetooth

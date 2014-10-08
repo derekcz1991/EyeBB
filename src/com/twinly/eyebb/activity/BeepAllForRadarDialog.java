@@ -112,7 +112,8 @@ public class BeepAllForRadarDialog extends Activity {
 			case Constants.START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialogCanCancel(
 						BeepAllForRadarDialog.this,
-						getString(R.string.toast_loading));
+						getString(R.string.toast_loading) + "\n" + BeepAlli + "/"
+								+ BeepAllTempChildData.size());
 				dialog.show();
 
 				dialog.setOnKeyListener(new OnKeyListener() {
