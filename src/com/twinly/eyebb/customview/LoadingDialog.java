@@ -2,6 +2,7 @@ package com.twinly.eyebb.customview;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -30,4 +31,21 @@ public class LoadingDialog {
         return loadingDialog;  
   
     }  
+    
+    public static Dialog createLoadingDialogCanCancel(Context context, String msg) {  
+    	  
+        LayoutInflater inflater = LayoutInflater.from(context);  
+        View v = inflater.inflate(R.layout.dialog_loading, null);// 得到加载view 
+        ((TextView)v.findViewById(R.id.msg)).setText(msg);
+        
+        Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog  
+      
+        loadingDialog.setContentView(v, new LinearLayout.LayoutParams(  
+                LinearLayout.LayoutParams.MATCH_PARENT,  
+                LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局  
+        return loadingDialog;  
+  
+    }  
+    
+  
 }

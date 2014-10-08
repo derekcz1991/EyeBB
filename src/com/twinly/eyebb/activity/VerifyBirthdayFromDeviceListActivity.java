@@ -23,6 +23,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Parameter;
@@ -39,8 +40,7 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 
 	private String dateOfBirth;
 
-	final static int START_PROGRASSS_BAR = 1;
-	final static int STOP_PROGRASSS_BAR = 2;
+
 	// private String submitDateOfBirth;
 	// private String submitUserName;
 	// private String submitPassword;
@@ -171,7 +171,7 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 		public void run() {
 			// HANDLER
 			Message msg = handler.obtainMessage();
-			msg.what = START_PROGRASSS_BAR;
+			msg.what = Constants.START_PROGRASSS_BAR;
 			handler.sendMessage(msg);
 			postToServer(childIDfromDeviceList);
 	
@@ -182,14 +182,14 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case START_PROGRASSS_BAR:
+			case Constants.START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialog(
 						VerifyBirthdayFromDeviceListActivity.this,
 						getString(R.string.toast_loading));
 				dialog.show();
 				break;
 
-			case STOP_PROGRASSS_BAR:
+			case Constants.STOP_PROGRASSS_BAR:
 				dialog.dismiss();
 				break;
 			}
@@ -220,6 +220,7 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 		}
 	}
 
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {

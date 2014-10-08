@@ -71,7 +71,7 @@
 	<string name="text_radar_status_disconnection">Close the anti-theft</string>
     <string name="text_radar_status_start_connected">Open the anti-theft</string>
    
-	<string name="text_connect_device">Connect to your baby\&apos; device?</string>
+	<string name="text_connect_device">Beep all the device?</string>
     <string name="text_select_device">Please select your device.</string>
     <string name="text_device_list">Device list</string>
      <string name="text_connect_error">Connect error, please check your network</string>

@@ -1,5 +1,6 @@
 package com.twinly.eyebb.fragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +49,7 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
 import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
@@ -140,6 +142,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private ArrayList<Child> ScanedChildData;
 	private static ArrayList<Child> ScanedTempChildData;
 	private ArrayList<Child> BeepTempChildData;
+	private ArrayList<Child> BeepAllTempChildData;
 
 	private Child child;
 	private ArrayList<Child> MissChildData;
@@ -213,17 +216,18 @@ public class RadarTrackingFragment extends Fragment implements
 				.findViewById(R.id.radar_text_missed_number);
 		unMissingChildNumTxt = (TextView) v
 				.findViewById(R.id.radar_text_supervised_number);
-		
+
 		confirmRadarBtn = (TextView) v.findViewById(R.id.confirm_radar_btn);
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
 
-		//防丟器
-		openAntiTheft = (LinearLayout) v.findViewById(R.id.connection_status_btn);
-		openAntiTheftTX = (TextView)v.findViewById(R.id.connection_status_txt);
-		
+		// 防丟器
+		openAntiTheft = (LinearLayout) v
+				.findViewById(R.id.connection_status_btn);
+		openAntiTheftTX = (TextView) v.findViewById(R.id.connection_status_txt);
+
 		// bluetooth
 		// connect device
 		// btnConfirm = v.findViewById(R.id.btn_confirm);
@@ -239,7 +243,10 @@ public class RadarTrackingFragment extends Fragment implements
 						return;
 					} else {
 						Intent intent = new Intent(getActivity(),
-								BeepDialog.class);
+								BeepAllForRadarDialog.class);
+						intent.putExtra(Constants.BEEP_ALL_DEVICE,
+								(Serializable) BeepAllTempChildData);
+
 						startActivity(intent);
 					}
 				}
@@ -268,7 +275,7 @@ public class RadarTrackingFragment extends Fragment implements
 			public void onClick(View v) {
 
 				if (openAnti) {
-					openAnti = false;	
+					openAnti = false;
 					openAntiTheftTX.setText(getResources().getString(
 							R.string.text_radar_status_start_connected));
 				} else {
@@ -289,11 +296,12 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		super.onDestroy();
 
+		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		// getActivity().stopService(beepIntent);
 	}
 
 	public void btnConfirmConnect() {
-		isConfirmRadarBtn = true;
+		
 		confirmRadarBtn.setBackground(getResources().getDrawable(
 				R.drawable.ic_selected));
 
@@ -310,6 +318,9 @@ public class RadarTrackingFragment extends Fragment implements
 			isClickConnection = true;
 			// 開始循環掃描
 			isWhileLoop = true;
+			
+			//確定點擊開啟button
+			isConfirmRadarBtn = true;
 
 			// 重新啟動timetask
 			// timer.schedule(task, 500, 5000);
@@ -354,7 +365,8 @@ public class RadarTrackingFragment extends Fragment implements
 				new Thread(autoScan).start();
 			}
 		} else {
-			btnCancelConnect();
+			confirmRadarBtn.setBackground(getResources().getDrawable(
+					R.drawable.ic_selected_off));
 		}
 
 	}
@@ -413,19 +425,17 @@ public class RadarTrackingFragment extends Fragment implements
 				.getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
 
-		if (scan_flag) {
-			// System.out
-			// .println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
-			autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
-		} else {
-			new Thread(autoScan).start();
-		}
 		// // // 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
 		// if (!mBluetoothAdapter.isEnabled() || mBluetoothAdapter == null) {
 		// openBluetooth();
 		// }
 
 		if (mBluetoothAdapter.isEnabled()) {
+			if (scan_flag) {
+				autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
+			} else {
+				new Thread(autoScan).start();
+			}
 
 		}
 		// scan_flag = false;
@@ -854,6 +864,9 @@ public class RadarTrackingFragment extends Fragment implements
 				}
 
 				BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
+						.clone();
+				// beep all the device
+				BeepAllTempChildData = (ArrayList<Child>) ScanedTempChildData
 						.clone();
 
 				if (SharePrefsUtils.isInitHead(getActivity())) {

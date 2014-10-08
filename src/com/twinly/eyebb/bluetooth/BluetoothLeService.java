@@ -37,6 +37,7 @@ import android.util.Log;
 import java.util.List;
 import java.util.UUID;
 
+import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.service.BleServicesService;
@@ -68,8 +69,6 @@ public class BluetoothLeService extends Service {
 
 	public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID
 			.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
-
-	
 
 	// Implements callback methods for GATT events that the app cares about. For
 	// example,
@@ -142,24 +141,27 @@ public class BluetoothLeService extends Service {
 		public void onCharacteristicWrite(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
 
-			boolean isFisish = SharePrefsUtils.isfinishBeep(BluetoothLeService.this);
+			boolean isFisish = SharePrefsUtils
+					.isfinishBeep(BluetoothLeService.this);
 
-			if(isFisish){
-				System.out.println("--------write success----- status:" + status);
+			if (isFisish) {
+				System.out.println("--------write success----- status:"
+						+ status);
 				System.out.println("====> ending");
 				if (Constants.mBluetoothLeService != null) {
 					Constants.mBluetoothLeService.disconnect();
 					Constants.mBluetoothLeService = null;
-				}  
-				
+				}
 
 				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
-				
+
+				BeepAllForRadarDialog.BeepAlli++;
+
 				stopService(BleServicesService.intentToChara);
 				stopService(RadarTrackingFragment.beepIntent);
-				
+
 			}
-		
+
 		};
 	};
 
@@ -295,7 +297,8 @@ public class BluetoothLeService extends Service {
 				&& address.equals(mBluetoothDeviceAddress)) {
 			Log.d(TAG,
 					"Trying to use an existing mBluetoothGatt for connection.");
-			System.out.println("Trying to use an existing mBluetoothGatt for connection.");
+			System.out
+					.println("Trying to use an existing mBluetoothGatt for connection.");
 			if (mBluetoothGatt.connect()) {
 				mConnectionState = STATE_CONNECTING;
 				return true;
@@ -356,7 +359,7 @@ public class BluetoothLeService extends Service {
 
 		mBluetoothGatt.writeCharacteristic(characteristic);
 
-		//stopService(RadarTrackingFragment.beepIntent);
+		// stopService(RadarTrackingFragment.beepIntent);
 	}
 
 	/**

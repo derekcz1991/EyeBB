@@ -15,7 +15,7 @@ public class ConnectDeviceDialog extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.dialog_fragment_radar_tracking_connection);
+		setContentView(R.layout.dialog_fragment_radar_tracking_beep_all);
 
 		findViewById(R.id.btn_confirm).setOnClickListener(
 				new OnClickListener() {

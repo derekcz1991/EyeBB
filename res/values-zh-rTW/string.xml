@@ -75,7 +75,7 @@
 	<string name="text_radar_status_disconnection">關閉防丟器</string>
     <string name="text_radar_status_start_connected">開啟防丟器</string>
    
-                 	<string name="text_connect_device">開始連接baby的設備?</string> 
+                 	<string name="text_connect_device">蜂鳴全部的設備?</string> 
                  	 <string name="text_select_device">請選擇您的設備.</string>
      <string name="text_device_list">設備列表</string>
       <string name="text_connect_error">連接錯誤,請檢查你的網絡</string>

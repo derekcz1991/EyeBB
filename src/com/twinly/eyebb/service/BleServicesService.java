@@ -107,8 +107,13 @@ public class BleServicesService extends Service {
 				mDeviceName = "";
 				mDeviceAddress = "";
 
-				mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-				mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+				try {
+					mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+					mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				System.out.println("mDeviceName:" + mDeviceName
 						+ " mDeviceAddress:" + mDeviceAddress);

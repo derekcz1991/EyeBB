@@ -29,10 +29,14 @@ public class Constants {
 	public static final String BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
 	public static final String APPLICATION_UUID = "00001000-0000-1000-8000-00805f9b34fb";
 	public static final String BEEP_CHAR_UUID = "1001";
-
+	public final static int START_PROGRASSS_BAR = 1;
+	public final static int STOP_PROGRASSS_BAR = 2;
 	public static final int BEEP_RSSI = -80;
 	public static final int SCANTIME = Integer.MAX_VALUE;
 	public static final int POSTDELAYTIME = Integer.MAX_VALUE - 500;
+	
+	public static final String BEEP_ALL_DEVICE = "beep_all_device";
+	
 	public static int DELAY = 0;
 	public static final int PERIOD = 5000;
 	// private static final int SCANTIME = 5000;
