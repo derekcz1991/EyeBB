@@ -43,17 +43,19 @@ public class IndoorLocatorFragment extends Fragment implements
 	public interface CallbackInterface {
 		/**
 		 * Update the progressBar value when pull the listView
-		 * @param value current progress
+		 * 
+		 * @param value
+		 *            current progress
 		 */
 		public void updateProgressBar(int value);
 
 		/**
-		 * Cancel update the progressBar when release the listView  
+		 * Cancel update the progressBar when release the listView
 		 */
 		public void cancelProgressBar();
 
 		/**
-		 * Reset the progressBar when finishing to update listView  
+		 * Reset the progressBar when finishing to update listView
 		 */
 		public void resetProgressBar();
 	}
@@ -113,8 +115,8 @@ public class IndoorLocatorFragment extends Fragment implements
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
 								KidsListActivity.class);
-						//						Intent intent = new Intent(getActivity(),
-						//								DeviceListAcitivity.class);
+						// Intent intent = new Intent(getActivity(),
+						// DeviceListAcitivity.class);
 						myMap.setMap(childrenMap);
 						Bundle bundle = new Bundle();
 						bundle.putSerializable("childrenMap", myMap);
@@ -130,7 +132,8 @@ public class IndoorLocatorFragment extends Fragment implements
 
 	@Override
 	public void updateProgressBar(int value) {
-		callback.updateProgressBar(value);
+		if (callback != null)
+			callback.updateProgressBar(value);
 	}
 
 	@Override

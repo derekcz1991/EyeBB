@@ -111,8 +111,8 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
 				indoorLocatorFragment);
-		mainLabel.findViewById(R.id.notification_number).setVisibility(
-				View.GONE);
+//		mainLabel.findViewById(R.id.notification_number).setVisibility(
+//				View.GONE);
 
 		// radar
 		radarTrackingFragment = new RadarTrackingFragment();
@@ -123,8 +123,8 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
 				radarTrackingFragment);
-		trackingLabel.findViewById(R.id.notification_number).setVisibility(
-				View.GONE);
+//		trackingLabel.findViewById(R.id.notification_number).setVisibility(
+//				View.GONE);
 
 		// report
 		reportFragment = new ReportFragment();
@@ -136,8 +136,8 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
 				reportFragment);
-		reportLabel.findViewById(R.id.notification_number).setVisibility(
-				View.GONE);
+//		reportLabel.findViewById(R.id.notification_number).setVisibility(
+//				View.GONE);
 
 		// profile
 		profileFragment = new ProfileFragment();
@@ -149,9 +149,9 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
-		noticeNum = (TextView) profileLabel
-				.findViewById(R.id.notification_number);
-		noticeNum.setVisibility(View.VISIBLE);
+//		noticeNum = (TextView) profileLabel
+//				.findViewById(R.id.notification_number);
+//		noticeNum.setVisibility(View.VISIBLE);
 
 		mTabHost.setCurrentTab(0);
 		if (savedInstanceState != null) {
