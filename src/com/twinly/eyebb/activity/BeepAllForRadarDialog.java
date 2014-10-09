@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
@@ -36,6 +37,7 @@ public class BeepAllForRadarDialog extends Activity {
 	public static BeepAllForRadarDialog instance = null;
 	public static boolean StartAllBeepFlag = true;
 	public static int BeepAllTempChildDataSize = 0;
+	private TextView notifyTxt;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -46,11 +48,12 @@ public class BeepAllForRadarDialog extends Activity {
 		instance = this;
 		btnConfirm = (LinearLayout) findViewById(R.id.btn_confirm);
 		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
+		notifyTxt = (TextView) findViewById(R.id.notify_txt);
 
-		Intent intent = getIntent();
-
-		BeepAllTempChildData = (ArrayList<Child>) intent
-				.getSerializableExtra(Constants.BEEP_ALL_DEVICE);
+		final Intent intent = getIntent();
+		//
+		// BeepAllTempChildData = (ArrayList<Child>) intent
+		// .getSerializableExtra(Constants.BEEP_ALL_DEVICE);
 
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
@@ -58,14 +61,22 @@ public class BeepAllForRadarDialog extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				// System.out.println("BeepAllTempChildData==>" +
-				// BeepAllTempChildData.size());
-				Message msg = handler.obtainMessage();
-				msg.what = Constants.START_PROGRASSS_BAR;
-				handler.sendMessage(msg);
-				// open thread
+				BeepAllTempChildData = (ArrayList<Child>) intent
+						.getSerializableExtra(Constants.BEEP_ALL_DEVICE);
 
-				btnBeepAll.start();
+				BeepAllTempChildDataSize = BeepAllTempChildData.size();
+				notifyTxt.setText(getString(R.string.text_connect_device));
+				if (BeepAllTempChildDataSize > 0) {
+
+					Message msg = handler.obtainMessage();
+					msg.what = Constants.START_PROGRASSS_BAR;
+					handler.sendMessage(msg);
+
+					btnBeepAll.start();
+				} else {
+					notifyTxt
+							.setText(getString(R.string.text_none_of_the_kids_that_stay_nearby));
+				}
 
 			}
 		});
@@ -75,7 +86,7 @@ public class BeepAllForRadarDialog extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
+				//notifyTxt.setText(getString(R.string.text_connect_device));
 				finish();
 			}
 		});
@@ -116,7 +127,7 @@ public class BeepAllForRadarDialog extends Activity {
 						BeepAllForRadarDialog.this,
 						getString(R.string.toast_loading) + "\n" + BeepAlli
 								+ "/" + BeepAllTempChildData.size());
-				BeepAllTempChildDataSize = BeepAllTempChildData.size();
+
 				dialog.show();
 
 				dialog.setOnKeyListener(new OnKeyListener() {

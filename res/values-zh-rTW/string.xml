@@ -81,7 +81,7 @@
       <string name="text_connect_error">連接錯誤,請檢查你的網絡</string>
                  	     <string name="text_refreshTime">更新時間 (秒):</string>
                  	 <string name="text_enter_refresh_time">輸入更新時間</string>
-                 	     
+                 	      <string name="text_none_of_the_kids_that_stay_nearby">還沒搜索到孩子</string>
                  	     
                  	     
     <string name="btn_sign_up">註冊</string>

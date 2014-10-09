@@ -75,6 +75,7 @@
     <string name="text_select_device">Please select your device.</string>
     <string name="text_device_list">Device list</string>
      <string name="text_connect_error">Connect error, please check your network</string>
+          <string name="text_none_of_the_kids_that_stay_nearby">None of the kids that stay nearby</string>
       
     
     <string name="btn_sign_up">Sign Up</string>
