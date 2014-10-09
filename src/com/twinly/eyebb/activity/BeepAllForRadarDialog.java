@@ -71,7 +71,8 @@ public class BeepAllForRadarDialog extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.START_PROGRASSS_BAR;
 					handler.sendMessage(msg);
-
+					// 開始循環
+					BeepAllFlag = true;
 					btnBeepAll.start();
 				} else {
 					notifyTxt
@@ -86,7 +87,7 @@ public class BeepAllForRadarDialog extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//notifyTxt.setText(getString(R.string.text_connect_device));
+				// notifyTxt.setText(getString(R.string.text_connect_device));
 				finish();
 			}
 		});
@@ -171,6 +172,7 @@ public class BeepAllForRadarDialog extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			// firstly pop the dialog
+
 			while (BeepAllFlag) {
 
 				if (StartAllBeepFlag) {
@@ -182,7 +184,6 @@ public class BeepAllForRadarDialog extends Activity {
 						if (isFinish) {
 
 						} else {
-							// for (; BeepAlli < BeepAllTempChildData.size();) {
 
 							System.out.println("BeepAllTempChildData.size()==>"
 									+ BeepAllTempChildData.size());
@@ -222,8 +223,8 @@ public class BeepAllForRadarDialog extends Activity {
 					} else {
 						BeepAllFlag = false;
 						BeepAlli = 0;
+						// StartAllBeepFlag = true;
 						StartAllBeepFlag = true;
-
 						if (dialog != null && dialog.isShowing()) {
 							dialog.dismiss();
 						}

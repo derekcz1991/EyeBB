@@ -157,14 +157,14 @@ public class BluetoothLeService extends Service {
 
 				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
 
-				BeepAllForRadarDialog.BeepAlli++;
-				BeepAllForRadarDialog.StartAllBeepFlag = true;
-				LoadingDialog
-						.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
-								+ "\n"
-								+ BeepAllForRadarDialog.BeepAlli
-								+ "/"
-								+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
+//				BeepAllForRadarDialog.BeepAlli++;
+//				BeepAllForRadarDialog.StartAllBeepFlag = true;
+//				LoadingDialog
+//						.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
+//								+ "\n"
+//								+ BeepAllForRadarDialog.BeepAlli
+//								+ "/"
+//								+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
 				stopService(BleServicesService.intentToChara);
 				stopService(RadarTrackingFragment.beepIntent);
 

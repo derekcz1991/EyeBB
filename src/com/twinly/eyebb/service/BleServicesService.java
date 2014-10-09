@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Timer;
 
 import com.eyebb.R;
+import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;
@@ -300,6 +301,16 @@ public class BleServicesService extends Service {
 				stopSelf();
 				System.out
 						.println("BluetoothLeService.ACTION_GATT_DISCONNECTED");
+				
+				
+				BeepAllForRadarDialog.BeepAlli++;
+				BeepAllForRadarDialog.StartAllBeepFlag = true;
+				LoadingDialog
+						.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
+								+ "\n"
+								+ BeepAllForRadarDialog.BeepAlli
+								+ "/"
+								+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
 				// status_text.setText(mDeviceName + ": Disconnected");
 				// RadarServicesActivity.this.finish();
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
