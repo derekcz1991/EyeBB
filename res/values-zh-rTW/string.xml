@@ -40,7 +40,7 @@
     <string name="text_settings_notifications">功能</string>
     <string name="text_enableSound">開啟聲音</string>
     <string name="text_enableVibration">開啟震動</string>
-        <string name="text_AutomaticRefresh">開啟自動刷新</string>
+    <string name="text_AutomaticRefresh">開啟自動刷新</string>
     <string name="text_language">語言</string>
     <string name="text_english">English</string>
     <string name="text_chinese">繁體中文</string>
@@ -62,28 +62,26 @@
     <string name="text_notificationDetails">通告詳情</string>
     <string name="text_about_details">寶寶安 (EyeBB) 是一個智能兒童行為安全監控軟件。配合我們開發的基於藍牙4.0 BLE的專用智能設備 Macaron，寶寶安能為您監視兒童在家居、校車及幼稚園範圍內行為安全，並提供智能行為分析數據。</string>
     <string name="text_version">版本</string>
-          <string name="text_http">歡迎訪問 www.eyebb.com</string>
-            <string name="text_invalidKindergarten">選擇幼稚園</string>
-            <string name="text_change_kids">選擇兒童</string>
-            <string name="text_matching_verification">匹配驗證</string>
-            <string name="text_matching_device">匹配設備</string>
-               <string name="text_device_verified">驗證成功</string>
-              <string name="text_error_username">用戶名格式錯誤！ \n(例如：A-Z a-z 0-9 _) 長度：3-30</string>
+    <string name="text_http">歡迎訪問 www.eyebb.com</string>
+    <string name="text_invalidKindergarten">選擇幼稚園</string>
+    <string name="text_change_kids">選擇兒童</string>
+    <string name="text_matching_verification">匹配驗證</string>
+    <string name="text_matching_device">匹配設備</string>
+    <string name="text_device_verified">驗證成功</string>
+    <string name="text_error_username">用戶名格式錯誤！ \n(例如：A-Z a-z 0-9 _) 長度：3-30</string>
     <string name="text_error_email">郵件地址格式錯誤！</string>
     <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
-                 <string name="text_loading">加載中...</string>
-	<string name="text_radar_status_disconnection">關閉防丟器</string>
+    <string name="text_loading">加載中...</string>
+    <string name="text_radar_status_disconnection">關閉防丟器</string>
     <string name="text_radar_status_start_connected">開啟防丟器</string>
-   
-                 	<string name="text_connect_device">蜂鳴全部的設備?</string> 
-                 	 <string name="text_select_device">請選擇您的設備.</string>
-     <string name="text_device_list">設備列表</string>
-      <string name="text_connect_error">連接錯誤,請檢查你的網絡</string>
-                 	     <string name="text_refreshTime">更新時間 (秒):</string>
-                 	 <string name="text_enter_refresh_time">輸入更新時間</string>
-                 	      <string name="text_none_of_the_kids_that_stay_nearby">還沒搜索到孩子</string>
-                 	     
-                 	     
+    <string name="text_connect_device">蜂鳴全部的設備?</string>
+    <string name="text_select_device">請選擇您的設備.</string>
+    <string name="text_device_list">設備列表</string>
+    <string name="text_connect_error">連接錯誤,請檢查你的網絡</string>
+    <string name="text_refreshTime">更新時間 (秒):</string>
+    <string name="text_enter_refresh_time">輸入更新時間</string>
+    <string name="text_none_of_the_kids_that_stay_nearby">還沒搜索到孩子</string>
+    
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
@@ -94,13 +92,13 @@
     <string name="btn_confirm">確定</string>
     <string name="btn_share">分享</string>
     <string name="btn_cancel">取消</string>
-     <string name="btn_verify">確認</string>
-    
+    <string name="btn_verify">確認</string>
     
     <string name="toast_login">登錄中&#8230;</string>
-        <string name="toast_signup">註冊中&#8230;</string>
-        <string name="toast_loading">讀取中&#8230;</string>
+    <string name="toast_signup">註冊中&#8230;</string>
+    <string name="toast_loading">讀取中&#8230;</string>
     <string name="toast_please_select_kindergartens">請選擇幼稚園</string>
     <string name="toast_invalid_username_or_password">帳號或密碼錯誤</string>
+    <string name="toast_login_failed">登錄失敗, 請重新登錄</string>
 
 </resources>

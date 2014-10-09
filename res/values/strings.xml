@@ -34,9 +34,8 @@
     <string name="text_settings_notifications">Notifications</string>
     <string name="text_enableSound">Enable Sound</string>
     <string name="text_refreshTime">Refresh Time (Second):</string>
-        <string name="text_refreshDefaultTime">5</string>
-    
-        <string name="text_AutomaticRefresh">Enable Automatic Refresh</string>
+    <string name="text_refreshDefaultTime">5</string>
+    <string name="text_AutomaticRefresh">Enable Automatic Refresh</string>
     <string name="text_enableVibration">Enable Vibration</string>
     <string name="text_language">Language</string>
     <string name="text_english">English</string>
@@ -64,19 +63,17 @@
     <string name="text_matching_verification">Matching Verification</string>
     <string name="text_matching_device">Matching Device</string>
     <string name="text_device_verified">Device Verified!</string>
-     <string name="text_error_username">The User Name is not in the correct format! \n(eg.A-Z a-z 0-9 _) Length:3-30</string>
+    <string name="text_error_username">The User Name is not in the correct format! \n(eg.A-Z a-z 0-9 _) Length:3-30</string>
     <string name="text_error_email">The Email is not in the correct format!</string>
     <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:8-30</string>
     <string name="text_loading">Loading...</string>
-	<string name="text_radar_status_disconnection">Close the anti-theft</string>
+    <string name="text_radar_status_disconnection">Close the anti-theft</string>
     <string name="text_radar_status_start_connected">Open the anti-theft</string>
-   
-	<string name="text_connect_device">Beep all the device?</string>
+    <string name="text_connect_device">Beep all the device?</string>
     <string name="text_select_device">Please select your device.</string>
     <string name="text_device_list">Device list</string>
-     <string name="text_connect_error">Connect error, please check your network</string>
-          <string name="text_none_of_the_kids_that_stay_nearby">None of the kids that stay nearby</string>
-      
+    <string name="text_connect_error">Connect error, please check your network</string>
+    <string name="text_none_of_the_kids_that_stay_nearby">None of the kids that stay nearby</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -90,12 +87,11 @@
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
     
-    
-    
     <string name="toast_login">Login&#8230;</string>
-        <string name="toast_signup">Sign up&#8230;</string>
-        <string name="toast_loading">Loading&#8230;</string>
+    <string name="toast_signup">Sign up&#8230;</string>
+    <string name="toast_loading">Loading&#8230;</string>
     <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username or password</string>
+    <string name="toast_login_failed">Login failed, please try again</string>
 
 </resources>

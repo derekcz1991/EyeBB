@@ -7,12 +7,6 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
-import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -20,6 +14,14 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.widget.Toast;
+
+import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class LancherActivity extends Activity {
 
@@ -31,7 +33,7 @@ public class LancherActivity extends Activity {
 		new HttpRequestUtils();
 
 		if (SharePrefsUtils.isLogin(this)) {
-			new loginBackground().execute();
+			new AutoLoginTask().execute();
 		} else {
 			Intent intent = new Intent(this, WelcomeActivity.class);
 			startActivityForResult(intent,
@@ -58,7 +60,7 @@ public class LancherActivity extends Activity {
 		}
 	}
 
-	private class loginBackground extends AsyncTask<Void, Void, String> {
+	private class AutoLoginTask extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected String doInBackground(Void... params) {
@@ -75,6 +77,11 @@ public class LancherActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
+			System.out.println(result);
+			if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
+				goBackToLogin();
+				return;
+			}
 			try {
 				new JSONObject(result);
 				Intent intent = new Intent(LancherActivity.this,
@@ -82,8 +89,17 @@ public class LancherActivity extends Activity {
 				startActivity(intent);
 				finish();
 			} catch (JSONException e) {
-
+				goBackToLogin();
 			}
 		}
+	}
+
+	private void goBackToLogin() {
+		Toast.makeText(this, getString(R.string.toast_login_failed),
+				Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(LancherActivity.this, WelcomeActivity.class);
+		startActivityForResult(intent,
+				ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY);
+		finish();
 	}
 }
