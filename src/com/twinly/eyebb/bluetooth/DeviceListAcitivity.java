@@ -455,6 +455,7 @@ public class DeviceListAcitivity extends Activity {
 				dialog.dismiss();
 
 			} else {
+				//successful
 				major = retStr.substring(0, retStr.indexOf(":"));
 				minor = retStr.substring(retStr.indexOf(":") + 1,
 						retStr.length());
