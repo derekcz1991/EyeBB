@@ -92,6 +92,16 @@ public class DBChildren {
 		return child;
 	}
 
+	public static void updateMacAddress(Context context, long childId,
+			String macAddress) {
+		SQLiteDatabase db = getInstance(context);
+		ContentValues values = new ContentValues();
+		values.put("mac_address", macAddress);
+		db.update("children", values, "child_id=?",
+				new String[] { String.valueOf(childId) });
+		db.close();
+	}
+
 	private static Child createChild(Child child, Cursor cursor) {
 		child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
 		child.setName(cursor.getString(cursor.getColumnIndex("name")));

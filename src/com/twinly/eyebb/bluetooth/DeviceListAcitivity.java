@@ -15,6 +15,7 @@ import com.twinly.eyebb.activity.VerifyDialog;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
@@ -462,6 +463,8 @@ public class DeviceListAcitivity extends Activity {
 				editor.putString("minor", minor);
 				editor.commit();
 
+				DBChildren.updateMacAddress(this, childIDfromDeviceList,
+						MACaddress4submit);
 				dialog.dismiss();
 
 			}
