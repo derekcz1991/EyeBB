@@ -298,6 +298,7 @@ public class RadarTrackingFragment extends Fragment implements
 		super.onDestroy();
 
 		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
+		handler.removeCallbacksAndMessages(BEEPTIMEOUT);
 		// getActivity().stopService(beepIntent);
 	}
 
@@ -461,6 +462,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		super.onStop();
 		System.out.println("onStop()");
+		handler.removeMessages(SCAN_CHILD_FOR_LIST);
 	}
 
 	private void chageTheAllData(ArrayList<Child> scanedTempChildData,
