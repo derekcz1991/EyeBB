@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.eyebb.R;
@@ -24,11 +25,15 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class LancherActivity extends Activity {
-
+	private ImageView logo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_lancher);
+		
+		logo = (ImageView) findViewById(R.id.icon);
+		checkLogo();
+		
 		setLanguage();
 		new HttpRequestUtils();
 
@@ -39,6 +44,19 @@ public class LancherActivity extends Activity {
 			startActivityForResult(intent,
 					ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY);
 			finish();
+		}
+	}
+	
+	private void checkLogo() {
+		switch (SharePrefsUtils.getLanguage(this)) {
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
+			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
+			break;
+		default:
+			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
+			break;
 		}
 	}
 
