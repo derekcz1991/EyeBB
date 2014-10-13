@@ -296,7 +296,8 @@ public class RadarTrackingFragment extends Fragment implements
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-
+		//关闭循环扫描
+		isWhileLoop = false;
 		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		handler.removeCallbacksAndMessages(BEEPTIMEOUT);
 		// getActivity().stopService(beepIntent);
