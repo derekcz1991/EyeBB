@@ -74,12 +74,12 @@
     <string name="text_device_list">Device list</string>
     <string name="text_connect_error">Connect error, please check your network</string>
     <string name="text_none_of_the_kids_that_stay_nearby">None of the kids that stay nearby</string>
-       <string name="text_beep_all_device">Start to beep all the device?</string>
-      <string name="text_connect_device_status_loading">Connect...</string>
-          <string name="text_connect_device_status_error">Error</string>
-              <string name="text_connect_device_status_success">Success</string>
-       
-       
+    <string name="text_beep_all_device">Start to beep all the device?</string>
+    <string name="text_connect_device_status_loading">Connect...</string>
+    <string name="text_connect_device_status_error">Error</string>
+    <string name="text_connect_device_status_success">Success</string>
+    <string name="text_no_record">No record</string>
+    
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
     <string name="btn_logout">Logout</string>
