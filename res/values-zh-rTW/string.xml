@@ -81,12 +81,13 @@
     <string name="text_refreshTime">更新時間 (秒):</string>
     <string name="text_enter_refresh_time">輸入更新時間</string>
     <string name="text_none_of_the_kids_that_stay_nearby">還沒搜索到孩子</string>
-         <string name="text_beep_all_device">蜂鳴全部的設備?</string>
-           <string name="text_connect_device_status_loading">連接...</string>
-          <string name="text_connect_device_status_error">錯誤</string>
-              <string name="text_connect_device_status_success">成功</string>
-     <string name="text_connect_device_status_wait">請稍等...</string>
-         
+    <string name="text_beep_all_device">蜂鳴全部的設備?</string>
+    <string name="text_connect_device_status_loading">連接...</string>
+    <string name="text_connect_device_status_error">錯誤</string>
+    <string name="text_connect_device_status_success">成功</string>
+    <string name="text_connect_device_status_wait">請稍等...</string>
+    <string name="text_no_record">沒有記錄</string>
+
          
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

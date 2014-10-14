@@ -71,12 +71,12 @@ public class ReportPerformanceFragment extends Fragment implements
 
 			Iterator<Entry<String, Integer>> iter;
 			int index;
-			if (performance.getDailyMap() != null) {
-				PerformanceListItem dailyTitle = new PerformanceListItem(
-						getResources().getString(R.string.text_daily), "",
-						R.drawable.bg_report_daily, -1, 0, 0, 0);
-				list.add(dailyTitle);
 
+			PerformanceListItem dailyTitle = new PerformanceListItem(
+					getResources().getString(R.string.text_daily), "",
+					R.drawable.bg_report_daily, -1, 0, 0, 0);
+			list.add(dailyTitle);
+			if (performance.getDailyMap() != null) {
 				iter = performance.getDailyMap().entrySet().iterator();
 				index = 0;
 				while (iter.hasNext()) {
@@ -89,14 +89,18 @@ public class ReportPerformanceFragment extends Fragment implements
 					list.add(item);
 					index++;
 				}
+			} else {
+				PerformanceListItem item = new PerformanceListItem("",
+						getString(R.string.text_no_record), -1,
+						Constants.progressBarStyleSet[0], 0, 0, 0);
+				list.add(item);
 			}
 
+			PerformanceListItem weeklyTitle = new PerformanceListItem(
+					getResources().getString(R.string.text_weekly), "",
+					R.drawable.bg_report_weekly, -1, 0, 0, 0);
+			list.add(weeklyTitle);
 			if (performance.getWeeklyMap() != null) {
-				PerformanceListItem weeklyTitle = new PerformanceListItem(
-						getResources().getString(R.string.text_weekly), "",
-						R.drawable.bg_report_weekly, -1, 0, 0, 0);
-				list.add(weeklyTitle);
-
 				iter = performance.getWeeklyMap().entrySet().iterator();
 				index = 0;
 				while (iter.hasNext()) {
@@ -109,6 +113,11 @@ public class ReportPerformanceFragment extends Fragment implements
 					list.add(item);
 					index++;
 				}
+			} else {
+				PerformanceListItem item = new PerformanceListItem("",
+						getString(R.string.text_no_record), -1,
+						Constants.progressBarStyleSet[0], 0, 0, 0);
+				list.add(item);
 			}
 			updateAdapter();
 		}

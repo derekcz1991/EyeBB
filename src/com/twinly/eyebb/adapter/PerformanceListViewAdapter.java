@@ -90,7 +90,9 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 		if (list.get(position).getTitle().equals("")) {
 			viewHolder.content.setVisibility(View.VISIBLE);
 			viewHolder.subTitle.setText(list.get(position).getSubTitle());
-			viewHolder.time.setText(list.get(position).getTime() + " min.");
+			if (list.get(position).getTime() != 0) {
+				viewHolder.time.setText(list.get(position).getTime() + " min.");
+			}
 			viewHolder.progressBar.setMax(list.get(position).getMaxProgress());
 			viewHolder.progressBar.setProgressDrawable(context.getResources()
 					.getDrawable(list.get(position).getProgressBarstyle()));

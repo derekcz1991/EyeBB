@@ -615,9 +615,8 @@ public class RadarTrackingFragment extends Fragment implements
 		initX = DipGetScreenWidth;
 		initY = DensityUtil.dip2px(getActivity(), 120 - 16);
 
-		int RightorLeft = 1;
-		int toporBottom = 1;
-
+		int RightorLeft = 1 + (int) (Math.random() * 2);
+		int toporBottom = 1 + (int) (Math.random() * 2);
 		cim.setBorderColor(getResources().getColor(R.color.white));
 
 		cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
@@ -673,9 +672,8 @@ public class RadarTrackingFragment extends Fragment implements
 		initX = DipGetScreenWidth;
 		initY = DensityUtil.dip2px(getActivity(), 120 - 16);
 
-		int RightorLeft = 1 + (int) (Math.random() * 2);
-		int toporBottom = 1 + (int) (Math.random() * 2);
-
+		int RightorLeft = 1;
+		int toporBottom = 1;
 		// int RightorLeft = 1;
 		// int toporBottom = 1;
 		switch (initHeadPosition) {
