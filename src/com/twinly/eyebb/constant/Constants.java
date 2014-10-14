@@ -32,7 +32,7 @@ public class Constants {
 	public final static int START_PROGRASSS_BAR = 1;
 	public final static int STOP_PROGRASSS_BAR = 2;
 	public static final int BEEP_RSSI = -80;
-	public static final int SCAN_INRERVAL_TIME = Integer.MAX_VALUE;
+	public static final int SCAN_INRERVAL_TIME = 1000;
 	public static final int SCANTIME = Integer.MAX_VALUE;
 
 	public static final int POSTDELAYTIME = Integer.MAX_VALUE - 500;

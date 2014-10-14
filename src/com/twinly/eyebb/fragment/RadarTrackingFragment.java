@@ -469,15 +469,6 @@ public class RadarTrackingFragment extends Fragment implements
 	private void chageTheAllData(ArrayList<Child> scanedTempChildData,
 			ArrayList<Child> missChildData) {
 
-		// for (int i = 0; i < ScanedChildData.size(); i++) {
-		// ScanedChildDataID.add(ScanedChildData.get(i).getChildId() + "");
-		//
-		// }
-		//
-		// for (int i = 0; i < MissChildData.size(); i++) {
-		// MissChildDataID.add(MissChildData.get(i).getChildId() + "");
-		// }
-
 		Childadapter = new RadarKidsListViewAdapter(getActivity(),
 				scanedTempChildData);
 		Childadapter.setCallback(RadarTrackingFragmentInstance);
@@ -504,8 +495,6 @@ public class RadarTrackingFragment extends Fragment implements
 			Child child = scanedChildData2.get(i);
 			mainLayout = (RelativeLayout) v.findViewById(R.id.miss_radar_view);
 			CircleImageView cim = new CircleImageView(getActivity());
-			// 0 is missing 1 is unmiss
-			int imMiss = 1;
 			HeadPosition(cim);
 
 			mainLayout.addView(cim);
@@ -683,18 +672,18 @@ public class RadarTrackingFragment extends Fragment implements
 			break;
 
 		case 1:
-			RightorLeft = 0;
+			RightorLeft = 2;
 			toporBottom = 1;
 			break;
 
 		case 2:
 			RightorLeft = 1;
-			toporBottom = 0;
+			toporBottom = 2;
 			break;
 
 		case 3:
-			RightorLeft = 0;
-			toporBottom = 0;
+			RightorLeft = 2;
+			toporBottom = 2;
 			break;
 		}
 
@@ -876,7 +865,7 @@ public class RadarTrackingFragment extends Fragment implements
 			// mHandler.postDelayed(scanLeDeviceRunable,
 			// Constants.POSTDELAYTIME);
 
-			System.out.println("scanLeDevice");
+			//System.out.println("scanLeDevice");
 
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 
@@ -944,10 +933,12 @@ public class RadarTrackingFragment extends Fragment implements
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
+				// device status
+				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == Constants.DEVICE_CONNECT_STATUS_ERROR) {
+					SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+							Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+				}
 
-				// System.out.println("ScanedChildData1=>"
-				// + ScanedChildData.size());
-				// System.out.println("SCAN_CHILD_FOR_LIST");
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
 						.clone();
 
