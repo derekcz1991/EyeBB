@@ -175,6 +175,8 @@ public class RadarTrackingFragment extends Fragment implements
 	private TextView openAntiTheftTX;
 	private boolean openAnti = false;
 
+	private int deviceStatusError = 0;
+
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -865,7 +867,7 @@ public class RadarTrackingFragment extends Fragment implements
 			// mHandler.postDelayed(scanLeDeviceRunable,
 			// Constants.POSTDELAYTIME);
 
-			//System.out.println("scanLeDevice");
+			// System.out.println("scanLeDevice");
 
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 
@@ -935,8 +937,12 @@ public class RadarTrackingFragment extends Fragment implements
 			case SCAN_CHILD_FOR_LIST:
 				// device status
 				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == Constants.DEVICE_CONNECT_STATUS_ERROR) {
-					SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-							Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+					deviceStatusError++;
+					if (deviceStatusError == 2) {
+						SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+								Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+						deviceStatusError = 0;
+					}
 				}
 
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
