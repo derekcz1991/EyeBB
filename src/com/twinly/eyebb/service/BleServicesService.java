@@ -315,9 +315,7 @@ public class BleServicesService extends Service {
 									+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
 				}
 
-				// device status
-				SharePrefsUtils.setDeviceConnectStatus(BleServicesService.this,
-						Constants.DEVICE_CONNECT_STATUS_SUCCESS);
+			
 
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {

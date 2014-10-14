@@ -35,7 +35,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private RadarKidsListViewAdapterCallback callback;
-	private int ItemPosition = 0;
+	private String ItemPosition;
 
 	public interface RadarKidsListViewAdapterCallback {
 		public void onStartToBeepClicked(int position);
@@ -126,10 +126,6 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.DeviceConnectStatus = (TextView) convertView
 					.findViewById(R.id.device_connect_status);
 
-//			if (ItemPosition == position) {
-//				deviceStatus(viewHolder);
-//			}
-
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -163,16 +159,24 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						if (CommonUtils.isFastDoubleClick()) {
-							return;
-						} else {
-							System.out.println("positionposition = > "
-									+ position + "");
-							callback.onStartToBeepClicked(position);
-							deviceStatus(viewHolder);
-							ItemPosition = position;
-						}
+						boolean isFinish = SharePrefsUtils
+								.isfinishBeep(RadarKidsListViewAdapter.this.context);
 
+						if (isFinish) {
+							//如果有人點了另外一個button 彈出提示 "請稍等"
+							viewHolder.DeviceConnectStatus.setText(context.getResources()
+									.getString(R.string.text_connect_device_status_wait));
+						} else {
+							if (CommonUtils.isFastDoubleClick()) {
+								return;
+							} else {
+								System.out.println("positionposition = > "
+										+ position + "");
+								callback.onStartToBeepClicked(position);
+								deviceStatus(viewHolder);
+
+							}
+						}
 					}
 				});
 
@@ -185,7 +189,15 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			}
 			viewHolder.name.setText(child.getName());
 
-			// }
+			// keep device status
+			if (SharePrefsUtils.KeepDeviceConnectStatus(context).length() > 0) {
+				if (SharePrefsUtils.KeepDeviceConnectStatus(context).equals(
+						child.getName())) {
+
+					deviceStatus(viewHolder);
+
+				}
+			}
 
 		}
 	}
@@ -214,7 +226,12 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
 					.getColor(R.color.black));
 			break;
+		case Constants.DEVICE_CONNECT_STATUS_DEFAULT:
+			viewHolder.DeviceConnectStatus.setText("");
+
+			break;
 		}
+
 	}
 
 }

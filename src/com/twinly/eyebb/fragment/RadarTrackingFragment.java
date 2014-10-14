@@ -359,6 +359,10 @@ public class RadarTrackingFragment extends Fragment implements
 
 			radarAnim();
 
+			// device status
+			SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+					Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+
 			// bluetooth
 
 			if (scan_flag) {
@@ -502,7 +506,7 @@ public class RadarTrackingFragment extends Fragment implements
 			CircleImageView cim = new CircleImageView(getActivity());
 			// 0 is missing 1 is unmiss
 			int imMiss = 1;
-			HeadPosition(imMiss, cim, scanedChildData2.size());
+			HeadPosition(cim);
 
 			mainLayout.addView(cim);
 			// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
@@ -542,9 +546,27 @@ public class RadarTrackingFragment extends Fragment implements
 			MissMainLayout = (RelativeLayout) v
 					.findViewById(R.id.miss_radar_view);
 			CircleImageView MissCim = new CircleImageView(getActivity());
-			// 0 is missing 1 is unmiss
-			int imMiss = 0;
-			HeadPosition(imMiss, MissCim, missChildData2.size());
+
+			// 初始化頭像方位
+			int initHeadPosition = 0;
+			switch (i % 4) {
+			case 0:
+				initHeadPosition = 0;
+				break;
+
+			case 1:
+				initHeadPosition = 1;
+				break;
+
+			case 2:
+				initHeadPosition = 2;
+				break;
+
+			case 3:
+				initHeadPosition = 3;
+				break;
+			}
+			missHeadPosition(MissCim, initHeadPosition);
 
 			MissMainLayout.addView(MissCim);
 			// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
@@ -575,9 +597,66 @@ public class RadarTrackingFragment extends Fragment implements
 	 * @param getPeople
 	 */
 	@SuppressLint("NewApi")
-	private void HeadPosition(int imMiss, CircleImageView cim, int getPeople) {
+	private void HeadPosition(CircleImageView cim) {
 		// // 初始化為中心
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+						getActivity(), 32));
 
+		cim.setX(DensityUtil.dip2px(getActivity(), 160));
+
+		getScreenWidth = getScreenInfo();
+		// 24 = 8邊框 + 16ImageView
+		DipGetScreenWidth = getScreenWidth / 2
+				- DensityUtil.dip2px(getActivity(), 24);
+		// 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+		// int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+		// System.out.println("tete" + te);
+		initX = DipGetScreenWidth;
+		initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+
+		int RightorLeft = 1;
+		int toporBottom = 1;
+
+		cim.setBorderColor(getResources().getColor(R.color.white));
+
+		cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+
+		addX = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+		addY = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+
+		if ((addX * addX + addY * addY) <= DensityUtil.dip2px(getActivity(),
+				7225)) {
+			if (toporBottom == 1) {
+				initY = initY - addY;
+
+				if (RightorLeft == 1) {
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					initX = initX - addX;
+				}
+			} else if (toporBottom == 2) {
+				initY = initY + addY;
+
+				if (RightorLeft == 1) {
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					initX = initX - addX;
+				}
+			}
+
+			// System.out.println("initX + initY :" + initX + " " + initY);
+			cim.setX(initX);
+			cim.setY(initY);
+
+		} else {
+			HeadPosition(cim);
+		}
+
+		cim.setLayoutParams(layoutParams);
+	}
+
+	private void missHeadPosition(CircleImageView cim, int initHeadPosition) {
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
 						getActivity(), 32));
@@ -597,86 +676,71 @@ public class RadarTrackingFragment extends Fragment implements
 		int RightorLeft = 1 + (int) (Math.random() * 2);
 		int toporBottom = 1 + (int) (Math.random() * 2);
 
-		if (imMiss == 0) {
+		// int RightorLeft = 1;
+		// int toporBottom = 1;
+		switch (initHeadPosition) {
+		case 0:
+			RightorLeft = 1;
+			toporBottom = 1;
+			break;
 
-			cim.setBorderColor(getResources().getColor(R.color.red));
-			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+		case 1:
+			RightorLeft = 0;
+			toporBottom = 1;
+			break;
 
-			int missX = (int) (Math.random() * 120);
-			int missY = (int) (Math.random() * 120);
+		case 2:
+			RightorLeft = 1;
+			toporBottom = 0;
+			break;
 
-			// System.out.println("addY + addx :" + missX * missX + " " + missY
-			// * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
-			// + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
-			// + 90 + (int) (Math.random() * 30));
-			if ((missX * missX + missY * missY) < 14000
-					&& (missX * missX + missY * missY) > 10000) {
-				addX = DensityUtil.dip2px(getActivity(), missX);
-				addY = DensityUtil.dip2px(getActivity(), missY);
-				// System.out.println("啊啊啊啊啊啊 ");
+		case 3:
+			RightorLeft = 0;
+			toporBottom = 0;
+			break;
+		}
 
-				if (toporBottom == 1) {
-					initY = initY - addY;
+		cim.setBorderColor(getResources().getColor(R.color.red));
+		cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
 
-					if (RightorLeft == 1) {
-						initX = initX + addX;
-					} else if (RightorLeft == 2) {
-						initX = initX - addX;
-					}
-				} else if (toporBottom == 2) {
-					initY = initY + addY;
+		int missX = (int) (Math.random() * 120);
+		int missY = (int) (Math.random() * 120);
 
-					if (RightorLeft == 1) {
-						initX = initX + addX;
-					} else if (RightorLeft == 2) {
-						initX = initX - addX;
-					}
+		// System.out.println("addY + addx :" + missX * missX + " " + missY
+		// * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
+		// + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
+		// + 90 + (int) (Math.random() * 30));
+		if ((missX * missX + missY * missY) < 14000
+				&& (missX * missX + missY * missY) > 10000) {
+			addX = DensityUtil.dip2px(getActivity(), missX);
+			addY = DensityUtil.dip2px(getActivity(), missY);
+			// System.out.println("啊啊啊啊啊啊 ");
+
+			if (toporBottom == 1) {
+				initY = initY - addY;
+
+				if (RightorLeft == 1) {
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					initX = initX - addX;
 				}
+			} else if (toporBottom == 2) {
+				initY = initY + addY;
 
-				// System.out.println("initX + initY :" + initX + " " + initY);
-
-				cim.setX(initX);
-				cim.setY(initY);
-			} else {
-				HeadPosition(imMiss, cim, getPeople);
+				if (RightorLeft == 1) {
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					initX = initX - addX;
+				}
 			}
 
-		} else if (imMiss == 1) {
-			cim.setBorderColor(getResources().getColor(R.color.white));
-			cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+			// System.out.println("initX + initY :" + initX + " " + initY);
 
-			addX = DensityUtil.dip2px(getActivity(),
-					(int) (Math.random() * 100));
-			addY = DensityUtil.dip2px(getActivity(),
-					(int) (Math.random() * 100));
+			cim.setX(initX);
+			cim.setY(initY);
 
-			if ((addX * addX + addY * addY) <= DensityUtil.dip2px(
-					getActivity(), 7225)) {
-				if (toporBottom == 1) {
-					initY = initY - addY;
-
-					if (RightorLeft == 1) {
-						initX = initX + addX;
-					} else if (RightorLeft == 2) {
-						initX = initX - addX;
-					}
-				} else if (toporBottom == 2) {
-					initY = initY + addY;
-
-					if (RightorLeft == 1) {
-						initX = initX + addX;
-					} else if (RightorLeft == 2) {
-						initX = initX - addX;
-					}
-				}
-
-				// System.out.println("initX + initY :" + initX + " " + initY);
-				cim.setX(initX);
-				cim.setY(initY);
-			} else {
-				HeadPosition(imMiss, cim, getPeople);
-			}
-
+		} else {
+			missHeadPosition(cim, initHeadPosition);
 		}
 
 		cim.setLayoutParams(layoutParams);
@@ -807,25 +871,6 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 	};
 
-	// Runnable scanLeDeviceRunable = new Runnable() {
-	// @SuppressLint("NewApi")
-	// @Override
-	// public void run() {
-	// // mBluetoothAdapter.stopLeScan(mLeScanCallback);
-	// // scan_flag = false;
-	//
-	// // HANDLER
-	// Message msg = handler.obtainMessage();
-	// msg.what = START_SCAN;
-	// handler.sendMessage(msg);
-	//
-	// // new autoConnection().start();
-	// // autoScan.start();
-	//
-	// }
-	// };
-	int aaa = 3;
-
 	@SuppressLint("NewApi")
 	public void scanLeDevice(final boolean enable) {
 		if (enable) {
@@ -884,10 +929,20 @@ public class RadarTrackingFragment extends Fragment implements
 
 				beepTime = 0;
 				BeepCheckTimeOutTask.cancel();
-				
-				// device status
-				SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-						Constants.DEVICE_CONNECT_STATUS_ERROR);
+
+				switch (SharePrefsUtils.DeviceConnectStatus(getActivity())) {
+				case Constants.DEVICE_CONNECT_STATUS_SUCCESS:
+					// device status
+					SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+							Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+					break;
+
+				default:
+					// device status
+					SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+							Constants.DEVICE_CONNECT_STATUS_ERROR);
+					break;
+				}
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
@@ -1181,7 +1236,6 @@ public class RadarTrackingFragment extends Fragment implements
 		// 重置为0
 		beepTime = 0;
 		startToBeep(position);
-
 	}
 
 	/**
@@ -1194,41 +1248,36 @@ public class RadarTrackingFragment extends Fragment implements
 	@SuppressLint("NewApi")
 	public void startToBeep(int position) {
 
-		boolean isFinish = SharePrefsUtils.isfinishBeep(getActivity());
+		System.out.println("BeepTempChildData.size()==>"
+				+ BeepTempChildData.size());
+		if (BeepTempChildData.size() > 0) {
+			isFirstBeep = false;
 
-		if (isFinish) {
+			beepIntent = new Intent();
 
-		} else {
-			System.out.println("BeepTempChildData.size()==>"
-					+ BeepTempChildData.size());
-			if (BeepTempChildData.size() > 0) {
-				isFirstBeep = false;
+			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+					"Macaron");
+			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+					BeepTempChildData.get(position).getMacAddress());
+			System.out
+					.println("BeepTempChildData.get(position).getMacAddress()==>"
+							+ BeepTempChildData.get(position).getMacAddress());
+			beepIntent
+					.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
+			// if (scan_flag) {
+			// scanLeDevice(false);
+			// }
+			SharePrefsUtils.setConnectBleService(getActivity(), 1);
+			SharePrefsUtils.setfinishBeep(getActivity(), true);
 
-				beepIntent = new Intent();
+			// device status
+			SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+					Constants.DEVICE_CONNECT_STATUS_LOADING);
 
-				beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-						"Macaron");
-				beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
-						BeepTempChildData.get(position).getMacAddress());
-				System.out
-						.println("BeepTempChildData.get(position).getMacAddress()==>"
-								+ BeepTempChildData.get(position)
-										.getMacAddress());
-				beepIntent
-						.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
-				// if (scan_flag) {
-				// scanLeDevice(false);
-				// }
-				SharePrefsUtils.setConnectBleService(getActivity(), 1);
-				SharePrefsUtils.setfinishBeep(getActivity(), true);
+			SharePrefsUtils.setKeepDeviceConnectStatus(getActivity(),
+					BeepTempChildData.get(position).getName());
 
-				// device status
-				SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-						Constants.DEVICE_CONNECT_STATUS_LOADING);
-
-				getActivity().startService(beepIntent);
-
-			}
+			getActivity().startService(beepIntent);
 
 		}
 

@@ -78,7 +78,7 @@
       <string name="text_connect_device_status_loading">Connect...</string>
           <string name="text_connect_device_status_error">Error</string>
               <string name="text_connect_device_status_success">Success</string>
-       
+        <string name="text_connect_device_status_wait">Waiting...</string>
        
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

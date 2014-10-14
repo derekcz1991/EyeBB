@@ -63,7 +63,7 @@ public class BluetoothLeService extends Service {
 	private static final int STATE_CONNECTING = 1;
 	private static final int STATE_CONNECTED = 2;
 	public static boolean isSuccessfulWrite = false;
-	
+
 	public final static String ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
 	public final static String ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
 	public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
@@ -159,10 +159,13 @@ public class BluetoothLeService extends Service {
 				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
 
 				isSuccessfulWrite = true;
-				
+
 				stopService(BleServicesService.intentToChara);
 				stopService(RadarTrackingFragment.beepIntent);
 
+				// device status
+				SharePrefsUtils.setDeviceConnectStatus(BluetoothLeService.this,
+						Constants.DEVICE_CONNECT_STATUS_SUCCESS);
 			}
 
 		};

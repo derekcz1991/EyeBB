@@ -36,16 +36,16 @@ public class Constants {
 	public static final int SCANTIME = Integer.MAX_VALUE;
 
 	public static final int POSTDELAYTIME = Integer.MAX_VALUE - 500;
-	
-//	public static final int SCANTIME = 5000;
-//	public static final int POSTDELAYTIME = 5000 - 500;
-	
+
+	// public static final int SCANTIME = 5000;
+	// public static final int POSTDELAYTIME = 5000 - 500;
+
 	public static final int DEVICE_CONNECT_STATUS_LOADING = 100;
 	public static final int DEVICE_CONNECT_STATUS_ERROR = 101;
 	public static final int DEVICE_CONNECT_STATUS_SUCCESS = 102;
-	
+	public static final int DEVICE_CONNECT_STATUS_DEFAULT = 103;
 	public static final String BEEP_ALL_DEVICE = "beep_all_device";
-	
+
 	public static int DELAY = 0;
 	public static final int PERIOD = 5000;
 	// private static final int SCANTIME = 5000;
