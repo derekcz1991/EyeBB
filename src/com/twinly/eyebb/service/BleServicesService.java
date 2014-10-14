@@ -110,7 +110,8 @@ public class BleServicesService extends Service {
 
 				try {
 					mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-					mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+					mDeviceAddress = intent
+							.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -301,18 +302,23 @@ public class BleServicesService extends Service {
 				stopSelf();
 				System.out
 						.println("BluetoothLeService.ACTION_GATT_DISCONNECTED");
-				
-				
-				BeepAllForRadarDialog.BeepAlli++;
-				BeepAllForRadarDialog.StartAllBeepFlag = true;
-				LoadingDialog
-						.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
-								+ "\n"
-								+ BeepAllForRadarDialog.BeepAlli
-								+ "/"
-								+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
-				// status_text.setText(mDeviceName + ": Disconnected");
-				// RadarServicesActivity.this.finish();
+
+				if (BluetoothLeService.isSuccessfulWrite) {
+					BluetoothLeService.isSuccessfulWrite = false;
+					BeepAllForRadarDialog.BeepAlli++;
+					BeepAllForRadarDialog.StartAllBeepFlag = true;
+					LoadingDialog
+							.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
+									+ "\n"
+									+ BeepAllForRadarDialog.BeepAlli
+									+ "/"
+									+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
+				}
+
+				// device status
+				SharePrefsUtils.setDeviceConnectStatus(BleServicesService.this,
+						Constants.DEVICE_CONNECT_STATUS_SUCCESS);
+
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {
 				// Show all the supported services and characteristics on the
@@ -394,7 +400,6 @@ public class BleServicesService extends Service {
 
 			if (gattServices.get(i).getUuid().toString()
 					.equals(Constants.APPLICATION_UUID)) {
-			
 
 				intentToChara.putExtra(
 						BleCharacteristicsService.EXTRAS_SERVICE_NAME, i);

@@ -7,18 +7,16 @@
     android:layout_height="64.0dip"
     android:background="@drawable/bg_white"
     android:descendantFocusability="blocksDescendants"
-    android:marqueeRepeatLimit="marquee_forever"
-    >
+    android:marqueeRepeatLimit="marquee_forever" >
 
     <RelativeLayout
         android:id="@+id/newslist_item_info_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_centerVertical="true"
-         >
+        android:layout_marginRight="16dp" >
 
         <com.twinly.eyebb.customview.CircleImageView
             android:id="@+id/radar_child_head_img"
@@ -34,9 +32,9 @@
         android:id="@+id/newslist_kids_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_toRightOf="@id/newslist_item_info_layout"
-                android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@id/newslist_item_info_layout" >
 
         <TextView
             android:id="@+id/radar_list_kids_missd"
@@ -56,37 +54,43 @@
             android:layout_below="@id/radar_list_kids_missd"
             android:text="Kitty Chan"
             android:textColor="@color/dark_grey"
-            android:textSize="18sp"
-         />
+            android:textSize="18sp" />
     </RelativeLayout>
 
-      <LinearLayout
-          android:id="@+id/radar_item_beep_btn"
-          android:layout_width="wrap_content"
-          android:layout_height="32dp"
-          android:layout_alignParentRight="true"
-          android:layout_gravity="center"
-          android:layout_marginRight="8dp"
-          android:background="@drawable/btn_bg_red"
-          android:clickable="true"
-          android:gravity="center"
-         
-          android:layout_centerVertical="true" >
+    <LinearLayout
+        android:id="@+id/radar_item_beep_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/btn_bg_red"
+        android:clickable="true"
+        android:gravity="center" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/btn_funcbar_beep" 
-            android:layout_marginLeft="8dp"/>
+            android:background="@drawable/btn_funcbar_beep" />
 
         <TextView
             style="@style/WhiteText_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_beep" 
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:text="@string/text_beep" >
         </TextView>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/device_connect_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="6dp"
+        android:layout_toLeftOf="@id/radar_item_beep_btn" />
 
 </RelativeLayout>

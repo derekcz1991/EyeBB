@@ -154,6 +154,7 @@ public class RadarTrackingFragment extends Fragment implements
 	RelativeLayout InitMainLayout = null;
 	RelativeLayout MissMainLayout = null;
 	RelativeLayout mainLayout = null;
+	private TimerTask BeepCheckTimeOutTask = null;
 
 	private boolean isInit = true;
 	private boolean isFirstBeep = true;
@@ -296,11 +297,11 @@ public class RadarTrackingFragment extends Fragment implements
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		//关闭循环扫描
+		// 关闭循环扫描
 		isWhileLoop = false;
 		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		handler.removeCallbacksAndMessages(BEEPTIMEOUT);
-		// getActivity().stopService(beepIntent);
+		getActivity().stopService(beepIntent);
 	}
 
 	public void btnConfirmConnect() {
@@ -441,13 +442,8 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 
 		}
-		
 
-		ScanedTempChildData.clear();
-		ScanedChildData.clear();
-		MissChildData.clear();
-		listItem.clear();
-		mLeDevices.clear();
+		clearAlltheDate();
 	}
 
 	@Override
@@ -571,6 +567,13 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 	}
 
+	/**
+	 * 初始化頭像位置
+	 * 
+	 * @param imMiss
+	 * @param cim
+	 * @param getPeople
+	 */
 	@SuppressLint("NewApi")
 	private void HeadPosition(int imMiss, CircleImageView cim, int getPeople) {
 		// // 初始化為中心
@@ -781,21 +784,24 @@ public class RadarTrackingFragment extends Fragment implements
 	Runnable autoScan = new Runnable() {
 		@Override
 		public void run() {
+			// System.out.println("isWhileLoop==>" + isWhileLoop);
 			while (isWhileLoop) {
-				if (scan_flag) {
-
-					scanLeDevice(false);
-
-				} else {
-
-					scanLeDevice(true);
-					try {
-						Thread.sleep(Constants.SCANTIME);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				// System.out.println("isWhileLoop==>" + isWhileLoop);
+				// if (scan_flag) {
+				//
+				// scanLeDevice(false);
+				//
+				// } else {
+				//
+				// scanLeDevice(true);
+				// // try {
+				// // Thread.sleep(Constants.SCANTIME);
+				// // } catch (InterruptedException e) {
+				// // // TODO Auto-generated catch block
+				// // e.printStackTrace();
+				// // }
+				// }
+				scanLeDevice(true);
 			}
 
 		}
@@ -818,6 +824,7 @@ public class RadarTrackingFragment extends Fragment implements
 	//
 	// }
 	// };
+	int aaa = 3;
 
 	@SuppressLint("NewApi")
 	public void scanLeDevice(final boolean enable) {
@@ -826,9 +833,19 @@ public class RadarTrackingFragment extends Fragment implements
 			// mHandler.postDelayed(scanLeDeviceRunable,
 			// Constants.POSTDELAYTIME);
 
+			System.out.println("scanLeDevice");
+
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 
-			scan_flag = true;
+			try {
+				Thread.sleep(Constants.SCAN_INRERVAL_TIME);
+
+				mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// scan_flag = true;
 
 		}
 
@@ -860,9 +877,17 @@ public class RadarTrackingFragment extends Fragment implements
 			switch (msg.what) {
 
 			case BEEPTIMEOUT:
-				getActivity().stopService(BleServicesService.intentToChara);
+				if (BleServicesService.intentToChara != null)
+					getActivity().stopService(BleServicesService.intentToChara);
 				getActivity().stopService(beepIntent);
 				SharePrefsUtils.setfinishBeep(getActivity(), false);
+
+				beepTime = 0;
+				BeepCheckTimeOutTask.cancel();
+				
+				// device status
+				SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+						Constants.DEVICE_CONNECT_STATUS_ERROR);
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
@@ -882,11 +907,13 @@ public class RadarTrackingFragment extends Fragment implements
 					e.printStackTrace();
 				}
 
-				BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
-						.clone();
-				// beep all the device
-				BeepAllTempChildData = (ArrayList<Child>) ScanedTempChildData
-						.clone();
+				if (ScanedTempChildData.size() >= 0) {
+					BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
+							.clone();
+					// beep all the device
+					BeepAllTempChildData = (ArrayList<Child>) ScanedTempChildData
+							.clone();
+				}
 
 				if (SharePrefsUtils.isInitHead(getActivity())) {
 					SharePrefsUtils.setInitHead(getActivity(), false);
@@ -956,14 +983,27 @@ public class RadarTrackingFragment extends Fragment implements
 
 				chageTheAllData(ScanedTempChildData, MissChildData);
 				// radar頭像
-				ScanedTempChildData.clear();
-				ScanedChildData.clear();
-				MissChildData.clear();
-				listItem.clear();
-				mLeDevices.clear();
+
+				clearAlltheDate();
 			}
 		}
 	};
+
+	private void clearAlltheDate() {
+		// clear all the data
+		if (ScanedTempChildData != null)
+			ScanedTempChildData.clear();
+		// if (BeepAllTempChildData != null)
+		// BeepAllTempChildData.clear();
+		if (ScanedChildData != null)
+			ScanedChildData.clear();
+		if (MissChildData != null)
+			MissChildData.clear();
+		if (listItem != null)
+			listItem.clear();
+		if (mLeDevices != null)
+			mLeDevices.clear();
+	}
 
 	@SuppressLint("NewApi")
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -979,9 +1019,9 @@ public class RadarTrackingFragment extends Fragment implements
 				public void run() {
 
 					// System.out.println("rssi=>" + rssi);
-
-					// System.out.println("device = >" + device.getName() + " "
-					// + device.getAddress());
+					//
+					// System.out.println("rssi=>" + rssi + " device = >"
+					// + device.getName() + " " + device.getAddress());
 					// onStartToBeepClicked();
 					// startToBeep();
 					// System.out
@@ -1104,13 +1144,28 @@ public class RadarTrackingFragment extends Fragment implements
 		return sbuf.toString();
 	}
 
+	/**
+	 * 如果beeptime等于10秒则停止连接service
+	 */
 	@Override
 	public void onStartToBeepClicked(int position) {
 		// TODO Auto-generated method stub
 		// startToBeepThread.start();
+		BeepCheckTimeOutTask = new TimerTask() {
+			public void run() {
+				beepTime++;
+				System.out.println("beepTime==>" + beepTime);
+				if (beepTime == 10) {
+					Message msg = handler.obtainMessage();
+					msg.what = BEEPTIMEOUT;
+					handler.sendMessage(msg);
+
+				}
+			}
+		};
 
 		if (isFirstBeep) {
-			timer.schedule(BeepTask, 0, 1000);
+			timer.schedule(BeepCheckTimeOutTask, 0, 1000);
 		} else {
 			if (SharePrefsUtils.isfinishBeep(getActivity())) {
 				getActivity().stopService(BleServicesService.intentToChara);
@@ -1118,7 +1173,12 @@ public class RadarTrackingFragment extends Fragment implements
 
 			}
 
+			Timer timer = new Timer();
+
+			timer.schedule(BeepCheckTimeOutTask, 0, 1000);
+
 		}
+		// 重置为0
 		beepTime = 0;
 		startToBeep(position);
 
@@ -1131,20 +1191,6 @@ public class RadarTrackingFragment extends Fragment implements
 	 * 
 	 * @param position
 	 */
-	TimerTask BeepTask = new TimerTask() {
-		public void run() {
-			beepTime++;
-			System.out.println("beepTime==>" + beepTime);
-			if (beepTime == 6) {
-				Message msg = handler.obtainMessage();
-				msg.what = BEEPTIMEOUT;
-				handler.sendMessage(msg);
-				beepTime = 0;
-				BeepTask.cancel();
-			}
-		}
-	};
-
 	@SuppressLint("NewApi")
 	public void startToBeep(int position) {
 
@@ -1175,6 +1221,10 @@ public class RadarTrackingFragment extends Fragment implements
 				// }
 				SharePrefsUtils.setConnectBleService(getActivity(), 1);
 				SharePrefsUtils.setfinishBeep(getActivity(), true);
+
+				// device status
+				SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+						Constants.DEVICE_CONNECT_STATUS_LOADING);
 
 				getActivity().startService(beepIntent);
 

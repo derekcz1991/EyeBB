@@ -284,5 +284,23 @@ public class BleCharacteristicsService extends Service {
 		listItem.add(map);
 		// listItemAdapter.notifyDataSetChanged();
 	}
+	
+	
+//	@SuppressLint("HandlerLeak")
+//	Handler handler = new Handler() {
+//
+//		public void handleMessage(Message msg) {
+//			switch (msg.what) {
+//
+//			case FINISH_ACTIVITY:
+//				keepTim++;
+//				if (keepTim == 3) {
+//					new Thread(finishConnection).start();
+//				}
+//
+//				break;
+//			}
+//		}
+//	};
 
 }

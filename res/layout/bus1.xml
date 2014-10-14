@@ -21,7 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:gravity="center"
-        android:text="您的BB已經進入校車" />
+        
+        android:text="您的BB已經進入校車" 
+        />
         
    </LinearLayout>
       

@@ -238,6 +238,15 @@ public class SharePrefsUtils {
 			int value) {
 		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_RUN_NUM_RADAR, value);
 	}
+	
+	public static int DeviceConnectStatus(Context context) {
+		return getInt(context, ActivityConstants.SHARE_PREFS_DEVICE_CONNECT_STATUS);
+	}
+
+	public static void setDeviceConnectStatus(Context context,
+			int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_DEVICE_CONNECT_STATUS, value);
+	}
 
 	/**
 	 * @return Application's {@code SharedPreferences}.

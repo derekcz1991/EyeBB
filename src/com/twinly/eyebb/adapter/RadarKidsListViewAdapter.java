@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +21,12 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RadarKidsListViewAdapter extends BaseAdapter {
 	private Context context;
@@ -32,7 +35,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private RadarKidsListViewAdapterCallback callback;
-	private ArrayList<String> dataID;
+	private int ItemPosition = 0;
 
 	public interface RadarKidsListViewAdapterCallback {
 		public void onStartToBeepClicked(int position);
@@ -49,7 +52,9 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		public CircleImageView avatar;
 		public TextView name;
 		public View beepBtn;
-		public TextView status;
+		public TextView ChildStatus;
+		public TextView DeviceConnectStatus;
+
 	}
 
 	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
@@ -114,9 +119,16 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_name);
 
-			viewHolder.status = (TextView) convertView
+			viewHolder.ChildStatus = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_missd);
-			viewHolder.status.setVisibility(View.GONE);
+			viewHolder.ChildStatus.setVisibility(View.GONE);
+
+			viewHolder.DeviceConnectStatus = (TextView) convertView
+					.findViewById(R.id.device_connect_status);
+
+//			if (ItemPosition == position) {
+//				deviceStatus(viewHolder);
+//			}
 
 			convertView.setTag(viewHolder);
 		} else {
@@ -126,7 +138,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void setUpView(ViewHolder viewHolder, final int position) {
+	private void setUpView(final ViewHolder viewHolder, final int position) {
 		// System.out.println("position=>" + position);
 		// for (int i = 0; i < dataID.size(); i++) {
 		// System.out.println("data.get(Integer.parseInt(dataID.get(i)))= > "
@@ -157,7 +169,8 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 							System.out.println("positionposition = > "
 									+ position + "");
 							callback.onStartToBeepClicked(position);
-
+							deviceStatus(viewHolder);
+							ItemPosition = position;
 						}
 
 					}
@@ -174,6 +187,33 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 
 			// }
 
+		}
+	}
+
+	private void deviceStatus(ViewHolder viewHolder) {
+		int deviceStatus = SharePrefsUtils
+				.DeviceConnectStatus(RadarKidsListViewAdapter.this.context);
+
+		switch (deviceStatus) {
+		case Constants.DEVICE_CONNECT_STATUS_LOADING:
+			viewHolder.DeviceConnectStatus.setText(context.getResources()
+					.getString(R.string.text_connect_device_status_loading));
+
+			break;
+
+		case Constants.DEVICE_CONNECT_STATUS_ERROR:
+			viewHolder.DeviceConnectStatus.setText(context.getResources()
+					.getString(R.string.text_connect_device_status_error));
+			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
+					.getColor(R.color.red));
+			break;
+
+		case Constants.DEVICE_CONNECT_STATUS_SUCCESS:
+			viewHolder.DeviceConnectStatus.setText(context.getResources()
+					.getString(R.string.text_connect_device_status_success));
+			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
+					.getColor(R.color.black));
+			break;
 		}
 	}
 

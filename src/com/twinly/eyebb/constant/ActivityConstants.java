@@ -26,6 +26,8 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_FINISH_BEEP = "finish_beep";
 	public static final String SHARE_PREFS_CONNECT_BLE_SERVICE = "connect_ble_service";
 	public static final String SHARE_PREFS_REFRESH_TIME = "refresh_time";
+	public static final String SHARE_PREFS_DEVICE_CONNECT_STATUS = "device_status_connect";
+	
 	
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";

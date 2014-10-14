@@ -49,7 +49,8 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 		public CircleImageView avatar;
 		public TextView name;
 		public View beepBtn;
-		public TextView status;
+		public TextView ChildStatus;
+		public TextView DeviceConnectStatus;
 	}
 
 	public MissRadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
@@ -113,10 +114,12 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_name);
 
-			viewHolder.status = (TextView) convertView
+			viewHolder.ChildStatus = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_missd);
 			// viewHolder.status.setVisibility(View.GONE);
-
+			viewHolder.DeviceConnectStatus = (TextView) convertView.findViewById(R.id.device_connect_status);
+			viewHolder.DeviceConnectStatus.setVisibility(View.GONE);
+			
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();

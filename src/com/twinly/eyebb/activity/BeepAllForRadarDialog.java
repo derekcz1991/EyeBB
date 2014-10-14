@@ -73,6 +73,8 @@ public class BeepAllForRadarDialog extends Activity {
 					handler.sendMessage(msg);
 					// 開始循環
 					BeepAllFlag = true;
+					StartAllBeepFlag = true;
+					
 					btnBeepAll.start();
 				} else {
 					notifyTxt
@@ -111,6 +113,8 @@ public class BeepAllForRadarDialog extends Activity {
 
 		switch (event.getKeyCode()) {
 		case KeyEvent.KEYCODE_BACK:
+			//device 进度恢复为1
+			BeepAlli = 0;
 			finish();
 			break;
 		default:
@@ -172,7 +176,7 @@ public class BeepAllForRadarDialog extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			// firstly pop the dialog
-
+			System.out.println("BeepAllFlag==>" + BeepAllFlag);
 			while (BeepAllFlag) {
 
 				if (StartAllBeepFlag) {
