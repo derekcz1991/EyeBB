@@ -70,7 +70,10 @@ public class MainActivity extends FragmentActivity implements
 			autoUpdateFlag = true;
 			autoUpdateTask = new AutoUpdateTask();
 			autoUpdateTask.execute();
+		} else {
+			indoorLocatorFragment.updateView();
 		}
+		reportFragment.updateView();
 	}
 
 	@Override
@@ -111,8 +114,8 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
 				indoorLocatorFragment);
-//		mainLabel.findViewById(R.id.notification_number).setVisibility(
-//				View.GONE);
+		//		mainLabel.findViewById(R.id.notification_number).setVisibility(
+		//				View.GONE);
 
 		// radar
 		radarTrackingFragment = new RadarTrackingFragment();
@@ -123,8 +126,8 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
 				radarTrackingFragment);
-//		trackingLabel.findViewById(R.id.notification_number).setVisibility(
-//				View.GONE);
+		//		trackingLabel.findViewById(R.id.notification_number).setVisibility(
+		//				View.GONE);
 
 		// report
 		reportFragment = new ReportFragment();
@@ -136,8 +139,8 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
 				reportFragment);
-//		reportLabel.findViewById(R.id.notification_number).setVisibility(
-//				View.GONE);
+		//		reportLabel.findViewById(R.id.notification_number).setVisibility(
+		//				View.GONE);
 
 		// profile
 		profileFragment = new ProfileFragment();
@@ -149,9 +152,9 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
-//		noticeNum = (TextView) profileLabel
-//				.findViewById(R.id.notification_number);
-//		noticeNum.setVisibility(View.VISIBLE);
+		//		noticeNum = (TextView) profileLabel
+		//				.findViewById(R.id.notification_number);
+		//		noticeNum.setVisibility(View.VISIBLE);
 
 		mTabHost.setCurrentTab(0);
 		if (savedInstanceState != null) {
@@ -213,17 +216,32 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void updateProgressBar(int value) {
-		progressBar.setVisibility(View.VISIBLE);
-		progressBar.setProgress(progressBar.getProgress() + value);
-		if (progressBar.getProgress() >= 100) {
-			isRefreshing = true;
-			reportFragment.setRefreshing(true);
+	public void updateProgressBarForIndoorLocator(int value) {
+		updateProgressBar(value, 0);
+	}
 
-			bar.setVisibility(View.VISIBLE);
-			bar.progressiveStart();
-			indoorLocatorFragment.updateView();
-			reportFragment.updateView();
+	@Override
+	public void updateProgressBarForReport(int value) {
+		updateProgressBar(value, 1);
+	}
+
+	private void updateProgressBar(int value, int fragmentId) {
+		if (isRefreshing == false) {
+			progressBar.setVisibility(View.VISIBLE);
+			progressBar.setProgress(progressBar.getProgress() + value);
+			if (progressBar.getProgress() >= 100) {
+				isRefreshing = true;
+				bar.setVisibility(View.VISIBLE);
+				bar.progressiveStart();
+				switch (fragmentId) {
+				case 0:
+					indoorLocatorFragment.updateView();
+					break;
+				case 1:
+					reportFragment.updateView();
+					break;
+				}
+			}
 		}
 	}
 
@@ -239,7 +257,7 @@ public class MainActivity extends FragmentActivity implements
 		isRefreshing = false;
 		progressBar.setProgress(0);
 		bar.progressiveStop();
-		reportFragment.setRefreshing(false);
+		//reportFragment.setRefreshing(false);
 	}
 
 	@Override
@@ -248,17 +266,19 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void stopAutoRefresh() {
-		autoUpdateFlag = false;
-		if (autoUpdateTask != null)
-			autoUpdateTask.cancel(true);
+	public void startAutoRefresh() {
+		autoUpdateFlag = true;
+		indoorLocatorFragment.lockListViewToPull(true);
+		autoUpdateTask = new AutoUpdateTask();
+		autoUpdateTask.execute();
 	}
 
 	@Override
-	public void startAutoRefresh() {
-		autoUpdateFlag = true;
-		autoUpdateTask = new AutoUpdateTask();
-		autoUpdateTask.execute();
+	public void stopAutoRefresh() {
+		autoUpdateFlag = false;
+		indoorLocatorFragment.lockListViewToPull(false);
+		if (autoUpdateTask != null)
+			autoUpdateTask.cancel(true);
 	}
 
 	private class AutoUpdateTask extends AsyncTask<Void, Void, Void> {
@@ -268,9 +288,6 @@ public class MainActivity extends FragmentActivity implements
 			while (autoUpdateFlag) {
 				if (indoorLocatorFragment != null) {
 					indoorLocatorFragment.updateView();
-				}
-				if (reportFragment != null) {
-					reportFragment.updateView();
 				}
 				try {
 					// refresh time

@@ -55,7 +55,7 @@ public class ReportFragment extends Fragment implements
 		 * Update the progressBar value when pull the listView
 		 * @param value current progress
 		 */
-		public void updateProgressBar(int value);
+		public void updateProgressBarForReport(int value);
 
 		/**
 		 * Cancel update the progressBar when release the listView  
@@ -220,26 +220,8 @@ public class ReportFragment extends Fragment implements
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY) {
-			if (resultCode == ActivityConstants.RESULT_RESULT_OK
-					&& data != null) {
-				// change a child to display
-				child = (Child) data.getSerializableExtra("child");
-				imageLoader.displayImage(child.getIcon(), avatar,
-						CommonUtils.getDisplayImageOptions(), null);
-				SharePrefsUtils.setReportChildId(getActivity(),
-						child.getChildId());
-				reInitView();
-				updateView();
-			}
-		}
-	}
-
-	@Override
 	public void updateProgressBar(int value) {
-		callback.updateProgressBar(value);
+		callback.updateProgressBarForReport(value);
 	}
 
 	@Override
@@ -256,32 +238,21 @@ public class ReportFragment extends Fragment implements
 		}
 	}
 
-	/**
-	 * Set the listView state. The list cannot scroll when is refreshing, 
-	 * @param isRefreshing whether requesting server to update data
-	 */
-	public void setRefreshing(boolean isRefreshing) {
-		if (performanceFragment != null) {
-			performanceFragment.setRefreshing(isRefreshing);
-		}
-		if (activitiesFragment != null) {
-			activitiesFragment.setRefreshing(isRefreshing);
-		}
-	}
-
-	/**
-	 * Re-initialize the view when change a child to display
-	 */
-	private void reInitView() {
-		performanceFragment.updateView(DBPerformance.getPerformanceByChildId(
-				getActivity(), child.getChildId()));
-		activitiesFragment.updateView(child.getChildId());
-	}
-
 	private class UpdateView extends AsyncTask<Void, Void, String> {
 
 		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			setRefreshing(true);
+		}
+
+		@Override
 		protected String doInBackground(Void... params) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(child.getChildId()));
 			return HttpRequestUtils.get("reportService/api/stat", map);
@@ -296,9 +267,34 @@ public class ReportFragment extends Fragment implements
 				updateActivity(json);
 
 			} catch (JSONException e) {
+				reInitView();
 				System.out.println("reportService/api/stat ---->> "
 						+ e.getMessage());
 			}
+			setRefreshing(false);
+			callback.resetProgressBar();
+		}
+	}
+
+	/**
+	 * Re-initialize the view when change a child to display
+	 */
+	private void reInitView() {
+		performanceFragment.updateView(DBPerformance.getPerformanceByChildId(
+				getActivity(), child.getChildId()));
+		activitiesFragment.updateView(child.getChildId());
+	}
+	
+	/**
+	 * Set the listView state. The list cannot scroll when is refreshing, 
+	 * @param isRefreshing whether requesting server to update data
+	 */
+	private void setRefreshing(boolean isRefreshing) {
+		if (performanceFragment != null) {
+			performanceFragment.setRefreshing(isRefreshing);
+		}
+		if (activitiesFragment != null) {
+			activitiesFragment.setRefreshing(isRefreshing);
 		}
 	}
 
@@ -364,6 +360,24 @@ public class ReportFragment extends Fragment implements
 				DBActivityInfo.insert(getActivity(), activityInfo);
 			}
 			activitiesFragment.updateView(child.getChildId());
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK
+					&& data != null) {
+				// change a child to display
+				child = (Child) data.getSerializableExtra("child");
+				imageLoader.displayImage(child.getIcon(), avatar,
+						CommonUtils.getDisplayImageOptions(), null);
+				SharePrefsUtils.setReportChildId(getActivity(),
+						child.getChildId());
+				//reInitView();
+				updateView();
+			}
 		}
 	}
 }

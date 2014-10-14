@@ -47,7 +47,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		 * @param value
 		 *            current progress
 		 */
-		public void updateProgressBar(int value);
+		public void updateProgressBarForIndoorLocator(int value);
 
 		/**
 		 * Cancel update the progressBar when release the listView
@@ -133,7 +133,7 @@ public class IndoorLocatorFragment extends Fragment implements
 	@Override
 	public void updateProgressBar(int value) {
 		if (callback != null)
-			callback.updateProgressBar(value);
+			callback.updateProgressBarForIndoorLocator(value);
 	}
 
 	@Override
@@ -183,16 +183,18 @@ public class IndoorLocatorFragment extends Fragment implements
 						indoorLocatorData, childrenMap);
 				listView.setAdapter(adapter);
 
-				listView.setRefreshing(false);
-				callback.resetProgressBar();
 			} catch (JSONException e) {
 				System.out.println("reportService/api/childrenList ---->> "
 						+ e.getMessage());
-				listView.setRefreshing(false);
-				callback.resetProgressBar();
 			}
+			listView.setRefreshing(false);
+			callback.resetProgressBar();
 		}
 
+	}
+
+	public void lockListViewToPull(boolean value) {
+		listView.setLockPullAction(value);
 	}
 
 	private void updateLocationData(String childId, String locationName) {
