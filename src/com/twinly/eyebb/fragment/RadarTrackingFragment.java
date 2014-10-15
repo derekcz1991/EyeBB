@@ -177,6 +177,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private int deviceStatusError = 0;
 
+	private boolean isLeScan;
+
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -299,15 +301,131 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
+		System.out.println("onDestroy()");
 		super.onDestroy();
 		// 关闭循环扫描
 		isWhileLoop = false;
 		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		handler.removeCallbacksAndMessages(BEEPTIMEOUT);
 		getActivity().stopService(beepIntent);
+
+		stopTimer();
+		mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	}
+
+	// 下面為bluetooth
+	Runnable autoScan = new Runnable() {
+		@Override
+		public void run() {
+			// System.out.println("isWhileLoop==>" + isWhileLoop);
+			while (isWhileLoop) {
+				// System.out.println("isWhileLoop==>" + isWhileLoop);
+				// if (scan_flag) {
+				//
+				// scanLeDevice(false);
+				//
+				// } else {
+				//
+				// scanLeDevice(true);
+				// // try {
+				// // Thread.sleep(Constants.SCANTIME);
+				// // } catch (InterruptedException e) {
+				// // // TODO Auto-generated catch block
+				// // e.printStackTrace();
+				// // }
+				// }
+				scanLeDevice(true);
+			}
+
+		}
+	};
+
+	@SuppressLint("NewApi")
+	public void scanLeDevice(final boolean enable) {
+		if (enable) {
+			// Stops scanning after a pre-defined scan period.
+
+			isLeScan = mBluetoothAdapter.startLeScan(mLeScanCallback);
+
+			try {
+
+				Thread.sleep(Constants.SCAN_INRERVAL_TIME);
+
+				mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		System.out.println("onResume()");
+		// ScanedChildData.clear();
+		// MissChildData.clear();
+		// listItem.clear();
+		// mLeDevices.clear();
+		final BluetoothManager bluetoothManager = (BluetoothManager) getActivity()
+				.getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
+
+		// // // 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
+		// if (!mBluetoothAdapter.isEnabled() || mBluetoothAdapter == null) {
+		// openBluetooth();
+		// }
+
+		if (mBluetoothAdapter.isEnabled()) {
+			// if (scan_flag) {
+			// autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
+			// } else {
+			// new Thread(autoScan).start();
+			// }
+
+		}
+
+		if (!isConfirmRadarBtn) {
+			System.out.println("isWhileLoop = false;");
+			isWhileLoop = false;
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+		} else {
+			System.out.println("isWhileLoop = true;");
+			isWhileLoop = true;
+			if (scan_flag) {
+				autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
+			} else {
+				new Thread(autoScan).start();
+			}
+		}
+
+		clearAlltheDate();
+	}
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		System.out.println("onStop()");
+
+		isWhileLoop = false;
+		// handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
+		// handler.removeCallbacksAndMessages(BEEPTIMEOUT);
+		if (beepIntent != null)
+			getActivity().stopService(beepIntent);
+
+		// stopTimer();
+
 	}
 
 	public void btnConfirmConnect() {
@@ -390,6 +508,7 @@ public class RadarTrackingFragment extends Fragment implements
 		isConfirmRadarBtn = false;
 		confirmRadarBtn.setBackground(getResources().getDrawable(
 				R.drawable.ic_selected_off));
+		// timer control
 		buttonCancel = true;
 		// 清除time task
 		stopTimer();
@@ -425,51 +544,12 @@ public class RadarTrackingFragment extends Fragment implements
 		mBluetoothAdapter.stopLeScan(mLeScanCallback);
 	}
 
-	@SuppressLint("NewApi")
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		System.out.println("onResume()");
-		// ScanedChildData.clear();
-		// MissChildData.clear();
-		// listItem.clear();
-		// mLeDevices.clear();
-		final BluetoothManager bluetoothManager = (BluetoothManager) getActivity()
-				.getSystemService(Context.BLUETOOTH_SERVICE);
-		mBluetoothAdapter = bluetoothManager.getAdapter();
-
-		// // // 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
-		// if (!mBluetoothAdapter.isEnabled() || mBluetoothAdapter == null) {
-		// openBluetooth();
-		// }
-
-		if (mBluetoothAdapter.isEnabled()) {
-			if (scan_flag) {
-				autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
-			} else {
-				new Thread(autoScan).start();
-			}
-
-		}
-
-		clearAlltheDate();
-	}
-
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
 		System.out.println("onStart()");
 
-	}
-
-	@Override
-	public void onStop() {
-		// TODO Auto-generated method stub
-		super.onStop();
-		System.out.println("onStop()");
-		handler.removeMessages(SCAN_CHILD_FOR_LIST);
 	}
 
 	private void chageTheAllData(ArrayList<Child> scanedTempChildData,
@@ -832,58 +912,6 @@ public class RadarTrackingFragment extends Fragment implements
 		// 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
 		if (mBluetoothAdapter.isEnabled()) {
 			mBluetoothAdapter.disable();// 关闭蓝牙
-
-		}
-
-	}
-
-	// 下面為bluetooth
-	Runnable autoScan = new Runnable() {
-		@Override
-		public void run() {
-			// System.out.println("isWhileLoop==>" + isWhileLoop);
-			while (isWhileLoop) {
-				// System.out.println("isWhileLoop==>" + isWhileLoop);
-				// if (scan_flag) {
-				//
-				// scanLeDevice(false);
-				//
-				// } else {
-				//
-				// scanLeDevice(true);
-				// // try {
-				// // Thread.sleep(Constants.SCANTIME);
-				// // } catch (InterruptedException e) {
-				// // // TODO Auto-generated catch block
-				// // e.printStackTrace();
-				// // }
-				// }
-				scanLeDevice(true);
-			}
-
-		}
-	};
-
-	@SuppressLint("NewApi")
-	public void scanLeDevice(final boolean enable) {
-		if (enable) {
-			// Stops scanning after a pre-defined scan period.
-			// mHandler.postDelayed(scanLeDeviceRunable,
-			// Constants.POSTDELAYTIME);
-
-			// System.out.println("scanLeDevice");
-
-			mBluetoothAdapter.startLeScan(mLeScanCallback);
-
-			try {
-				Thread.sleep(Constants.SCAN_INRERVAL_TIME);
-
-				mBluetoothAdapter.stopLeScan(mLeScanCallback);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// scan_flag = true;
 
 		}
 
