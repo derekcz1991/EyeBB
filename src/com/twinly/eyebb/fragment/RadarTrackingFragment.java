@@ -158,7 +158,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private boolean isInit = true;
 	private boolean isFirstBeep = true;
-	private int keepTim = 0;
+	private int beepAllTime = 0;
 	Timer timer = null;
 	TimerTask task = null;
 	private int MissChildDataHeadNum = 0;
@@ -1285,9 +1285,9 @@ public class RadarTrackingFragment extends Fragment implements
 
 		if (rssi < Constants.BEEP_RSSI) {
 
-			keepTim++;
-			// System.out.println("keepTim=>" + keepTim);
-			if (keepTim == 10) {
+			beepAllTime++;
+			// System.out.println("beepAllTime=>" + beepAllTime);
+			if (beepAllTime == 10) {
 
 				Intent beepIntent = new Intent();
 
@@ -1300,7 +1300,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 		} else {
 
-			keepTim = 0;
+			beepAllTime = 0;
 
 			if (RadarOutOfRssiBeepDialog.isStart) {
 				if (RadarOutOfRssiBeepDialog.instance != null) {
