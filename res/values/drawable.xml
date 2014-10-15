@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FFEC4235</color>
     <color name="dark_grey">#FF585854</color>
+    <color name="sky_blue">#FF31b4f6</color>
     <color name="light_grey">#FFBABABA</color>
     <color name="progressbar_green01">#FF2BFFB7</color>
     <color name="progressbar_green02">#FF6ACE67</color>

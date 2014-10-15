@@ -210,7 +210,8 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		case Constants.DEVICE_CONNECT_STATUS_LOADING:
 			viewHolder.DeviceConnectStatus.setText(context.getResources()
 					.getString(R.string.text_connect_device_status_loading));
-
+			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
+					.getColor(R.color.dark_grey));
 			break;
 
 		case Constants.DEVICE_CONNECT_STATUS_ERROR:
@@ -224,7 +225,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.DeviceConnectStatus.setText(context.getResources()
 					.getString(R.string.text_connect_device_status_success));
 			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
-					.getColor(R.color.black));
+					.getColor(R.color.sky_blue));
 			break;
 		case Constants.DEVICE_CONNECT_STATUS_DEFAULT:
 			viewHolder.DeviceConnectStatus.setText("");
