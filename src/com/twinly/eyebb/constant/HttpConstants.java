@@ -27,6 +27,7 @@ public class HttpConstants {
 
 	public static final String JSON_KEY_LOCATION = "loc";
 	public static final String JSON_KEY_LOCATION_NAME = "locationName";
+	public static final String JSON_KEY_LOCATION_LAST_APPEAR_TIME = "lastAppearTime";
 
 	public static final String JSON_KEY_PARENTS = "parents";
 	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
@@ -47,6 +48,6 @@ public class HttpConstants {
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC = "activitySc";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_ICON = "icon";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
-	
+
 	public static final String UPDATE_DEVICE_FROM_CHILD_LIST = "childId";
 }

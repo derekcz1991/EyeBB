@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.model.Child;
 
@@ -102,13 +103,22 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		viewHolder.childrenNum.setText(String.valueOf(childrenIds.size()));
 		for (int i = 0; i < childrenIds.size(); i++) {
 			// add the avatar to flowlayout
-			AvatarView avatarView = new AvatarView(context,
-					childrenMap.get(childrenIds.get(i)),
-					viewHolder.avatarContainer);
+			AvatarView avatarView;
+			if (System.currentTimeMillis()
+					- childrenMap.get(childrenIds.get(i)).getLastAppearTime() < Constants.validTimeDuration) {
+				avatarView = new AvatarView(context,
+						childrenMap.get(childrenIds.get(i)),
+						viewHolder.avatarContainer, true);
+			} else {
+				avatarView = new AvatarView(context,
+						childrenMap.get(childrenIds.get(i)),
+						viewHolder.avatarContainer, false);
+			}
+
 			viewHolder.avatarContainer.addView(avatarView.getInstance(), 0);
 
 			// update the child's location
-			childrenMap.get(childrenIds.get(i)).setLocationName(locationName);
+			//childrenMap.get(childrenIds.get(i)).setLocationName(locationName);
 		}
 
 		if (locationName.contains("Sleeping")) {

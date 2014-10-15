@@ -6,10 +6,13 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -24,7 +27,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
 
 @SuppressLint("NewApi")
 public class PeripheralActivity extends Activity {
@@ -61,7 +63,8 @@ public class PeripheralActivity extends Activity {
 
 		listItem = new ArrayList<HashMap<String, Object>>();
 
-		listItemAdapter = new SimpleAdapter(this, listItem, R.layout.ble_listview,
+		listItemAdapter = new SimpleAdapter(this, listItem,
+				R.layout.ble_listview,
 				new String[] { "image", "title", "text" }, new int[] {
 						R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
 		myList = (ListView) findViewById(R.id.listView);
@@ -88,25 +91,25 @@ public class PeripheralActivity extends Activity {
 			}
 		});
 
-//		scanBtn = (Button) findViewById(R.id.scanButton);
-//		scanBtn.setOnClickListener(new Button.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				// TODO Auto-generated method stub
-//				firstScan = true;
-//				if (scan_flag) {
-//					scanLeDevice(false);
-//				} else {
-//					scanLeDevice(true);
-//				}
-//			}
-//		});
+		//		scanBtn = (Button) findViewById(R.id.scanButton);
+		//		scanBtn.setOnClickListener(new Button.OnClickListener() {
+		//			@Override
+		//			public void onClick(View arg0) {
+		//				// TODO Auto-generated method stub
+		//				firstScan = true;
+		//				if (scan_flag) {
+		//					scanLeDevice(false);
+		//				} else {
+		//					scanLeDevice(true);
+		//				}
+		//			}
+		//		});
 
 		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
 		if (!getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_BLUETOOTH_LE)) {
-//			Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT)
-//					.show();
+			//			Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT)
+			//					.show();
 		}
 
 		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
@@ -115,8 +118,8 @@ public class PeripheralActivity extends Activity {
 
 		// 检查设备上是否支持蓝牙
 		if (mBluetoothAdapter == null) {
-//			Toast.makeText(this, R.string.error_bluetooth_not_supported,
-//					Toast.LENGTH_SHORT).show();
+			//			Toast.makeText(this, R.string.error_bluetooth_not_supported,
+			//					Toast.LENGTH_SHORT).show();
 		}
 
 		//autoScan.start();
@@ -211,7 +214,7 @@ public class PeripheralActivity extends Activity {
 					msg.what = START_SCAN;
 					handler.sendMessage(msg);
 					// scanBtn.setText(R.string.start_scan);
-					
+
 					//自动连接
 					//new autoConnection().start();
 					// autoScan.start();
@@ -224,9 +227,9 @@ public class PeripheralActivity extends Activity {
 			scan_flag = true;
 			deleteItem();
 
-			 Message msg = handler.obtainMessage();
-			 msg.what = STOP_SCAN;
-			 handler.sendMessage(msg);
+			Message msg = handler.obtainMessage();
+			msg.what = STOP_SCAN;
+			handler.sendMessage(msg);
 			// scanBtn.setText(R.string.stop_scan);
 
 		} else {
@@ -252,12 +255,12 @@ public class PeripheralActivity extends Activity {
 				break;
 
 			case STOP_SCAN:
-			//	 scanBtn.setText(R.string.stop_scan);
+				//	 scanBtn.setText(R.string.stop_scan);
 				// scanBtn.setText("stop scan");
 				break;
 
 			case DELETE_SCAN:
-			//	 scanBtn.setText(R.string.start_scan);
+				//	 scanBtn.setText(R.string.start_scan);
 				listItem.remove(listItem.size() - 1);
 				listItemAdapter.notifyDataSetChanged();
 				break;
@@ -350,9 +353,27 @@ public class PeripheralActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			Constants.exit_ask(this);
+			exit_ask(this);
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	private void exit_ask(final Activity act) {
+		AlertDialog dialog = new AlertDialog.Builder(act)
+				.setIcon(android.R.drawable.btn_star).setTitle("Exit the APP？")
+				.setPositiveButton("Yes", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						// TODO Auto-generated method stub
+						BaseApp.getInstance().exit();
+					}
+				}).setNegativeButton("Cancel", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+					}
+				}).create();
+		dialog.show();
 	}
 }

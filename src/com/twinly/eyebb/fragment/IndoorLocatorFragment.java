@@ -174,9 +174,15 @@ public class IndoorLocatorFragment extends Fragment implements
 					JSONObject object = (JSONObject) list.get(i);
 					String childId = object
 							.getString(HttpConstants.JSON_KEY_CHILD_ID);
-					String locationName = object.getJSONObject(
-							HttpConstants.JSON_KEY_LOCATION).getString(
-							HttpConstants.JSON_KEY_LOCATION_NAME);
+					JSONObject location = object
+							.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
+					String locationName = location
+							.getString(HttpConstants.JSON_KEY_LOCATION_NAME);
+					childrenMap.get(childId).setLocationName(locationName);
+					childrenMap
+							.get(childId)
+							.setLastAppearTime(
+									location.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
 					updateLocationData(childId, locationName);
 				}
 				adapter = new IndoorLocatorAdapter(getActivity(),
@@ -193,10 +199,6 @@ public class IndoorLocatorFragment extends Fragment implements
 
 	}
 
-	public void lockListViewToPull(boolean value) {
-		listView.setLockPullAction(value);
-	}
-
 	private void updateLocationData(String childId, String locationName) {
 		ArrayList<String> childrenIdList = null;
 		if (indoorLocatorData.keySet().contains(locationName)) {
@@ -206,5 +208,9 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 		childrenIdList.add(childId);
 		indoorLocatorData.put(locationName, childrenIdList);
+	}
+
+	public void lockListViewToPull(boolean value) {
+		listView.setLockPullAction(value);
 	}
 }

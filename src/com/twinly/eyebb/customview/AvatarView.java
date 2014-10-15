@@ -19,11 +19,14 @@ public class AvatarView {
 	private Child child;
 	private CircleImageView avatar;
 	private ViewGroup avatarViewItem;
+	private boolean isOnline;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 
-	public AvatarView(Context context, Child child, ViewGroup viewGroup) {
+	public AvatarView(Context context, Child child, ViewGroup viewGroup,
+			boolean isOnline) {
 		this.context = context;
 		this.child = child;
+		this.isOnline = isOnline;
 
 		imageLoader = ImageLoader.getInstance();
 
@@ -38,6 +41,9 @@ public class AvatarView {
 		avatarViewItem = (ViewGroup) LayoutInflater.from(context).inflate(
 				R.layout.item_avatar, viewGroup, false);
 		avatar = (CircleImageView) avatarViewItem.findViewById(R.id.avatar);
+		if (isOnline == false) {
+			avatar.setAlpha(0.3f);
+		}
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), avatar,
 					CommonUtils.getDisplayImageOptions(), null);

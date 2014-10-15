@@ -3,15 +3,9 @@ package com.twinly.eyebb.constant;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattService;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 
 import com.eyebb.R;
-
-import com.twinly.eyebb.bluetooth.BaseApp;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 
 public class Constants {
@@ -66,21 +60,7 @@ public class Constants {
 			R.drawable.my_progress_pink, R.drawable.my_progress_purple,
 			R.drawable.my_progress_red, R.drawable.my_progress_yellow };
 
-	public static void exit_ask(final Activity act) {
-		AlertDialog dialog = new AlertDialog.Builder(act)
-				.setIcon(android.R.drawable.btn_star).setTitle("Exit the APP？")
-				.setPositiveButton("Yes", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						BaseApp.getInstance().exit();
-					}
-				}).setNegativeButton("Cancel", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-					}
-				}).create();
-		dialog.show();
-	}
+	public static final long validTimeDuration = 600000; //10 minutes
+	public static final int averageDays = 5;
+	
 }

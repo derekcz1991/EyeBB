@@ -17,6 +17,7 @@ public class Child implements Serializable {
 	private String macAddress;
 	private boolean isMissing;
 	private String locationName; // dynamic changing
+	private long lastAppearTime; // dynamic changing
 
 	public Child() {
 
@@ -87,6 +88,14 @@ public class Child implements Serializable {
 
 	public void setLocationName(String locationName) {
 		this.locationName = locationName;
+	}
+
+	public long getLastAppearTime() {
+		return lastAppearTime;
+	}
+
+	public void setLastAppearTime(long lastAppearTime) {
+		this.lastAppearTime = lastAppearTime;
 	}
 
 	public static long getSerialversionuid() {
