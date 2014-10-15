@@ -262,12 +262,16 @@ public class RadarTrackingFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (!isConfirmRadarBtn) {
-					btnConfirmConnect();
-					SharePrefsUtils.setfinishBeep(getActivity(), false);
+				if (CommonUtils.isFastDoubleClick()) {
+					return;
 				} else {
-					btnCancelConnect();
-					closeBluetooth();
+					if (!isConfirmRadarBtn) {
+						btnConfirmConnect();
+						SharePrefsUtils.setfinishBeep(getActivity(), false);
+					} else {
+						btnCancelConnect();
+						closeBluetooth();
+					}
 				}
 
 			}
