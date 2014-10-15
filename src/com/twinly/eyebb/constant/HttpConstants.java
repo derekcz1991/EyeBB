@@ -31,10 +31,12 @@ public class HttpConstants {
 	public static final String JSON_KEY_PARENTS = "parents";
 	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
 
-	public static final String JSON_KEY_LAST_UPDATE_TIME = "lastUpdateTime";
+	//public static final String JSON_KEY_LAST_UPDATE_TIME = "lastUpdateTime";
 
 	public static final String JSON_KEY_REPORT_PERFORMANCE_DAILY = "dailyFigure";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_WEEKLY = "weeklyFigure";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_AVERAGE = "averageFigure";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_LAST_UPDATE_TIME = "lastUpdateTime";
 
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO = "activityInfos";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE = "title";

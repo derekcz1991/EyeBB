@@ -255,6 +255,7 @@ public class ReportFragment extends Fragment implements
 			}
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(child.getChildId()));
+			map.put("avgDays", "5");
 			return HttpRequestUtils.get("reportService/api/stat", map);
 		}
 
@@ -284,7 +285,7 @@ public class ReportFragment extends Fragment implements
 				getActivity(), child.getChildId()));
 		activitiesFragment.updateView(child.getChildId());
 	}
-	
+
 	/**
 	 * Set the listView state. The list cannot scroll when is refreshing, 
 	 * @param isRefreshing whether requesting server to update data
@@ -310,6 +311,11 @@ public class ReportFragment extends Fragment implements
 				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_DAILY));
 		performance.setWeekly(json
 				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_WEEKLY));
+		performance.setAverage(json
+				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_AVERAGE));
+		performance
+				.setLastUpdateTime(json
+						.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LAST_UPDATE_TIME));
 		DBPerformance.insert(getActivity(), performance);
 		performanceFragment.updateView(performance);
 	}

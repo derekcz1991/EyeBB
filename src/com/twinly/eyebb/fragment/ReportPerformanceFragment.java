@@ -119,6 +119,30 @@ public class ReportPerformanceFragment extends Fragment implements
 						Constants.progressBarStyleSet[0], 0, 0, 0);
 				list.add(item);
 			}
+			
+			PerformanceListItem averageTitle = new PerformanceListItem(
+					getResources().getString(R.string.text_average), "",
+					R.drawable.bg_report_average, -1, 0, 0, 0);
+			list.add(averageTitle);
+			if (performance.getAverageMap() != null) {
+				iter = performance.getAverageMap().entrySet().iterator();
+				index = 0;
+				while (iter.hasNext()) {
+					Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter
+							.next();
+					PerformanceListItem item = new PerformanceListItem("",
+							entry.getKey(), -1,
+							Constants.progressBarStyleSet[index],
+							entry.getValue(), entry.getValue(), 1440);
+					list.add(item);
+					index++;
+				}
+			} else {
+				PerformanceListItem item = new PerformanceListItem("",
+						getString(R.string.text_no_record), -1,
+						Constants.progressBarStyleSet[0], 0, 0, 0);
+				list.add(item);
+			}
 			updateAdapter();
 		}
 

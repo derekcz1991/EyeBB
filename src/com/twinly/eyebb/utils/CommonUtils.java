@@ -63,4 +63,10 @@ public class CommonUtils {
 		}
 		return passwordSHA256;
 	}
+
+	public static String minutesToHours(int minutes) {
+		int hours = minutes / 60;
+		minutes = minutes - hours * 60;
+		return hours + "hr " + minutes + "min.";
+	}
 }

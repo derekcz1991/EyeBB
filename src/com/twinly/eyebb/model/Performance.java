@@ -10,7 +10,8 @@ public class Performance {
 	private String daily;
 	private String weekly;
 	private String monthly;
-	private String lastUpdateDate;
+	private String average;
+	private String lastUpdateTime;
 
 	public long getChildId() {
 		return childId;
@@ -55,12 +56,25 @@ public class Performance {
 			this.monthly = monthly;
 	}
 
-	public String getLastUpdateDate() {
-		return lastUpdateDate;
+	public String getAverage() {
+		return average;
+	}
+	
+	public Map<String, Integer> getAverageMap() {
+		return getEntrySet(average);
 	}
 
-	public void setLastUpdateDate(String lastUpdateDate) {
-		this.lastUpdateDate = lastUpdateDate;
+	public void setAverage(String average) {
+		if (CommonUtils.isNotNull(average))
+			this.average = average;
+	}
+
+	public String getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(String lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
 	}
 
 	private Map<String, Integer> getEntrySet(String value) {

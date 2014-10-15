@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.model.PerformanceListItem;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class PerformanceListViewAdapter extends BaseAdapter {
 
@@ -91,7 +92,8 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 			viewHolder.content.setVisibility(View.VISIBLE);
 			viewHolder.subTitle.setText(list.get(position).getSubTitle());
 			if (list.get(position).getTime() != 0) {
-				viewHolder.time.setText(list.get(position).getTime() + " min.");
+				viewHolder.time.setText(CommonUtils.minutesToHours(list.get(
+						position).getTime()));
 			}
 			viewHolder.progressBar.setMax(list.get(position).getMaxProgress());
 			viewHolder.progressBar.setProgressDrawable(context.getResources()

@@ -22,7 +22,7 @@ public class DBPerformance {
 		values.put("daily", performance.getDaily());
 		values.put("weekly", performance.getWeekly());
 		values.put("monthly", performance.getMonthly());
-		values.put("last_update_date", performance.getLastUpdateDate());
+		values.put("last_update_date", performance.getLastUpdateTime());
 		db.insertOrThrow("performance", null, values);
 		db.close();
 	}
@@ -34,7 +34,7 @@ public class DBPerformance {
 		values.put("daily", performance.getDaily());
 		values.put("weekly", performance.getWeekly());
 		values.put("monthly", performance.getMonthly());
-		values.put("last_update_date", performance.getLastUpdateDate());
+		values.put("last_update_date", performance.getLastUpdateTime());
 		int result = db.update("performance", values, "child_id=?",
 				new String[] { String.valueOf(performance.getChildId()) });
 
@@ -61,7 +61,7 @@ public class DBPerformance {
 					.getColumnIndex("weekly")));
 			performance.setMonthly(cursor.getString(cursor
 					.getColumnIndex("monthly")));
-			performance.setLastUpdateDate(cursor.getString(cursor
+			performance.setLastUpdateTime(cursor.getString(cursor
 					.getColumnIndex("last_update_date")));
 		}
 		db.close();
