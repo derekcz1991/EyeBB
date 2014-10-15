@@ -95,7 +95,6 @@ public class LancherActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			System.out.println(result);
 			if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
 				goBackToLogin();
 				return;

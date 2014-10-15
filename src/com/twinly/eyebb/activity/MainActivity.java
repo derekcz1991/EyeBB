@@ -25,10 +25,12 @@ import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
 import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
@@ -54,6 +56,8 @@ public class MainActivity extends FragmentActivity implements
 	private boolean isRefreshing;
 	private boolean autoUpdateFlag;
 	private AutoUpdateTask autoUpdateTask;
+	private KeepSessionAliveTask keepSessionAliveTask;
+	private int timeoutCounter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +73,13 @@ public class MainActivity extends FragmentActivity implements
 		if (SharePrefsUtils.isAutoUpdate(this)) {
 			autoUpdateFlag = true;
 			autoUpdateTask = new AutoUpdateTask();
-			autoUpdateTask.execute();
+			autoUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
 			indoorLocatorFragment.updateView();
 		}
 		reportFragment.updateView();
+		keepSessionAliveTask = new KeepSessionAliveTask();
+		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	@Override
@@ -92,6 +98,12 @@ public class MainActivity extends FragmentActivity implements
 	protected void onDestroy() {
 		super.onDestroy();
 		autoUpdateFlag = false;
+		if (autoUpdateTask != null) {
+			autoUpdateTask.cancel(true);
+		}
+		if (keepSessionAliveTask != null) {
+			keepSessionAliveTask.cancel(true);
+		}
 	}
 
 	@SuppressLint("InflateParams")
@@ -316,6 +328,36 @@ public class MainActivity extends FragmentActivity implements
 				}
 			}
 			return null;
+		}
+	}
+
+	private class KeepSessionAliveTask extends AsyncTask<Void, String, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while (true) {
+				try {
+					Thread.sleep(600000); //10min = 600000s
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("KeepSessionAliveTask runs once --->>>");
+				this.publishProgress(HttpRequestUtils.get(
+						"reportService/api/refreshSession", null));
+			}
+		}
+
+		@Override
+		protected void onProgressUpdate(String... values) {
+			super.onProgressUpdate(values);
+			if (values[0].equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
+				timeoutCounter++;
+				if (timeoutCounter == 2) {
+					finish();
+				}
+			} else {
+				timeoutCounter = 0;
+			}
 		}
 	}
 
