@@ -1,14 +1,20 @@
 package com.twinly.eyebb.activity;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -20,6 +26,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.CommonUtils;
 
 public class ChildDialog extends Activity {
@@ -34,6 +41,10 @@ public class ChildDialog extends Activity {
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
+	final static int START_PROGRASSS_BAR = 1;
+	final static int STOP_PROGRASSS_BAR = 2;
+	private Dialog dialog;
+	private String URL = "reportService/api/configBeaconRel";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,4 +124,83 @@ public class ChildDialog extends Activity {
 			}
 		}
 	}
+	
+	
+	
+	/*Runnable postToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			// HANDLER
+			Message msg = handler.obtainMessage();
+			msg.what = START_PROGRASSS_BAR;
+			handler.sendMessage(msg);
+			postToServer(ChildIDfromKidsList);
+
+		}
+	};
+
+	/*private void postToServer(long childIDfromDeviceList) {
+		// TODO Auto-generated method stub
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("childId", String.valueOf(childIDfromDeviceList));
+		map.put("macAddress", MACaddress4submit);
+		System.out.println("MACaddress4submit=>" + MACaddress4submit);
+
+//		try {
+//			// String retStr = GetPostUtil.sendPost(url, postMessage);
+//			String retStr = HttpRequestUtils.post(URL,
+//					map);
+//			System.out.println("retStrpost======>" + retStr);
+//			if (retStr.equals("retStr.equals => "
+//					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+//					|| retStr.equals("") || retStr.length() == 0) {
+//				System.out
+//						.println("connect errorerrorerrorerrorerrorerrorerrorerrorerror");
+//
+//				dialog.dismiss();
+//
+//			} else {
+//				// successful
+//
+//				dialog.dismiss();
+//
+//			}
+//
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//
+//			Message msg = handler.obtainMessage();
+//			msg.what = STOP_PROGRASSS_BAR;
+//			handler.sendMessage(msg);
+//
+//		}
+
+		if (dialog != null && dialog.isShowing()) {
+			dialog.dismiss();
+		}
+	}*/
+
+	Handler handler = new Handler() {
+
+		@SuppressLint("ShowToast")
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+
+			case START_PROGRASSS_BAR:
+				dialog = LoadingDialog.createLoadingDialog(
+						ChildDialog.this,
+						getString(R.string.toast_loading));
+				dialog.show();
+				break;
+
+			case STOP_PROGRASSS_BAR:
+				dialog.dismiss();
+
+				break;
+
+			}
+		}
+	};
 }

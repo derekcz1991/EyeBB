@@ -1,6 +1,7 @@
 package com.twinly.eyebb.fragment;
 
 import java.io.Serializable;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,7 +72,7 @@ import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RadarTrackingFragment extends Fragment implements
-		RadarKidsListViewAdapterCallback {
+		RadarKidsListViewAdapterCallback, UncaughtExceptionHandler {
 	private SimpleAdapter mkidsListAdapter;
 	ArrayList<HashMap<String, Object>> mKidsData;
 	ImageView radar_rotate;
@@ -144,7 +145,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private ArrayList<Child> BeepTempChildData;
 	private ArrayList<Child> BeepAllTempChildData;
 
-	private Child child;
+	// private Child child;
 	private ArrayList<Child> MissChildData;
 
 	private View v;
@@ -408,7 +409,7 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 		}
 
-		clearAlltheDate();
+		// clearAlltheDate();
 	}
 
 	@SuppressLint("NewApi")
@@ -533,11 +534,8 @@ public class RadarTrackingFragment extends Fragment implements
 		// 清除頭像 清除數據 清除數量
 		removeImageHead(ScanedChildDataHeadNum);
 		removeMissImageHead(MissChildDataHeadNum);
-		ScanedTempChildData.clear();
-		ScanedChildData.clear();
-		MissChildData.clear();
-		listItem.clear();
-		mLeDevices.clear();
+
+		clearAlltheDate();
 		missingChildNumTxt.setText(MissChildData.size() + "");
 		unMissingChildNumTxt.setText(ScanedTempChildData.size() + "");
 
@@ -917,7 +915,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
-	public static void removeDuplicate(List list) {
+	public static void removeDuplicate(ArrayList<Child> list) {
 		for (int i = 0; i < list.size() - 1; i++) {
 			for (int j = list.size() - 1; j > i; j--) {
 				if (list.get(j).equals(list.get(i))) {
@@ -928,7 +926,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// System.out.println(list);
 	}
 
-	public static void removeDuplicateList(List list) {
+	public static void removeDuplicateList(ArrayList<Child> list) {
 		HashSet h = new HashSet(list);
 		list.clear();
 		list.addAll(h);
@@ -980,14 +978,28 @@ public class RadarTrackingFragment extends Fragment implements
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
 						.clone();
 
-				removeDuplicate(ScanedTempChildData);
+				// removeDuplicate(ScanedTempChildData);
 				try {
 					removeDuplicateList(ScanedTempChildData);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					removeDuplicateList(ScanedTempChildData);
+					// removeDuplicateList(ScanedTempChildData);
 					e.printStackTrace();
 				}
+
+				// 頭像遍歷ChildData child有屬性ismissing
+				// ScanedChildData在ChildData的肯定是true 沒有丟失 然後遍歷頭像輸出
+				for (int x = 0; x < ScanedTempChildData.size(); x++) {
+					for (int y = 0; y < ChildData.size(); y++) {
+						if (ScanedTempChildData.get(y).getChildId() == ChildData
+								.get(x).getChildId()) {
+							ChildData.get(x).setMissing(true);
+							break;
+						}
+					}
+				}
+				
+				
 
 				if (ScanedTempChildData.size() >= 0) {
 					BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
@@ -1067,24 +1079,54 @@ public class RadarTrackingFragment extends Fragment implements
 				// radar頭像
 
 				clearAlltheDate();
+
 			}
 		}
 	};
 
 	private void clearAlltheDate() {
-		// clear all the data
-		if (ScanedTempChildData != null)
-			ScanedTempChildData.clear();
-		// if (BeepAllTempChildData != null)
-		// BeepAllTempChildData.clear();
-		if (ScanedChildData != null)
-			ScanedChildData.clear();
-		if (MissChildData != null)
-			MissChildData.clear();
-		if (listItem != null)
-			listItem.clear();
-		if (mLeDevices != null)
-			mLeDevices.clear();
+		if (ScanedTempChildData != null) {
+			Iterator<Child> it = ScanedTempChildData.iterator();
+			for (; it.hasNext();) {
+				it.next();
+				it.remove();
+			}
+		}
+		if (BeepAllTempChildData != null) {
+			Iterator<Child> it1 = BeepAllTempChildData.iterator();
+			for (; it1.hasNext();) {
+				it1.next();
+				it1.remove();
+			}
+		}
+		if (MissChildData != null) {
+			Iterator<Child> it2 = MissChildData.iterator();
+			for (; it2.hasNext();) {
+				it2.next();
+				it2.remove();
+			}
+		}
+		if (listItem != null) {
+			Iterator<HashMap<String, Object>> it3 = listItem.iterator();
+			for (; it3.hasNext();) {
+				it3.next();
+				it3.remove();
+			}
+		}
+		if (mLeDevices != null) {
+			Iterator<BluetoothDevice> it4 = mLeDevices.iterator();
+			for (; it4.hasNext();) {
+				it4.next();
+				it4.remove();
+			}
+		}
+		if (ScanedChildData != null) {
+			Iterator<Child> it5 = ScanedChildData.iterator();
+			for (; it5.hasNext();) {
+				it5.next();
+				it5.remove();
+			}
+		}
 	}
 
 	@SuppressLint("NewApi")
@@ -1137,14 +1179,14 @@ public class RadarTrackingFragment extends Fragment implements
 								// + ChildData.size());
 
 								for (int i = 0; i < ChildData.size(); i++) {
-									child = ChildData.get(i);
+									Child child = ChildData.get(i);
 									// System.out.println("ChildData.size()>"
 									// + ChildData.size());
 									// System.out.println("child.getMacAddress()=>"
 									// + child.getMacAddress());
 
 									if (child.getMacAddress().equals(
-											entry.getValue().getAddress())) {
+											device.getAddress())) {
 
 										if (openAnti) {
 											RSSIforBeep(rssi, device);
@@ -1166,6 +1208,8 @@ public class RadarTrackingFragment extends Fragment implements
 												+ entry.getValue().getMinor()
 												+ " RSSI:"
 												+ entry.getValue().getRssi());
+										// System.out.println("childchildchild+"
+										// + child.getMacAddress());
 										ScanedChildData.add(child);
 
 										listItem.add(map);
@@ -1344,5 +1388,13 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 
 		}
+	}
+
+	@Override
+	public void uncaughtException(Thread thread, Throwable ex) {
+		// TODO Auto-generated method stub
+		System.out.println("This is:" + thread.getName() + ",Message:"
+				+ ex.getMessage());
+		ex.printStackTrace();
 	}
 }

@@ -79,6 +79,10 @@ public class IndoorLocatorFragment extends Fragment implements
 		return v;
 	}
 
+	/**
+	 * beepall will post children data (ID and macAddress) to the server
+	 * @param v
+	 */
 	private void setUpListener(View v) {
 		v.findViewById(R.id.btn_beepall).setOnClickListener(
 				new OnClickListener() {
@@ -107,7 +111,10 @@ public class IndoorLocatorFragment extends Fragment implements
 
 					}
 				});
-
+		
+		/*
+		 * children dialog
+		 */
 		v.findViewById(R.id.btn_kidslist).setOnClickListener(
 				new OnClickListener() {
 

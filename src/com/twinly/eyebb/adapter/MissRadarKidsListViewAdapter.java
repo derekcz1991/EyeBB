@@ -51,6 +51,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 		public View beepBtn;
 		public TextView ChildStatus;
 		public TextView DeviceConnectStatus;
+		public RelativeLayout allView;
 	}
 
 	public MissRadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
@@ -101,6 +102,10 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			// DensityUtil.dip2px(context, 32));
 
 			viewHolder = new ViewHolder();
+			viewHolder.allView = (RelativeLayout) convertView
+					.findViewById(R.id.newslist_item_layout);
+			viewHolder.allView.setAlpha((float) 0.3);
+
 			viewHolder.avatar = (CircleImageView) convertView
 					.findViewById(R.id.radar_child_head_img);
 			// // 設置item圖片為白色
@@ -110,6 +115,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 
 			viewHolder.beepBtn = convertView
 					.findViewById(R.id.radar_item_beep_btn);
+			viewHolder.beepBtn.setVisibility(View.GONE);
 
 			viewHolder.name = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_name);
@@ -117,9 +123,10 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.ChildStatus = (TextView) convertView
 					.findViewById(R.id.radar_list_kids_missd);
 			// viewHolder.status.setVisibility(View.GONE);
-			viewHolder.DeviceConnectStatus = (TextView) convertView.findViewById(R.id.device_connect_status);
+			viewHolder.DeviceConnectStatus = (TextView) convertView
+					.findViewById(R.id.device_connect_status);
 			viewHolder.DeviceConnectStatus.setVisibility(View.GONE);
-			
+
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -130,7 +137,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 
 	private void setUpView(ViewHolder viewHolder, final int position) {
 		if (data.size() > position) {
-			//System.out.println("POITION MISS = >" + position);
+			// System.out.println("POITION MISS = >" + position);
 
 			Child child = null;
 			try {
