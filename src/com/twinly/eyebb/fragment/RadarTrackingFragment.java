@@ -989,16 +989,16 @@ public class RadarTrackingFragment extends Fragment implements
 
 				// 頭像遍歷ChildData child有屬性ismissing
 				// ScanedChildData在ChildData的肯定是true 沒有丟失 然後遍歷頭像輸出
-				for (int x = 0; x < ScanedTempChildData.size(); x++) {
-					for (int y = 0; y < ChildData.size(); y++) {
-						if (ScanedTempChildData.get(y).getChildId() == ChildData
-								.get(x).getChildId()) {
-							ChildData.get(x).setMissing(true);
-							break;
-						}
-					}
-				}
-				
+//				for (int x = 0; x < ScanedTempChildData.size(); x++) {
+//					for (int y = 0; y < ChildData.size(); y++) {
+//						if (ScanedTempChildData.get(y).getChildId() == ChildData
+//								.get(x).getChildId()) {
+//							ChildData.get(x).setMissing(true);
+//							break;
+//						}
+//					}
+//				}
+//				
 				
 
 				if (ScanedTempChildData.size() >= 0) {
