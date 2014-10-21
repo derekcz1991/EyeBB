@@ -8,6 +8,10 @@
     <string name="text_password">Password</string>
     <string name="text_login_account">User Name or Email Address</string>
     <string name="text_select_kid_kindergarten">Select your kid\&apos;s kindergarten</string>
+        <string name="text_fill_kid_name">Fill in your kid\&apos;s name</string>
+         <string name="text_kid_name">Kid\&apos;s name</string>
+         <string name="text_kid_birthday">Kid\&apos;s birthday</string>
+            <string name="text_select_kid_birthday">Select your kid\&apos;s birthday</string>
     <string name="text_device_is_found">Device is found. Please verify it by your kid\&apos;s date of birth.</string>
     <string name="text_forgot_password">Forgot your password?</string>
     <string name="text_indoor_locator">Indoor Locator</string>
@@ -62,7 +66,10 @@
     <string name="text_http">Welcome to www.eyebb.com</string>
     <string name="text_invalidKindergarten">Invalid kindergarten</string>
     <string name="text_matching_verification">Matching Verification</string>
-    <string name="text_matching_device">Matching Device</string>
+    <string name="text_matching_device">Device Matching</string>
+        <string name="text_child_information_matching">Child Information Matching</string>
+        <string name="text_choose_role">Choose role</string>
+        <string name="text_choose_role_hint">Please, choose a role!</string>
     <string name="text_device_verified">Device Verified!</string>
     <string name="text_error_username">The User Name is not in the correct format! \n(eg.A-Z a-z 0-9 _) Length:3-30</string>
     <string name="text_error_email">The Email is not in the correct format!</string>
@@ -81,6 +88,8 @@
     <string name="text_connect_device_status_success">Success</string>
         <string name="text_connect_device_status_wait">Waiting...</string>
     <string name="text_no_record">No record</string>
+      <string name="text_role_master">Master user</string>
+        <string name="text_role_guest">Guest user</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

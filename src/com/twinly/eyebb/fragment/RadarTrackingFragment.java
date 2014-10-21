@@ -134,8 +134,6 @@ public class RadarTrackingFragment extends Fragment implements
 	// 判斷confirmRadarBtn是否被點擊
 	private Boolean isConfirmRadarBtn = false;
 
-	private SharedPreferences MajorAndMinorPreferences;
-
 	// device map
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 
@@ -144,20 +142,19 @@ public class RadarTrackingFragment extends Fragment implements
 	private static ArrayList<Child> ScanedTempChildData;
 	private ArrayList<Child> BeepTempChildData;
 	private ArrayList<Child> BeepAllTempChildData;
-
+	// 檢測頭像是否有改變
+	private ArrayList<Child> scanedHeadChildData;
+	private ArrayList<Child> missedHeadChildData;
 	// private Child child;
 	private ArrayList<Child> MissChildData;
 
 	private View v;
-	private Boolean firstAddImageHead = true;
-	private Boolean MissfirstAddImageHead = true;
 	private static RadarTrackingFragment RadarTrackingFragmentInstance = null;
 	RelativeLayout InitMainLayout = null;
 	RelativeLayout MissMainLayout = null;
 	RelativeLayout mainLayout = null;
 	private TimerTask BeepCheckTimeOutTask = null;
 
-	private boolean isInit = true;
 	private boolean isFirstBeep = true;
 	private int beepAllTime = 0;
 	Timer timer = null;
@@ -180,65 +177,36 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private boolean isLeScan;
 
+	// 頭像四方位定位
+	private int zeroMissX = 100;
+	private int zeroMissY = 10;
+
+	private int oneMissX = 10;
+	private int oneMissY = 100;
+
+	private int twoMissX = 10;
+	private int twoMissY = 100;
+
+	private int threeMissX = 100;
+	private int threeMissY = 10;
+
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		System.out.println("onCreateView");
 
-		MajorAndMinorPreferences = getActivity().getSharedPreferences(
-				"MajorAndMinor", getActivity().MODE_PRIVATE);
-
 		v = inflater
 				.inflate(R.layout.fragment_radar_tracking, container, false);
 		RadarTrackingFragmentInstance = this;
 
+		initView(v);
+
 		ChildData = DBChildren.getChildrenList(getActivity());
-		ChildlistView = (LinearLayoutForListView) v
-				.findViewById(R.id.radar_children_list);
-		MissChildlistView = (LinearLayoutForListView) v
-				.findViewById(R.id.radar_children_list_miss);
-		// listview初始化為看不見
-		ChildlistView.setVisibility(View.GONE);
-		MissChildlistView.setVisibility(View.GONE);
-		ScanedChildData = new ArrayList<Child>();
-		ScanedTempChildData = new ArrayList<Child>();
-		MissChildData = new ArrayList<Child>();
-
-		// ScanedChildData.clear();
-		// MissChildData.clear();
-
-		RadarView = v.findViewById(R.id.radar_view);
-
-		radarBeepAllBtn = v.findViewById(R.id.radar_beep_all_btn);
-		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
-		radarScrollView.smoothScrollTo(0, 0);
-
-		// 改變所有數據
-		// chageTheAllData();
-		// MissChildadapter.notifyDataSetChanged();
-
-		missingChildNumTxt = (TextView) v
-				.findViewById(R.id.radar_text_missed_number);
-		unMissingChildNumTxt = (TextView) v
-				.findViewById(R.id.radar_text_supervised_number);
-
-		confirmRadarBtn = (TextView) v.findViewById(R.id.confirm_radar_btn);
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
-
-		// 防丟器
-		openAntiTheft = (LinearLayout) v
-				.findViewById(R.id.connection_status_btn);
-		openAntiTheftTX = (TextView) v.findViewById(R.id.connection_status_txt);
-
-		// bluetooth
-		// connect device
-		// btnConfirm = v.findViewById(R.id.btn_confirm);
-		// btnCancel = v.findViewById(R.id.btn_cancel);
-		btnStatus = v.findViewById(R.id.connection_status_btn);
 
 		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -302,6 +270,50 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
+	@SuppressLint("CutPasteId")
+	private void initView(View v) {
+		ChildlistView = (LinearLayoutForListView) v
+				.findViewById(R.id.radar_children_list);
+		MissChildlistView = (LinearLayoutForListView) v
+				.findViewById(R.id.radar_children_list_miss);
+		// listview初始化為看不見
+		ChildlistView.setVisibility(View.GONE);
+		MissChildlistView.setVisibility(View.GONE);
+		ScanedChildData = new ArrayList<Child>();
+		ScanedTempChildData = new ArrayList<Child>();
+		MissChildData = new ArrayList<Child>();
+
+		// ScanedChildData.clear();
+		// MissChildData.clear();
+
+		RadarView = v.findViewById(R.id.radar_view);
+
+		radarBeepAllBtn = v.findViewById(R.id.radar_beep_all_btn);
+		radarScrollView = (ScrollView) v.findViewById(R.id.radar_scrollview);
+		radarScrollView.smoothScrollTo(0, 0);
+
+		// 改變所有數據
+		// chageTheAllData();
+		// MissChildadapter.notifyDataSetChanged();
+
+		missingChildNumTxt = (TextView) v
+				.findViewById(R.id.radar_text_missed_number);
+		unMissingChildNumTxt = (TextView) v
+				.findViewById(R.id.radar_text_supervised_number);
+
+		confirmRadarBtn = (TextView) v.findViewById(R.id.confirm_radar_btn);
+		// 防丟器
+		openAntiTheft = (LinearLayout) v
+				.findViewById(R.id.connection_status_btn);
+		openAntiTheftTX = (TextView) v.findViewById(R.id.connection_status_txt);
+
+		// bluetooth
+		// connect device
+		// btnConfirm = v.findViewById(R.id.btn_confirm);
+		// btnCancel = v.findViewById(R.id.btn_cancel);
+		btnStatus = v.findViewById(R.id.connection_status_btn);
+	}
+
 	@SuppressLint("NewApi")
 	@Override
 	public void onDestroy() {
@@ -312,7 +324,14 @@ public class RadarTrackingFragment extends Fragment implements
 		isWhileLoop = false;
 		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		handler.removeCallbacksAndMessages(BEEPTIMEOUT);
-		getActivity().stopService(beepIntent);
+
+		try {
+			if (beepIntent != null)
+				getActivity().stopService(beepIntent);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		stopTimer();
 		mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -324,21 +343,6 @@ public class RadarTrackingFragment extends Fragment implements
 		public void run() {
 			// System.out.println("isWhileLoop==>" + isWhileLoop);
 			while (isWhileLoop) {
-				// System.out.println("isWhileLoop==>" + isWhileLoop);
-				// if (scan_flag) {
-				//
-				// scanLeDevice(false);
-				//
-				// } else {
-				//
-				// scanLeDevice(true);
-				// // try {
-				// // Thread.sleep(Constants.SCANTIME);
-				// // } catch (InterruptedException e) {
-				// // // TODO Auto-generated catch block
-				// // e.printStackTrace();
-				// // }
-				// }
 				scanLeDevice(true);
 			}
 
@@ -422,8 +426,13 @@ public class RadarTrackingFragment extends Fragment implements
 		isWhileLoop = false;
 		// handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		// handler.removeCallbacksAndMessages(BEEPTIMEOUT);
-		if (beepIntent != null)
-			getActivity().stopService(beepIntent);
+		try {
+			if (beepIntent != null)
+				getActivity().stopService(beepIntent);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// stopTimer();
 
@@ -669,6 +678,157 @@ public class RadarTrackingFragment extends Fragment implements
 	 * @param cim
 	 * @param getPeople
 	 */
+	// @SuppressLint("NewApi")
+	// private void HeadPosition(CircleImageView cim) {
+	// // // 初始化為中心
+	// RelativeLayout.LayoutParams layoutParams = new
+	// RelativeLayout.LayoutParams(
+	// DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+	// getActivity(), 32));
+	//
+	// cim.setX(DensityUtil.dip2px(getActivity(), 160));
+	//
+	// getScreenWidth = getScreenInfo();
+	// // 24 = 8邊框 + 16ImageView
+	// DipGetScreenWidth = getScreenWidth / 2
+	// - DensityUtil.dip2px(getActivity(), 24);
+	// // 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+	// // int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+	// // System.out.println("tete" + te);
+	// initX = DipGetScreenWidth;
+	// initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+	//
+	// int RightorLeft = 1 + (int) (Math.random() * 2);
+	// int toporBottom = 1 + (int) (Math.random() * 2);
+	// cim.setBorderColor(getResources().getColor(R.color.white));
+	//
+	// cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+	//
+	// addX = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+	// addY = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+	//
+	// if ((addX * addX + addY * addY) <= DensityUtil.dip2px(getActivity(),
+	// 7225)) {
+	// if (toporBottom == 1) {
+	// initY = initY - addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// } else if (toporBottom == 2) {
+	// initY = initY + addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// }
+	//
+	// // System.out.println("initX + initY :" + initX + " " + initY);
+	// cim.setX(initX);
+	// cim.setY(initY);
+	//
+	// } else {
+	// HeadPosition(cim);
+	// }
+	//
+	// cim.setLayoutParams(layoutParams);
+	// }
+	//
+	// private void missHeadPosition(CircleImageView cim, int initHeadPosition)
+	// {
+	// RelativeLayout.LayoutParams layoutParams = new
+	// RelativeLayout.LayoutParams(
+	// DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+	// getActivity(), 32));
+	//
+	// cim.setX(DensityUtil.dip2px(getActivity(), 160));
+	//
+	// getScreenWidth = getScreenInfo();
+	// // 24 = 8邊框 + 16ImageView
+	// DipGetScreenWidth = getScreenWidth / 2
+	// - DensityUtil.dip2px(getActivity(), 24);
+	// // 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+	// // int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+	// // System.out.println("tete" + te);
+	// initX = DipGetScreenWidth;
+	// initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+	//
+	// int RightorLeft = 1;
+	// int toporBottom = 1;
+	// // int RightorLeft = 1;
+	// // int toporBottom = 1;
+	// switch (initHeadPosition) {
+	// case 0:
+	// RightorLeft = 1;
+	// toporBottom = 1;
+	// break;
+	//
+	// case 1:
+	// RightorLeft = 2;
+	// toporBottom = 1;
+	// break;
+	//
+	// case 2:
+	// RightorLeft = 1;
+	// toporBottom = 2;
+	// break;
+	//
+	// case 3:
+	// RightorLeft = 2;
+	// toporBottom = 2;
+	// break;
+	// }
+	//
+	// cim.setBorderColor(getResources().getColor(R.color.red));
+	// cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+	//
+	// int missX = (int) (Math.random() * 120);
+	// int missY = (int) (Math.random() * 120);
+	//
+	// // System.out.println("addY + addx :" + missX * missX + " " + missY
+	// // * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
+	// // + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
+	// // + 90 + (int) (Math.random() * 30));
+	// if ((missX * missX + missY * missY) < 14000
+	// && (missX * missX + missY * missY) > 10000) {
+	// addX = DensityUtil.dip2px(getActivity(), missX);
+	// addY = DensityUtil.dip2px(getActivity(), missY);
+	// // System.out.println("啊啊啊啊啊啊 ");
+	//
+	// if (toporBottom == 1) {
+	// initY = initY - addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// } else if (toporBottom == 2) {
+	// initY = initY + addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// }
+	//
+	// // System.out.println("initX + initY :" + initX + " " + initY);
+	//
+	// cim.setX(initX);
+	// cim.setY(initY);
+	//
+	// } else {
+	// missHeadPosition(cim, initHeadPosition);
+	// }
+	//
+	// cim.setLayoutParams(layoutParams);
+	// }
+
 	@SuppressLint("NewApi")
 	private void HeadPosition(CircleImageView cim) {
 		// // 初始化為中心
@@ -747,60 +907,80 @@ public class RadarTrackingFragment extends Fragment implements
 
 		int RightorLeft = 1;
 		int toporBottom = 1;
-		// int RightorLeft = 1;
-		// int toporBottom = 1;
+		int finalMissX = 100;
+		int finalMissY = 10;
 		switch (initHeadPosition) {
 		case 0:
 			RightorLeft = 1;
 			toporBottom = 1;
+			zeroMissX = zeroMissX + 10;
+			zeroMissY = zeroMissY + 10;
+			finalMissX = zeroMissX;
+			finalMissY = zeroMissY;
 			break;
 
 		case 1:
 			RightorLeft = 2;
 			toporBottom = 1;
+			oneMissX = oneMissX + 10;
+			oneMissY = oneMissY + 10;
+			finalMissX = oneMissX;
+			finalMissY = oneMissY;
 			break;
 
 		case 2:
 			RightorLeft = 1;
 			toporBottom = 2;
+			twoMissX = twoMissX + 10;
+			twoMissY = twoMissY + 10;
+			finalMissX = twoMissX;
+			finalMissY = twoMissY;
 			break;
 
 		case 3:
 			RightorLeft = 2;
 			toporBottom = 2;
+			threeMissX = threeMissX + 10;
+			threeMissY = threeMissY + 10;
+			finalMissX = threeMissX;
+			finalMissY = threeMissY;
 			break;
 		}
 
 		cim.setBorderColor(getResources().getColor(R.color.red));
 		cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
 
-		int missX = (int) (Math.random() * 120);
-		int missY = (int) (Math.random() * 120);
+		// int missX = (int) (Math.random() * 120);
+		// int missY = (int) (Math.random() * 120);
 
 		// System.out.println("addY + addx :" + missX * missX + " " + missY
 		// * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
 		// + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
 		// + 90 + (int) (Math.random() * 30));
-		if ((missX * missX + missY * missY) < 14000
-				&& (missX * missX + missY * missY) > 10000) {
-			addX = DensityUtil.dip2px(getActivity(), missX);
-			addY = DensityUtil.dip2px(getActivity(), missY);
+		if ((finalMissX * finalMissX + finalMissY * finalMissY) < 14000
+				&& (finalMissX * finalMissX + finalMissY * finalMissY) > 10000) {
+			addX = DensityUtil.dip2px(getActivity(), finalMissX);
+			addY = DensityUtil.dip2px(getActivity(), finalMissY);
 			// System.out.println("啊啊啊啊啊啊 ");
 
 			if (toporBottom == 1) {
 				initY = initY - addY;
 
 				if (RightorLeft == 1) {
+					// zero right top
 					initX = initX + addX;
 				} else if (RightorLeft == 2) {
+					// one left top
 					initX = initX - addX;
 				}
 			} else if (toporBottom == 2) {
 				initY = initY + addY;
 
 				if (RightorLeft == 1) {
+					// two right bottom
 					initX = initX + addX;
 				} else if (RightorLeft == 2) {
+					// three left bottom
 					initX = initX - addX;
 				}
 			}
@@ -811,6 +991,20 @@ public class RadarTrackingFragment extends Fragment implements
 			cim.setY(initY);
 
 		} else {
+			zeroMissX = 100;
+			zeroMissY = 10;
+
+			oneMissX = 10;
+			oneMissY = 100;
+
+			twoMissX = 10;
+			twoMissY = 100;
+
+			threeMissX = 100;
+			threeMissY = 10;
+
+			finalMissX = 100;
+			finalMissY = 10;
 			missHeadPosition(cim, initHeadPosition);
 		}
 
@@ -987,20 +1181,6 @@ public class RadarTrackingFragment extends Fragment implements
 					e.printStackTrace();
 				}
 
-				// 頭像遍歷ChildData child有屬性ismissing
-				// ScanedChildData在ChildData的肯定是true 沒有丟失 然後遍歷頭像輸出
-//				for (int x = 0; x < ScanedTempChildData.size(); x++) {
-//					for (int y = 0; y < ChildData.size(); y++) {
-//						if (ScanedTempChildData.get(y).getChildId() == ChildData
-//								.get(x).getChildId()) {
-//							ChildData.get(x).setMissing(true);
-//							break;
-//						}
-//					}
-//				}
-//				
-				
-
 				if (ScanedTempChildData.size() >= 0) {
 					BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
 							.clone();
@@ -1026,7 +1206,6 @@ public class RadarTrackingFragment extends Fragment implements
 					unMissingChildNumTxt.setText(ScanedTempChildData.size()
 							+ "");
 				}
-
 				if (ScanedTempChildData != null) {
 					addImageHead(ScanedTempChildData);
 					ScanedChildDataHeadNum = ScanedTempChildData.size();
@@ -1073,14 +1252,129 @@ public class RadarTrackingFragment extends Fragment implements
 
 				}
 
-				// }
-
 				chageTheAllData(ScanedTempChildData, MissChildData);
 				// radar頭像
 
 				clearAlltheDate();
 
 			}
+
+			// case SCAN_CHILD_FOR_LIST:
+			// // device status
+			// if (SharePrefsUtils.DeviceConnectStatus(getActivity()) ==
+			// Constants.DEVICE_CONNECT_STATUS_ERROR) {
+			// deviceStatusError++;
+			// if (deviceStatusError == 2) {
+			// SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+			// Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+			// deviceStatusError = 0;
+			// }
+			// }
+			//
+			// ScanedTempChildData = (ArrayList<Child>) ScanedChildData
+			// .clone();
+			//
+			// // removeDuplicate(ScanedTempChildData);
+			// try {
+			// removeDuplicateList(ScanedTempChildData);
+			// } catch (Exception e) {
+			// // TODO Auto-generated catch block
+			// // removeDuplicateList(ScanedTempChildData);
+			// e.printStackTrace();
+			// }
+			//
+			// if (ScanedTempChildData.size() >= 0) {
+			// BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
+			// .clone();
+			// // beep all the device
+			// BeepAllTempChildData = (ArrayList<Child>) ScanedTempChildData
+			// .clone();
+			// }
+			//
+			// if (SharePrefsUtils.isInitHead(getActivity())) {
+			// SharePrefsUtils.setInitHead(getActivity(), false);
+			// } else {
+			//
+			// if (ScanedChildDataHeadNum >= 0) {
+			// removeImageHead(ScanedChildDataHeadNum);
+			// }
+			//
+			// }
+			// //
+			// // System.out.println("ScanedChildData1=>"
+			// // + ScanedTempChildData.size());
+			// //
+			// if (ScanedTempChildData != null) {
+			// unMissingChildNumTxt.setText(ScanedTempChildData.size()
+			// + "");
+			// }
+			//
+			// // System.out.println("ScanedChildData2=>"
+			// // + ScanedTempChildData.size());
+			//
+			// MissChildData = DBChildren.getChildrenList(getActivity());
+			// for (int x = 0; x < ScanedTempChildData.size(); x++) {
+			// for (int y = 0; y < MissChildData.size(); y++) {
+			// if (ScanedTempChildData.get(x).getChildId() == MissChildData
+			// .get(y).getChildId()) {
+			// MissChildData.remove(y);
+			// break;
+			// }
+			//
+			// }
+			// }
+			//
+			// // System.out.println("MissChildDataMissChildData=>"
+			// // + MissChildData.size());
+			//
+			// // System.out.println("ScanedChildData3=>"
+			// // + ScanedTempChildData.size());
+			//
+			// if (MissChildData != null) {
+			// missingChildNumTxt.setText(MissChildData.size() + "");
+			// }
+			//
+			// if (SharePrefsUtils.isInitHead(getActivity())) {
+			// SharePrefsUtils.setInitHead(getActivity(), false);
+			// } else {
+			// if (MissChildDataHeadNum >= 0) {
+			// removeMissImageHead(MissChildDataHeadNum);
+			// }
+			//
+			// }
+			//
+			// if (inFirstSetHeadImage) {
+			// inFirstSetHeadImage = false;
+			// if (ScanedTempChildData != null) {
+			// addImageHead(ScanedTempChildData);
+			// ScanedChildDataHeadNum = ScanedTempChildData.size();
+			//
+			// }
+			//
+			// if (MissChildData != null) {
+			// addMissImageHead(MissChildData);
+			// MissChildDataHeadNum = MissChildData.size();
+			//
+			// }
+			//
+			// scanedHeadChildData = (ArrayList<Child>)
+			// ScanedTempChildData.clone();
+			// missedHeadChildData = (ArrayList<Child>) MissChildData.clone();
+			//
+			// }else{
+			// //先對比有什麼變化
+			//
+			//
+			// }
+			//
+			// // }
+			//
+			// chageTheAllData(ScanedTempChildData, MissChildData);
+			// // radar頭像
+			//
+			// clearAlltheDate();
+			//
+			// }
 		}
 	};
 
@@ -1365,12 +1659,12 @@ public class RadarTrackingFragment extends Fragment implements
 			// System.out.println("beepAllTime=>" + beepAllTime);
 			if (beepAllTime == 10) {
 
-				Intent beepIntent = new Intent();
+				Intent beepForAntiIntent = new Intent();
 
-				beepIntent.setClass(getActivity(),
+				beepForAntiIntent.setClass(getActivity(),
 						RadarOutOfRssiBeepDialog.class);
 
-				startActivity(beepIntent);
+				startActivity(beepForAntiIntent);
 
 			}
 

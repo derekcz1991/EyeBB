@@ -104,6 +104,16 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.ChildInformationMatchingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.ChooseUsrRoleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -118,7 +128,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
-          <activity
+        <activity
             android:name="com.twinly.eyebb.activity.BeepAllForRadarDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >

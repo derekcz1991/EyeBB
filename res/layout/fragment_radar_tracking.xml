@@ -261,53 +261,38 @@
                         android:layout_width="fill_parent"
                         android:layout_height="240dp" >
 
-                        <!--
-                     <com.twinly.eyebb.customview.CircleImageView
-                    android:id="@+id/radar_child_scan_head_img"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginLeft="8dp"
-                    android:src="@drawable/hugh"
-                    app:border_color="@color/red"
-                    app:border_width="2dp" />
-                        -->
+                        <!-- initial head position -->
 
                         <RelativeLayout
                             android:id="@+id/layout_circle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:paddingBottom="20dp"
-                            android:paddingTop="20dp" >
+                            android:padding="20dp" >
 
                             <ImageView
                                 android:id="@+id/radar_circle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
                                 android:src="@drawable/bg_radar_circle" />
 
                             <!--
-           <com.twinly.eyebb.customview.CircleImageView
-                android:id="@+id/radar_child_head_0"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/hugh"
-                app:border_color="@color/red"
-                app:border_width="2dp" /> 
-                            -->
+                                 <com.twinly.eyebb.customview.CircleImageView
+                                android:id="@+id/radar_child_scan_head_img1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/hugh"
+                                android:layout_x=""
+                                app:border_color="@color/red" >
 
-
-                            <!--
-                             <com.twinly.eyebb.customview.CircleImageView
-                            android:id="@+id/radar_child_head_1"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/hugh"
-                            app:border_color="@color/red"
-                            app:border_width="2dp" />
+                                <com.twinly.eyebb.customview.CircleImageView
+                                    android:id="@+id/radar_child_scan_head_img2"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:src="@drawable/hugh"
+                                    app:border_color="@color/red"
+                                    app:border_width="2dp" />
                             -->
 
                             <ImageView
@@ -316,6 +301,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:src="@drawable/bg_radar_rotate" />
+
+                      
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -415,8 +402,8 @@
                 android:id="@+id/radar_children_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alpha="0.3"
                 android:layout_marginBottom="56dp"
+                android:alpha="0.3"
                 android:orientation="vertical" >
             </com.twinly.eyebb.customview.LinearLayoutForListView>
 

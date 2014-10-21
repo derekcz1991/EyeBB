@@ -69,7 +69,7 @@ public class SignUpActivity extends Activity {
 							editor.commit();
 
 							Intent intent = new Intent(SignUpActivity.this,
-									MatchingDeviceActivity.class);
+									ChildInformationMatchingActivity.class);
 							startActivity(intent);
 
 						} else {

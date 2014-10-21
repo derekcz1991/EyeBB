@@ -432,7 +432,6 @@ public class DeviceListAcitivity extends Activity {
 	}
 
 	@SuppressLint("ShowToast")
-	@SuppressWarnings("unused")
 	private void postToServer(long childIDfromDeviceList) {
 		// TODO Auto-generated method stub
 

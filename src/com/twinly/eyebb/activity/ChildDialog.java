@@ -25,9 +25,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class ChildDialog extends Activity {
 
@@ -37,6 +39,8 @@ public class ChildDialog extends Activity {
 	private LinearLayout phoneBtn;
 	private CircleImageView avatar;
 	private String icon;
+	private int childId;
+	private String macAddress;
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -45,6 +49,7 @@ public class ChildDialog extends Activity {
 	final static int STOP_PROGRASSS_BAR = 2;
 	private Dialog dialog;
 	private String URL = "reportService/api/configBeaconRel";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +66,8 @@ public class ChildDialog extends Activity {
 		name.setText(getIntent().getStringExtra("name"));
 		locationName.setText("@ " + getIntent().getStringExtra("location"));
 		icon = getIntent().getStringExtra("icon");
+		childId = getIntent().getIntExtra("id", -1);
+		macAddress = getIntent().getStringExtra("macAddress");
 
 		if (phone.getText().toString().trim().length() == 0) {
 			phoneBtn.setVisibility(View.GONE);
@@ -98,6 +105,7 @@ public class ChildDialog extends Activity {
 						} else {
 							Intent intent = new Intent(ChildDialog.this,
 									BeepDialog.class);
+							new Thread(postToServerRunnable).start();
 							startActivity(intent);
 						}
 					}
@@ -124,64 +132,60 @@ public class ChildDialog extends Activity {
 			}
 		}
 	}
-	
-	
-	
-	/*Runnable postToServerRunnable = new Runnable() {
+
+	Runnable postToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
 			// HANDLER
 			Message msg = handler.obtainMessage();
 			msg.what = START_PROGRASSS_BAR;
 			handler.sendMessage(msg);
-			postToServer(ChildIDfromKidsList);
+			postToServer();
 
 		}
 	};
 
-	/*private void postToServer(long childIDfromDeviceList) {
+	private void postToServer() {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("childId", String.valueOf(childIDfromDeviceList));
-		map.put("macAddress", MACaddress4submit);
-		System.out.println("MACaddress4submit=>" + MACaddress4submit);
+		map.put("childId", childId + "");
+		map.put("macAddress", macAddress);
 
-//		try {
-//			// String retStr = GetPostUtil.sendPost(url, postMessage);
-//			String retStr = HttpRequestUtils.post(URL,
-//					map);
-//			System.out.println("retStrpost======>" + retStr);
-//			if (retStr.equals("retStr.equals => "
-//					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-//					|| retStr.equals("") || retStr.length() == 0) {
-//				System.out
-//						.println("connect errorerrorerrorerrorerrorerrorerrorerrorerror");
-//
-//				dialog.dismiss();
-//
-//			} else {
-//				// successful
-//
-//				dialog.dismiss();
-//
-//			}
-//
-//		} catch (Exception e) {
-//
-//			e.printStackTrace();
-//
-//			Message msg = handler.obtainMessage();
-//			msg.what = STOP_PROGRASSS_BAR;
-//			handler.sendMessage(msg);
-//
-//		}
+		try {
+			// String retStr = GetPostUtil.sendPost(url, postMessage);
+			String retStr = HttpRequestUtils.post(URL, map);
+			System.out.println("retStrpost======>" + retStr);
+			if (retStr.equals("retStr.equals => "
+					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+					|| retStr.equals("") || retStr.length() == 0) {
+				System.out.println("connect error");
+
+				dialog.dismiss();
+
+			} else {
+				// successful
+
+				dialog.dismiss();
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			Message msg = handler.obtainMessage();
+			msg.what = STOP_PROGRASSS_BAR;
+			handler.sendMessage(msg);
+
+		}
 
 		if (dialog != null && dialog.isShowing()) {
 			dialog.dismiss();
 		}
-	}*/
+	}
 
+	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
 		@SuppressLint("ShowToast")
@@ -189,8 +193,7 @@ public class ChildDialog extends Activity {
 			switch (msg.what) {
 
 			case START_PROGRASSS_BAR:
-				dialog = LoadingDialog.createLoadingDialog(
-						ChildDialog.this,
+				dialog = LoadingDialog.createLoadingDialog(ChildDialog.this,
 						getString(R.string.toast_loading));
 				dialog.show();
 				break;

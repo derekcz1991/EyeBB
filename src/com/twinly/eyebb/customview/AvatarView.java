@@ -58,6 +58,8 @@ public class AvatarView {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(context, ChildDialog.class);
+				intent.putExtra("macAddress", child.getMacAddress());
+				intent.putExtra("id", child.getChildId());
 				intent.putExtra("phone", child.getPhone());
 				intent.putExtra("location", child.getLocationName());
 				intent.putExtra("name", child.getName());
