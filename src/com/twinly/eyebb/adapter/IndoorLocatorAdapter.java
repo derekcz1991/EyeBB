@@ -1,8 +1,11 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,12 +19,14 @@ import com.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.Location;
 
 public class IndoorLocatorAdapter extends BaseAdapter {
 	private Context context;
-	private List<Map.Entry<String, ArrayList<String>>> data;
+	private List<Map.Entry<Location, ArrayList<String>>> data;
 	private Map<String, Child> childrenMap;
 	private LayoutInflater inflater;
+	private boolean isSort;
 
 	public final class ViewHolder {
 		public LinearLayout rootLayout;
@@ -32,23 +37,54 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	}
 
 	public IndoorLocatorAdapter(Context context,
-			Map<String, ArrayList<String>> data, Map<String, Child> childrenMap) {
+			Map<Location, ArrayList<String>> data,
+			Map<String, Child> childrenMap, boolean isSort) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.childrenMap = childrenMap;
-
-		this.data = new ArrayList<Map.Entry<String, ArrayList<String>>>(
+		this.isSort = isSort;
+		this.data = new ArrayList<Map.Entry<Location, ArrayList<String>>>(
 				data.entrySet());
 
-		/*Collections.sort(this.data,
-				new Comparator<Map.Entry<String, ArrayList<String>>>() {
+		if (this.isSort) {
+			// remove the empty location
+			for (int i = 0; i < this.data.size(); i++) {
+				if (this.data.get(i).getValue().size() == 0) {
+					this.data.remove(i);
+					i--;
+				}
+			}
+			// sort the location by the children number
+			Collections.sort(this.data,
+					new Comparator<Map.Entry<Location, ArrayList<String>>>() {
 
-					@Override
-					public int compare(Entry<String, ArrayList<String>> lhs,
-							Entry<String, ArrayList<String>> rhs) {
-						return rhs.getValue().size() - lhs.getValue().size();
-					}
-				});*/
+						@Override
+						public int compare(
+								Entry<Location, ArrayList<String>> lhs,
+								Entry<Location, ArrayList<String>> rhs) {
+							if (rhs.getValue().size() - lhs.getValue().size() == 0) {
+								return (int) (lhs.getKey().getId() - rhs
+										.getKey().getId());
+							} else {
+								return rhs.getValue().size()
+										- lhs.getValue().size();
+							}
+						}
+					});
+		} else {
+			// sort the location by location id
+			Collections.sort(this.data,
+					new Comparator<Map.Entry<Location, ArrayList<String>>>() {
+
+						@Override
+						public int compare(
+								Entry<Location, ArrayList<String>> lhs,
+								Entry<Location, ArrayList<String>> rhs) {
+							return (int) (lhs.getKey().getId() - rhs.getKey()
+									.getId());
+						}
+					});
+		}
 	}
 
 	@Override
@@ -95,7 +131,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		// clear the view
 		viewHolder.avatarContainer.removeAllViews();
 
-		String locationName = data.get(position).getKey();
+		String locationName = data.get(position).getKey().getName();
 		// set the area name
 		viewHolder.areaName.setText(locationName);
 		ArrayList<String> childrenIds = data.get(position).getValue();
@@ -116,9 +152,6 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			}
 
 			viewHolder.avatarContainer.addView(avatarView.getInstance(), 0);
-
-			// update the child's location
-			//childrenMap.get(childrenIds.get(i)).setLocationName(locationName);
 		}
 
 		if (locationName.contains("Sleeping")) {

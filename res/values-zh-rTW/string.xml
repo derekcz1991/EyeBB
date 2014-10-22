@@ -84,21 +84,22 @@
     <string name="text_none_of_the_kids_that_stay_nearby">還沒搜索到孩子</string>
     <string name="text_beep_all_device">蜂鳴全部的設備?</string>
     <string name="text_connect_device_status_loading">連接...</string>
-  <string name="text_connect_device_status_error">錯誤,請重試</string>
+    <string name="text_connect_device_status_error">錯誤,請重試</string>
     <string name="text_connect_device_status_success">成功</string>
     <string name="text_connect_device_status_wait">請稍等...</string>
     <string name="text_no_record">沒有記錄</string>
- <string name="text_child_information_matching">信息匹配</string>
-   <string name="text_fill_kid_name">輸入孩子的姓名</string>
-            <string name="text_select_kid_birthday">選擇孩子的生日</string>
-                <string name="text_kid_name">孩子姓名</string>
-                    <string name="text_kid_birthday">孩子生日</string>
-                    <string name="text_choose_role">選擇您的身份</string>
-                     <string name="text_role_master">主用戶</string>
-        <string name="text_role_guest">一般用戶</string>
+    <string name="text_child_information_matching">信息匹配</string>
+    <string name="text_fill_kid_name">輸入孩子的姓名</string>
+    <string name="text_select_kid_birthday">選擇孩子的生日</string>
+    <string name="text_kid_name">孩子姓名</string>
+    <string name="text_kid_birthday">孩子生日</string>
+    <string name="text_choose_role">選擇您的身份</string>
+    <string name="text_role_master">主用戶</string>
+    <string name="text_role_guest">一般用戶</string>
     <string name="text_choose_role_hint">請選擇一個身份!</string>
-                     
-                     
+    <string name="text_sort_on">排序開</string>
+    <string name="text_sort_off">排序關</string>
+    
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>

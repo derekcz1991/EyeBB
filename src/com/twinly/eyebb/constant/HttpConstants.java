@@ -25,8 +25,12 @@ public class HttpConstants {
 	public static final String JSON_KEY_CHILD_PHONE = "phoneNumber";
 	public static final String JSON_KEY_CHILD_MAC_ADDRESS = "macAddress";
 
+	public static final String JSON_KEY_LOCATION_ALL = "allLocations";
+	public static final String JSON_KEY_LOCATION_TIME = "locTime";
 	public static final String JSON_KEY_LOCATION = "loc";
+	public static final String JSON_KEY_LOCATION_ID = "locationId";
 	public static final String JSON_KEY_LOCATION_NAME = "locationName";
+	public static final String JSON_KEY_LOCATION_TYPE = "type";
 	public static final String JSON_KEY_LOCATION_LAST_APPEAR_TIME = "lastAppearTime";
 
 	public static final String JSON_KEY_PARENTS = "parents";

@@ -18,6 +18,28 @@
             android:layout_centerVertical="true"
             android:text="@string/text_indoor_locator" />
 
+        <ToggleButton
+            android:id="@+id/sortButton"
+            style="@style/DarkGreyText_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textOff="@string/text_sort_off"
+            android:textOn="@string/text_sort_on" />
+
+        <!--
+             <ToggleButton
+            android:id="@+id/autoRefreshButton"
+            style="@style/DarkGreyText_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/sortButton"
+            android:textOff="自动刷新关"
+            android:textOn="自动刷新开" />
+        -->
+
         <LinearLayout
             android:id="@+id/btn_shcool_bus"
             android:layout_width="wrap_content"
@@ -27,7 +49,7 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="invisible" >
+            android:visibility="gone" >
 
             <TextView
                 android:layout_width="32dp"
