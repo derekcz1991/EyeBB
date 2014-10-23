@@ -2,6 +2,7 @@ package com.twinly.eyebb.fragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -18,7 +19,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.eyebb.R;
-import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
@@ -27,8 +27,8 @@ import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.model.SerializableChildrenMap;
-import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class IndoorLocatorFragment extends Fragment implements
@@ -37,8 +37,9 @@ public class IndoorLocatorFragment extends Fragment implements
 	private CallbackInterface callback;
 	private Map<String, Child> childrenMap;
 	private SerializableChildrenMap myMap;
-	private Map<String, ArrayList<String>> indoorLocatorData;
+	private Map<Location, ArrayList<String>> indoorLocatorData;
 	private IndoorLocatorAdapter adapter;
+	private boolean isSort = true;
 
 	public interface CallbackInterface {
 		/**
@@ -72,7 +73,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 
-		indoorLocatorData = new HashMap<String, ArrayList<String>>();
+		indoorLocatorData = new HashMap<Location, ArrayList<String>>();
 		childrenMap = DBChildren.getChildrenMap(getActivity());
 		myMap = new SerializableChildrenMap();
 		setUpListener(v);
@@ -86,23 +87,21 @@ public class IndoorLocatorFragment extends Fragment implements
 	private void setUpListener(View v) {
 		v.findViewById(R.id.btn_beepall).setOnClickListener(
 				new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
-						if (CommonUtils.isFastDoubleClick()) {
+						/*if (CommonUtils.isFastDoubleClick()) {
 							return;
 						} else {
 							Intent intent = new Intent(getActivity(),
 									BeepDialog.class);
 							startActivity(intent);
-						}
+						}*/
 
 					}
 				});
 
 		v.findViewById(R.id.btn_shcool_bus).setOnClickListener(
 				new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
@@ -111,13 +110,12 @@ public class IndoorLocatorFragment extends Fragment implements
 
 					}
 				});
-		
+
 		/*
 		 * children dialog
 		 */
 		v.findViewById(R.id.btn_kidslist).setOnClickListener(
 				new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
@@ -131,6 +129,26 @@ public class IndoorLocatorFragment extends Fragment implements
 						startActivity(intent);
 					}
 				});
+		v.findViewById(R.id.sortButton).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						isSort = !isSort;
+						adapter = new IndoorLocatorAdapter(getActivity(),
+								indoorLocatorData, childrenMap, isSort);
+						listView.setAdapter(adapter);
+					}
+				});
+
+		/*v.findViewById(R.id.autoRefreshButton).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						
+					}
+				});*/
 	}
 
 	public void updateView() {
@@ -175,25 +193,10 @@ public class IndoorLocatorFragment extends Fragment implements
 			System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
-				JSONArray list = json
-						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-				for (int i = 0; i < list.length(); i++) {
-					JSONObject object = (JSONObject) list.get(i);
-					String childId = object
-							.getString(HttpConstants.JSON_KEY_CHILD_ID);
-					JSONObject location = object
-							.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
-					String locationName = location
-							.getString(HttpConstants.JSON_KEY_LOCATION_NAME);
-					childrenMap.get(childId).setLocationName(locationName);
-					childrenMap
-							.get(childId)
-							.setLastAppearTime(
-									location.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
-					updateLocationData(childId, locationName);
-				}
+				getAllLocation(json);
+				getAllChild(json);
 				adapter = new IndoorLocatorAdapter(getActivity(),
-						indoorLocatorData, childrenMap);
+						indoorLocatorData, childrenMap, isSort);
 				listView.setAdapter(adapter);
 
 			} catch (JSONException e) {
@@ -206,15 +209,90 @@ public class IndoorLocatorFragment extends Fragment implements
 
 	}
 
-	private void updateLocationData(String childId, String locationName) {
+	/**
+	 * Parse json data get all locations
+	 * @param json
+	 */
+	private void getAllLocation(JSONObject json) {
+		try {
+			JSONArray locationJSONList = json
+					.getJSONArray(HttpConstants.JSON_KEY_LOCATION_ALL);
+			for (int i = 0; i < locationJSONList.length(); i++) {
+
+				JSONObject object = (JSONObject) locationJSONList.get(i);
+				Location location = new Location();
+				location.setId(object
+						.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
+				location.setName(object
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
+				location.setType(object
+						.getString(HttpConstants.JSON_KEY_LOCATION_TYPE));
+				indoorLocatorData.put(location, new ArrayList<String>());
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Parse json data get all children informations and location
+	 * @param json
+	 */
+	private void getAllChild(JSONObject json) {
+		try {
+			JSONArray childJSONList = json
+					.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+			for (int i = 0; i < childJSONList.length(); i++) {
+				JSONObject object = (JSONObject) childJSONList.get(i);
+				String childId = object
+						.getString(HttpConstants.JSON_KEY_CHILD_ID);
+				JSONObject locationTime = object
+						.getJSONObject(HttpConstants.JSON_KEY_LOCATION_TIME);
+				childrenMap
+						.get(childId)
+						.setLastAppearTime(
+								locationTime
+										.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
+
+				JSONObject locationJSON = locationTime
+						.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
+				Location location = new Location();
+				location.setId(locationJSON
+						.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
+				location.setName(locationJSON
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
+				location.setType(HttpConstants.JSON_KEY_LOCATION_TYPE);
+				childrenMap.get(childId).setLocationName(location.getName());
+
+				updateLocationData(childId, location);
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void updateLocationData(String childId, Location location) {
 		ArrayList<String> childrenIdList = null;
-		if (indoorLocatorData.keySet().contains(locationName)) {
-			childrenIdList = indoorLocatorData.get(locationName);
-		} else {
+		Iterator<Location> Iterator = indoorLocatorData.keySet().iterator();
+		boolean locationExist = false;
+		Location preLocation = null;
+		while (Iterator.hasNext()) {
+			preLocation = Iterator.next();
+			if (preLocation.getId() == location.getId()) {
+				childrenIdList = indoorLocatorData.get(preLocation);
+				locationExist = true;
+				break;
+			}
+		}
+		if (locationExist == false) {
 			childrenIdList = new ArrayList<String>();
 		}
 		childrenIdList.add(childId);
-		indoorLocatorData.put(locationName, childrenIdList);
+		if (locationExist) {
+			indoorLocatorData.put(preLocation, childrenIdList);
+		} else {
+			indoorLocatorData.put(location, childrenIdList);
+		}
 	}
 
 	public void lockListViewToPull(boolean value) {
