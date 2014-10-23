@@ -39,19 +39,10 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
-	private TabsAdapterCallback callback;
-	
-	public interface TabsAdapterCallback {
-		public void onProfileTabClicked();
-	}
-	
-	public void setCallback(TabsAdapterCallback callback) {
-		this.callback = callback;
-	}
-	
+
 	static class DummyTabFactory implements TabHost.TabContentFactory {
 		private final Context mContext;
-	
+
 		public DummyTabFactory(Context context) {
 			mContext = context;
 		}
@@ -153,21 +144,14 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mTabHost.setCurrentTab(position);
 		widget.setDescendantFocusability(oldFocusability);
 
-		if(position == 1){
-			//radarTrackingFragment.updateListView();
-		}
-		else if (position == 2) {
+		switch (position) {
+		case 1:
+			break;
+		case 2:
 			reportFragment.refreshPerformanceFragment();
-		}
-		else if (position == 3) {
-			callback.onProfileTabClicked();
-			
-//			System.out.println("positionpositionposition=>" + position);
-//			MainActivity ma = new MainActivity();
-//			View profileLabel = (View) LayoutInflater.from(ma).inflate(
-//					R.layout.tab_label, null);
-//			profileLabel.findViewById(R.id.notification_number).setVisibility(
-//					View.GONE);
+			break;
+		case 3:
+			break;
 		}
 	}
 

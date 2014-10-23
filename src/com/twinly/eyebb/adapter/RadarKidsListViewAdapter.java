@@ -4,28 +4,21 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RadarKidsListViewAdapter extends BaseAdapter {

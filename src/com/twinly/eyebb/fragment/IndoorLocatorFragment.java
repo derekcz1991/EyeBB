@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ToggleButton;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.KidsListActivity;
@@ -30,6 +31,7 @@ import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.model.SerializableChildrenMap;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class IndoorLocatorFragment extends Fragment implements
 		PullToRefreshListener {
@@ -39,6 +41,10 @@ public class IndoorLocatorFragment extends Fragment implements
 	private SerializableChildrenMap myMap;
 	private Map<Location, ArrayList<String>> indoorLocatorData;
 	private IndoorLocatorAdapter adapter;
+
+	private ToggleButton autoUpdateButton;
+	private boolean autoUpdateFlag;
+	private AutoUpdateTask autoUpdateTask;
 	private boolean isSort = true;
 
 	public interface CallbackInterface {
@@ -72,12 +78,36 @@ public class IndoorLocatorFragment extends Fragment implements
 				false);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
+		autoUpdateButton = (ToggleButton) v.findViewById(R.id.autoUpdateButton);
 
 		indoorLocatorData = new HashMap<Location, ArrayList<String>>();
 		childrenMap = DBChildren.getChildrenMap(getActivity());
 		myMap = new SerializableChildrenMap();
 		setUpListener(v);
 		return v;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (SharePrefsUtils.isAutoUpdate(getActivity())) {
+			autoUpdateFlag = true;
+			listView.setLockPullAction(true);
+			autoUpdateTask = new AutoUpdateTask();
+			autoUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			autoUpdateButton.setChecked(true);
+		} else {
+			updateView();
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		autoUpdateFlag = false;
+		if (autoUpdateTask != null) {
+			autoUpdateTask.cancel(true);
+		}
 	}
 
 	/**
@@ -141,14 +171,24 @@ public class IndoorLocatorFragment extends Fragment implements
 					}
 				});
 
-		/*v.findViewById(R.id.autoRefreshButton).setOnClickListener(
+		v.findViewById(R.id.autoUpdateButton).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						
+						if (autoUpdateFlag) {
+							autoUpdateFlag = false;
+							listView.setLockPullAction(false);
+							if (autoUpdateTask != null)
+								autoUpdateTask.cancel(true);
+						} else {
+							autoUpdateFlag = true;
+							listView.setLockPullAction(true);
+							autoUpdateTask = new AutoUpdateTask();
+							autoUpdateTask.execute();
+						}
 					}
-				});*/
+				});
 	}
 
 	public void updateView() {
@@ -164,6 +204,40 @@ public class IndoorLocatorFragment extends Fragment implements
 	@Override
 	public void cancelProgressBar() {
 		callback.cancelProgressBar();
+	}
+
+	private class AutoUpdateTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while (autoUpdateFlag) {
+				updateView();
+				try {
+					// refresh time
+					long refreshTime = 5;
+					try {
+						if (Long.parseLong(SharePrefsUtils
+								.refreshTime(getActivity())) > 0) {
+							refreshTime = Long.parseLong(SharePrefsUtils
+									.refreshTime(getActivity())) * 1000;
+						} else {
+							SharePrefsUtils.setRefreshTime(getActivity(),
+									refreshTime + "");
+							refreshTime = refreshTime * 1000;
+						}
+					} catch (NumberFormatException e) {
+						SharePrefsUtils.setRefreshTime(getActivity(),
+								refreshTime + "");
+						refreshTime = refreshTime * 1000;
+						e.printStackTrace();
+					}
+					Thread.sleep(refreshTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
 	}
 
 	class UpdateView extends AsyncTask<Void, Void, String> {
@@ -293,9 +367,5 @@ public class IndoorLocatorFragment extends Fragment implements
 		} else {
 			indoorLocatorData.put(location, childrenIdList);
 		}
-	}
-
-	public void lockListViewToPull(boolean value) {
-		listView.setLockPullAction(value);
 	}
 }

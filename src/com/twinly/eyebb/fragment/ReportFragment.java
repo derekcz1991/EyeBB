@@ -83,6 +83,12 @@ public class ReportFragment extends Fragment implements
 		return v;
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		updateView();
+	}
+	
 	private void setUpView(View v) {
 		// set the current child
 		child = DBChildren.getChildById(getActivity(),

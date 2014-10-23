@@ -28,17 +28,15 @@
             android:textOff="@string/text_sort_off"
             android:textOn="@string/text_sort_on" />
 
-        <!--
-             <ToggleButton
-            android:id="@+id/autoRefreshButton"
+        <ToggleButton
+            android:id="@+id/autoUpdateButton"
             style="@style/DarkGreyText_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/sortButton"
-            android:textOff="自动刷新关"
-            android:textOn="自动刷新开" />
-        -->
+            android:textOff="@string/text_auto_refresh_off"
+            android:textOn="@string/text_auto_refresh_on" />
 
         <LinearLayout
             android:id="@+id/btn_shcool_bus"

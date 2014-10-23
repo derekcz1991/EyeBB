@@ -18,12 +18,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
-import com.twinly.eyebb.adapter.TabsAdapter.TabsAdapterCallback;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
@@ -31,7 +29,6 @@ import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
@@ -39,8 +36,7 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements
 		ReportFragment.CallbackInterface,
-		IndoorLocatorFragment.CallbackInterface,
-		ProfileFragment.CallbackInterface, TabsAdapterCallback {
+		IndoorLocatorFragment.CallbackInterface {
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -49,13 +45,10 @@ public class MainActivity extends FragmentActivity implements
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
-	private TextView noticeNum;
 
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
-	private boolean autoUpdateFlag;
-	private AutoUpdateTask autoUpdateTask;
 	private KeepSessionAliveTask keepSessionAliveTask;
 	private int timeoutCounter;
 
@@ -70,14 +63,6 @@ public class MainActivity extends FragmentActivity implements
 		// checkBluetooth();
 		SystemUtils.initImageLoader(getApplicationContext());
 
-		if (SharePrefsUtils.isAutoUpdate(this)) {
-			autoUpdateFlag = true;
-			autoUpdateTask = new AutoUpdateTask();
-			autoUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			indoorLocatorFragment.updateView();
-		}
-		reportFragment.updateView();
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
@@ -97,10 +82,6 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		autoUpdateFlag = false;
-		if (autoUpdateTask != null) {
-			autoUpdateTask.cancel(true);
-		}
 		if (keepSessionAliveTask != null) {
 			keepSessionAliveTask.cancel(true);
 		}
@@ -114,7 +95,6 @@ public class MainActivity extends FragmentActivity implements
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setOffscreenPageLimit(3);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
-		mTabsAdapter.setCallback(this);
 
 		indoorLocatorFragment = new IndoorLocatorFragment();
 		indoorLocatorFragment.setCallbackInterface(this);
@@ -156,7 +136,6 @@ public class MainActivity extends FragmentActivity implements
 
 		// profile
 		profileFragment = new ProfileFragment();
-		profileFragment.setCallbackInterface(this);
 		View profileLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		profileLabel.findViewById(R.id.label).setBackgroundResource(
@@ -270,65 +249,6 @@ public class MainActivity extends FragmentActivity implements
 		progressBar.setProgress(0);
 		bar.progressiveStop();
 		//reportFragment.setRefreshing(false);
-	}
-
-	@Override
-	public void onProfileTabClicked() {
-		//noticeNum.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	public void startAutoRefresh() {
-		autoUpdateFlag = true;
-		indoorLocatorFragment.lockListViewToPull(true);
-		autoUpdateTask = new AutoUpdateTask();
-		autoUpdateTask.execute();
-	}
-
-	@Override
-	public void stopAutoRefresh() {
-		autoUpdateFlag = false;
-		indoorLocatorFragment.lockListViewToPull(false);
-		if (autoUpdateTask != null)
-			autoUpdateTask.cancel(true);
-	}
-
-	private class AutoUpdateTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			while (autoUpdateFlag) {
-				if (indoorLocatorFragment != null) {
-					indoorLocatorFragment.updateView();
-				}
-				try {
-					// refresh time
-					long refreshTime = 5;
-					try {
-						if (Long.parseLong(SharePrefsUtils
-								.refreshTime(MainActivity.this)) > 0) {
-							refreshTime = Long.parseLong(SharePrefsUtils
-									.refreshTime(MainActivity.this)) * 1000;
-						} else {
-							SharePrefsUtils.setRefreshTime(MainActivity.this,
-									refreshTime + "");
-							refreshTime = refreshTime * 1000;
-						}
-					} catch (NumberFormatException e) {
-						// TODO Auto-generated catch block
-						SharePrefsUtils.setRefreshTime(MainActivity.this,
-								refreshTime + "");
-						refreshTime = refreshTime * 1000;
-						e.printStackTrace();
-					}
-					Thread.sleep(refreshTime);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			return null;
-		}
 	}
 
 	private class KeepSessionAliveTask extends AsyncTask<Void, String, Void> {

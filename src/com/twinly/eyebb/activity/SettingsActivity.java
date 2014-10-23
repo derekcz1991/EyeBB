@@ -29,8 +29,6 @@ public class SettingsActivity extends Activity {
 	private TextView enableVibrationSelected;
 	private View aboutBtn;
 
-	private LinearLayout enableAutoUpdate;
-	private TextView enableAutoUpdateSelected;
 	private boolean isAutoUpdate;
 	private TextView refreshTimeNumber;
 	public static SettingsActivity instance = null;
@@ -40,8 +38,6 @@ public class SettingsActivity extends Activity {
 		setContentView(R.layout.activity_settings);
 		instance = this;
 		tittlebarBackBtn = this.findViewById(R.id.tittlebar_back_btn);
-		enableAutoUpdate = (LinearLayout) findViewById(R.id.enable_auto_update);
-		enableAutoUpdateSelected = (TextView) findViewById(R.id.enable_auto_update_selected);
 		enableSoundSelected = (TextView) findViewById(R.id.enable_sound_selected);
 		enableVibrationSelected = (TextView) findViewById(R.id.enable_vibration_selected);
 		chineseSelected = (TextView) findViewById(R.id.chinese_selected);
@@ -109,12 +105,9 @@ public class SettingsActivity extends Activity {
 					enableVibrationSelected
 							.setBackgroundResource(R.drawable.ic_selected_off);
 					SharePrefsUtils.setVibrateOn(SettingsActivity.this, false);
-					// update time bar miss
-					refreshTimeView.setVisibility(View.GONE);
 				} else {
 					enableVibrationSelected
 							.setBackgroundResource(R.drawable.ic_selected);
-					refreshTimeView.setVisibility(View.VISIBLE);
 					SharePrefsUtils.setVibrateOn(SettingsActivity.this, true);
 				}
 			}
@@ -140,41 +133,12 @@ public class SettingsActivity extends Activity {
 			}
 		});
 
-		enableAutoUpdateSelected.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (SharePrefsUtils.isAutoUpdate(SettingsActivity.this)) {
-					enableAutoUpdateSelected
-							.setBackgroundResource(R.drawable.ic_selected_off);
-					// update time bar miss
-					refreshTimeView.setVisibility(View.GONE);
-					SharePrefsUtils.setAutoUpdate(SettingsActivity.this, false);
-				} else {
-					enableAutoUpdateSelected
-							.setBackgroundResource(R.drawable.ic_selected);
-					refreshTimeView.setVisibility(View.VISIBLE);
-					SharePrefsUtils.setAutoUpdate(SettingsActivity.this, true);
-				}
-			}
-		});
 	}
 
 	private void setupView() {
-		// auto update
-		isAutoUpdate = SharePrefsUtils.isAutoUpdate(this);
-		if (isAutoUpdate) {
-			enableAutoUpdateSelected
-					.setBackgroundResource(R.drawable.ic_selected);		
-			refreshTimeView.setVisibility(View.VISIBLE);
-			refreshTimeNumber.setText(SharePrefsUtils.refreshTime(this));
-			
-		} else {
-			enableAutoUpdateSelected
-					.setBackgroundResource(R.drawable.ic_selected_off);
-			refreshTimeView.setVisibility(View.GONE);
-		}
-
+		// auto refresh time
+		refreshTimeNumber.setText(SharePrefsUtils.refreshTime(this));
+		
 		// sound
 		if (SharePrefsUtils.isSoundOn(this)) {
 			enableSoundSelected.setBackgroundResource(R.drawable.ic_selected);
