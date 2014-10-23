@@ -363,7 +363,9 @@ public class DeviceListAcitivity extends Activity {
 					newDevice.setName(device.getName());
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
 					if (bytesToHex(scanRecord, 9, 16).equals(
-							Constants.OURDEVICEUUID)) {
+							Constants.DEVICE_UUID_VERSON_1)
+							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
+									.equals(Constants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
@@ -454,7 +456,7 @@ public class DeviceListAcitivity extends Activity {
 				dialog.dismiss();
 
 			} else {
-				//successful
+				// successful
 				major = retStr.substring(0, retStr.indexOf(":"));
 				minor = retStr.substring(retStr.indexOf(":") + 1,
 						retStr.length());

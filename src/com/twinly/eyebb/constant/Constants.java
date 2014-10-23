@@ -19,7 +19,8 @@ public class Constants {
 
 	// public static final String OURDEVICEUUID =
 	// "4D616361726F6E202020202020202020";
-	public static final String OURDEVICEUUID = "4D616361726F6E051250002003020A00";
+	public static final String DEVICE_UUID_VERSON_1 = "4D616361726F6E051250002003020A00";
+	public static final String DEVICE_UUID_VERSON_2 = "08094D616361726F6E051250";
 	public static final String BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
 	public static final String APPLICATION_UUID = "00001000-0000-1000-8000-00805f9b34fb";
 	public static final String BEEP_CHAR_UUID = "1001";

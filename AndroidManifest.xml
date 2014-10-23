@@ -134,6 +134,12 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.ChildBirthdayDialog"
+            android:label="Date Selection"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SelectDate" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.RefreshTimeDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity"

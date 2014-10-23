@@ -28,6 +28,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_REFRESH_TIME = "refresh_time";
 	public static final String SHARE_PREFS_DEVICE_CONNECT_STATUS = "device_status_connect";
 	public static final String SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS = "keep_device_status_connect";
+	public static final String SHARE_PREFS_CHILID_BIRTHDAY= "child_birthday";
 	
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";
@@ -38,9 +39,11 @@ public class ActivityConstants {
 	public static final int REQUEST_GO_TO_KINDERGARTEN_ACTIVITY = 103;
 	public static final int REQUEST_GO_TO_SETTING_ACTIVITY = 104;
 	public static final int REQUEST_GO_TO_CHANGE_KIDS_ACTIVITY = 105;
+	public static final int REQUEST_GO_TO_BIRTHDAY_ACTIVITY = 106;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;
 	public static final int RESULT_AUTO_UPDATE_ON = 202;
 	public static final int RESULT_AUTO_UPDATE_OFF = 203;
+	public static final int RESULT_RESULT_BIRTHDAY_OK = 204;
 }

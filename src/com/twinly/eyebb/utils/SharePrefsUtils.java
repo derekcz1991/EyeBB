@@ -259,6 +259,17 @@ public class SharePrefsUtils {
 		setString(context,
 				ActivityConstants.SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS, value);
 	}
+	
+	public static String registerChildBirthday(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY);
+	}
+
+	public static void setRegisterChildBirthday(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY, value);
+	}
 
 	/**
 	 * @return Application's {@code SharedPreferences}.

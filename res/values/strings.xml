@@ -90,9 +90,11 @@
     <string name="text_no_record">No record</string>
       <string name="text_role_master">Master user</string>
         <string name="text_role_guest">Guest user</string>
-    
+    <string name="text_something_has_gone_wrong">Oops, Something has gone wrong!</string>
+        
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
+     <string name="btn_binding">Binding</string>
     <string name="btn_logout">Logout</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_performance">Performance</string>

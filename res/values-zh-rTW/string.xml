@@ -97,7 +97,7 @@
                      <string name="text_role_master">主用戶</string>
         <string name="text_role_guest">一般用戶</string>
     <string name="text_choose_role_hint">請選擇一個身份!</string>
-                     
+                       <string name="text_something_has_gone_wrong">請填入完整信息!</string>
                      
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -110,6 +110,7 @@
     <string name="btn_share">分享</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_verify">確認</string>
+     <string name="btn_binding">去綁定</string>
     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

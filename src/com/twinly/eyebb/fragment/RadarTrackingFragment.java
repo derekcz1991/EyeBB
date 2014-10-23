@@ -1456,7 +1456,9 @@ public class RadarTrackingFragment extends Fragment implements
 					// Constants.OURDEVICEUUID)) {
 
 					if (bytesToHex(scanRecord, 9, 16).equals(
-							Constants.OURDEVICEUUID)) {
+							Constants.DEVICE_UUID_VERSON_1)
+							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
+									.equals(Constants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
