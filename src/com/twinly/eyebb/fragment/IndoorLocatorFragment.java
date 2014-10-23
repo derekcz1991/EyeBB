@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,8 +89,8 @@ public class IndoorLocatorFragment extends Fragment implements
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		if (SharePrefsUtils.isAutoUpdate(getActivity())) {
 			autoUpdateFlag = true;
 			listView.setLockPullAction(true);
@@ -177,11 +178,13 @@ public class IndoorLocatorFragment extends Fragment implements
 					@Override
 					public void onClick(View v) {
 						if (autoUpdateFlag) {
+							SharePrefsUtils.setAutoUpdate(getActivity(), false);
 							autoUpdateFlag = false;
 							listView.setLockPullAction(false);
 							if (autoUpdateTask != null)
 								autoUpdateTask.cancel(true);
 						} else {
+							SharePrefsUtils.setAutoUpdate(getActivity(), true);
 							autoUpdateFlag = true;
 							listView.setLockPullAction(true);
 							autoUpdateTask = new AutoUpdateTask();

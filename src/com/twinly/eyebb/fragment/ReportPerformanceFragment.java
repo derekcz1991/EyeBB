@@ -169,6 +169,8 @@ public class ReportPerformanceFragment extends Fragment implements
 	 * @param isRefreshing whether requesting server to update data
 	 */
 	public void setRefreshing(boolean isRefreshing) {
-		listView.setRefreshing(isRefreshing);
+		if(listView != null) {
+			listView.setRefreshing(isRefreshing);
+		}
 	}
 }

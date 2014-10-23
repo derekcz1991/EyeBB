@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/arrow"
-            android:clickable="true"
             android:orientation="vertical" >
 
             <TextView

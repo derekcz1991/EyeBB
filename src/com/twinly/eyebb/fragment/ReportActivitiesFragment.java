@@ -47,6 +47,7 @@ public class ReportActivitiesFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		System.out.println("---->>onCreateView");
 		View v = inflater.inflate(R.layout.fragment_report_activities,
 				container, false);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
@@ -89,6 +90,8 @@ public class ReportActivitiesFragment extends Fragment implements
 	 * @param isRefreshing whether requesting server to update data
 	 */
 	public void setRefreshing(boolean isRefreshing) {
-		listView.setRefreshing(isRefreshing);
+		if (listView != null) {
+			listView.setRefreshing(isRefreshing);
+		}
 	}
 }

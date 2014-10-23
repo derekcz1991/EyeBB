@@ -26,14 +26,15 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class LancherActivity extends Activity {
 	private ImageView logo;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lancher);
-		
+
 		logo = (ImageView) findViewById(R.id.icon);
 		checkLogo();
-		
+
 		setLanguage();
 		new HttpRequestUtils();
 
@@ -46,7 +47,7 @@ public class LancherActivity extends Activity {
 			finish();
 		}
 	}
-	
+
 	private void checkLogo() {
 		switch (SharePrefsUtils.getLanguage(this)) {
 		case Constants.LOCALE_TW:

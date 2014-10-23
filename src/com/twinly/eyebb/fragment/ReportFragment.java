@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -84,8 +85,8 @@ public class ReportFragment extends Fragment implements
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		updateView();
 	}
 	
