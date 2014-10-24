@@ -103,10 +103,10 @@ public class ChildDialog extends Activity {
 						if (CommonUtils.isFastDoubleClick()) {
 							return;
 						} else {
-							Intent intent = new Intent(ChildDialog.this,
-									BeepDialog.class);
+//							Intent intent = new Intent(ChildDialog.this,
+//									BeepDialog.class);
 							new Thread(postToServerRunnable).start();
-							startActivity(intent);
+//							startActivity(intent);
 						}
 					}
 				});

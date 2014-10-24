@@ -58,6 +58,7 @@ public class ReportActivitiesFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				System.out.println("CLICK");
 				Intent intent = new Intent(getActivity(),
 						ActivityDetailsActivity.class);
 				Bundle bundle = new Bundle();
