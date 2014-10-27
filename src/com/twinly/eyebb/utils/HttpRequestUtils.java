@@ -32,11 +32,11 @@ public class HttpRequestUtils {
 	public HttpRequestUtils() {
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
-		// The default value is zero, that means the timeout is not used. 
+		// The default value is zero, that means the timeout is not used.
 		int timeoutConnection = 3000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters,
 				timeoutConnection);
-		// Set the default socket timeout (SO_TIMEOUT) 
+		// Set the default socket timeout (SO_TIMEOUT)
 		// in milliseconds which is the timeout for waiting for data.
 		int timeoutSocket = 3000;
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
@@ -99,21 +99,24 @@ public class HttpRequestUtils {
 
 		System.out.println("url = " + url);
 
-		/*AuthScope as = new AuthScope("158.182.246.221", 8089);
-		UsernamePasswordCredentials upc = new UsernamePasswordCredentials(
-				"master", "controller");
-		((AbstractHttpClient) httpClient).getCredentialsProvider()
-				.setCredentials(as, upc);
-		BasicHttpContext localContext = new BasicHttpContext();
-		BasicScheme basicAuth = new BasicScheme();
-		localContext.setAttribute("preemptive-auth", basicAuth);
-		HttpHost targetHost = new HttpHost("158.182.246.221", 8089, "http");*/
+		/*
+		 * AuthScope as = new AuthScope("158.182.246.221", 8089);
+		 * UsernamePasswordCredentials upc = new UsernamePasswordCredentials(
+		 * "master", "controller"); ((AbstractHttpClient)
+		 * httpClient).getCredentialsProvider() .setCredentials(as, upc);
+		 * BasicHttpContext localContext = new BasicHttpContext(); BasicScheme
+		 * basicAuth = new BasicScheme();
+		 * localContext.setAttribute("preemptive-auth", basicAuth); HttpHost
+		 * targetHost = new HttpHost("158.182.246.221", 8089, "http");
+		 */
 
 		HttpGet get = new HttpGet(url);
 		get.setHeader("Content-Type", "application/json");
 		try {
-			/*HttpResponse httpResponse = httpClient.execute(targetHost, get,
-					localContext);*/
+			/*
+			 * HttpResponse httpResponse = httpClient.execute(targetHost, get,
+			 * localContext);
+			 */
 			HttpResponse httpResponse = httpClient.execute(get);
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
@@ -124,7 +127,7 @@ public class HttpRequestUtils {
 
 	public static String post(String action, Map<String, String> map) {
 		String url = HttpConstants.SERVER_URL + action;
-		//HttpClient httpClient = new DefaultHttpClient();
+		// HttpClient httpClient = new DefaultHttpClient();
 		HttpPost post = new HttpPost(url);
 		try {
 			post.setEntity(new UrlEncodedFormEntity(postParameters(map),

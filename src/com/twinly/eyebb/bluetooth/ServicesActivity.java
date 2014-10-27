@@ -138,6 +138,9 @@ public class ServicesActivity extends Activity {
 		// msg.what = START_PROGRASSS_BAR;
 		// handler.sendMessage(msg);
 
+		/*
+		 * 如果連接失敗則彈出 error dialog
+		 */
 		if (major.equals("-1") || minor.equals("-1")) {
 			Toast.makeText(this, R.string.text_connect_error, Toast.LENGTH_LONG);
 			if (dialog != null)

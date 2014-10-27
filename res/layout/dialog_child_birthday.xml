@@ -18,15 +18,13 @@
         android:paddingBottom="32dp"
         android:paddingTop="32dp" >
 
-         <DatePicker
+        <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
- 
             android:calendarViewShown="false"
             android:spinnersShown="true" />
-
     </RelativeLayout>
 
     <LinearLayout
@@ -50,34 +48,6 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                android:id="@+id/btn_confirm"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/ic_radar_supervised" />
-
-                <TextView
-                    style="@style/DarkGreyText_18"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/btn_confirm" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:alpha="0.1"
-                android:background="@color/black" />
-
-            <LinearLayout
                 android:id="@+id/btn_cancel"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
@@ -97,6 +67,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/btn_cancel" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:alpha="0.1"
+                android:background="@color/black" />
+
+            <LinearLayout
+                android:id="@+id/btn_confirm"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/ic_radar_supervised" />
+
+                <TextView
+                    style="@style/DarkGreyText_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_confirm" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

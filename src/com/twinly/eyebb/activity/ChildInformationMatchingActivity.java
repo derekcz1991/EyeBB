@@ -136,7 +136,7 @@ public class ChildInformationMatchingActivity extends Activity {
 				if (kindergartenFlag && birthdayFlag && childNameFlag) {
 					Intent intent = new Intent(
 							ChildInformationMatchingActivity.this,
-							DeviceListAcitivity.class);
+							CheckBeaconActivity.class);
 					startActivity(intent);
 				}
 
