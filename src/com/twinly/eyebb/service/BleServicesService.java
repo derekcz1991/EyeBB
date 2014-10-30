@@ -303,19 +303,21 @@ public class BleServicesService extends Service {
 				System.out
 						.println("BluetoothLeService.ACTION_GATT_DISCONNECTED");
 
-				if (BluetoothLeService.isSuccessfulWrite) {
-					BluetoothLeService.isSuccessfulWrite = false;
-					BeepAllForRadarDialog.BeepAlli++;
-					BeepAllForRadarDialog.StartAllBeepFlag = true;
-					LoadingDialog
-							.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
-									+ "\n"
-									+ BeepAllForRadarDialog.BeepAlli
-									+ "/"
-									+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
+				if (SharePrefsUtils.isBeepAllDevice(BleServicesService.this)) {
+					if (BluetoothLeService.isSuccessfulWrite) {
+						BluetoothLeService.isSuccessfulWrite = false;
+						BeepAllForRadarDialog.BeepAlli++;
+						BeepAllForRadarDialog.StartAllBeepFlag = true;
+						LoadingDialog
+								.createLoadingDialogCanCancelForMsg(getString(R.string.toast_loading)
+										+ "\n"
+										+ BeepAllForRadarDialog.BeepAlli
+										+ "/"
+										+ BeepAllForRadarDialog.BeepAllTempChildDataSize);
+					}
+					SharePrefsUtils.setBeepAllDevice(BleServicesService.this,
+							false);
 				}
-
-			
 
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {

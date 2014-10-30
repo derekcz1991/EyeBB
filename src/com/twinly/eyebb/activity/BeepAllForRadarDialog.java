@@ -65,7 +65,7 @@ public class BeepAllForRadarDialog extends Activity {
 						.getSerializableExtra(Constants.BEEP_ALL_DEVICE);
 
 				BeepAllTempChildDataSize = BeepAllTempChildData.size();
-				notifyTxt.setText(getString(R.string.text_connect_device));
+				//notifyTxt.setText(getString(R.string.text_connect_device));
 				if (BeepAllTempChildDataSize > 0) {
 
 					Message msg = handler.obtainMessage();

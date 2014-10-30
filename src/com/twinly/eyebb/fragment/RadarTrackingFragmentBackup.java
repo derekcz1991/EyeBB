@@ -71,7 +71,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class RadarTrackingFragment extends Fragment implements
+public class RadarTrackingFragmentBackup extends Fragment implements
 		RadarKidsListViewAdapterCallback, UncaughtExceptionHandler {
 	private SimpleAdapter mkidsListAdapter;
 	ArrayList<HashMap<String, Object>> mKidsData;
@@ -143,14 +143,13 @@ public class RadarTrackingFragment extends Fragment implements
 	private ArrayList<Child> BeepTempChildData;
 	private ArrayList<Child> BeepAllTempChildData;
 	// 檢測頭像是否有改變
-	private ArrayList<Child> openAntiData;
-	private boolean openAntiCurrentDataFlag;
+	private ArrayList<Child> scanedHeadChildData;
 	private ArrayList<Child> missedHeadChildData;
 	// private Child child;
 	private ArrayList<Child> MissChildData;
 
 	private View v;
-	private static RadarTrackingFragment RadarTrackingFragmentInstance = null;
+	private static RadarTrackingFragmentBackup RadarTrackingFragmentInstance = null;
 	RelativeLayout InitMainLayout = null;
 	RelativeLayout MissMainLayout = null;
 	RelativeLayout mainLayout = null;
@@ -190,23 +189,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private int threeMissX = 100;
 	private int threeMissY = 10;
-
-	private CircleImageView scanImg1;
-	private CircleImageView scanImg2;
-	private CircleImageView scanImg3;
-	private CircleImageView scanImg4;
-	private CircleImageView scanImg5;
-	private CircleImageView scanImg6;
-	private CircleImageView scanImg7;
-	private CircleImageView scanImg8;
-	private CircleImageView scanImg9;
-
-	private CircleImageView missImg1;
-	private CircleImageView missImg2;
-	private CircleImageView missImg3;
-	private CircleImageView missImg4;
-	private CircleImageView missImg5;
-	private CircleImageView missImg6;
 
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
@@ -274,50 +256,12 @@ public class RadarTrackingFragment extends Fragment implements
 
 				if (openAnti) {
 					openAnti = false;
-					openAntiCurrentDataFlag = false;
 					openAntiTheftTX.setText(getResources().getString(
 							R.string.text_radar_status_start_connected));
-					if (openAntiData != null) {
-						if (openAntiData.size() > 0) {
-							openAntiData.clear();
-						}
-					}
-					scanImg1.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg2.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg3.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg4.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg5.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg6.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg7.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg8.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg9.setBorderColor(getResources().getColor(
-							R.color.white));
-					missImg1.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg2.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg3.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg4.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg5.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg6.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
 				} else {
 					openAnti = true;
-					openAntiCurrentDataFlag = true;
 					openAntiTheftTX.setText(getResources().getString(
 							R.string.text_radar_status_disconnection));
-
 				}
 
 			}
@@ -369,38 +313,6 @@ public class RadarTrackingFragment extends Fragment implements
 		// btnConfirm = v.findViewById(R.id.btn_confirm);
 		// btnCancel = v.findViewById(R.id.btn_cancel);
 		btnStatus = v.findViewById(R.id.connection_status_btn);
-
-		scanImg1 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img1);
-		scanImg2 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img2);
-		scanImg3 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img3);
-		scanImg4 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img4);
-		scanImg5 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img5);
-		scanImg6 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img6);
-		scanImg7 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img7);
-		scanImg8 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img8);
-		scanImg9 = (CircleImageView) v
-				.findViewById(R.id.radar_child_scan_head_img9);
-
-		missImg1 = (CircleImageView) v
-				.findViewById(R.id.radar_child_miss_head_img1);
-		missImg2 = (CircleImageView) v
-				.findViewById(R.id.radar_child_miss_head_img2);
-		missImg3 = (CircleImageView) v
-				.findViewById(R.id.radar_child_miss_head_img3);
-		missImg4 = (CircleImageView) v
-				.findViewById(R.id.radar_child_miss_head_img4);
-		missImg5 = (CircleImageView) v
-				.findViewById(R.id.radar_child_miss_head_img5);
-		missImg6 = (CircleImageView) v
-				.findViewById(R.id.radar_child_miss_head_img6);
 	}
 
 	@SuppressLint("NewApi")
@@ -638,39 +550,6 @@ public class RadarTrackingFragment extends Fragment implements
 		unMissingChildNumTxt.setText(ScanedTempChildData.size() + "");
 
 		mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
-		scanImg1.setVisibility(View.INVISIBLE);
-		scanImg2.setVisibility(View.INVISIBLE);
-		scanImg3.setVisibility(View.INVISIBLE);
-		scanImg4.setVisibility(View.INVISIBLE);
-		scanImg5.setVisibility(View.INVISIBLE);
-		scanImg6.setVisibility(View.INVISIBLE);
-		scanImg7.setVisibility(View.INVISIBLE);
-		scanImg8.setVisibility(View.INVISIBLE);
-		scanImg9.setVisibility(View.INVISIBLE);
-		missImg1.setVisibility(View.INVISIBLE);
-		missImg2.setVisibility(View.INVISIBLE);
-		missImg3.setVisibility(View.INVISIBLE);
-		missImg4.setVisibility(View.INVISIBLE);
-		missImg5.setVisibility(View.INVISIBLE);
-		missImg6.setVisibility(View.INVISIBLE);
-
-		scanImg1.setBorderColor(getResources().getColor(R.color.white));
-		scanImg2.setBorderColor(getResources().getColor(R.color.white));
-		scanImg3.setBorderColor(getResources().getColor(R.color.white));
-		scanImg4.setBorderColor(getResources().getColor(R.color.white));
-		scanImg5.setBorderColor(getResources().getColor(R.color.white));
-		scanImg6.setBorderColor(getResources().getColor(R.color.white));
-		scanImg7.setBorderColor(getResources().getColor(R.color.white));
-		scanImg8.setBorderColor(getResources().getColor(R.color.white));
-		scanImg9.setBorderColor(getResources().getColor(R.color.white));
-		missImg1.setBorderColor(getResources().getColor(R.color.dark_grey));
-		missImg2.setBorderColor(getResources().getColor(R.color.dark_grey));
-		missImg3.setBorderColor(getResources().getColor(R.color.dark_grey));
-		missImg4.setBorderColor(getResources().getColor(R.color.dark_grey));
-		missImg5.setBorderColor(getResources().getColor(R.color.dark_grey));
-		missImg6.setBorderColor(getResources().getColor(R.color.dark_grey));
-
 	}
 
 	@Override
@@ -682,10 +561,10 @@ public class RadarTrackingFragment extends Fragment implements
 	}
 
 	private void chageTheAllData(ArrayList<Child> scanedTempChildData,
-			ArrayList<Child> missChildData, ArrayList<Child> openAntiData2) {
+			ArrayList<Child> missChildData) {
 
-		Childadapter = new RadarKidsListViewAdapter(getActivity(),
-				scanedTempChildData, openAntiData2);
+//		Childadapter = new RadarKidsListViewAdapter(getActivity(),
+//				scanedTempChildData);
 		Childadapter.setCallback(RadarTrackingFragmentInstance);
 		ChildlistView.setAdapter(Childadapter);
 
@@ -697,9 +576,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 	@SuppressWarnings("unchecked")
 	@SuppressLint("ResourceAsColor")
-	private int addImageHead(ArrayList<Child> scanedChildData2,
-			ArrayList<Child> openAntiData2) {
-		// // 手动添加imageview
+	private int addImageHead(ArrayList<Child> scanedChildData2) {
+		// 手动添加imageview
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
 				.showImageForEmptyUri(R.drawable.ic_empty)
@@ -707,300 +585,16 @@ public class RadarTrackingFragment extends Fragment implements
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader = ImageLoader.getInstance();
 
-		// for (int i = 0; i < scanedChildData2.size(); i++) {
-		// Child child = scanedChildData2.get(i);
-		// mainLayout = (RelativeLayout) v.findViewById(R.id.miss_radar_view);
-		// CircleImageView cim = new CircleImageView(getActivity());
-		// HeadPosition(cim);
-		//
-		// mainLayout.addView(cim);
-		// // AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
-		// imageLoader.displayImage(child.getIcon(), cim, options, null);
-		//
-		// }
-		scanImg1.setVisibility(View.INVISIBLE);
-		scanImg2.setVisibility(View.INVISIBLE);
-		scanImg3.setVisibility(View.INVISIBLE);
-		scanImg4.setVisibility(View.INVISIBLE);
-		scanImg5.setVisibility(View.INVISIBLE);
-		scanImg6.setVisibility(View.INVISIBLE);
-		scanImg7.setVisibility(View.INVISIBLE);
-		scanImg8.setVisibility(View.INVISIBLE);
-		scanImg9.setVisibility(View.INVISIBLE);
+		for (int i = 0; i < scanedChildData2.size(); i++) {
+			Child child = scanedChildData2.get(i);
+			mainLayout = (RelativeLayout) v.findViewById(R.id.miss_radar_view);
+			CircleImageView cim = new CircleImageView(getActivity());
+			HeadPosition(cim);
 
-		if (scanedChildData2.size() > 9) {
-			for (int i = 0; i < 9; i++) {
-				Child child = scanedChildData2.get(i);
-				switch (i) {
+			mainLayout.addView(cim);
+			// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
+			imageLoader.displayImage(child.getIcon(), cim, options, null);
 
-				case 0:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(0).getChildId()) {
-								scanImg1.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg1,
-							options, null);
-					scanImg1.setVisibility(View.VISIBLE);
-					break;
-
-				case 1:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(1).getChildId()) {
-								scanImg2.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg2,
-							options, null);
-					scanImg2.setVisibility(View.VISIBLE);
-					break;
-				case 2:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(2).getChildId()) {
-								scanImg3.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg3,
-							options, null);
-					scanImg3.setVisibility(View.VISIBLE);
-					break;
-
-				case 3:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(3).getChildId()) {
-								scanImg4.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg4,
-							options, null);
-					scanImg4.setVisibility(View.VISIBLE);
-					break;
-				case 4:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(4).getChildId()) {
-								scanImg5.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg5,
-							options, null);
-					scanImg5.setVisibility(View.VISIBLE);
-					break;
-				case 5:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(5).getChildId()) {
-								scanImg6.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg6,
-							options, null);
-					scanImg6.setVisibility(View.VISIBLE);
-					break;
-				case 6:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(6).getChildId()) {
-								scanImg7.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg7,
-							options, null);
-					scanImg7.setVisibility(View.VISIBLE);
-					break;
-				case 7:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(7).getChildId()) {
-								scanImg8.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg8,
-							options, null);
-					scanImg8.setVisibility(View.VISIBLE);
-					break;
-				case 8:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(8).getChildId()) {
-								scanImg9.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg9,
-							options, null);
-					scanImg9.setVisibility(View.VISIBLE);
-					break;
-
-				}
-
-			}
-		} else {
-			for (int i = 0; i < scanedChildData2.size(); i++) {
-				Child child = scanedChildData2.get(i);
-				switch (i) {
-
-				case 0:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(0).getChildId()) {
-								scanImg1.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg1,
-							options, null);
-					scanImg1.setVisibility(View.VISIBLE);
-					break;
-
-				case 1:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(1).getChildId()) {
-								scanImg2.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg2,
-							options, null);
-					scanImg2.setVisibility(View.VISIBLE);
-					break;
-				case 2:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(2).getChildId()) {
-								scanImg3.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg3,
-							options, null);
-					scanImg3.setVisibility(View.VISIBLE);
-					break;
-
-				case 3:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(3).getChildId()) {
-								scanImg4.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg4,
-							options, null);
-					scanImg4.setVisibility(View.VISIBLE);
-					break;
-				case 4:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(4).getChildId()) {
-								scanImg5.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg5,
-							options, null);
-					scanImg5.setVisibility(View.VISIBLE);
-					break;
-				case 5:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(5).getChildId()) {
-								scanImg6.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg6,
-							options, null);
-					scanImg6.setVisibility(View.VISIBLE);
-					break;
-				case 6:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(6).getChildId()) {
-								scanImg7.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg7,
-							options, null);
-					scanImg7.setVisibility(View.VISIBLE);
-					break;
-				case 7:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(7).getChildId()) {
-								scanImg8.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg8,
-							options, null);
-					scanImg8.setVisibility(View.VISIBLE);
-					break;
-				case 8:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == scanedChildData2
-									.get(8).getChildId()) {
-								scanImg9.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), scanImg9,
-							options, null);
-					scanImg9.setVisibility(View.VISIBLE);
-					break;
-
-				}
-			}
 		}
 
 		return scanedChildData2.size();
@@ -1019,8 +613,7 @@ public class RadarTrackingFragment extends Fragment implements
 	}
 
 	@SuppressWarnings("unchecked")
-	private int addMissImageHead(ArrayList<Child> missChildData2,
-			ArrayList<Child> openAntiData2) {
+	private int addMissImageHead(ArrayList<Child> missChildData2) {
 		// 手动添加imageview
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
@@ -1029,204 +622,39 @@ public class RadarTrackingFragment extends Fragment implements
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader = ImageLoader.getInstance();
 
-		missImg1.setVisibility(View.INVISIBLE);
-		missImg2.setVisibility(View.INVISIBLE);
-		missImg3.setVisibility(View.INVISIBLE);
-		missImg4.setVisibility(View.INVISIBLE);
-		missImg5.setVisibility(View.INVISIBLE);
-		missImg6.setVisibility(View.INVISIBLE);
+		for (int i = 0; i < missChildData2.size(); i++) {
+			// System.out.println("MissTempHeadImageChildData isChange===> "
+			// + missChildData2.size());
+			Child child = missChildData2.get(i);
+			MissMainLayout = (RelativeLayout) v
+					.findViewById(R.id.miss_radar_view);
+			CircleImageView MissCim = new CircleImageView(getActivity());
 
-		if (missChildData2.size() > 6) {
-			for (int i = 0; i < 6; i++) {
-				Child child = missChildData2.get(i);
-				switch (i) {
-				case 0:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(0).getChildId()) {
-								missImg1.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
+			// 初始化頭像方位
+			int initHeadPosition = 0;
+			switch (i % 4) {
+			case 0:
+				initHeadPosition = 0;
+				break;
 
-					imageLoader.displayImage(child.getIcon(), missImg1,
-							options, null);
+			case 1:
+				initHeadPosition = 1;
+				break;
 
-					missImg1.setVisibility(View.VISIBLE);
-					break;
+			case 2:
+				initHeadPosition = 2;
+				break;
 
-				case 1:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(1).getChildId()) {
-								missImg2.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg2,
-							options, null);
-					missImg2.setVisibility(View.VISIBLE);
-					break;
-				case 2:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(2).getChildId()) {
-								missImg3.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg3,
-							options, null);
-					missImg3.setVisibility(View.VISIBLE);
-					break;
-
-				case 3:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(3).getChildId()) {
-								missImg4.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg4,
-							options, null);
-					missImg4.setVisibility(View.VISIBLE);
-					break;
-				case 4:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(4).getChildId()) {
-								missImg5.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg5,
-							options, null);
-					missImg5.setVisibility(View.VISIBLE);
-					break;
-				case 5:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(5).getChildId()) {
-								missImg6.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg6,
-							options, null);
-					missImg5.setVisibility(View.VISIBLE);
-					break;
-
-				}
-
+			case 3:
+				initHeadPosition = 3;
+				break;
 			}
-		} else {
-			for (int i = 0; i < missChildData2.size(); i++) {
-				Child child = missChildData2.get(i);
-				switch (i) {
+			missHeadPosition(MissCim, initHeadPosition);
 
-				case 0:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(0).getChildId()) {
-								missImg1.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
+			MissMainLayout.addView(MissCim);
+			// AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
+			imageLoader.displayImage(child.getIcon(), MissCim, options, null);
 
-					imageLoader.displayImage(child.getIcon(), missImg1,
-							options, null);
-
-					missImg1.setVisibility(View.VISIBLE);
-					break;
-
-				case 1:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(1).getChildId()) {
-								missImg2.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg2,
-							options, null);
-					missImg2.setVisibility(View.VISIBLE);
-					break;
-				case 2:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(2).getChildId()) {
-								missImg3.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg3,
-							options, null);
-					missImg3.setVisibility(View.VISIBLE);
-					break;
-
-				case 3:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(3).getChildId()) {
-								missImg4.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg4,
-							options, null);
-					missImg4.setVisibility(View.VISIBLE);
-					break;
-				case 4:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(4).getChildId()) {
-								missImg5.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg5,
-							options, null);
-					missImg5.setVisibility(View.VISIBLE);
-					break;
-				case 5:
-					if (openAntiData2 != null) {
-						for (int y = 0; y < openAntiData2.size(); y++) {
-							if (openAntiData2.get(y).getChildId() == missChildData2
-									.get(5).getChildId()) {
-								missImg6.setBorderColor(getResources()
-										.getColor(R.color.red));
-							}
-						}
-					}
-					imageLoader.displayImage(child.getIcon(), missImg6,
-							options, null);
-					missImg5.setVisibility(View.VISIBLE);
-					break;
-				}
-			}
 		}
 
 		return missChildData2.size();
@@ -1242,6 +670,357 @@ public class RadarTrackingFragment extends Fragment implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 初始化頭像位置
+	 * 
+	 * @param imMiss
+	 * @param cim
+	 * @param getPeople
+	 */
+	// @SuppressLint("NewApi")
+	// private void HeadPosition(CircleImageView cim) {
+	// // // 初始化為中心
+	// RelativeLayout.LayoutParams layoutParams = new
+	// RelativeLayout.LayoutParams(
+	// DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+	// getActivity(), 32));
+	//
+	// cim.setX(DensityUtil.dip2px(getActivity(), 160));
+	//
+	// getScreenWidth = getScreenInfo();
+	// // 24 = 8邊框 + 16ImageView
+	// DipGetScreenWidth = getScreenWidth / 2
+	// - DensityUtil.dip2px(getActivity(), 24);
+	// // 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+	// // int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+	// // System.out.println("tete" + te);
+	// initX = DipGetScreenWidth;
+	// initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+	//
+	// int RightorLeft = 1 + (int) (Math.random() * 2);
+	// int toporBottom = 1 + (int) (Math.random() * 2);
+	// cim.setBorderColor(getResources().getColor(R.color.white));
+	//
+	// cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+	//
+	// addX = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+	// addY = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+	//
+	// if ((addX * addX + addY * addY) <= DensityUtil.dip2px(getActivity(),
+	// 7225)) {
+	// if (toporBottom == 1) {
+	// initY = initY - addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// } else if (toporBottom == 2) {
+	// initY = initY + addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// }
+	//
+	// // System.out.println("initX + initY :" + initX + " " + initY);
+	// cim.setX(initX);
+	// cim.setY(initY);
+	//
+	// } else {
+	// HeadPosition(cim);
+	// }
+	//
+	// cim.setLayoutParams(layoutParams);
+	// }
+	//
+	// private void missHeadPosition(CircleImageView cim, int initHeadPosition)
+	// {
+	// RelativeLayout.LayoutParams layoutParams = new
+	// RelativeLayout.LayoutParams(
+	// DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+	// getActivity(), 32));
+	//
+	// cim.setX(DensityUtil.dip2px(getActivity(), 160));
+	//
+	// getScreenWidth = getScreenInfo();
+	// // 24 = 8邊框 + 16ImageView
+	// DipGetScreenWidth = getScreenWidth / 2
+	// - DensityUtil.dip2px(getActivity(), 24);
+	// // 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+	// // int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+	// // System.out.println("tete" + te);
+	// initX = DipGetScreenWidth;
+	// initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+	//
+	// int RightorLeft = 1;
+	// int toporBottom = 1;
+	// // int RightorLeft = 1;
+	// // int toporBottom = 1;
+	// switch (initHeadPosition) {
+	// case 0:
+	// RightorLeft = 1;
+	// toporBottom = 1;
+	// break;
+	//
+	// case 1:
+	// RightorLeft = 2;
+	// toporBottom = 1;
+	// break;
+	//
+	// case 2:
+	// RightorLeft = 1;
+	// toporBottom = 2;
+	// break;
+	//
+	// case 3:
+	// RightorLeft = 2;
+	// toporBottom = 2;
+	// break;
+	// }
+	//
+	// cim.setBorderColor(getResources().getColor(R.color.red));
+	// cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+	//
+	// int missX = (int) (Math.random() * 120);
+	// int missY = (int) (Math.random() * 120);
+	//
+	// // System.out.println("addY + addx :" + missX * missX + " " + missY
+	// // * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
+	// // + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
+	// // + 90 + (int) (Math.random() * 30));
+	// if ((missX * missX + missY * missY) < 14000
+	// && (missX * missX + missY * missY) > 10000) {
+	// addX = DensityUtil.dip2px(getActivity(), missX);
+	// addY = DensityUtil.dip2px(getActivity(), missY);
+	// // System.out.println("啊啊啊啊啊啊 ");
+	//
+	// if (toporBottom == 1) {
+	// initY = initY - addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// } else if (toporBottom == 2) {
+	// initY = initY + addY;
+	//
+	// if (RightorLeft == 1) {
+	// initX = initX + addX;
+	// } else if (RightorLeft == 2) {
+	// initX = initX - addX;
+	// }
+	// }
+	//
+	// // System.out.println("initX + initY :" + initX + " " + initY);
+	//
+	// cim.setX(initX);
+	// cim.setY(initY);
+	//
+	// } else {
+	// missHeadPosition(cim, initHeadPosition);
+	// }
+	//
+	// cim.setLayoutParams(layoutParams);
+	// }
+
+	@SuppressLint("NewApi")
+	private void HeadPosition(CircleImageView cim) {
+		// // 初始化為中心
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+						getActivity(), 32));
+
+		cim.setX(DensityUtil.dip2px(getActivity(), 160));
+
+		getScreenWidth = getScreenInfo();
+		// 24 = 8邊框 + 16ImageView
+		DipGetScreenWidth = getScreenWidth / 2
+				- DensityUtil.dip2px(getActivity(), 24);
+		// 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+		// int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+		// System.out.println("tete" + te);
+		initX = DipGetScreenWidth;
+		initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+
+		int RightorLeft = 1 + (int) (Math.random() * 2);
+		int toporBottom = 1 + (int) (Math.random() * 2);
+		cim.setBorderColor(getResources().getColor(R.color.white));
+
+		cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+
+		addX = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+		addY = DensityUtil.dip2px(getActivity(), (int) (Math.random() * 100));
+
+		if ((addX * addX + addY * addY) <= DensityUtil.dip2px(getActivity(),
+				7225)) {
+			if (toporBottom == 1) {
+				initY = initY - addY;
+
+				if (RightorLeft == 1) {
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					initX = initX - addX;
+				}
+			} else if (toporBottom == 2) {
+				initY = initY + addY;
+
+				if (RightorLeft == 1) {
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					initX = initX - addX;
+				}
+			}
+
+			// System.out.println("initX + initY :" + initX + " " + initY);
+			cim.setX(initX);
+			cim.setY(initY);
+
+		} else {
+			HeadPosition(cim);
+		}
+
+		cim.setLayoutParams(layoutParams);
+	}
+
+	private void missHeadPosition(CircleImageView cim, int initHeadPosition) {
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				DensityUtil.dip2px(getActivity(), 32), DensityUtil.dip2px(
+						getActivity(), 32));
+
+		cim.setX(DensityUtil.dip2px(getActivity(), 160));
+
+		getScreenWidth = getScreenInfo();
+		// 24 = 8邊框 + 16ImageView
+		DipGetScreenWidth = getScreenWidth / 2
+				- DensityUtil.dip2px(getActivity(), 24);
+		// 得到整個手機的dp 三星為360 centrl 為 DipGetScreenWidth/2 -120
+		// int te = DensityUtil.px2dip(getActivity(), getScreenWidth);
+		// System.out.println("tete" + te);
+		initX = DipGetScreenWidth;
+		initY = DensityUtil.dip2px(getActivity(), 120 - 16);
+
+		int RightorLeft = 1;
+		int toporBottom = 1;
+		int finalMissX = 100;
+		int finalMissY = 10;
+		switch (initHeadPosition) {
+		case 0:
+			RightorLeft = 1;
+			toporBottom = 1;
+			zeroMissX = zeroMissX + 10;
+			zeroMissY = zeroMissY + 10;
+			finalMissX = zeroMissX;
+			finalMissY = zeroMissY;
+			break;
+
+		case 1:
+			RightorLeft = 2;
+			toporBottom = 1;
+			oneMissX = oneMissX + 10;
+			oneMissY = oneMissY + 10;
+			finalMissX = oneMissX;
+			finalMissY = oneMissY;
+			break;
+
+		case 2:
+			RightorLeft = 1;
+			toporBottom = 2;
+			twoMissX = twoMissX + 10;
+			twoMissY = twoMissY + 10;
+			finalMissX = twoMissX;
+			finalMissY = twoMissY;
+			break;
+
+		case 3:
+			RightorLeft = 2;
+			toporBottom = 2;
+			threeMissX = threeMissX + 10;
+			threeMissY = threeMissY + 10;
+			finalMissX = threeMissX;
+			finalMissY = threeMissY;
+			break;
+		}
+
+		cim.setBorderColor(getResources().getColor(R.color.red));
+		cim.setBorderWidth(DensityUtil.dip2px(getActivity(), 2));
+
+		// int missX = (int) (Math.random() * 120);
+		// int missY = (int) (Math.random() * 120);
+
+		// System.out.println("addY + addx :" + missX * missX + " " + missY
+		// * missY + " " + DensityUtil.dip2px(getActivity(), 14400)
+		// + " " + DensityUtil.dip2px(getActivity(), 10000) + "  "
+		// + 90 + (int) (Math.random() * 30));
+		if ((finalMissX * finalMissX + finalMissY * finalMissY) < 14000
+				&& (finalMissX * finalMissX + finalMissY * finalMissY) > 10000) {
+			addX = DensityUtil.dip2px(getActivity(), finalMissX);
+			addY = DensityUtil.dip2px(getActivity(), finalMissY);
+			// System.out.println("啊啊啊啊啊啊 ");
+
+			if (toporBottom == 1) {
+				initY = initY - addY;
+
+				if (RightorLeft == 1) {
+					// zero right top
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					// one left top
+					initX = initX - addX;
+				}
+			} else if (toporBottom == 2) {
+				initY = initY + addY;
+
+				if (RightorLeft == 1) {
+					// two right bottom
+					initX = initX + addX;
+				} else if (RightorLeft == 2) {
+					// three left bottom
+					initX = initX - addX;
+				}
+			}
+
+			// System.out.println("initX + initY :" + initX + " " + initY);
+
+			cim.setX(initX);
+			cim.setY(initY);
+
+		} else {
+			zeroMissX = 100;
+			zeroMissY = 10;
+
+			oneMissX = 10;
+			oneMissY = 100;
+
+			twoMissX = 10;
+			twoMissY = 100;
+
+			threeMissX = 100;
+			threeMissY = 10;
+
+			finalMissX = 100;
+			finalMissY = 10;
+			missHeadPosition(cim, initHeadPosition);
+		}
+
+		cim.setLayoutParams(layoutParams);
+	}
+
+	private int getScreenInfo() {
+		// TODO Auto-generated method stub
+		WindowManager wm = (WindowManager) getActivity().getSystemService(
+				Context.WINDOW_SERVICE);
+
+		int width = wm.getDefaultDisplay().getWidth();
+		int height = wm.getDefaultDisplay().getHeight();
+		// System.out.println("widthwidthwidthwidth=>" + width);
+		return width;
 	}
 
 	public Bitmap getBitmapFromUri(Uri uri) {
@@ -1412,30 +1191,15 @@ public class RadarTrackingFragment extends Fragment implements
 							.clone();
 				}
 
-				if (openAnti) {
-					if (openAntiCurrentDataFlag) {
-						openAntiData = (ArrayList<Child>) ScanedTempChildData
-								.clone();
-						if (openAntiData.size() > 0) {
-							openAntiCurrentDataFlag = false;
-						}
+				if (SharePrefsUtils.isInitHead(getActivity())) {
+					SharePrefsUtils.setInitHead(getActivity(), false);
+				} else {
 
-						System.out.println("openAntiData==>"
-								+ openAntiData.size());
+					if (ScanedChildDataHeadNum >= 0) {
+						removeImageHead(ScanedChildDataHeadNum);
 					}
 
-					// RSSIforBeep(rssi, device);
 				}
-
-				// if (SharePrefsUtils.isInitHead(getActivity())) {
-				// SharePrefsUtils.setInitHead(getActivity(), false);
-				// } else {
-				//
-				// if (ScanedChildDataHeadNum >= 0) {
-				// removeImageHead(ScanedChildDataHeadNum);
-				// }
-				//
-				// }
 				//
 				// System.out.println("ScanedChildData1=>"
 				// + ScanedTempChildData.size());
@@ -1445,7 +1209,7 @@ public class RadarTrackingFragment extends Fragment implements
 							+ "");
 				}
 				if (ScanedTempChildData != null) {
-					addImageHead(ScanedTempChildData, openAntiData);
+					addImageHead(ScanedTempChildData);
 					ScanedChildDataHeadNum = ScanedTempChildData.size();
 
 				}
@@ -1475,29 +1239,144 @@ public class RadarTrackingFragment extends Fragment implements
 					missingChildNumTxt.setText(MissChildData.size() + "");
 				}
 
-				// if (SharePrefsUtils.isInitHead(getActivity())) {
-				// SharePrefsUtils.setInitHead(getActivity(), false);
-				// } else {
-				// if (MissChildDataHeadNum >= 0) {
-				// removeMissImageHead(MissChildDataHeadNum);
-				// }
-				//
-				// }
+				if (SharePrefsUtils.isInitHead(getActivity())) {
+					SharePrefsUtils.setInitHead(getActivity(), false);
+				} else {
+					if (MissChildDataHeadNum >= 0) {
+						removeMissImageHead(MissChildDataHeadNum);
+					}
+
+				}
 
 				if (MissChildData != null) {
-					addMissImageHead(MissChildData, openAntiData);
+					addMissImageHead(MissChildData);
 					MissChildDataHeadNum = MissChildData.size();
 
 				}
 
-				chageTheAllData(ScanedTempChildData, MissChildData,
-						openAntiData);
+				chageTheAllData(ScanedTempChildData, MissChildData);
 				// radar頭像
 
 				clearAlltheDate();
 
 			}
 
+			// case SCAN_CHILD_FOR_LIST:
+			// // device status
+			// if (SharePrefsUtils.DeviceConnectStatus(getActivity()) ==
+			// Constants.DEVICE_CONNECT_STATUS_ERROR) {
+			// deviceStatusError++;
+			// if (deviceStatusError == 2) {
+			// SharePrefsUtils.setDeviceConnectStatus(getActivity(),
+			// Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+			// deviceStatusError = 0;
+			// }
+			// }
+			//
+			// ScanedTempChildData = (ArrayList<Child>) ScanedChildData
+			// .clone();
+			//
+			// // removeDuplicate(ScanedTempChildData);
+			// try {
+			// removeDuplicateList(ScanedTempChildData);
+			// } catch (Exception e) {
+			// // TODO Auto-generated catch block
+			// // removeDuplicateList(ScanedTempChildData);
+			// e.printStackTrace();
+			// }
+			//
+			// if (ScanedTempChildData.size() >= 0) {
+			// BeepTempChildData = (ArrayList<Child>) ScanedTempChildData
+			// .clone();
+			// // beep all the device
+			// BeepAllTempChildData = (ArrayList<Child>) ScanedTempChildData
+			// .clone();
+			// }
+			//
+			// if (SharePrefsUtils.isInitHead(getActivity())) {
+			// SharePrefsUtils.setInitHead(getActivity(), false);
+			// } else {
+			//
+			// if (ScanedChildDataHeadNum >= 0) {
+			// removeImageHead(ScanedChildDataHeadNum);
+			// }
+			//
+			// }
+			// //
+			// // System.out.println("ScanedChildData1=>"
+			// // + ScanedTempChildData.size());
+			// //
+			// if (ScanedTempChildData != null) {
+			// unMissingChildNumTxt.setText(ScanedTempChildData.size()
+			// + "");
+			// }
+			//
+			// // System.out.println("ScanedChildData2=>"
+			// // + ScanedTempChildData.size());
+			//
+			// MissChildData = DBChildren.getChildrenList(getActivity());
+			// for (int x = 0; x < ScanedTempChildData.size(); x++) {
+			// for (int y = 0; y < MissChildData.size(); y++) {
+			// if (ScanedTempChildData.get(x).getChildId() == MissChildData
+			// .get(y).getChildId()) {
+			// MissChildData.remove(y);
+			// break;
+			// }
+			//
+			// }
+			// }
+			//
+			// // System.out.println("MissChildDataMissChildData=>"
+			// // + MissChildData.size());
+			//
+			// // System.out.println("ScanedChildData3=>"
+			// // + ScanedTempChildData.size());
+			//
+			// if (MissChildData != null) {
+			// missingChildNumTxt.setText(MissChildData.size() + "");
+			// }
+			//
+			// if (SharePrefsUtils.isInitHead(getActivity())) {
+			// SharePrefsUtils.setInitHead(getActivity(), false);
+			// } else {
+			// if (MissChildDataHeadNum >= 0) {
+			// removeMissImageHead(MissChildDataHeadNum);
+			// }
+			//
+			// }
+			//
+			// if (inFirstSetHeadImage) {
+			// inFirstSetHeadImage = false;
+			// if (ScanedTempChildData != null) {
+			// addImageHead(ScanedTempChildData);
+			// ScanedChildDataHeadNum = ScanedTempChildData.size();
+			//
+			// }
+			//
+			// if (MissChildData != null) {
+			// addMissImageHead(MissChildData);
+			// MissChildDataHeadNum = MissChildData.size();
+			//
+			// }
+			//
+			// scanedHeadChildData = (ArrayList<Child>)
+			// ScanedTempChildData.clone();
+			// missedHeadChildData = (ArrayList<Child>) MissChildData.clone();
+			//
+			// }else{
+			// //先對比有什麼變化
+			//
+			//
+			// }
+			//
+			// // }
+			//
+			// chageTheAllData(ScanedTempChildData, MissChildData);
+			// // radar頭像
+			//
+			// clearAlltheDate();
+			//
+			// }
 		}
 	};
 
@@ -1607,6 +1486,10 @@ public class RadarTrackingFragment extends Fragment implements
 									if (child.getMacAddress().equals(
 											device.getAddress())) {
 
+										if (openAnti) {
+											RSSIforBeep(rssi, device);
+										}
+
 										// System.out
 										// .println("child.getMacAddress()=>"
 										// + child.getMacAddress());
@@ -1629,15 +1512,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 										listItem.add(map);
 										mLeDevices.add(device);
-
-										if (openAnti) {
-											if (openAntiData != null) {
-												if (openAntiData.size() > 0) {
-													RSSIforBeep(rssi, device,
-															openAntiData);
-												}
-											}
-										}
 
 									}
 
@@ -1780,44 +1654,38 @@ public class RadarTrackingFragment extends Fragment implements
 
 	// 應該加入頭像
 
-	private void RSSIforBeep(int rssi, BluetoothDevice device,
-			ArrayList<Child> openAntiData2) {
+	private void RSSIforBeep(int rssi, BluetoothDevice device) {
 		// TODO Auto-generated method stub
 
-		for (int i = 0; i < openAntiData2.size(); i++) {
-			if (openAntiData2.get(i).getMacAddress() == device.getAddress()) {
-				if (rssi < Constants.BEEP_RSSI) {
+		if (rssi < Constants.BEEP_RSSI) {
 
-					beepAllTime++;
-					// System.out.println("beepAllTime=>" + beepAllTime);
-					if (beepAllTime == 10) {
+			beepAllTime++;
+			// System.out.println("beepAllTime=>" + beepAllTime);
+			if (beepAllTime == 10) {
 
-						Intent beepForAntiIntent = new Intent();
+				Intent beepForAntiIntent = new Intent();
 
-						beepForAntiIntent.setClass(getActivity(),
-								RadarOutOfRssiBeepDialog.class);
+				beepForAntiIntent.setClass(getActivity(),
+						RadarOutOfRssiBeepDialog.class);
 
-						startActivity(beepForAntiIntent);
+				startActivity(beepForAntiIntent);
 
-					}
-
-				} else {
-
-					beepAllTime = 0;
-
-					if (RadarOutOfRssiBeepDialog.isStart) {
-						if (RadarOutOfRssiBeepDialog.instance != null) {
-							RadarOutOfRssiBeepDialog.instance.finish();
-
-							RadarOutOfRssiBeepDialog.isStart = false;
-						}
-
-					}
-
-				}
 			}
-		}
 
+		} else {
+
+			beepAllTime = 0;
+
+			if (RadarOutOfRssiBeepDialog.isStart) {
+				if (RadarOutOfRssiBeepDialog.instance != null) {
+					RadarOutOfRssiBeepDialog.instance.finish();
+
+					RadarOutOfRssiBeepDialog.isStart = false;
+				}
+
+			}
+
+		}
 	}
 
 	@Override

@@ -13,18 +13,15 @@ import com.eyebb.R;
 
 public class ChooseUsrRoleActivity extends Activity {
 
-	private View masterLayout;
-	private View guestLayout;
-	private TextView guestLayoutSelectedIc;
-	private TextView masterLayoutSelectedIc;
 	private boolean masterSelectFlag = false;
 	private boolean guestSelectFlag = false;
 	private Button btnConfirm;
+	private Button btnSkip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_choose_user_role);
+		setContentView(R.layout.activity_choose_user_role_version_2);
 		setTitle(getString(R.string.text_choose_role));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -34,71 +31,83 @@ public class ChooseUsrRoleActivity extends Activity {
 	}
 
 	private void initView() {
-		masterLayout = (View) findViewById(R.id.master_layout);
-		guestLayout = (View) findViewById(R.id.guest_layout);
-		masterLayoutSelectedIc = (TextView) findViewById(R.id.master_layout_selected_ic);
-		guestLayoutSelectedIc = (TextView) findViewById(R.id.guest_layout_selected_ic);
+		// masterLayout = (View) findViewById(R.id.master_layout);
+		// guestLayout = (View) findViewById(R.id.guest_layout);
+		// masterLayoutSelectedIc = (TextView)
+		// findViewById(R.id.master_layout_selected_ic);
+		// guestLayoutSelectedIc = (TextView)
+		// findViewById(R.id.guest_layout_selected_ic);
 		btnConfirm = (Button) findViewById(R.id.btn_confirm);
-
-		masterLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (masterSelectFlag) {
-					masterSelectFlag = false;
-					masterLayoutSelectedIc.setBackground(getResources()
-							.getDrawable(R.drawable.ic_selected_off));
-					// guestLayoutSelectedIc.setBackground(getResources()
-					// .getDrawable(R.drawable.ic_selected));
-				} else {
-					masterSelectFlag = true;
-					guestSelectFlag = false;
-					masterLayoutSelectedIc.setBackground(getResources()
-							.getDrawable(R.drawable.ic_selected));
-					guestLayoutSelectedIc.setBackground(getResources()
-							.getDrawable(R.drawable.ic_selected_off));
-				}
-
-			}
-		});
-
-		guestLayout.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				System.out.println("CLICK");
-				if (guestSelectFlag) {
-					guestSelectFlag = false;
-					guestLayoutSelectedIc.setBackground(getResources()
-							.getDrawable(R.drawable.ic_selected_off));
-					// masterLayoutSelectedIc.setBackground(getResources()
-					// .getDrawable(R.drawable.ic_selected));
-				} else {
-					guestSelectFlag = true;
-					masterSelectFlag = false;
-					guestLayoutSelectedIc.setBackground(getResources()
-							.getDrawable(R.drawable.ic_selected));
-					masterLayoutSelectedIc.setBackground(getResources()
-							.getDrawable(R.drawable.ic_selected_off));
-				}
-
-			}
-		});
+		btnSkip = (Button) findViewById(R.id.btn_skip);
+		// masterLayout.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// if (masterSelectFlag) {
+		// masterSelectFlag = false;
+		// masterLayoutSelectedIc.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_selected_off));
+		// // guestLayoutSelectedIc.setBackground(getResources()
+		// // .getDrawable(R.drawable.ic_selected));
+		// } else {
+		// masterSelectFlag = true;
+		// guestSelectFlag = false;
+		// masterLayoutSelectedIc.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_selected));
+		// guestLayoutSelectedIc.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_selected_off));
+		// }
+		//
+		// }
+		// });
+		//
+		// guestLayout.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// System.out.println("CLICK");
+		// if (guestSelectFlag) {
+		// guestSelectFlag = false;
+		// guestLayoutSelectedIc.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_selected_off));
+		// // masterLayoutSelectedIc.setBackground(getResources()
+		// // .getDrawable(R.drawable.ic_selected));
+		// } else {
+		// guestSelectFlag = true;
+		// masterSelectFlag = false;
+		// guestLayoutSelectedIc.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_selected));
+		// masterLayoutSelectedIc.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_selected_off));
+		// }
+		//
+		// }
+		// });
 
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (guestSelectFlag || masterSelectFlag) {
-					Intent intent = new Intent(ChooseUsrRoleActivity.this,
-							ChildInformationMatchingActivity.class);
-					startActivity(intent);
-				} else {
-					setTitle(getString(R.string.text_choose_role_hint));
-				}
+
+				Intent intent = new Intent(ChooseUsrRoleActivity.this,
+						ChildInformationMatchingActivity.class);
+				startActivity(intent);
+
+			}
+		});
+
+		btnSkip.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				Intent intent = new Intent(ChooseUsrRoleActivity.this,
+						ChildInformationMatchingActivity.class);
+				startActivity(intent);
 
 			}
 		});

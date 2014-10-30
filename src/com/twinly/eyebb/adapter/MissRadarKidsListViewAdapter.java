@@ -79,7 +79,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
-		ViewHolder viewHolderavatarRadar = null;
+
 		if (convertView == null) {
 			convertView = inflater.inflate(
 					R.layout.fragment_radar_tracking_kids_listitem, parent,
@@ -104,8 +104,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			// // 設置item圖片為白色
 			// viewHolder.avatar.setBorderColor(convertView.getResources()
 			// .getColor(R.color.white));
-			viewHolderavatarRadar = new ViewHolder();
-
+		
 			viewHolder.beepBtn = convertView
 					.findViewById(R.id.radar_item_beep_btn);
 			viewHolder.beepBtn.setVisibility(View.GONE);
@@ -139,6 +138,8 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 				setUpView(viewHolder, position);
 				e.printStackTrace();
 			}
+			
+			
 			if (child != null) {
 				if (TextUtils.isEmpty(child.getIcon()) == false) {
 
@@ -154,5 +155,28 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 
 		}
 	}
+	
+	//from small to bigf
+	 public void sort(int[] targetArr){
+
+         int temp = 0;
+         for(int i = 0;i<targetArr.length;i++){
+             for(int j = i;j<targetArr.length;j++){
+                 if(targetArr[i]>targetArr[j]){
+
+                    //方法一：
+                     temp = targetArr[i];
+                     targetArr[i] = targetArr[j];
+                     targetArr[j] = temp;
+
+//                     //方法二:
+//                     targetArr[i] = targetArr[i] + targetArr[j];
+//                     targetArr[j] = targetArr[i] - targetArr[j];
+//                     targetArr[i] = targetArr[i] - targetArr[j];
+                    }
+
+              }
+         }
+	 }
 
 }

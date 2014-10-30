@@ -75,8 +75,8 @@
     <string name="text_error_email">The Email is not in the correct format!</string>
     <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:8-30</string>
     <string name="text_loading">Loading...</string>
-    <string name="text_radar_status_disconnection">Close the anti-theft</string>
-    <string name="text_radar_status_start_connected">Open the anti-theft</string>
+    <string name="text_radar_status_disconnection">Close the anti-lost model</string>
+    <string name="text_radar_status_start_connected">Open the anti-lost model</string>
     <string name="text_connect_device">Start to find the kids nearby?</string>
     <string name="text_select_device">Please select your device.</string>
     <string name="text_device_list">Device list</string>
@@ -95,7 +95,9 @@
     <string name="text_something_has_gone_wrong">Oops, Something has gone wrong!</string>
     <string name="text_auto_refresh_on">Auto-Refresh ON</string>
     <string name="text_auto_refresh_off">Auto-Refresh OFF</string>
-
+    <string name="text_binding_device">Binding Eyebb Device?</string>
+ <string name="text_anti_lost_mode">Anti lost</string>
+    
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
      <string name="btn_binding">Binding</string>
@@ -106,6 +108,7 @@
     <string name="btn_back">Back</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_confirm">Confirm</string>
+    <string name="btn_skip">Skip</string>
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
     <string name="toast_login">Login&#8230;</string>

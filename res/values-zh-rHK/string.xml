@@ -73,8 +73,8 @@
     <string name="text_error_email">郵件地址格式錯誤！</string>
     <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
     <string name="text_loading">加載中...</string>
-    <string name="text_radar_status_disconnection">關閉防丟器</string>
-    <string name="text_radar_status_start_connected">開啟防丟器</string>
+    <string name="text_radar_status_disconnection">關閉防丟模式</string>
+    <string name="text_radar_status_start_connected">開啟防丟模式</string>
     <string name="text_connect_device">搜索附近的孩子?</string>
     <string name="text_select_device">請選擇您的設備.</string>
     <string name="text_device_list">設備列表</string>
@@ -102,7 +102,9 @@
     <string name="text_sort_off">排序關</string>
     <string name="text_auto_refresh_on">自動刷新開</string>
     <string name="text_auto_refresh_off">自動刷新關</string>
-    
+  <string name="text_binding_device">绑定贝贝安?</string>
+    <string name="text_anti_lost_mode">防丟模式</string>  
+  
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
@@ -114,6 +116,7 @@
     <string name="btn_cancel">取消</string>
     <string name="btn_verify">確認</string>
      <string name="btn_binding">去綁定</string>
+     <string name="btn_skip">略过</string>
     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

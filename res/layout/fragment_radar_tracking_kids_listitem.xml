@@ -24,7 +24,7 @@
             android:layout_height="48dp"
             android:layout_marginRight="8dp"
             android:src="@drawable/hugh"
-            app:border_color="@color/red"
+            app:border_color="@color/dark_grey"
             app:border_width="2dp" />
     </RelativeLayout>
 

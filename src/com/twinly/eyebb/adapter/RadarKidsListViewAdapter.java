@@ -24,6 +24,7 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class RadarKidsListViewAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<Child> data;
+	private ArrayList<Child> Antidata;
 	private LayoutInflater inflater;
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
@@ -50,10 +51,13 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 
 	}
 
-	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
+	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data,
+			ArrayList<Child> openAntiData) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
+		if (openAntiData != null)
+			this.Antidata = openAntiData;
 
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
@@ -83,7 +87,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
-		ViewHolder viewHolderavatarRadar = null;
+
 		if (convertView == null) {
 			convertView = inflater.inflate(
 					R.layout.fragment_radar_tracking_kids_listitem, parent,
@@ -102,9 +106,9 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.avatar = (CircleImageView) convertView
 					.findViewById(R.id.radar_child_head_img);
 			// 設置item圖片為白色
+
 			viewHolder.avatar.setBorderColor(convertView.getResources()
 					.getColor(R.color.white));
-			viewHolderavatarRadar = new ViewHolder();
 
 			viewHolder.beepBtn = convertView
 					.findViewById(R.id.radar_item_beep_btn);
@@ -145,6 +149,22 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 				e.printStackTrace();
 			}
 
+			if (Antidata != null) {
+				for (int i = 0; i < Antidata.size(); i++) {
+					if (Antidata.get(i).getChildId() == child.getChildId()) {
+						viewHolder.avatar.setBorderColor(context.getResources()
+								.getColor(R.color.red));
+						viewHolder.ChildStatus.setVisibility(View.VISIBLE);
+						viewHolder.ChildStatus.setText(context.getResources()
+								.getString(R.string.text_anti_lost_mode));
+					} else {
+						viewHolder.avatar.setBorderColor(context.getResources()
+								.getColor(R.color.white));
+						viewHolder.ChildStatus.setVisibility(View.GONE);
+					}
+				}
+			}
+
 			if (TextUtils.isEmpty(child.getIcon()) == false) {
 
 				viewHolder.beepBtn.setOnClickListener(new OnClickListener() {
@@ -156,9 +176,12 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 								.isfinishBeep(RadarKidsListViewAdapter.this.context);
 
 						if (isFinish) {
-							//如果有人點了另外一個button 彈出提示 "請稍等"
-							viewHolder.DeviceConnectStatus.setText(context.getResources()
-									.getString(R.string.text_connect_device_status_wait));
+							// 如果有人點了另外一個button 彈出提示 "請稍等"
+							viewHolder.DeviceConnectStatus
+									.setText(context
+											.getResources()
+											.getString(
+													R.string.text_connect_device_status_wait));
 						} else {
 							if (CommonUtils.isFastDoubleClick()) {
 								return;

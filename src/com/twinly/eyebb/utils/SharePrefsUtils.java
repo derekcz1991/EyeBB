@@ -218,6 +218,16 @@ public class SharePrefsUtils {
 	}
 
 	public static void setStartBeepDialog(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_BEEP_ALL_DEVICE,
+				value);
+	}
+	
+	public static boolean isBeepAllDevice(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_BEEP_ALL_DEVICE, false);
+	}
+
+	public static void setBeepAllDevice(Context context, boolean value) {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_START_BEEP,
 				value);
 	}
