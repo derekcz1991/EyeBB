@@ -1631,8 +1631,11 @@ public class RadarTrackingFragment extends Fragment implements
 										mLeDevices.add(device);
 
 										if (openAnti) {
+											// System.out.println("openAnti");
 											if (openAntiData != null) {
+												// System.out.println("openAnti1");
 												if (openAntiData.size() > 0) {
+													// System.out.println("openAnti2");
 													RSSIforBeep(rssi, device,
 															openAntiData);
 												}
@@ -1785,12 +1788,17 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 
 		for (int i = 0; i < openAntiData2.size(); i++) {
-			if (openAntiData2.get(i).getMacAddress() == device.getAddress()) {
+			System.out.println("beepAllTimeaaa=>" + device.getAddress() + " "
+					+ openAntiData2.get(i).getMacAddress());
+			if (device.getAddress()
+					.equals(openAntiData2.get(i).getMacAddress())) {
 				if (rssi < Constants.BEEP_RSSI) {
 
 					beepAllTime++;
-					// System.out.println("beepAllTime=>" + beepAllTime);
-					if (beepAllTime == 10) {
+
+					System.out.println("beepAllTime=>" + rssi + " "
+							+ beepAllTime);
+					if (beepAllTime == 2) {
 
 						Intent beepForAntiIntent = new Intent();
 
@@ -1805,14 +1813,14 @@ public class RadarTrackingFragment extends Fragment implements
 
 					beepAllTime = 0;
 
-					if (RadarOutOfRssiBeepDialog.isStart) {
-						if (RadarOutOfRssiBeepDialog.instance != null) {
-							RadarOutOfRssiBeepDialog.instance.finish();
-
-							RadarOutOfRssiBeepDialog.isStart = false;
-						}
-
-					}
+//					if (RadarOutOfRssiBeepDialog.isStart) {
+//						if (RadarOutOfRssiBeepDialog.instance != null) {
+//							RadarOutOfRssiBeepDialog.instance.finish();
+//
+//							RadarOutOfRssiBeepDialog.isStart = false;
+//						}
+//
+//					}
 
 				}
 			}
