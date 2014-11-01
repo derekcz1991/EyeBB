@@ -29,7 +29,8 @@
                     android:layout_centerVertical="true"
                     android:text="@string/text_radar_tracking" />
 
-                <LinearLayout
+                <!--
+                     <LinearLayout
                     android:id="@+id/connection_status_btn"
                     style="?android:attr/actionButtonStyle"
                     android:layout_width="wrap_content"
@@ -45,8 +46,19 @@
                         style="@style/RedText_18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_radar_status_start_connected" />
+                        android:text="@string/text_connect_device" />
                 </LinearLayout>
+                -->
+
+                <ToggleButton
+                    android:id="@+id/connection_status_btn"
+                    style="@style/DarkGreyText_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textOff="@string/text_radar_model_off"
+                    android:textOn="@string/text_radar_model_on" />
             </RelativeLayout>
 
             <!-- connect device -->
@@ -56,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:alpha="0.3"
                 android:background="@drawable/bg_white"
                 android:orientation="horizontal"
                 android:paddingLeft="8dp"
@@ -79,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="@string/text_connect_device" />
+                        android:text="@string/text_radar_status_start_connected" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -89,7 +102,7 @@
                     android:layout_centerVertical="true" >
 
                     <TextView
-                        android:id="@+id/confirm_radar_btn"
+                        android:id="@+id/confirm_anti_lost_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"

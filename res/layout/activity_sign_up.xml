@@ -50,7 +50,87 @@
             android:background="@color/divider_red" >
         </LinearLayout>
     </RelativeLayout>
+    
+    
+ 	<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@drawable/ic_login_name" />
+
+            <EditText
+                android:id="@+id/ed_nickname"
+                style="@style/DarkGreyText_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="@string/text_nick_name"
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:longClickable="false"
+                android:maxLength="30"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_red" >
+        </LinearLayout>
+    </RelativeLayout>
+    
+ 	<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@drawable/ic_login_pw" />
+
+            <EditText
+                android:id="@+id/ed_password"
+                style="@style/DarkGreyText_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="@string/text_password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:longClickable="false"
+                android:maxLength="30"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_red" >
+        </LinearLayout>
+    </RelativeLayout>
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp" >
@@ -89,7 +169,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <RelativeLayout
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp" >
 
@@ -104,19 +184,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
-                android:background="@drawable/ic_login_pw" />
+                android:background="@drawable/ic_login_email" />
 
             <EditText
-                android:id="@+id/ed_password"
+                android:id="@+id/ed_phone_number"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:hint="@string/text_password"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
+                android:hint="@string/text_phone_number"
+                android:imeOptions="actionNext"
                 android:longClickable="false"
-                android:maxLength="30"
+                android:maxLength="60"
                 android:singleLine="true" />
         </LinearLayout>
 
@@ -127,6 +206,7 @@
             android:background="@color/divider_red" >
         </LinearLayout>
     </RelativeLayout>
+    
 
     <Button
         android:id="@+id/btn_continue"

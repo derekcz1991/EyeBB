@@ -280,6 +280,96 @@ public class SharePrefsUtils {
 		setString(context,
 				ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY, value);
 	}
+	
+	public static int BleServiceRunOnceFlag(Context context) {
+		return getInt(context,
+				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG);
+	}
+
+	public static void setBleServiceRunOnceFlag(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG,
+				value);
+	}
+	
+	public static String signUpDeviceMajor(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_DEVICE_MAJOR);
+	}
+
+	public static void setSignUpDeviceMajor(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_DEVICE_MAJOR, value);
+	}
+	
+	public static String signUpDeviceMinor(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_DEVICE_MINOR);
+	}
+
+	public static void setSignUpDeviceMinor(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_DEVICE_MINOR, value);
+	}
+    /**
+     * sign up
+     */
+	public static String signUpUsername(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_USERNAME);
+	}
+
+	public static void setSignUpUsername(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_USERNAME, value);
+	}
+	
+	public static String signUpPassword(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_PASSWORD);
+	}
+
+	public static void setSignUpPassword(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_PASSWORD, value);
+	}
+	
+	public static String signUpEmail(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_EMAIL);
+	}
+
+	public static void setSignUpEmail(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_EMAIL, value);
+	}
+	
+
+	public static String signUpNickname(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_NICKNAME);
+	}
+
+	public static void setSignUpNickname(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_NICKNAME, value);
+	}
+	
+	
+
+	public static String signUpPhoneNumber(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_PHONE_NUMBER);
+	}
+
+	public static void setSignUpPhoneNumber(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_SIGN_UP_PHONE_NUMBER, value);
+	}
 
 	/**
 	 * @return Application's {@code SharedPreferences}.

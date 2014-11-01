@@ -43,7 +43,7 @@
             android:layout_alignParentLeft="true"
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
-            android:text="Missed "
+            android:text="@string/text_Missed"
             android:textColor="@color/red"
             android:textSize="12sp" />
 

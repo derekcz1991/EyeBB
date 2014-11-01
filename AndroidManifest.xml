@@ -119,6 +119,11 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.AuthorizeKidsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -275,13 +280,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-
-          <activity
+        <activity
             android:name="com.twinly.eyebb.activity.CheckBeaconActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-        
+
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -293,7 +297,15 @@
                 <category android:name="com.eyebb" />
             </intent-filter>
         </receiver>
-
+   <!--      <receiver
+            android:name="com.twinly.eyebb.fragment.RadarTrackingFragment"
+            android:permission="android.permission.BLUETOOTH_ADMIN" >
+            <intent-filter>
+                <action android:name="BluetoothAdapter.STATE_TURNING_OFF" />
+                <action android:name="BluetoothAdapter.STATE_OFF" />
+            </intent-filter>
+        </receiver>
+ -->
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
         <service
             android:name="com.twinly.eyebb.service.BleServicesService"

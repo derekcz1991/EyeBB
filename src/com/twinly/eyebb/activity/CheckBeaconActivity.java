@@ -39,6 +39,7 @@ import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class CheckBeaconActivity extends Activity {
 	SimpleAdapter listItemAdapter; // ListView的适配器
@@ -82,9 +83,6 @@ public class CheckBeaconActivity extends Activity {
 	private Boolean isWhileLoop = true;
 	private Boolean isConnectError = false;
 
-	// sharedPreferences
-	private SharedPreferences MajorAndMinorPreferences;
-	private SharedPreferences.Editor editor;
 
 	private String MACaddress4submit;
 
@@ -101,9 +99,7 @@ public class CheckBeaconActivity extends Activity {
 		Constants.gattServiceData.clear();
 		Constants.gattServiceObject.clear();
 
-		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
-				MODE_PRIVATE);
-		editor = MajorAndMinorPreferences.edit();
+
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
@@ -134,8 +130,8 @@ public class CheckBeaconActivity extends Activity {
 				System.out.println("ChildIDfromKidsList=>"
 						+ ChildIDfromKidsList);
 
-				editor.putInt("runNum", 1);
-				editor.commit();
+				SharePrefsUtils.setBleServiceRunOnceFlag(CheckBeaconActivity.this, 1);
+				
 
 				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
 						device.getName());
@@ -451,10 +447,12 @@ public class CheckBeaconActivity extends Activity {
 				minor = retStr.substring(retStr.indexOf(":") + 1,
 						retStr.length());
 				System.out.println("retStrpost======>" + major + " " + minor);
-				editor.putString("major", major);
-				editor.putString("minor", minor);
-				editor.commit();
-
+//				editor.putString("major", major);
+//				editor.putString("minor", minor);
+//				editor.commit();
+				
+				SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this, major);
+				SharePrefsUtils.setSignUpDeviceMinor(CheckBeaconActivity.this, minor);
 				// save to database
 				// DBChildren.updateMacAddress(this, childIDfromDeviceList,
 				// MACaddress4submit);

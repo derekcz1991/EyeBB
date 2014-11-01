@@ -37,6 +37,7 @@ import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class ServicesActivity extends Activity {
@@ -59,8 +60,7 @@ public class ServicesActivity extends Activity {
 	final static int STOP_PROGRASSS_BAR = 2;
 
 	// sharedPreferences
-	private SharedPreferences MajorAndMinorPreferences;
-	private SharedPreferences.Editor editor;
+
 	private String major;
 	private String minor;
 
@@ -86,12 +86,11 @@ public class ServicesActivity extends Activity {
 				getString(R.string.toast_loading));
 		dialog.show();
 
-		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
-				MODE_PRIVATE);
-		editor = MajorAndMinorPreferences.edit();
-
-		major = MajorAndMinorPreferences.getString("major", "-1");
-		minor = MajorAndMinorPreferences.getString("minor", "-1");
+	
+//		major = MajorAndMinorPreferences.getString("major", "-1");
+//		minor = MajorAndMinorPreferences.getString("minor", "-1");
+		major = SharePrefsUtils.signUpDeviceMajor(ServicesActivity.this);
+		minor = SharePrefsUtils.signUpDeviceMinor(ServicesActivity.this);
 
 		final Intent intent = getIntent();
 		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -141,13 +140,13 @@ public class ServicesActivity extends Activity {
 		/*
 		 * 如果連接失敗則彈出 error dialog
 		 */
-		if (major.equals("-1") || minor.equals("-1")) {
+		if (major.equals("") || minor.equals("")) {
 			Toast.makeText(this, R.string.text_connect_error, Toast.LENGTH_LONG);
 			if (dialog != null)
 				dialog.dismiss();
-
-			editor.putBoolean("connectFail", true);
-			editor.commit();
+//
+//			editor.putBoolean("connectFail", true);
+//			editor.commit();
 			Intent intentKidsListActivity = new Intent(ServicesActivity.this,
 					ErrorDialog.class);
 			startActivity(intentKidsListActivity);
@@ -247,11 +246,10 @@ public class ServicesActivity extends Activity {
 				displayGattServices(Constants.mBluetoothLeService
 						.getSupportedGattServices());
 
-				int num = MajorAndMinorPreferences.getInt("runNum", 1);
+				int num = SharePrefsUtils.BleServiceRunOnceFlag(context);
 				if (num == 1) {
 					new autoConnection().start();
-					editor.putInt("runNum", 2);
-					editor.commit();
+					SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
 				}
 
 			}

@@ -15,18 +15,21 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SignUpActivity extends Activity {
 	private Button btnContinue;
-	// sharedPreferences
-	private SharedPreferences SandVpreferences;
-	private SharedPreferences.Editor editor;
+
 	private EditText ed_username;
 	private EditText ed_email;
 	private EditText ed_password;
+	private EditText ed_nickname;
+	private EditText ed_phone;
 	private String username;
 	private String email;
 	private String password;
+	private String nickname;
+	private String phone;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +40,13 @@ public class SignUpActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		// sharedPreferences for signup
-		SandVpreferences = getSharedPreferences("signup", MODE_PRIVATE);
-		editor = SandVpreferences.edit();
-
+		
 		// username password email
 		ed_username = (EditText) findViewById(R.id.ed_username);
 		ed_email = (EditText) findViewById(R.id.ed_email);
 		ed_password = (EditText) findViewById(R.id.ed_password);
+		ed_nickname = (EditText) findViewById(R.id.ed_nickname);
+		ed_phone = (EditText) findViewById(R.id.ed_phone_number);
 
 		btnContinue = (Button) findViewById(R.id.btn_continue);
 		btnContinue.setOnClickListener(new OnClickListener() {
@@ -56,6 +58,9 @@ public class SignUpActivity extends Activity {
 				username = ed_username.getText().toString();
 				email = ed_email.getText().toString();
 				password = ed_password.getText().toString();
+				nickname = ed_nickname.getText().toString();
+				phone = ed_phone.getText().toString();
+				
 				System.out.println("username + email + password" + username
 						+ " " + email + " " + password);
 				if (isUsername(username)) {
@@ -63,13 +68,18 @@ public class SignUpActivity extends Activity {
 					if (isEmail(email)) {
 
 						if (isPassword(password)) {
-							editor.putString("usrname", username);
-							editor.putString("email", email);
-							editor.putString("password", password);
-							editor.commit();
+//							editor.putString("usrname", username);
+//							editor.putString("email", email);
+//							editor.putString("password", password);
+//							editor.commit();
+							SharePrefsUtils.setSignUpEmail(SignUpActivity.this, email);
+							SharePrefsUtils.setSignUpNickname(SignUpActivity.this, nickname);
+							SharePrefsUtils.setSignUpPassword(SignUpActivity.this, password);
+							SharePrefsUtils.setSignUpPhoneNumber(SignUpActivity.this, phone);
+							SharePrefsUtils.setSignUpUsername(SignUpActivity.this, username);
 
 							Intent intent = new Intent(SignUpActivity.this,
-									ChildInformationMatchingActivity.class);
+									ChooseUsrRoleActivity.class);
 							startActivity(intent);
 
 						} else {

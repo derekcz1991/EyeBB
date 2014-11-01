@@ -28,10 +28,13 @@ public class SettingsActivity extends Activity {
 	private TextView enableSoundSelected;
 	private TextView enableVibrationSelected;
 	private View aboutBtn;
+	private LinearLayout bindingBtn;
+	private LinearLayout authorizationBtn;
 
 	private boolean isAutoUpdate;
 	private TextView refreshTimeNumber;
 	public static SettingsActivity instance = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +48,9 @@ public class SettingsActivity extends Activity {
 		aboutBtn = findViewById(R.id.about_btn);
 		refreshTimeView = (LinearLayout) findViewById(R.id.refresh_time_view);
 		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
-		
+		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
+		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
+
 		setupView();
 
 		tittlebarBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +133,32 @@ public class SettingsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(SettingsActivity.this,RefreshTimeDialog.class);
+				Intent intent = new Intent(SettingsActivity.this,
+						RefreshTimeDialog.class);
 				startActivity(intent);
+			}
+		});
+
+		bindingBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(SettingsActivity.this,
+						ChildInformationMatchingActivity.class);
+				startActivity(intent);
+			}
+		});
+
+		authorizationBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(SettingsActivity.this,
+						AuthorizeKidsActivity.class);
+				startActivity(intent);
+
 			}
 		});
 
@@ -138,7 +167,7 @@ public class SettingsActivity extends Activity {
 	private void setupView() {
 		// auto refresh time
 		refreshTimeNumber.setText(SharePrefsUtils.refreshTime(this));
-		
+
 		// sound
 		if (SharePrefsUtils.isSoundOn(this)) {
 			enableSoundSelected.setBackgroundResource(R.drawable.ic_selected);
