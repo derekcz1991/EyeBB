@@ -241,6 +241,16 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.RadarShowAllScanImageDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+       </activity>   
+       <activity
+            android:name="com.twinly.eyebb.activity.RadarShowAllMissImageDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+       </activity> 
+        <activity
             android:name="com.twinly.eyebb.bluetooth.ServicesActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >

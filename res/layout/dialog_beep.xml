@@ -22,11 +22,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/anti_head_img"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_popover_beep" />
+                android:src="@drawable/hugh"
+                app:border_color="@color/red"
+                app:border_width="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,7 +42,7 @@
                 style="@style/DarkGreyText_20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_beep" />
+                android:text="@string/text_Missed" />
 
             <Chronometer
                 android:id="@+id/chronometer"

@@ -53,6 +53,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
+import com.twinly.eyebb.activity.RadarShowAllMissImageDialog;
+import com.twinly.eyebb.activity.RadarShowAllScanImageDialog;
+import com.twinly.eyebb.adapter.GridViewScanAdapter;
 import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
@@ -206,6 +209,10 @@ public class RadarTrackingFragment extends Fragment implements
 	private RelativeLayout connectDeviceLayout;
 	private boolean checkIsBluetoothOpen = false;
 
+	;
+	ArrayList<Child> showAllScanImageData;
+	ArrayList<Child> showAllMissImageData;
+
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -239,10 +246,66 @@ public class RadarTrackingFragment extends Fragment implements
 
 						SharePrefsUtils.setStartBeepDialog(getActivity(), true);
 						startActivity(intent);
+
+						BeepAllTempChildData.clear();
 					}
 				}
 			}
 		});
+
+		OnClickListener showAllScanImage = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(),
+						RadarShowAllScanImageDialog.class);
+				// scanedTempChildData
+
+				System.out.println("ScanedTempChildData=>"
+						+ showAllScanImageData.size());
+				intent.putExtra("showAllScanImage", showAllScanImageData);
+				intent.putExtra("showAllScanImageAnti", openAntiData);
+				startActivity(intent);
+
+				// showAllScanImageData.clear();
+
+			}
+		};
+
+		OnClickListener showAllMissImage = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(getActivity(),
+						RadarShowAllMissImageDialog.class);
+				// missChildData
+				System.out.println("MissChildData=>"
+						+ showAllMissImageData.size());
+				intent.putExtra("showAllMissImage", showAllMissImageData);
+				intent.putExtra("showAllMissImageAnti", openAntiData);
+				startActivity(intent);
+
+				// showAllMissImageData.clear();
+			}
+		};
+
+		scanImg1.setOnClickListener(showAllScanImage);
+		scanImg2.setOnClickListener(showAllScanImage);
+		scanImg3.setOnClickListener(showAllScanImage);
+		scanImg4.setOnClickListener(showAllScanImage);
+		scanImg5.setOnClickListener(showAllScanImage);
+		scanImg6.setOnClickListener(showAllScanImage);
+		scanImg7.setOnClickListener(showAllScanImage);
+		scanImg8.setOnClickListener(showAllScanImage);
+		scanImg9.setOnClickListener(showAllScanImage);
+		missImg1.setOnClickListener(showAllMissImage);
+		missImg2.setOnClickListener(showAllMissImage);
+		missImg3.setOnClickListener(showAllMissImage);
+		missImg4.setOnClickListener(showAllMissImage);
+		missImg5.setOnClickListener(showAllMissImage);
+		missImg6.setOnClickListener(showAllMissImage);
 
 		// 點擊這裡i
 		confirmRadarBtn
@@ -344,7 +407,7 @@ public class RadarTrackingFragment extends Fragment implements
 		ScanedChildData = new ArrayList<Child>();
 		ScanedTempChildData = new ArrayList<Child>();
 		MissChildData = new ArrayList<Child>();
-
+		showAllScanImageData = new ArrayList<Child>();
 		// ScanedChildData.clear();
 		// MissChildData.clear();
 
@@ -410,6 +473,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 		connectDeviceLayout = (RelativeLayout) v
 				.findViewById(R.id.connect_device_layout);
+
 	}
 
 	@SuppressLint("NewApi")
@@ -746,6 +810,15 @@ public class RadarTrackingFragment extends Fragment implements
 		scanImg7.setVisibility(View.INVISIBLE);
 		scanImg8.setVisibility(View.INVISIBLE);
 		scanImg9.setVisibility(View.INVISIBLE);
+		scanImg1.setBorderColor(getResources().getColor(R.color.white));
+		scanImg2.setBorderColor(getResources().getColor(R.color.white));
+		scanImg3.setBorderColor(getResources().getColor(R.color.white));
+		scanImg4.setBorderColor(getResources().getColor(R.color.white));
+		scanImg5.setBorderColor(getResources().getColor(R.color.white));
+		scanImg6.setBorderColor(getResources().getColor(R.color.white));
+		scanImg7.setBorderColor(getResources().getColor(R.color.white));
+		scanImg8.setBorderColor(getResources().getColor(R.color.white));
+		scanImg9.setBorderColor(getResources().getColor(R.color.white));
 
 		if (scanedChildData2.size() > 9) {
 			for (int i = 0; i < 9; i++) {
@@ -1054,6 +1127,12 @@ public class RadarTrackingFragment extends Fragment implements
 		missImg4.setVisibility(View.INVISIBLE);
 		missImg5.setVisibility(View.INVISIBLE);
 		missImg6.setVisibility(View.INVISIBLE);
+		missImg1.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg2.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg3.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg4.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg5.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg6.setBorderColor(getResources().getColor(R.color.dark_grey));
 
 		if (missChildData2.size() > 6) {
 			for (int i = 0; i < 6; i++) {
@@ -1436,6 +1515,13 @@ public class RadarTrackingFragment extends Fragment implements
 					// beep all the device
 					BeepAllTempChildData = (ArrayList<Child>) ScanedTempChildData
 							.clone();
+					// show all
+					if (showAllScanImageData != null) {
+						showAllScanImageData.clear();
+					}
+					showAllScanImageData = (ArrayList<Child>) ScanedTempChildData
+							.clone();
+
 				}
 
 				if (openAnti) {
@@ -1446,8 +1532,8 @@ public class RadarTrackingFragment extends Fragment implements
 							openAntiCurrentDataFlag = false;
 						}
 
-						System.out.println("openAntiData==>"
-								+ openAntiData.size());
+						// System.out.println("openAntiData==>"
+						// + openAntiData.size());
 					}
 
 					// RSSIforBeep(rssi, device);
@@ -1485,6 +1571,13 @@ public class RadarTrackingFragment extends Fragment implements
 				if (MissChildData != null) {
 					addMissImageHead(MissChildData, openAntiData);
 					MissChildDataHeadNum = MissChildData.size();
+					
+					if (showAllMissImageData != null) {
+						showAllMissImageData.clear();
+					}
+					// show all
+					showAllMissImageData = (ArrayList<Child>) MissChildData
+							.clone();
 
 				}
 
@@ -1808,22 +1901,24 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 
 		for (int i = 0; i < openAntiData2.size(); i++) {
-			System.out.println("beepAllTimeaaa=>" + device.getAddress() + " "
-					+ openAntiData2.get(i).getMacAddress());
+			// System.out.println("beepAllTimeaaa=>" + device.getAddress() + " "
+			// + openAntiData2.get(i).getMacAddress());
 			if (device.getAddress()
 					.equals(openAntiData2.get(i).getMacAddress())) {
 				if (rssi < Constants.BEEP_RSSI) {
 
 					beepAllTime++;
 
-					System.out.println("beepAllTime=>" + rssi + " "
-							+ beepAllTime);
+					// System.out.println("beepAllTime=>" + rssi + " "
+					// + beepAllTime);
 					if (beepAllTime == 2) {
 
 						Intent beepForAntiIntent = new Intent();
 
 						beepForAntiIntent.setClass(getActivity(),
 								RadarOutOfRssiBeepDialog.class);
+						beepForAntiIntent.putExtra("child_information",
+								openAntiData2.get(i));
 
 						startActivity(beepForAntiIntent);
 						beepAllTime = 0;

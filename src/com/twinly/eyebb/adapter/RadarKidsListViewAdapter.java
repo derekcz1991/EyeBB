@@ -150,6 +150,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			}
 
 			if (Antidata != null) {
+				System.out.println("Antidata.size()=>" + Antidata.size());
 				for (int i = 0; i < Antidata.size(); i++) {
 					if (Antidata.get(i).getChildId() == child.getChildId()) {
 						viewHolder.avatar.setBorderColor(context.getResources()
@@ -157,10 +158,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 						viewHolder.ChildStatus.setVisibility(View.VISIBLE);
 						viewHolder.ChildStatus.setText(context.getResources()
 								.getString(R.string.text_anti_lost_mode));
-					} else {
-						viewHolder.avatar.setBorderColor(context.getResources()
-								.getColor(R.color.white));
-						viewHolder.ChildStatus.setVisibility(View.GONE);
+						break;
 					}
 				}
 			}

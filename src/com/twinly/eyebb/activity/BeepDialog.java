@@ -17,6 +17,7 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.eyebb.R;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class BeepDialog extends Activity {
 	// record the time
@@ -30,8 +31,8 @@ public class BeepDialog extends Activity {
 	private MediaPlayer mPlayer;
 
 	// sharedPreferences
-	SharedPreferences SandVpreferences;
-	private SharedPreferences.Editor editor;
+//	SharedPreferences SandVpreferences;
+//	private SharedPreferences.Editor editor;
 
 	// boolean sound and vibrate
 	private Boolean isSound;
@@ -44,14 +45,16 @@ public class BeepDialog extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.dialog_beep);
-		SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
-		isSound = SandVpreferences.getBoolean("sound", true);
-		isVibrate = SandVpreferences.getBoolean("vibrate", true);
+		//SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
+//		isSound = SandVpreferences.getBoolean("sound", true);
+//		isVibrate = SandVpreferences.getBoolean("vibrate", true);
+		isSound = SharePrefsUtils.isSoundOn(BeepDialog.this);
+		isVibrate = SharePrefsUtils.isVibrateOn(BeepDialog.this);
 
 		isStart = true;
-		editor = SandVpreferences.edit();
-		editor.putBoolean("isStartBeepDialog", isStart);
-		editor.commit();
+//		editor = SandVpreferences.edit();
+//		editor.putBoolean("isStartBeepDialog", isStart);
+//		editor.commit();
 		//instance = this;
 
 		// secText = (TextView) findViewById(R.id.sec_text);

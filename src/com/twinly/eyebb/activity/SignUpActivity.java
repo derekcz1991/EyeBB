@@ -65,7 +65,7 @@ public class SignUpActivity extends Activity {
 						+ " " + email + " " + password);
 				if (isUsername(username)) {
 
-					if (isEmail(email)) {
+//					if (isEmail(email)) {
 
 						if (isPassword(password)) {
 //							editor.putString("usrname", username);
@@ -94,11 +94,11 @@ public class SignUpActivity extends Activity {
 								.show();
 					}
 
-				} else {
-					Toast.makeText(SignUpActivity.this,
-							R.string.text_error_username, Toast.LENGTH_SHORT)
-							.show();
-				}
+				// } else {
+				// Toast.makeText(SignUpActivity.this,
+				// R.string.text_error_username, Toast.LENGTH_SHORT)
+				// .show();
+				// }
 
 			}
 		});
@@ -128,11 +128,11 @@ public class SignUpActivity extends Activity {
 		return m.matches();
 	}
 
-	public static boolean isEmail(String email) {
-		Pattern p = Pattern
-				.compile("^[a-zA-Z][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$");
-		Matcher m = p.matcher(email);
-		System.out.println(m.matches() + "---");
-		return m.matches();
-	}
+//	public static boolean isEmail(String email) {
+//		Pattern p = Pattern
+//				.compile("^[a-zA-Z][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$");
+//		Matcher m = p.matcher(email);
+//		System.out.println(m.matches() + "---");
+//		return m.matches();
+//	}
 }
