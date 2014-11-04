@@ -110,6 +110,7 @@
      <string name="text_feedback_bug">bug</string>
   <string name="text_feedback_idea">idea</string>
    <string name="text_feedback_question">question</string>
+      <string name="text_no_content">No content...</string>
        
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

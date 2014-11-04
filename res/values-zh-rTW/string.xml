@@ -116,6 +116,7 @@
             <string name="text_feedback_bug">錯誤</string>
   <string name="text_feedback_idea">想法</string>
    <string name="text_feedback_question">問題</string>
+         <string name="text_no_content">暂时没有内容...</string>
               
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

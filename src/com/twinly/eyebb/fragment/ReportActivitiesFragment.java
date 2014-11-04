@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.ActivityDetailsActivity;
@@ -26,16 +27,19 @@ public class ReportActivitiesFragment extends Fragment implements
 	private PullToRefreshListView listView;
 	private ActivitiesListViewAdapter adapter;
 	private CallbackInterface callback;
+	private TextView listIsNull;
 
 	public interface CallbackInterface {
 		/**
 		 * Update the progressBar value when pull the listView
-		 * @param value current progress
+		 * 
+		 * @param value
+		 *            current progress
 		 */
 		public void updateProgressBar(int value);
 
 		/**
-		 * Cancel update the progressBar when release the listView  
+		 * Cancel update the progressBar when release the listView
 		 */
 		public void cancelProgressBar();
 	}
@@ -50,6 +54,7 @@ public class ReportActivitiesFragment extends Fragment implements
 		System.out.println("---->>onCreateView");
 		View v = inflater.inflate(R.layout.fragment_report_activities,
 				container, false);
+		listIsNull = (TextView) v.findViewById(R.id.list_is_null);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 		updateView(getArguments().getLong("childId"));
@@ -74,6 +79,15 @@ public class ReportActivitiesFragment extends Fragment implements
 		list = DBActivityInfo.getActivityInfoByChildId(getActivity(), childId);
 		adapter = new ActivitiesListViewAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
+
+		System.out.println("listlistlist>" + list.size());
+		if (list.size() == 0 || list == null) {
+			listIsNull.setVisibility(View.VISIBLE);
+		} else {
+
+			listIsNull.setVisibility(View.INVISIBLE);
+		}
+
 	}
 
 	@Override
@@ -87,8 +101,10 @@ public class ReportActivitiesFragment extends Fragment implements
 	}
 
 	/**
-	 * Set the listView state. The list cannot scroll when is refreshing, 
-	 * @param isRefreshing whether requesting server to update data
+	 * Set the listView state. The list cannot scroll when is refreshing,
+	 * 
+	 * @param isRefreshing
+	 *            whether requesting server to update data
 	 */
 	public void setRefreshing(boolean isRefreshing) {
 		if (listView != null) {
