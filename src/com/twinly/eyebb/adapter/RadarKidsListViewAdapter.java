@@ -158,6 +158,8 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 						viewHolder.ChildStatus.setVisibility(View.VISIBLE);
 						viewHolder.ChildStatus.setText(context.getResources()
 								.getString(R.string.text_anti_lost_mode));
+						viewHolder.ChildStatus.setTextColor(context.getResources()
+								.getColor(R.color.red));
 						break;
 					}
 				}

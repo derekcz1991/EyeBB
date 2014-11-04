@@ -153,7 +153,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 								.getColor(R.color.red));
 						viewHolder.ChildStatus.setVisibility(View.VISIBLE);
 						viewHolder.ChildStatus.setText(context.getResources()
-								.getString(R.string.text_anti_lost_mode));
+								.getString(R.string.text_anti_lost_mode_miss));
 
 						Intent beepForAntiIntent = new Intent();
 

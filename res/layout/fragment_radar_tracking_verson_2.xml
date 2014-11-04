@@ -262,6 +262,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="240dp"
                 android:alpha="0.3"
+                
                 android:background="@drawable/bg_white" >
 
                 <RelativeLayout
@@ -283,7 +284,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true"
                             android:layout_marginBottom="8dp"
-                            android:layout_marginLeft="8dp" >
+                            android:layout_marginLeft="18dp" >
 
                             <ImageView
                                 android:id="@+id/radar_circle"
@@ -405,6 +406,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
+                            
                                 android:src="@drawable/bg_radar_rotate" />
                         </RelativeLayout>
 
@@ -439,14 +441,16 @@
                                     android:layout_marginLeft="4dp"
                                     android:text="0" />
 
-                           <!--      <TextView
+                                <!--
+                                     <TextView
                                     android:id="@+id/radar_text_more_view"
                                     style="@style/DarkGreyText_18"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="4dp"
                                     android:text="@string/text_more"
-                                    android:textColor="@color/red" /> -->
+                                    android:textColor="@color/red" />
+                                -->
                             </LinearLayout>
 
                             <TextView
@@ -582,7 +586,7 @@
             <!-- radar -->
 
             <com.twinly.eyebb.customview.LinearLayoutForListView
-                android:id="@+id/radar_children_list_miss"
+                android:id="@+id/radar_children_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.3"
@@ -590,7 +594,7 @@
             </com.twinly.eyebb.customview.LinearLayoutForListView>
 
             <com.twinly.eyebb.customview.LinearLayoutForListView
-                android:id="@+id/radar_children_list"
+                android:id="@+id/radar_children_list_miss"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="56dp"

@@ -348,47 +348,7 @@ public class RadarTrackingFragment extends Fragment implements
 				// TODO Auto-generated method stub
 
 				if (openAnti) {
-					openAnti = false;
-					openAntiCurrentDataFlag = false;
-					// openAntiTheftTX.setText(getResources().getString(
-					// R.string.text_radar_status_start_connected));
-					if (openAntiData != null) {
-						if (openAntiData.size() > 0) {
-							openAntiData.clear();
-						}
-					}
-					scanImg1.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg2.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg3.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg4.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg5.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg6.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg7.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg8.setBorderColor(getResources().getColor(
-							R.color.white));
-					scanImg9.setBorderColor(getResources().getColor(
-							R.color.white));
-					missImg1.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg2.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg3.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg4.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg5.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					missImg6.setBorderColor(getResources().getColor(
-							R.color.dark_grey));
-					openAntiTheft.setBackground(getResources().getDrawable(
-							R.drawable.ic_selected_off));
+					closeAntiMode();
 				} else {
 					openAnti = true;
 					openAntiCurrentDataFlag = true;
@@ -403,6 +363,50 @@ public class RadarTrackingFragment extends Fragment implements
 
 		return v;
 
+	}
+	
+	private void closeAntiMode(){
+		openAnti = false;
+		openAntiCurrentDataFlag = false;
+		// openAntiTheftTX.setText(getResources().getString(
+		// R.string.text_radar_status_start_connected));
+		if (openAntiData != null) {
+			if (openAntiData.size() > 0) {
+				openAntiData.clear();
+			}
+		}
+		scanImg1.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg2.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg3.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg4.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg5.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg6.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg7.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg8.setBorderColor(getResources().getColor(
+				R.color.white));
+		scanImg9.setBorderColor(getResources().getColor(
+				R.color.white));
+		missImg1.setBorderColor(getResources().getColor(
+				R.color.dark_grey));
+		missImg2.setBorderColor(getResources().getColor(
+				R.color.dark_grey));
+		missImg3.setBorderColor(getResources().getColor(
+				R.color.dark_grey));
+		missImg4.setBorderColor(getResources().getColor(
+				R.color.dark_grey));
+		missImg5.setBorderColor(getResources().getColor(
+				R.color.dark_grey));
+		missImg6.setBorderColor(getResources().getColor(
+				R.color.dark_grey));
+		openAntiTheft.setBackground(getResources().getDrawable(
+				R.drawable.ic_selected_off));
 	}
 
 	@SuppressLint("CutPasteId")
@@ -1234,7 +1238,7 @@ public class RadarTrackingFragment extends Fragment implements
 					}
 					imageLoader.displayImage(child.getIcon(), missImg6,
 							options, null);
-					missImg5.setVisibility(View.VISIBLE);
+					missImg6.setVisibility(View.VISIBLE);
 					break;
 
 				}
@@ -1331,7 +1335,7 @@ public class RadarTrackingFragment extends Fragment implements
 					}
 					imageLoader.displayImage(child.getIcon(), missImg6,
 							options, null);
-					missImg5.setVisibility(View.VISIBLE);
+					missImg6.setVisibility(View.VISIBLE);
 					break;
 				}
 			}
@@ -1341,16 +1345,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
-	private void removeMissImageHead(int missChildDataNum) {
 
-		try {
-			// .out.println("number=> " + missChildDataNum);
-			MissMainLayout.removeViews(1, missChildDataNum);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	public Bitmap getBitmapFromUri(Uri uri) {
 		try {
@@ -1614,11 +1609,13 @@ public class RadarTrackingFragment extends Fragment implements
 				System.out.println("STATE_TURNING_OFF");
 				btnCancelConnect();
 				closeBluetooth();
+				closeAntiMode();
 				break;
 			case BluetoothAdapter.STATE_OFF:
 				System.out.println("STATE_OFF");
 				btnCancelConnect();
 				closeBluetooth();
+				closeAntiMode();
 				break;
 			}
 		}
@@ -1929,7 +1926,7 @@ public class RadarTrackingFragment extends Fragment implements
 							RadarOutOfRssiBeepDialog.class);
 					beepForAntiIntent.putExtra("child_information",
 							openAntiData2.get(i));
-
+					
 					startActivity(beepForAntiIntent);
 					beepAllTime = 0;
 					// }

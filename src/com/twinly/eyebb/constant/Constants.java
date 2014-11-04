@@ -26,7 +26,7 @@ public class Constants {
 	public static final String BEEP_CHAR_UUID = "1001";
 	public final static int START_PROGRASSS_BAR = 1;
 	public final static int STOP_PROGRASSS_BAR = 2;
-	public static final int BEEP_RSSI = -80;
+	public static final int BEEP_RSSI = -90;
 	public static final int SCAN_INRERVAL_TIME = 1000;
 	public static final int SCANTIME = Integer.MAX_VALUE;
 

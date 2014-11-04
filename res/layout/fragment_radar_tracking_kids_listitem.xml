@@ -44,7 +44,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:singleLine="true"
             android:text="@string/text_Missed"
-            android:textColor="@color/red"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <TextView

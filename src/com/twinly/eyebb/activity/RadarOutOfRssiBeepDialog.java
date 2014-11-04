@@ -1,16 +1,16 @@
 package com.twinly.eyebb.activity;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.os.Vibrator;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -44,6 +45,8 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
 
+	private TextView hintForUser;
+
 	public static RadarOutOfRssiBeepDialog instance = null;
 
 	public static boolean isStart = false;
@@ -54,7 +57,7 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.dialog_beep);
+		setContentView(R.layout.dialog_radar_rssi_beep);
 		// SandVpreferences = getSharedPreferences("soundAndVibrate",
 		// MODE_PRIVATE);
 		isSound = SharePrefsUtils.isSoundOn(RadarOutOfRssiBeepDialog.this);
@@ -63,6 +66,24 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 		// SharePrefsUtils.setStartBeepDialog(this, isStart);
 
 		antiHeadImg = (ImageView) findViewById(R.id.anti_head_img);
+		hintForUser = (TextView) findViewById(R.id.hint_for_user);
+
+		if (SharePrefsUtils.getLanguage(RadarOutOfRssiBeepDialog.this) == Constants.LOCALE_HK
+				|| SharePrefsUtils.getLanguage(RadarOutOfRssiBeepDialog.this) == Constants.LOCALE_TW) {
+			SpannableStringBuilder builder = new SpannableStringBuilder(
+					hintForUser.getText().toString());
+
+			// ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
+			ForegroundColorSpan redSpan1 = new ForegroundColorSpan(
+					getResources().getColor(R.color.red));
+			ForegroundColorSpan redSpan2 = new ForegroundColorSpan(
+					getResources().getColor(R.color.red));
+			builder.setSpan(redSpan1, 4, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			builder.setSpan(redSpan2, 12, 14,
+					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			hintForUser.setText(builder);
+
+		}
 
 		Intent intent = getIntent();
 		data = (Child) intent.getSerializableExtra("child_information");
@@ -80,7 +101,7 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 		instance = this;
 
 		// secText = (TextView) findViewById(R.id.sec_text);
-		getTime();
+		// getTime();
 		if (isVibrate) {
 			vibrate();
 		}
@@ -100,16 +121,16 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 
 	}
 
-	private void getTime() {
-		// 获得计时器对象
-		timer = (Chronometer) this.findViewById(R.id.chronometer);
-
-		// 将计时器清零
-		timer.setBase(SystemClock.elapsedRealtime());
-		setFlickerAnimation(timer);
-		// 开始计时
-		timer.start();
-	}
+	// private void getTime() {
+	// // 获得计时器对象
+	// timer = (Chronometer) this.findViewById(R.id.chronometer);
+	//
+	// // 将计时器清零
+	// timer.setBase(SystemClock.elapsedRealtime());
+	// setFlickerAnimation(timer);
+	// // 开始计时
+	// timer.start();
+	// }
 
 	// 震動
 	private void vibrate() {
