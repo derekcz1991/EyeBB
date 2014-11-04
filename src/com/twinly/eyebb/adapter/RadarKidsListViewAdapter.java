@@ -29,7 +29,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private RadarKidsListViewAdapterCallback callback;
-	private String ItemPosition;
+	
 
 	public interface RadarKidsListViewAdapterCallback {
 		public void onStartToBeepClicked(int position);

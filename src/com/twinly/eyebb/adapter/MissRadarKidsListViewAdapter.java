@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 
@@ -24,6 +26,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
+	private ArrayList<Child> Antidata;
 
 	// private RadarKidsListViewAdapterCallback callback;
 	//
@@ -47,10 +50,13 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 		public RelativeLayout allView;
 	}
 
-	public MissRadarKidsListViewAdapter(Context context, ArrayList<Child> data) {
+	public MissRadarKidsListViewAdapter(Context context, ArrayList<Child> data,
+			ArrayList<Child> openAntiData2) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
+		if (openAntiData2 != null)
+			this.Antidata = openAntiData2;
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
@@ -104,7 +110,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			// // 設置item圖片為白色
 			// viewHolder.avatar.setBorderColor(convertView.getResources()
 			// .getColor(R.color.white));
-		
+
 			viewHolder.beepBtn = convertView
 					.findViewById(R.id.radar_item_beep_btn);
 			viewHolder.beepBtn.setVisibility(View.GONE);
@@ -138,8 +144,30 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 				setUpView(viewHolder, position);
 				e.printStackTrace();
 			}
-			
-			
+
+			if (Antidata != null) {
+				System.out.println("Antidata.size()=>" + Antidata.size());
+				for (int i = 0; i < Antidata.size(); i++) {
+					if (Antidata.get(i).getChildId() == child.getChildId()) {
+						viewHolder.avatar.setBorderColor(context.getResources()
+								.getColor(R.color.red));
+						viewHolder.ChildStatus.setVisibility(View.VISIBLE);
+						viewHolder.ChildStatus.setText(context.getResources()
+								.getString(R.string.text_anti_lost_mode));
+
+						Intent beepForAntiIntent = new Intent();
+
+						beepForAntiIntent.setClass(context,
+								RadarOutOfRssiBeepDialog.class);
+						beepForAntiIntent.putExtra("child_information",
+								Antidata.get(i));
+
+						context.startActivity(beepForAntiIntent);
+						break;
+					}
+				}
+			}
+
 			if (child != null) {
 				if (TextUtils.isEmpty(child.getIcon()) == false) {
 
@@ -155,28 +183,28 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 
 		}
 	}
-	
-	//from small to bigf
-	 public void sort(int[] targetArr){
 
-         int temp = 0;
-         for(int i = 0;i<targetArr.length;i++){
-             for(int j = i;j<targetArr.length;j++){
-                 if(targetArr[i]>targetArr[j]){
+	// from small to bigf
+	public void sort(int[] targetArr) {
 
-                    //方法一：
-                     temp = targetArr[i];
-                     targetArr[i] = targetArr[j];
-                     targetArr[j] = temp;
+		int temp = 0;
+		for (int i = 0; i < targetArr.length; i++) {
+			for (int j = i; j < targetArr.length; j++) {
+				if (targetArr[i] > targetArr[j]) {
 
-//                     //方法二:
-//                     targetArr[i] = targetArr[i] + targetArr[j];
-//                     targetArr[j] = targetArr[i] - targetArr[j];
-//                     targetArr[i] = targetArr[i] - targetArr[j];
-                    }
+					// 方法一：
+					temp = targetArr[i];
+					targetArr[i] = targetArr[j];
+					targetArr[j] = temp;
 
-              }
-         }
-	 }
+					// //方法二:
+					// targetArr[i] = targetArr[i] + targetArr[j];
+					// targetArr[j] = targetArr[i] - targetArr[j];
+					// targetArr[i] = targetArr[i] - targetArr[j];
+				}
+
+			}
+		}
+	}
 
 }

@@ -568,8 +568,8 @@ public class RadarTrackingFragmentBackup extends Fragment implements
 		Childadapter.setCallback(RadarTrackingFragmentInstance);
 		ChildlistView.setAdapter(Childadapter);
 
-		MissChildadapter = new MissRadarKidsListViewAdapter(getActivity(),
-				missChildData);
+//		MissChildadapter = new MissRadarKidsListViewAdapter(getActivity(),
+//				missChildData);
 		MissChildlistView.setAdapter(MissChildadapter);
 
 	}

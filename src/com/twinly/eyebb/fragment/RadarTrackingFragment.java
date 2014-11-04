@@ -258,17 +258,22 @@ public class RadarTrackingFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						RadarShowAllScanImageDialog.class);
-				// scanedTempChildData
+				if (CommonUtils.isFastDoubleClick()) {
+					return;
+				} else {
+					Intent intent = new Intent(getActivity(),
+							RadarShowAllScanImageDialog.class);
+					// scanedTempChildData
 
-				System.out.println("ScanedTempChildData=>"
-						+ showAllScanImageData.size());
-				intent.putExtra("showAllScanImage", showAllScanImageData);
-				intent.putExtra("showAllScanImageAnti", openAntiData);
-				startActivity(intent);
+					System.out.println("ScanedTempChildData=>"
+							+ showAllScanImageData.size());
+					intent.putExtra("showAllScanImage", showAllScanImageData);
+					intent.putExtra("showAllScanImageAnti", openAntiData);
+					startActivity(intent);
 
-				// showAllScanImageData.clear();
+					// showAllScanImageData.clear();
+
+				}
 
 			}
 		};
@@ -278,16 +283,21 @@ public class RadarTrackingFragment extends Fragment implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(getActivity(),
-						RadarShowAllMissImageDialog.class);
-				// missChildData
-				System.out.println("MissChildData=>"
-						+ showAllMissImageData.size());
-				intent.putExtra("showAllMissImage", showAllMissImageData);
-				intent.putExtra("showAllMissImageAnti", openAntiData);
-				startActivity(intent);
+				if (CommonUtils.isFastDoubleClick()) {
+					return;
+				} else {
+					Intent intent = new Intent(getActivity(),
+							RadarShowAllMissImageDialog.class);
+					// missChildData
+					System.out.println("MissChildData=>"
+							+ showAllMissImageData.size());
+					intent.putExtra("showAllMissImage", showAllMissImageData);
+					intent.putExtra("showAllMissImageAnti", openAntiData);
+					startActivity(intent);
 
-				// showAllMissImageData.clear();
+					// showAllMissImageData.clear();
+				}
+
 			}
 		};
 
@@ -773,7 +783,7 @@ public class RadarTrackingFragment extends Fragment implements
 		ChildlistView.setAdapter(Childadapter);
 
 		MissChildadapter = new MissRadarKidsListViewAdapter(getActivity(),
-				missChildData);
+				missChildData, openAntiData2);
 		MissChildlistView.setAdapter(MissChildadapter);
 
 	}
@@ -1571,7 +1581,7 @@ public class RadarTrackingFragment extends Fragment implements
 				if (MissChildData != null) {
 					addMissImageHead(MissChildData, openAntiData);
 					MissChildDataHeadNum = MissChildData.size();
-					
+
 					if (showAllMissImageData != null) {
 						showAllMissImageData.clear();
 					}
@@ -1907,22 +1917,22 @@ public class RadarTrackingFragment extends Fragment implements
 					.equals(openAntiData2.get(i).getMacAddress())) {
 				if (rssi < Constants.BEEP_RSSI) {
 
-					beepAllTime++;
+					// beepAllTime++;
 
 					// System.out.println("beepAllTime=>" + rssi + " "
 					// + beepAllTime);
-					if (beepAllTime == 2) {
+					// if (beepAllTime == 0) {
 
-						Intent beepForAntiIntent = new Intent();
+					Intent beepForAntiIntent = new Intent();
 
-						beepForAntiIntent.setClass(getActivity(),
-								RadarOutOfRssiBeepDialog.class);
-						beepForAntiIntent.putExtra("child_information",
-								openAntiData2.get(i));
+					beepForAntiIntent.setClass(getActivity(),
+							RadarOutOfRssiBeepDialog.class);
+					beepForAntiIntent.putExtra("child_information",
+							openAntiData2.get(i));
 
-						startActivity(beepForAntiIntent);
-						beepAllTime = 0;
-					}
+					startActivity(beepForAntiIntent);
+					beepAllTime = 0;
+					// }
 
 				} else {
 
