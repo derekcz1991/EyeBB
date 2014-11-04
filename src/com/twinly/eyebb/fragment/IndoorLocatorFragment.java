@@ -46,7 +46,7 @@ public class IndoorLocatorFragment extends Fragment implements
 	private ToggleButton autoUpdateButton;
 	private boolean autoUpdateFlag;
 	private AutoUpdateTask autoUpdateTask;
-	private boolean isSort = true;
+	private boolean isSort = false;
 
 	public interface CallbackInterface {
 		/**

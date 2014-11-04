@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textOff="@string/text_sort_on"
-            android:textOn="@string/text_sort_off" />
+            android:textOff="@string/text_sort_off"
+            android:textOn="@string/text_sort_on" />
 
         <ToggleButton
             android:id="@+id/autoUpdateButton"

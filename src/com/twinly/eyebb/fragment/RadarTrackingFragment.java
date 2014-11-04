@@ -523,7 +523,7 @@ public class RadarTrackingFragment extends Fragment implements
 			e.printStackTrace();
 		}
 
-		isLeScan = mBluetoothAdapter.startLeScan(mLeScanCallback);
+		mBluetoothAdapter.startLeScan(mLeScanCallback);
 
 		try {
 
