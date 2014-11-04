@@ -1,30 +1,26 @@
 package com.twinly.eyebb.activity;
 
-import java.util.HashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewAdapter;
-
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.SerializableChildrenMap;
-
 
 public class KidsListActivity extends Activity {
 	private ListView listView;
 	private Map<String, Child> childrenMap;
 	private KidsListViewAdapter adapter;
+	private boolean isSortByName;
+	private boolean isSortByLocator;
 
-	@SuppressLint("ShowToast")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,12 +35,35 @@ public class KidsListActivity extends Activity {
 				.get("childrenMap");
 		if (serializableMap != null) {
 			childrenMap = serializableMap.getMap();
-			adapter = new KidsListViewAdapter(this, childrenMap);
+			adapter = new KidsListViewAdapter(this, childrenMap, isSortByName,
+					isSortByLocator);
 		}
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(adapter);
-		
-		
+
+		findViewById(R.id.sort_name).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				isSortByName = !isSortByName;
+				adapter = new KidsListViewAdapter(KidsListActivity.this,
+						childrenMap, isSortByName, isSortByLocator);
+				listView.setAdapter(adapter);
+			}
+		});
+
+		findViewById(R.id.sort_locator).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						isSortByLocator = !isSortByLocator;
+						adapter = new KidsListViewAdapter(
+								KidsListActivity.this, childrenMap,
+								isSortByName, isSortByLocator);
+						listView.setAdapter(adapter);
+					}
+				});
 	}
 
 	@Override
@@ -56,5 +75,4 @@ public class KidsListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
 }

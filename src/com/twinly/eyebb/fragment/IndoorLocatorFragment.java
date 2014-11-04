@@ -31,6 +31,7 @@ import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.model.SerializableChildrenMap;
+import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -151,8 +152,6 @@ public class IndoorLocatorFragment extends Fragment implements
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
 								KidsListActivity.class);
-						// Intent intent = new Intent(getActivity(),
-						// DeviceListAcitivity.class);
 						myMap.setMap(childrenMap);
 						Bundle bundle = new Bundle();
 						bundle.putSerializable("childrenMap", myMap);
@@ -243,7 +242,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 	}
 
-	class UpdateView extends AsyncTask<Void, Void, String> {
+	private class UpdateView extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -259,10 +258,24 @@ public class IndoorLocatorFragment extends Fragment implements
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return HttpRequestUtils.get("reportService/api/childrenList", null);
+			String result = HttpRequestUtils.get(
+					"reportService/api/childrenList", null);
+			if (autoUpdateFlag == false) {
+				try {
+					new JSONObject(result);
+				} catch (JSONException e) {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+					result = HttpRequestUtils.get(
+							"reportService/api/childrenList", null);
+				}
+			}
+			return result;
 		}
 
 		@Override
@@ -316,36 +329,64 @@ public class IndoorLocatorFragment extends Fragment implements
 	 * @param json
 	 */
 	private void getAllChild(JSONObject json) {
+		childrenMap = DBChildren.getChildrenMap(getActivity());
 		try {
 			JSONArray childJSONList = json
 					.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
 			for (int i = 0; i < childJSONList.length(); i++) {
 				JSONObject object = (JSONObject) childJSONList.get(i);
+				insertChild(object);
+
 				String childId = object
 						.getString(HttpConstants.JSON_KEY_CHILD_ID);
-				JSONObject locationTime = object
-						.getJSONObject(HttpConstants.JSON_KEY_LOCATION_TIME);
-				childrenMap
-						.get(childId)
-						.setLastAppearTime(
-								locationTime
-										.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
+				if (CommonUtils.isNotNull(object
+						.getString(HttpConstants.JSON_KEY_LOCATION_TIME))) {
+					JSONObject locationTime = object
+							.getJSONObject(HttpConstants.JSON_KEY_LOCATION_TIME);
+					childrenMap
+							.get(childId)
+							.setLastAppearTime(
+									locationTime
+											.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
 
-				JSONObject locationJSON = locationTime
-						.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
-				Location location = new Location();
-				location.setId(locationJSON
-						.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
-				location.setName(locationJSON
-						.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
-				location.setType(HttpConstants.JSON_KEY_LOCATION_TYPE);
-				childrenMap.get(childId).setLocationName(location.getName());
+					JSONObject locationJSON = locationTime
+							.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
+					Location location = new Location();
+					location.setId(locationJSON
+							.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
+					location.setName(locationJSON
+							.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
+					location.setType(HttpConstants.JSON_KEY_LOCATION_TYPE);
+					childrenMap.get(childId)
+							.setLocationName(location.getName());
+					updateLocationData(childId, location);
+				}
 
-				updateLocationData(childId, location);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void insertChild(JSONObject object) throws JSONException {
+		Child child = new Child(object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+				object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+				object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+		child.setMacAddress(object
+				.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
+		// get parents' phone
+		if (CommonUtils.isNotNull(object
+				.getString(HttpConstants.JSON_KEY_PARENTS))) {
+			JSONArray parents = object
+					.getJSONArray(HttpConstants.JSON_KEY_PARENTS);
+			if (parents != null) {
+				JSONObject parent = (JSONObject) parents.get(0);
+				child.setPhone(parent
+						.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+			}
+		}
+
+		DBChildren.insert(getActivity(), child);
 	}
 
 	private void updateLocationData(String childId, Location location) {

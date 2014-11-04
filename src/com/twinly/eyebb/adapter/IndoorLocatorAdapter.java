@@ -62,6 +62,15 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 						public int compare(
 								Entry<Location, ArrayList<String>> lhs,
 								Entry<Location, ArrayList<String>> rhs) {
+							if (lhs.getKey().getName().contains("Entrance")
+									|| lhs.getKey().getName().contains("Exit")) {
+								return 1;
+							} else if (rhs.getKey().getName()
+									.contains("Entrance")
+									|| rhs.getKey().getName().contains("Exit")) {
+								return -1;
+							}
+
 							if (rhs.getValue().size() - lhs.getValue().size() == 0) {
 								return (int) (lhs.getKey().getId() - rhs
 										.getKey().getId());
@@ -80,6 +89,14 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 						public int compare(
 								Entry<Location, ArrayList<String>> lhs,
 								Entry<Location, ArrayList<String>> rhs) {
+							if (lhs.getKey().getName().contains("Entrance")
+									|| lhs.getKey().getName().contains("Exit")) {
+								return 1;
+							} else if (rhs.getKey().getName()
+									.contains("Entrance")
+									|| rhs.getKey().getName().contains("Exit")) {
+								return -1;
+							}
 							return (int) (lhs.getKey().getId() - rhs.getKey()
 									.getId());
 						}
@@ -131,12 +148,23 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		// clear the view
 		viewHolder.avatarContainer.removeAllViews();
 
+		String locationType = data.get(position).getKey().getType();
 		String locationName = data.get(position).getKey().getName();
 		// set the area name
 		viewHolder.areaName.setText(locationName);
+
 		ArrayList<String> childrenIds = data.get(position).getValue();
-		// set the the number of children
-		viewHolder.childrenNum.setText(String.valueOf(childrenIds.size()));
+		// remove the child if he showed in the EXIT area and stay more than 10 mins.
+		if (locationType.equals("X")) {
+			for (int i = 0; i < childrenIds.size(); i++) {
+				if (System.currentTimeMillis()
+						- childrenMap.get(childrenIds.get(i))
+								.getLastAppearTime() > Constants.validTimeDuration) {
+					childrenIds.remove(i);
+					i--;
+				}
+			}
+		}
 		for (int i = 0; i < childrenIds.size(); i++) {
 			// add the avatar to flowlayout
 			AvatarView avatarView;
@@ -153,6 +181,9 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 			viewHolder.avatarContainer.addView(avatarView.getInstance(), 0);
 		}
+
+		// set the the number of children
+		viewHolder.childrenNum.setText(String.valueOf(childrenIds.size()));
 
 		if (locationName.contains("Sleeping")) {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_sleep);
@@ -178,10 +209,18 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_food);
 			viewHolder.rootLayout
 					.setBackgroundResource(R.drawable.bg_home_green01);
-		} else if (locationName.contains("Class")) {
+		} else if (locationName.contains("Study")) {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_classroom);
 			viewHolder.rootLayout
 					.setBackgroundResource(R.drawable.bg_home_yellow02);
+		} else if (locationName.contains("Entrance")) {
+			viewHolder.icon.setBackground(null);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_blue02);
+		} else if (locationName.contains("Exit")) {
+			viewHolder.icon.setBackground(null);
+			viewHolder.rootLayout
+					.setBackgroundResource(R.drawable.bg_home_blue02);
 		}
 	}
 

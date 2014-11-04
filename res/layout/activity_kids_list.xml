@@ -6,6 +6,29 @@
     android:background="@color/activity_background_white"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal" >
+
+        <ToggleButton
+            android:id="@+id/sort_name"
+            style="@style/DarkGreyText_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="按名字"
+            android:textOn="按名字" />
+
+        <ToggleButton
+            android:id="@+id/sort_locator"
+            style="@style/DarkGreyText_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="按位置"
+            android:textOn="按位置" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

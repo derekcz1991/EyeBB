@@ -1,6 +1,11 @@
 package com.twinly.eyebb.adapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +28,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class KidsListViewAdapter extends BaseAdapter {
 	private Context context;
-	private Map<String, Child> childrenMap;
-	private String[] childrenId;
+	private List<Map.Entry<String, Child>> list;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
@@ -37,24 +41,52 @@ public class KidsListViewAdapter extends BaseAdapter {
 		public LinearLayout btnBeep;
 	}
 
-	public KidsListViewAdapter(Context context, Map<String, Child> childrenMap) {
+	public KidsListViewAdapter(Context context, Map<String, Child> childrenMap,
+			boolean isSortByName, boolean isSortByLocator) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
-		this.childrenMap = childrenMap;
-		this.childrenId = (String[]) childrenMap.keySet().toArray(
-				new String[childrenMap.size()]);
+		this.list = new ArrayList<Map.Entry<String, Child>>(
+				childrenMap.entrySet());
+		if (isSortByName) {
+			Collections.sort(list, new Comparator<Map.Entry<String, Child>>() {
+
+				@Override
+				public int compare(Entry<String, Child> lhs,
+						Entry<String, Child> rhs) {
+					return lhs.getValue().getName().charAt(0)
+							- rhs.getValue().getName().charAt(0);
+				}
+			});
+		}
+
+		if (isSortByLocator) {
+			Collections.sort(list, new Comparator<Map.Entry<String, Child>>() {
+
+				@Override
+				public int compare(Entry<String, Child> lhs,
+						Entry<String, Child> rhs) {
+					if (lhs.getValue().getLocationName().length() == 0) {
+						return 1;
+					} else if (rhs.getValue().getLocationName().length() == 0) {
+						return -1;
+					}
+					return lhs.getValue().getLocationName().charAt(0)
+							- rhs.getValue().getLocationName().charAt(0);
+				}
+			});
+		}
 
 		imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override
 	public int getCount() {
-		return childrenMap.size();
+		return list.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return childrenMap.get(childrenId[position]);
+		return list.get(position);
 	}
 
 	@Override
@@ -88,7 +120,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 	}
 
 	private void setUpView(ViewHolder viewHolder, int position) {
-		final Child child = childrenMap.get(childrenId[position]);
+		final Child child = list.get(position).getValue();
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					CommonUtils.getDisplayImageOptions(), null);

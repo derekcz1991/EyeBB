@@ -5,7 +5,7 @@
     <string name="text_policy">By Continuing, you agree to our <u>Terms</u> and <u>Privacy Policy</u>.</string>
     <string name="text_user_name">用戶名</string>
     <string name="text_email">電郵 (可選)</string>
-     <string name="text_phone_number">電話 (可選)</string>
+    <string name="text_phone_number">電話 (可選)</string>
     <string name="text_password">密碼</string>
     <string name="text_login_account">用戶名或電郵</string>
     <string name="text_select_kid_kindergarten">選擇幼稚園</string>
@@ -100,25 +100,25 @@
     <string name="text_choose_role_hint">請選擇一個身份!</string>
     <string name="text_something_has_gone_wrong">請填入完整信息!</string>
     <string name="text_sort_on">排序開</string>
-    <string name="text_sort_off">排序關</string>
+    <string name="text_sort_off">所有房間</string>
     <string name="text_auto_refresh_on">自動刷新開</string>
     <string name="text_auto_refresh_off">自動刷新關</string>
     <string name="text_binding_device">绑定贝贝安?</string>
-       <string name="text_anti_lost_mode">防丟模式</string>
-          <string name="text_radar_model_on">雷達模式開</string>
+    <string name="text_anti_lost_mode">防丟模式</string>
+    <string name="text_radar_model_on">雷達模式開</string>
     <string name="text_radar_model_off">雷達模式關</string>
     <string name="text_authorization">授權</string>
-      <string name="text_device">寶寶安</string>
-          <string name="text_nick_name">暱稱</string>
-             <string name="text_feed_back">反饋</string>
-              <string name="text_feed_back_content">請提出您寶貴的建議或者告訴我們您的不滿:</string>
-        <string name="text_your_comments">您的意见</string>
-            <string name="text_feedback_bug">錯誤</string>
-  <string name="text_feedback_idea">想法</string>
-   <string name="text_feedback_question">問題</string>
-         <string name="text_no_content">暂时没有内容...</string>
-               <string name="text_anti_lost_mode_miss">他/她得信號很弱或者已經丟失</string>
-               
+    <string name="text_device">寶寶安</string>
+    <string name="text_nick_name">暱稱</string>
+    <string name="text_feed_back">反饋</string>
+    <string name="text_feed_back_content">請提出您寶貴的建議或者告訴我們您的不滿:</string>
+    <string name="text_your_comments">您的意见</string>
+    <string name="text_feedback_bug">錯誤</string>
+    <string name="text_feedback_idea">想法</string>
+    <string name="text_feedback_question">問題</string>
+    <string name="text_no_content">暂时没有内容...</string>
+    <string name="text_anti_lost_mode_miss">他/她得信號很弱或者已經丟失</string>
+    
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
@@ -130,10 +130,9 @@
     <string name="btn_share">分享</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_verify">確認</string>
-     <string name="btn_binding">綁定</string>
+    <string name="btn_binding">綁定</string>
     <string name="btn_skip">略过</string>
     
-     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>
     <string name="toast_loading">讀取中&#8230;</string>

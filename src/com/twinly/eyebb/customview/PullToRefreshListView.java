@@ -71,7 +71,7 @@ public class PullToRefreshListView extends ListView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if (isRefreshing || lockPullAction) {
+		if (isRefreshing) {
 			return true;
 		}
 
@@ -116,7 +116,8 @@ public class PullToRefreshListView extends ListView {
 						value = (int) Math
 								.ceil((100 * (Math.ceil(diff) / 400.0)));
 					}
-					pullToRefreshListener.updateProgressBar(value);
+					if (lockPullAction == false)
+						pullToRefreshListener.updateProgressBar(value);
 				}
 				previousY = y;
 			}

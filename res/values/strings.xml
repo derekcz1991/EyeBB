@@ -6,7 +6,7 @@
     <string name="text_user_name">User Name</string>
     <string name="text_nick_name">Nick Name</string>
     <string name="text_email">Email (optional)</string>
-     <string name="text_phone_number">Phone Number (optional)</string>
+    <string name="text_phone_number">Phone Number (optional)</string>
     <string name="text_password">Password</string>
     <string name="text_login_account">User Name or Email Address</string>
     <string name="text_select_kid_kindergarten">Select your kid\&apos;s kindergarten</string>
@@ -90,32 +90,32 @@
     <string name="text_connect_device_status_success">Success</string>
     <string name="text_connect_device_status_wait">Waiting...</string>
     <string name="text_no_record">No record</string>
-    <string name="text_sort_on">Sort ON</string>
-    <string name="text_sort_off">Sort OFF</string>
+    <string name="text_sort_on">Sort Children</string>
+    <string name="text_sort_off">All locations</string>
     <string name="text_role_master">Master user</string>
     <string name="text_role_guest">Guest user</string>
     <string name="text_something_has_gone_wrong">Oops, Something has gone wrong!</string>
     <string name="text_auto_refresh_on">Auto-Refresh ON</string>
     <string name="text_auto_refresh_off">Auto-Refresh OFF</string>
     <string name="text_binding_device">Binding Eyebb Device?</string>
- <string name="text_anti_lost_mode">Anti lost</string>
-  <string name="text_anti_lost_mode_miss">Low signal or Missing!</string>
-     <string name="text_radar_model_on">Radar model ON</string>
+    <string name="text_anti_lost_mode">Anti lost</string>
+    <string name="text_anti_lost_mode_miss">Low signal or Missing!</string>
+    <string name="text_radar_model_on">Radar model ON</string>
     <string name="text_radar_model_off">Radar model OFF</string>
- <string name="text_authorization">Authorization</string>
-  <string name="text_device">Eyebb Device</string>
+    <string name="text_authorization">Authorization</string>
+    <string name="text_device">Eyebb Device</string>
     <string name="text_more">More</string>
-       <string name="text_feed_back">Feedback</string>
-       <string name="text_feed_back_content">Love it? Hate it? Would you like to suggest a new feature or report a bug? We would love to hear from you:</string>
+    <string name="text_feed_back">Feedback</string>
+    <string name="text_feed_back_content">Love it? Hate it? Would you like to suggest a new feature or report a bug? We would love to hear from you:</string>
     <string name="text_your_comments">Your comments</string>
-     <string name="text_feedback_bug">bug</string>
-  <string name="text_feedback_idea">idea</string>
-   <string name="text_feedback_question">question</string>
-      <string name="text_no_content">No content...</string>
-       
+    <string name="text_feedback_bug">bug</string>
+    <string name="text_feedback_idea">idea</string>
+    <string name="text_feedback_question">question</string>
+    <string name="text_no_content">No content...</string>
+    
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
-     <string name="btn_binding">Binding</string>
+    <string name="btn_binding">Binding</string>
     <string name="btn_logout">Logout</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_performance">Performance</string>
@@ -126,6 +126,7 @@
     <string name="btn_skip">Skip</string>
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
+    
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_loading">Loading&#8230;</string>

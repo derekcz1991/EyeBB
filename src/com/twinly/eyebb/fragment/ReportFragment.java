@@ -89,7 +89,7 @@ public class ReportFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		updateView();
 	}
-	
+
 	private void setUpView(View v) {
 		// set the current child
 		child = DBChildren.getChildById(getActivity(),
@@ -264,7 +264,19 @@ public class ReportFragment extends Fragment implements
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(child.getChildId()));
 			map.put("avgDays", String.valueOf(Constants.averageDays));
-			return HttpRequestUtils.get("reportService/api/stat", map);
+			String result = HttpRequestUtils.get("reportService/api/stat", map);
+			try {
+				new JSONObject(result);
+			} catch (JSONException e) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+					result = HttpRequestUtils
+							.get("reportService/api/stat", map);
+				}
+			}
+			return result;
 		}
 
 		@Override

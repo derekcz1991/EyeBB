@@ -190,10 +190,10 @@ public class LoginActivity extends Activity {
 				System.out.println("result = " + result);
 				try {
 					JSONObject json = new JSONObject(result);
-					JSONArray list = json
+					JSONArray childJSONList = json
 							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-					for (int i = 0; i < list.length(); i++) {
-						JSONObject object = (JSONObject) list.get(i);
+					for (int i = 0; i < childJSONList.length(); i++) {
+						JSONObject object = (JSONObject) childJSONList.get(i);
 						Child child = new Child(
 								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
 								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),

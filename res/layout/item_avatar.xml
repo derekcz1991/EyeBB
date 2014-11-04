@@ -12,4 +12,5 @@
         android:layout_marginRight="8dp"
         app:border_color="@color/white"
         app:border_width="2dp" />
+
 </LinearLayout>
