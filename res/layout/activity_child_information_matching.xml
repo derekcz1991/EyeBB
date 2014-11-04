@@ -38,9 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
-            android:digits="0123456789
-		            abcdefghigklmnopqrstuvwxyz
-		            ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
             android:hint="@string/text_kid_name"
             android:imeOptions="actionNext"
             android:inputType="textPersonName"

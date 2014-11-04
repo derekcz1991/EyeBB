@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 
+import com.twinly.eyebb.activity.FeedbackDialog;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.NotificationActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
@@ -69,12 +70,11 @@ public class ProfileFragment extends Fragment {
 			public void onClick(View v) {
 
 				Intent intent = new Intent();
-				intent.setClass(getActivity(), NotificationActivity.class);
+				intent.setClass(getActivity(), FeedbackDialog.class);
 				v1.setVisibility(0);
 				v2.setVisibility(8);
 				v3.setVisibility(8);
-				child = 1;
-				intent.putExtra("child", child);
+
 				startActivity(intent);
 			}
 		});
@@ -92,7 +92,7 @@ public class ProfileFragment extends Fragment {
 				v1.setVisibility(8);
 				v2.setVisibility(0);
 				v3.setVisibility(8);
-				child = 2;
+				child = 1;
 				intent.putExtra("child", child);
 				startActivity(intent);
 			}
@@ -111,7 +111,7 @@ public class ProfileFragment extends Fragment {
 				v1.setVisibility(8);
 				v2.setVisibility(8);
 				v3.setVisibility(0);
-				child = 3;
+				child = 1;
 				intent.putExtra("child", child);
 				startActivity(intent);
 			}

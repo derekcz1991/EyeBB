@@ -110,7 +110,13 @@
     <string name="text_authorization">授權</string>
       <string name="text_device">寶寶安</string>
           <string name="text_nick_name">暱稱</string>
-       
+             <string name="text_feed_back">反饋</string>
+              <string name="text_feed_back_content">請提出您寶貴的建議或者告訴我們您的不滿:</string>
+        <string name="text_your_comments">您的意见</string>
+            <string name="text_feedback_bug">錯誤</string>
+  <string name="text_feedback_idea">想法</string>
+   <string name="text_feedback_question">問題</string>
+              
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>

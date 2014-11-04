@@ -104,7 +104,13 @@
  <string name="text_authorization">Authorization</string>
   <string name="text_device">Eyebb Device</string>
     <string name="text_more">More</string>
-    
+       <string name="text_feed_back">Feedback</string>
+       <string name="text_feed_back_content">Love it? Hate it? Would you like to suggest a new feature or report a bug? We would love to hear from you:</string>
+    <string name="text_your_comments">Your comments</string>
+     <string name="text_feedback_bug">bug</string>
+  <string name="text_feedback_idea">idea</string>
+   <string name="text_feedback_question">question</string>
+       
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
      <string name="btn_binding">Binding</string>

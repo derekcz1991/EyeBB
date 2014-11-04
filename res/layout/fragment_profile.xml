@@ -96,7 +96,7 @@
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/hugh"
+                android:src="@drawable/logo_en"
                 app:border_color="#FF000000"
                 app:border_width="0dp" />
 
@@ -129,13 +129,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="幼兒園小一班已有3位幼兒確診腸病毒,請家長特別注意孩子的身體狀況與衛生習慣..." />
+                        android:text="@string/text_feed_back" />
 
                     <TextView
                         style="@style/BlackText_15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2014.07.01" />
+                        android:text="2014.11.04" />
                 </LinearLayout>
             </RelativeLayout>
 
