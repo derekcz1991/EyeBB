@@ -451,7 +451,7 @@ public class DeviceListAcitivity extends Activity {
 					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out
-						.println("connect errorerrorerrorerrorerrorerrorerrorerrorerror");
+						.println("connect error");
 
 				dialog.dismiss();
 

@@ -3,8 +3,8 @@ package com.twinly.eyebb.constant;
 public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
-	public static final String SERVER_URL = "http://158.182.246.221:8089/";
-	//public static final String SERVER_URL = "http://158.182.246.224:8080/";
+	// public static final String SERVER_URL = "http://158.182.246.221:8089/";
+	public static final String SERVER_URL = "http://158.182.246.224:8080/";
 
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
@@ -36,7 +36,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_PARENTS = "parents";
 	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
 
-	//public static final String JSON_KEY_LAST_UPDATE_TIME = "lastUpdateTime";
+	// public static final String JSON_KEY_LAST_UPDATE_TIME = "lastUpdateTime";
 
 	public static final String JSON_KEY_REPORT_PERFORMANCE_DAILY = "dailyFigure";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_WEEKLY = "weeklyFigure";
@@ -54,4 +54,8 @@ public class HttpConstants {
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
 
 	public static final String UPDATE_DEVICE_FROM_CHILD_LIST = "childId";
+
+	public static final String ACC_NAME_CHECK = "/regService/api/accNameCheck";
+	public static final String REG_PARENTS = "/regService/api/regParents";
+
 }

@@ -1,14 +1,13 @@
 package com.twinly.eyebb.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -16,7 +15,8 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class RefreshTimeDialog extends Activity {
 
 	private EditText enterMail;
-	private TextView btnConfirm;
+	private LinearLayout btnConfirm;
+	private LinearLayout btnCancel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,8 @@ public class RefreshTimeDialog extends Activity {
 		setContentView(R.layout.dialog_refresh_time);
 
 		enterMail = (EditText) findViewById(R.id.enter_mail);
-		btnConfirm = (TextView) findViewById(R.id.btn_confirm);
-
+		btnConfirm = (LinearLayout) findViewById(R.id.btn_confirm);
+		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -48,8 +48,22 @@ public class RefreshTimeDialog extends Activity {
 						finish();
 
 					}
+				} else {
+					enterMail.setHint(getResources().getString(
+							R.string.text_fill_in_refresh_time));
+					enterMail.setHintTextColor(getResources().getColor(
+							R.color.red));
 				}
 
+			}
+		});
+
+		btnCancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
 			}
 		});
 	}
