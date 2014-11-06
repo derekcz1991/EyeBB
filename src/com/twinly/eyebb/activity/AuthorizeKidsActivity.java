@@ -29,7 +29,7 @@ public class AuthorizeKidsActivity extends Activity {
 
 		listView = (ListView) findViewById(R.id.listView);
 		adapter = new ChangeKidsListViewAdapter(this,
-				DBChildren.getChildrenList(this));
+				DBChildren.getChildrenList(this), false);
 		listView.setAdapter(adapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {

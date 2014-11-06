@@ -1,6 +1,9 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -18,7 +21,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class ChangeKidsListViewAdapter extends BaseAdapter {
 	private Context context;
-	private ArrayList<Child> data;
+	private List<Child> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
@@ -27,10 +30,29 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 		public TextView name;
 	}
 
-	public ChangeKidsListViewAdapter(Context context, ArrayList<Child> data) {
+	/*public ChangeKidsListViewAdapter(Context context, ArrayList<Child> data) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
+		imageLoader = ImageLoader.getInstance();
+	}*/
+
+	public ChangeKidsListViewAdapter(Context context, List<Child> data,
+			boolean isSortByName) {
+		inflater = LayoutInflater.from(context);
+		this.context = context;
+		this.data = data;
+
+		if (isSortByName) {
+			Collections.sort(this.data, new Comparator<Child>() {
+
+				@Override
+				public int compare(Child lhs, Child rhs) {
+					return lhs.getName().charAt(0) - rhs.getName().charAt(0);
+				}
+			});
+		}
+
 		imageLoader = ImageLoader.getInstance();
 	}
 
