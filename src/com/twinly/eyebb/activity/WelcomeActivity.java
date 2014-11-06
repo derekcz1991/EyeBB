@@ -44,7 +44,7 @@ public class WelcomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(WelcomeActivity.this,
-						LoginActivity.class);
+						CheckBeaconActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
 			}

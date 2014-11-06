@@ -22,8 +22,12 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.eyebb.R;
+import com.twinly.eyebb.activity.ChildInformationMatchingActivity;
 import com.twinly.eyebb.constant.HttpConstants;
 
 public class HttpRequestUtils {
@@ -140,6 +144,35 @@ public class HttpRequestUtils {
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
+
+			try {
+				Log.e(TAG, e.getMessage());
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
+		}
+	}
+
+	public static String postTo(Context context, String action,
+			Map<String, String> map) {
+		String url = HttpConstants.SERVER_URL + action;
+		// HttpClient httpClient = new DefaultHttpClient();
+		HttpPost post = new HttpPost(url);
+		try {
+			post.setEntity(new UrlEncodedFormEntity(postParameters(map),
+					HTTP.UTF_8));
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			HttpResponse httpResponse = httpClient.execute(post);
+			return getResponse(httpResponse.getEntity());
+		} catch (Exception e) {
+			System.out.println("error = " + e.getMessage());
+			Toast.makeText(context, "error = " + e.getMessage(),
+					Toast.LENGTH_LONG).show();
 			try {
 				Log.e(TAG, e.getMessage());
 			} catch (Exception e1) {

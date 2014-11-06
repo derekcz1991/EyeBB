@@ -120,10 +120,14 @@
     <string name="text_username_is_used">Sorry, the username is already used</string>
       <string name="text_check_username_error">Check accout error!</string>
       <string name="text_register_successfully">Successfully register!</string>
+        <string name="text_child_not_exist">This child does not exist</string>
+         <string name="text_already_relationship">Error! This child has already binded.</string>
+                     <string name="text_device_already_binded">Error! This EYEBB has already binded. Please change others.</string>
       
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
     <string name="btn_binding">Binding</string>
+    <string name="btn_search_child">Search child</string>
     <string name="btn_logout">Logout</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_next_step">Next step</string>

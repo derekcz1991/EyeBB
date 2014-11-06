@@ -113,8 +113,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-         <activity
+        <activity
             android:name="com.twinly.eyebb.activity.FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.CheckChildToBindDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
@@ -254,12 +259,12 @@
             android:name="com.twinly.eyebb.activity.RadarShowAllScanImageDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
-       </activity>   
-       <activity
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.RadarShowAllMissImageDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
-       </activity> 
+        </activity>
         <activity
             android:name="com.twinly.eyebb.bluetooth.ServicesActivity"
             android:screenOrientation="portrait"
@@ -317,7 +322,8 @@
                 <category android:name="com.eyebb" />
             </intent-filter>
         </receiver>
-   <!--      <receiver
+        <!--
+             <receiver
             android:name="com.twinly.eyebb.fragment.RadarTrackingFragment"
             android:permission="android.permission.BLUETOOTH_ADMIN" >
             <intent-filter>
@@ -325,7 +331,7 @@
                 <action android:name="BluetoothAdapter.STATE_OFF" />
             </intent-filter>
         </receiver>
- -->
+        -->
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
         <service
             android:name="com.twinly.eyebb.service.BleServicesService"

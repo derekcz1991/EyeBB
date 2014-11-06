@@ -377,12 +377,17 @@ public class SignUpActivity extends Activity {
 						// binding
 						Intent intent = new Intent(SignUpActivity.this,
 								ChildInformationMatchingActivity.class);
+						//intent.putExtra("guardianId", retStr);
+						SharePrefsUtils.setSignUpGuardianId(SignUpActivity.this, retStr);
 						startActivity(intent);
+						
+						
 					} else if (regType.equals("G")) {
 						// login
 						Intent intent = new Intent(SignUpActivity.this,
 								LancherActivity.class);
 
+						//use to login
 						SharePrefsUtils.setLogin(SignUpActivity.this, true);
 						SharePrefsUtils.setLoginAccount(SignUpActivity.this,
 								username);

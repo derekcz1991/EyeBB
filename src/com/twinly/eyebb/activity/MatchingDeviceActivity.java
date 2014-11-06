@@ -123,13 +123,13 @@ public class MatchingDeviceActivity extends Activity {
 					mapList = new ArrayList<Map<String, String>>();
 
 					JSONArray list = json
-							.getJSONArray(HttpConstants.JSON_KEY_KINDERGARTENS_INFO);
+							.getJSONArray(HttpConstants.JSON_KEY_AREAS_INFO);
 					for (int i = 0; i < list.length(); i++) {
 						JSONObject object = (JSONObject) list.get(i);
 
 						Map<String, String> map = new HashMap<String, String>();
 						map.put("kindergartenId",
-								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_id));
+								object.getString(HttpConstants.JSON_KEY_AREAS_id));
 						map.put("nameEn",
 								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_EN));
 						map.put("nameTc",
@@ -140,13 +140,13 @@ public class MatchingDeviceActivity extends Activity {
 								.getLocale(MatchingDeviceActivity.this);
 						switch (locale) {
 						case Constants.LOCALE_CN:
-							map.put("displayName", map.get("nameTc"));
+							map.put("displayName", map.get("nameSc"));
 							break;
 						case Constants.LOCALE_TW:
-							map.put("displayName", map.get("nameSc"));
+							map.put("displayName", map.get("nameTc"));
 							break;
 						case Constants.LOCALE_HK:
-							map.put("displayName", map.get("nameSc"));
+							map.put("displayName", map.get("nameTc"));
 							break;
 						default:
 							map.put("displayName", map.get("nameEn"));

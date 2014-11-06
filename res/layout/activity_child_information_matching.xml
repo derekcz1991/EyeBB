@@ -158,6 +158,6 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/btn_bg_red"
         android:onClick="OnLoginClicked"
-        android:text="@string/btn_binding" />
+        android:text="@string/btn_search_child" />
 
 </LinearLayout>

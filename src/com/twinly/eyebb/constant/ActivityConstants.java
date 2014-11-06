@@ -38,6 +38,8 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG = "ble_service_run_once";
 	public static final String SHARE_PREFS_DEVICE_MAJOR = "device_major";
 	public static final String SHARE_PREFS_DEVICE_MINOR = "device_minor";
+	public static final String SHARE_PREFS_GUARDIANID = "guardianId";
+	public static final String SHARE_PREFS_CHILDID = "childID";
 	
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";

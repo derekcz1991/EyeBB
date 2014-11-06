@@ -370,6 +370,28 @@ public class SharePrefsUtils {
 		setString(context,
 				ActivityConstants.SHARE_PREFS_SIGN_UP_PHONE_NUMBER, value);
 	}
+	
+	public static String signUpGuardianId(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_GUARDIANID);
+	}
+
+	public static void setSignUpGuardianId(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_GUARDIANID, value);
+	}
+	
+	public static String signUpChildId(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_CHILDID);
+	}
+
+	public static void setSignUpChildId(Context context, String value) {
+
+		setString(context,
+				ActivityConstants.SHARE_PREFS_CHILDID, value);
+	}
 
 	/**
 	 * @return Application's {@code SharedPreferences}.

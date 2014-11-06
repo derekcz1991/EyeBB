@@ -23,6 +23,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 public class LancherActivity extends Activity {
 	private ImageView logo;
@@ -34,6 +35,7 @@ public class LancherActivity extends Activity {
 
 		logo = (ImageView) findViewById(R.id.icon);
 		checkLogo();
+		SystemUtils.initImageLoader(getApplicationContext());
 
 		setLanguage();
 		new HttpRequestUtils();

@@ -126,7 +126,10 @@
       <string name="text_username_is_used">此用戶名已經使用</string>
           <string name="text_check_username_error">檢測失敗,請檢查網路!</string>
           <string name="text_register_successfully">註冊成功!</string>
-      
+                      <string name="text_child_not_exist">暫時沒有這個孩子的信息</string>
+       <string name="text_already_relationship">錯誤!這個孩子信息已經被用戶綁定</string>
+                    <string name="text_device_already_binded">錯誤!此貝貝安設備已經被綁定過,請更換.</string>
+                      
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
@@ -141,6 +144,7 @@
     <string name="btn_binding">綁定</string>
     <string name="btn_skip">略过</string>
         <string name="btn_next_step">下一步</string>
+         <string name="btn_search_child">查找孩子</string>
     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

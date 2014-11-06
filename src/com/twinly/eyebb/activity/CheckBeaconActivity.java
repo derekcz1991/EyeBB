@@ -38,6 +38,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Device;
+import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -51,6 +52,8 @@ public class CheckBeaconActivity extends Activity {
 	private final static int START_SCAN = 4;
 	private final static int STOP_SCAN = 5;
 	private final static int DELETE_SCAN = 6;
+	private final static int ALREADY_BING_DEVICE = 7;
+	public static final int CONNECT_ERROR = 8;
 	private Handler autoScanHandler;
 	private Handler mHandler;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -83,8 +86,8 @@ public class CheckBeaconActivity extends Activity {
 	private Boolean isWhileLoop = true;
 	private Boolean isConnectError = false;
 
-
 	private String MACaddress4submit;
+	private String deviceName4submit;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -98,8 +101,6 @@ public class CheckBeaconActivity extends Activity {
 		BaseApp.getInstance().addActivity(this);
 		Constants.gattServiceData.clear();
 		Constants.gattServiceObject.clear();
-
-
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
@@ -122,27 +123,21 @@ public class CheckBeaconActivity extends Activity {
 				System.out.println("arg2-PERI========>" + arg2);
 				if (device == null)
 					return;
-				final Intent intent = new Intent();
-				final Intent getIntent = getIntent();
-				intent.setClass(CheckBeaconActivity.this,
-						ServicesActivity.class);
-				ChildIDfromKidsList = getIntent.getLongExtra("childID", 0);
+
 				System.out.println("ChildIDfromKidsList=>"
 						+ ChildIDfromKidsList);
 
-				SharePrefsUtils.setBleServiceRunOnceFlag(CheckBeaconActivity.this, 1);
-				
+				SharePrefsUtils.setBleServiceRunOnceFlag(
+						CheckBeaconActivity.this, 1);
 
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-						device.getName());
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-						device.getAddress());
 				MACaddress4submit = device.getAddress();
+				deviceName4submit = device.getName();
+
 				new Thread(postToServerRunnable).start();
 
 				System.out.println("new Thread(postToServerRunnable).start();");
 				if (scan_flag) {
-					scanLeDevice(false);
+					scanLeDevice();
 				}
 
 				if (dialog != null && dialog.isShowing()) {
@@ -153,8 +148,8 @@ public class CheckBeaconActivity extends Activity {
 				mHandler.removeCallbacks(scanLeDeviceRunable);
 				mBluetoothAdapter.stopLeScan(mLeScanCallback);
 				isWhileLoop = false;
-				//startActivity(intent);
-				finish();
+
+				//finish();
 			}
 
 		});
@@ -192,34 +187,40 @@ public class CheckBeaconActivity extends Activity {
 	Runnable autoScan = new Runnable() {
 		@Override
 		public void run() {
+			// System.out.println("isWhileLoop==>" + isWhileLoop);
 			while (isWhileLoop) {
-				if (scan_flag) {
-
-					scanLeDevice(false);
-
-				} else {
-
-					scanLeDevice(true);
-					try {
-						Thread.sleep(SCANTIME);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
+				scanLeDevice();
 			}
 
 		}
 	};
 
-	// private void addItem(String devname, String address) {
-	// HashMap<String, Object> map = new HashMap<String, Object>();
-	// map.put("image", R.drawable.ble_icon);
-	// map.put("title", devname);
-	// map.put("text", address);
-	// listItem.add(map);
-	// listItemAdapter.notifyDataSetChanged();
-	// }
+	@SuppressLint("NewApi")
+	public void scanLeDevice() {
+
+		// Stops scanning after a pre-defined scan period.
+		try {
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		mBluetoothAdapter.startLeScan(mLeScanCallback);
+
+		try {
+
+			Thread.sleep(Constants.SCAN_INRERVAL_TIME);
+
+			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	private void deleteItem() {
 		int size = listItem.size();
@@ -262,48 +263,51 @@ public class CheckBeaconActivity extends Activity {
 
 		}
 	};
-
-	@SuppressLint("NewApi")
-	public void scanLeDevice(final boolean enable) {
-		if (enable) {
-			// // Stops scanning after a pre-defined scan period.
-			mHandler.postDelayed(scanLeDeviceRunable, POSTDELAYTIME);
-
-			mBluetoothAdapter.startLeScan(mLeScanCallback);
-
-			scan_flag = true;
-
-			Message msg = handler.obtainMessage();
-			msg.what = STOP_SCAN;
-			handler.sendMessage(msg);
-
-		} else {
-
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-			scan_flag = false;
-
-			Message msg = handler.obtainMessage();
-			msg.what = DELETE_SCAN;
-			handler.sendMessage(msg);
-
-			// autoScan.start();
-		}
-
-	}
+	//
+	// @SuppressLint("NewApi")
+	// public void scanLeDevice(final boolean enable) {
+	// if (enable) {
+	// // // Stops scanning after a pre-defined scan period.
+	// mHandler.postDelayed(scanLeDeviceRunable, POSTDELAYTIME);
+	//
+	// mBluetoothAdapter.startLeScan(mLeScanCallback);
+	//
+	// scan_flag = true;
+	//
+	// Message msg = handler.obtainMessage();
+	// msg.what = STOP_SCAN;
+	// handler.sendMessage(msg);
+	//
+	// } else {
+	//
+	// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+	// scan_flag = false;
+	//
+	// Message msg = handler.obtainMessage();
+	// msg.what = DELETE_SCAN;
+	// handler.sendMessage(msg);
+	//
+	// // autoScan.start();
+	// }
+	//
+	// }
 
 	Handler handler = new Handler() {
 
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case START_SCAN:
-				// scanBtn.setText("開始");
-				// scanBtn.setText("start scan");
+			case ALREADY_BING_DEVICE:
+				Toast.makeText(CheckBeaconActivity.this,
+						R.string.text_device_already_binded, Toast.LENGTH_LONG)
+						.show();
 				break;
 
-			case STOP_SCAN:
-				// scanBtn.setText("結束");
-				// scanBtn.setText("stop scan");
+			case CONNECT_ERROR:
+				Toast.makeText(CheckBeaconActivity.this,
+						R.string.text_check_username_error, Toast.LENGTH_LONG)
+						.show();
+
 				break;
 
 			case DELETE_SCAN:
@@ -341,13 +345,14 @@ public class CheckBeaconActivity extends Activity {
 				@Override
 				public void run() {
 					int majorid, minorid;
-					System.out
-							.println(" BluetoothAdapter.LeScanCallback mLeScanCallback");
+					// System.out
+					// .println(" BluetoothAdapter.LeScanCallback mLeScanCallback");
 					Device newDevice = new Device();
 					newDevice.setAddress(device.getAddress());
 					newDevice.setMajor(scanRecord[25] * 256 + scanRecord[26]);
 					newDevice.setMinor(scanRecord[27] * 256 + scanRecord[28]);
 					newDevice.setName(device.getName());
+					newDevice.setRssi(rssi);
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
 					if (bytesToHex(scanRecord, 9, 16).equals(
 							Constants.DEVICE_UUID_VERSON_1)
@@ -395,23 +400,11 @@ public class CheckBeaconActivity extends Activity {
 		return sbuf.toString();
 	}
 
-	Runnable postToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			// HANDLER
-			Message msg = handler.obtainMessage();
-			msg.what = START_PROGRASSS_BAR;
-			handler.sendMessage(msg);
-			postToServer(ChildIDfromKidsList);
-
-		}
-	};
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			if (scan_flag) {
-				scanLeDevice(false);
+				scanLeDevice();
 			}
 			isWhileLoop = false;
 			finish();
@@ -420,43 +413,75 @@ public class CheckBeaconActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	Runnable postToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			// HANDLER
+			// Message msg = handler.obtainMessage();
+			// msg.what = START_PROGRASSS_BAR;
+			// handler.sendMessage(msg);
+			postCheckBeaconToServer(ChildIDfromKidsList);
+
+		}
+	};
+
 	@SuppressLint("ShowToast")
-	private void postToServer(long childIDfromDeviceList) {
+	private void postCheckBeaconToServer(long childIDfromDeviceList) {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("childId", 2 + "");
+		map.put("childId",
+				SharePrefsUtils.signUpChildId(CheckBeaconActivity.this));
 		map.put("macAddress", MACaddress4submit);
-		System.out.println("MACaddress4submit=>" + MACaddress4submit);
+		System.out.println("CheckBeacon=>"
+				+ SharePrefsUtils.signUpChildId(CheckBeaconActivity.this) + " "
+				+ MACaddress4submit);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.post(getDeviceMajorAndMinorURL,
+			String retStr = HttpRequestUtils.post(HttpConstants.CHECK_BEACON,
 					map);
 			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals("retStr.equals => "
-					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
-
-				dialog.dismiss();
+				Message msg = handler.obtainMessage();
+				msg.what = CONNECT_ERROR;
+				handler.sendMessage(msg);
 
 			} else {
 				// successful
-				major = retStr.substring(0, retStr.indexOf(":"));
-				minor = retStr.substring(retStr.indexOf(":") + 1,
-						retStr.length());
-				System.out.println("retStrpost======>" + major + " " + minor);
-//				editor.putString("major", major);
-//				editor.putString("minor", minor);
-//				editor.commit();
-				
-				SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this, major);
-				SharePrefsUtils.setSignUpDeviceMinor(CheckBeaconActivity.this, minor);
-				// save to database
-				// DBChildren.updateMacAddress(this, childIDfromDeviceList,
-				// MACaddress4submit);
-				dialog.dismiss();
+				if (retStr.length() > 0) {
+					major = retStr.substring(0, retStr.indexOf(":"));
+					minor = retStr.substring(retStr.indexOf(":") + 1,
+							retStr.length());
+					System.out.println("retStrpost======>" + major + " "
+							+ minor);
+
+					SharePrefsUtils.setSignUpDeviceMajor(
+							CheckBeaconActivity.this, major);
+					SharePrefsUtils.setSignUpDeviceMinor(
+							CheckBeaconActivity.this, minor);
+
+					// Intent intent = new Intent(CheckBeaconActivity.this,
+					// ServicesActivity.class);
+					//
+					// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+					// deviceName4submit);
+					// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+					// MACaddress4submit);
+					//
+					// startActivity(intent);
+					new Thread(postDeviceToChildToServerRunnable).start();
+					// save to database
+					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
+					// MACaddress4submit);
+				} else {
+					Message msg = handler.obtainMessage();
+					msg.what = ALREADY_BING_DEVICE;
+					handler.sendMessage(msg);
+
+				}
 
 			}
 
@@ -464,21 +489,87 @@ public class CheckBeaconActivity extends Activity {
 
 			e.printStackTrace();
 
-			Message msg = handler.obtainMessage();
-			msg.what = STOP_PROGRASSS_BAR;
-			handler.sendMessage(msg);
+			// Message msg = handler.obtainMessage();
+			// msg.what = STOP_PROGRASSS_BAR;
+			// handler.sendMessage(msg);
 
 		}
 
-		// Intent BLEintent = new Intent();
-		// BLEintent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-		// device.getName());
-		// BLEintent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-		// device.getAddress());
-		//
-		if (dialog != null && dialog.isShowing()) {
-			dialog.dismiss();
+	}
+
+	Runnable postDeviceToChildToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			// HANDLER
+			// Message msg = handler.obtainMessage();
+			// msg.what = START_PROGRASSS_BAR;
+			// handler.sendMessage(msg);
+			postDeviceToChildToServer();
+
 		}
+	};
+
+	@SuppressLint("ShowToast")
+	private void postDeviceToChildToServer() {
+		// TODO Auto-generated method stub
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("childId",
+				SharePrefsUtils.signUpChildId(CheckBeaconActivity.this));
+		map.put("macAddress", MACaddress4submit);
+		map.put("major",
+				SharePrefsUtils.signUpDeviceMajor(CheckBeaconActivity.this));
+		map.put("minor",
+				SharePrefsUtils.signUpDeviceMinor(CheckBeaconActivity.this));
+		System.out.println("postDeviceToChildToServer=>"
+				+ SharePrefsUtils.signUpChildId(CheckBeaconActivity.this) + " "
+				+ MACaddress4submit + " "
+				+ SharePrefsUtils.signUpDeviceMajor(CheckBeaconActivity.this)
+				+ " "
+				+ SharePrefsUtils.signUpDeviceMinor(CheckBeaconActivity.this));
+
+		try {
+			// String retStr = GetPostUtil.sendPost(url, postMessage);
+			String retStr = HttpRequestUtils.post(HttpConstants.CHECK_BEACON,
+					map);
+			System.out.println("retStrpost======>" + retStr);
+			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+					|| retStr.equals("") || retStr.length() == 0) {
+				System.out.println("connect error");
+				Message msg = handler.obtainMessage();
+				msg.what = CONNECT_ERROR;
+				handler.sendMessage(msg);
+
+			} else {
+				// successful
+				if (retStr.equals("true")) {
+
+					Intent intent = new Intent(CheckBeaconActivity.this,
+							VerifyDialog.class);
+
+					startActivity(intent);
+					// save to database
+					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
+					// MACaddress4submit);
+				} else {
+					Message msg = handler.obtainMessage();
+					msg.what = ALREADY_BING_DEVICE;
+					handler.sendMessage(msg);
+
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			// Message msg = handler.obtainMessage();
+			// msg.what = STOP_PROGRASSS_BAR;
+			// handler.sendMessage(msg);
+
+		}
+
 	}
 
 	@Override

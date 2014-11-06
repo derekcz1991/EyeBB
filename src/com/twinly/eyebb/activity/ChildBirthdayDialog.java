@@ -3,6 +3,7 @@ package com.twinly.eyebb.activity;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ public class ChildBirthdayDialog extends Activity {
 	private LinearLayout btnConfirm;
 	private LinearLayout btnCancel;
 
+	private String getBirthday;
+
 	View dataPicker;
 	EditText dataPickerEd;
 
@@ -39,6 +42,9 @@ public class ChildBirthdayDialog extends Activity {
 		setContentView(R.layout.dialog_child_birthday);
 		btnConfirm = (LinearLayout) findViewById(R.id.btn_confirm);
 		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
+
+		Intent intent = getIntent();
+		getBirthday = intent.getStringExtra("birthday");
 
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
@@ -67,10 +73,17 @@ public class ChildBirthdayDialog extends Activity {
 			}
 		});
 
-		calendar = Calendar.getInstance();
-		year = calendar.get(Calendar.YEAR);
-		monthOfYear = calendar.get(Calendar.MONTH);
-		dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		if (getBirthday != null) {
+			String[] sGetBirthday = getBirthday.split("/");
+			dayOfMonth = Integer.parseInt(sGetBirthday[0]);
+			monthOfYear = Integer.parseInt(sGetBirthday[1]) - 1;
+			year = Integer.parseInt(sGetBirthday[2]);
+		} else {
+			calendar = Calendar.getInstance();
+			year = calendar.get(Calendar.YEAR);
+			monthOfYear = calendar.get(Calendar.MONTH);
+			dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		}
 
 		childBirthdayDatePicker = (DatePicker) findViewById(R.id.datePicker);
 

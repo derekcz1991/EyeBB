@@ -11,9 +11,11 @@ public class HttpConstants {
 
 	public static final String LOGIN = "j_spring_security_check";
 	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
-
-	public static final String JSON_KEY_KINDERGARTENS_INFO = "allKindergartensInfo";
-	public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
+	
+	//public static final String JSON_KEY_KINDERGARTENS_INFO = "allKindergartensInfo";
+	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
+	//public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
+	public static final String JSON_KEY_AREAS_id = "areaId";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_SC = "nameSc";
@@ -54,8 +56,18 @@ public class HttpConstants {
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
 
 	public static final String UPDATE_DEVICE_FROM_CHILD_LIST = "childId";
+	
+	
+	
+	public static final String JSON_CHECK_CHILD_CHILD_ID = "childId";
+	public static final String JSON_CHECK_CHILD_CHILD_NAME = "name";
+	public static final String JSON_CHECK_CHILD_CHILD_ICON = "icon";
 
 	public static final String ACC_NAME_CHECK = "/regService/api/accNameCheck";
 	public static final String REG_PARENTS = "/regService/api/regParents";
+	public static final String CHILD_CHECKING = "/masterService/api/childChecking";
+	public static final String CHILD_GUA_REL = "/masterService/api/regGuaChildRel";
+	public static final String CHECK_BEACON = "/masterService/api/checkBeacon";
+	public static final String DEVICE_TO_CHILD = "/masterService/api/persistBeaconChildRel";
 
 }

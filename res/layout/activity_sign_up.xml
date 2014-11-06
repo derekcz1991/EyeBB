@@ -43,7 +43,7 @@
 		            abcdefghigklmnopqrstuvwxyz
 		            ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
                 android:hint="@string/text_user_name"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionNext"       
                 android:inputType="textPersonName"
                 android:longClickable="false"
                 android:maxLength="30"
@@ -173,6 +173,7 @@
                 android:background="@color/transparent"
                 android:hint="@string/text_email"
                 android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
                 android:longClickable="false"
                 android:maxLength="60"
                 android:singleLine="true" />

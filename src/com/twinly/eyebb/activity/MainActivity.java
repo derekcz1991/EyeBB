@@ -61,7 +61,6 @@ public class MainActivity extends FragmentActivity implements
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 		// checkBluetooth();
-		SystemUtils.initImageLoader(getApplicationContext());
 
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
