@@ -149,6 +149,16 @@ public class SharePrefsUtils {
 		setInt(context, ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE,
 				value);
 	}
+	
+	public static int bleServiceIndex(Context context) {
+		return getInt(context,
+				ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX);
+	}
+
+	public static void setBleServiceIndex(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX,
+				value);
+	}
 
 	public static boolean isUpdateNotice(Context context) {
 		return getBoolean(context,
@@ -228,6 +238,16 @@ public class SharePrefsUtils {
 	}
 
 	public static void setBeepAllDevice(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_BINDING_DEVICE,
+				value);
+	}
+	
+	public static boolean isOpenBindingDevice(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_BINDING_DEVICE, false);
+	}
+
+	public static void setOpenBindingDevice(Context context, boolean value) {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_START_BEEP,
 				value);
 	}
@@ -238,6 +258,14 @@ public class SharePrefsUtils {
 
 	public static void setRefreshTime(Context context, String value) {
 		setString(context, ActivityConstants.SHARE_PREFS_REFRESH_TIME, value);
+	}
+	
+	public static String isMacAddress(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS);
+	}
+
+	public static void setMacAddress(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS, value);
 	}
 
 	public static int CancelConnectBleServiceTimes(Context context) {

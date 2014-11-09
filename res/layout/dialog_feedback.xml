@@ -89,6 +89,7 @@
         android:orientation="horizontal" >
 
         <RadioGroup
+            android:id="@+id/feedback_rg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              android:orientation="horizontal" >

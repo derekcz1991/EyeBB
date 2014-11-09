@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import android.annotation.SuppressLint;
@@ -31,6 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
 import com.twinly.eyebb.bluetooth.BaseApp;
+import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
 import com.twinly.eyebb.bluetooth.ServicesActivity;
 import com.twinly.eyebb.constant.Constants;
@@ -50,10 +53,10 @@ public class CheckBeaconActivity extends Activity {
 	private Button scanBtn;
 	private boolean scan_flag = false;
 	private final static int START_SCAN = 4;
-	private final static int STOP_SCAN = 5;
+	private final static int SCAN_CHILD_FOR_LIST = 5;
 	private final static int DELETE_SCAN = 6;
 	private final static int ALREADY_BING_DEVICE = 7;
-	public static final int CONNECT_ERROR = 8;
+
 	private Handler autoScanHandler;
 	private Handler mHandler;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -74,7 +77,6 @@ public class CheckBeaconActivity extends Activity {
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 	private long ChildIDfromKidsList;
 
-	private String getDeviceMajorAndMinorURL = "reportService/api/checkBeacon";
 	private Dialog dialog;
 	private String major;
 	private String minor;
@@ -88,6 +90,8 @@ public class CheckBeaconActivity extends Activity {
 
 	private String MACaddress4submit;
 	private String deviceName4submit;
+	Timer timer = null;
+	TimerTask task = null;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -106,17 +110,35 @@ public class CheckBeaconActivity extends Activity {
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
 
-		listItemAdapter = new SimpleAdapter(this, listItem,
+		listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this, listItem,
 				R.layout.ble_listview,
 				new String[] { "image", "title", "text" }, new int[] {
 						R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
 		myList = (ListView) findViewById(R.id.listView_peripheral);
 		myList.setAdapter(listItemAdapter);
 
+		TimerTask task = new TimerTask() {
+
+			public void run() {
+				// System.out.println("AAAAAAAAAAA");
+				Message msg = handler.obtainMessage();
+				msg.what = SCAN_CHILD_FOR_LIST;
+				handler.sendMessage(msg);
+
+			}
+
+		};
+		timer = new Timer();
+
+		if (timer != null && task != null)
+			// System.out.println("bbbbbbbbbbbbbb");
+			timer.schedule(task, Constants.DELAY, Constants.BINDING_PERIOD);
+
 		myList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
+
 				System.out.println("isConnectError=>" + isConnectError);
 
 				final BluetoothDevice device = mLeDevices.get(arg2);
@@ -127,29 +149,47 @@ public class CheckBeaconActivity extends Activity {
 				System.out.println("ChildIDfromKidsList=>"
 						+ ChildIDfromKidsList);
 
-				SharePrefsUtils.setBleServiceRunOnceFlag(
-						CheckBeaconActivity.this, 1);
-
 				MACaddress4submit = device.getAddress();
 				deviceName4submit = device.getName();
 
 				new Thread(postToServerRunnable).start();
+				SharePrefsUtils.setOpenBindingDevice(CheckBeaconActivity.this,
+						true);
 
-				System.out.println("new Thread(postToServerRunnable).start();");
-				if (scan_flag) {
-					scanLeDevice();
-				}
+				SharePrefsUtils.setBleServiceRunOnceFlag(
+						CheckBeaconActivity.this, 1);
+				// new Thread(postToServerRunnable).start();
 
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-				}
+			
 
-				autoScanHandler.removeCallbacks(autoScan);
-				mHandler.removeCallbacks(scanLeDeviceRunable);
-				mBluetoothAdapter.stopLeScan(mLeScanCallback);
-				isWhileLoop = false;
+				// for (int i = 0; i < 2; i++) {
+//				Intent intent = new Intent(CheckBeaconActivity.this,
+//						ServicesActivity.class);
+//
+//				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+//						deviceName4submit);
+//				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+//						MACaddress4submit);
+//
+//				startActivity(intent);
 
-				//finish();
+				// }
+
+//				System.out.println("new Thread(postToServerRunnable).start();");
+//				if (scan_flag) {
+//					scanLeDevice();
+//				}
+//
+//				if (dialog != null && dialog.isShowing()) {
+//					dialog.dismiss();
+//				}
+//
+//				autoScanHandler.removeCallbacks(autoScan);
+//				mHandler.removeCallbacks(scanLeDeviceRunable);
+//				mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//				isWhileLoop = false;
+
+				// finish();
 			}
 
 		});
@@ -182,6 +222,19 @@ public class CheckBeaconActivity extends Activity {
 			new Thread(autoScan).start();
 		}
 		// new Thread(autoScan).start();
+	}
+
+	private void stopTimer() {
+		if (timer != null) {
+			timer.cancel();
+			timer.purge();
+			timer = null;
+		}
+
+		if (task != null) {
+			task.cancel();
+			task = null;
+		}
 	}
 
 	Runnable autoScan = new Runnable() {
@@ -303,17 +356,24 @@ public class CheckBeaconActivity extends Activity {
 						.show();
 				break;
 
-			case CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				Toast.makeText(CheckBeaconActivity.this,
-						R.string.text_check_username_error, Toast.LENGTH_LONG)
-						.show();
+						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
-			case DELETE_SCAN:
+			case SCAN_CHILD_FOR_LIST:
+				System.out.println("AAAAASSS");
 				listItem.clear();
+
 				listItemAdapter.notifyDataSetChanged();
-				mLeDevices.clear();
+				// listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this,
+				// listItem, R.layout.ble_listview, new String[] {
+				// "image", "title", "text" }, new int[] {
+				// R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
+				// myList = (ListView) findViewById(R.id.listView_peripheral);
+				// myList.setAdapter(listItemAdapter);
+
 				break;
 			case START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialog(
@@ -362,6 +422,7 @@ public class CheckBeaconActivity extends Activity {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
 							listItem.clear();
+							// mLeDevices.clear();
 							while (it.hasNext()) {
 								HashMap<String, Object> map = new HashMap<String, Object>();
 								Map.Entry<String, Device> entry = it.next();
@@ -446,108 +507,45 @@ public class CheckBeaconActivity extends Activity {
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
 				Message msg = handler.obtainMessage();
-				msg.what = CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 
 			} else {
 				// successful
 				if (retStr.length() > 0) {
+					Message msg = handler.obtainMessage();
+					msg.what = START_PROGRASSS_BAR;
+					handler.sendMessage(msg);
+
 					major = retStr.substring(0, retStr.indexOf(":"));
 					minor = retStr.substring(retStr.indexOf(":") + 1,
 							retStr.length());
 					System.out.println("retStrpost======>" + major + " "
 							+ minor);
 
+					SharePrefsUtils.setBleServiceRunOnceFlag(
+							CheckBeaconActivity.this, 1);
 					SharePrefsUtils.setSignUpDeviceMajor(
 							CheckBeaconActivity.this, major);
 					SharePrefsUtils.setSignUpDeviceMinor(
 							CheckBeaconActivity.this, minor);
+					SharePrefsUtils.setMacAddress(CheckBeaconActivity.this,
+							MACaddress4submit);
 
-					// Intent intent = new Intent(CheckBeaconActivity.this,
-					// ServicesActivity.class);
-					//
-					// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-					// deviceName4submit);
-					// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-					// MACaddress4submit);
-					//
-					// startActivity(intent);
-					new Thread(postDeviceToChildToServerRunnable).start();
-					// save to database
-					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
-					// MACaddress4submit);
-				} else {
-					Message msg = handler.obtainMessage();
-					msg.what = ALREADY_BING_DEVICE;
-					handler.sendMessage(msg);
-
-				}
-
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-			// Message msg = handler.obtainMessage();
-			// msg.what = STOP_PROGRASSS_BAR;
-			// handler.sendMessage(msg);
-
-		}
-
-	}
-
-	Runnable postDeviceToChildToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			// HANDLER
-			// Message msg = handler.obtainMessage();
-			// msg.what = START_PROGRASSS_BAR;
-			// handler.sendMessage(msg);
-			postDeviceToChildToServer();
-
-		}
-	};
-
-	@SuppressLint("ShowToast")
-	private void postDeviceToChildToServer() {
-		// TODO Auto-generated method stub
-
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("childId",
-				SharePrefsUtils.signUpChildId(CheckBeaconActivity.this));
-		map.put("macAddress", MACaddress4submit);
-		map.put("major",
-				SharePrefsUtils.signUpDeviceMajor(CheckBeaconActivity.this));
-		map.put("minor",
-				SharePrefsUtils.signUpDeviceMinor(CheckBeaconActivity.this));
-		System.out.println("postDeviceToChildToServer=>"
-				+ SharePrefsUtils.signUpChildId(CheckBeaconActivity.this) + " "
-				+ MACaddress4submit + " "
-				+ SharePrefsUtils.signUpDeviceMajor(CheckBeaconActivity.this)
-				+ " "
-				+ SharePrefsUtils.signUpDeviceMinor(CheckBeaconActivity.this));
-
-		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.post(HttpConstants.CHECK_BEACON,
-					map);
-			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-				Message msg = handler.obtainMessage();
-				msg.what = CONNECT_ERROR;
-				handler.sendMessage(msg);
-
-			} else {
-				// successful
-				if (retStr.equals("true")) {
-
+					
+			
+					
+				
 					Intent intent = new Intent(CheckBeaconActivity.this,
-							VerifyDialog.class);
+							ServicesActivity.class);
+
+					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+							deviceName4submit);
+					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+							MACaddress4submit);
 
 					startActivity(intent);
+					// new Thread(postDeviceToChildToServerRunnable).start();
 					// save to database
 					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
 					// MACaddress4submit);

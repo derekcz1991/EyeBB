@@ -41,8 +41,8 @@ import com.twinly.eyebb.service.BleCharacteristicsService;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class ServicesActivity extends Activity {
-	private final static String TAG = ServicesActivity.class.getSimpleName();
+public class ServicesMinorActivity extends Activity {
+	private final static String TAG = ServicesMinorActivity.class.getSimpleName();
 
 	public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
 	public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -83,14 +83,14 @@ public class ServicesActivity extends Activity {
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
-		dialog = LoadingDialog.createLoadingDialog(ServicesActivity.this,
+		dialog = LoadingDialog.createLoadingDialog(ServicesMinorActivity.this,
 				getString(R.string.toast_loading));
 		dialog.show();
 
 		// major = MajorAndMinorPreferences.getString("major", "-1");
 		// minor = MajorAndMinorPreferences.getString("minor", "-1");
-		major = SharePrefsUtils.signUpDeviceMajor(ServicesActivity.this);
-		minor = SharePrefsUtils.signUpDeviceMinor(ServicesActivity.this);
+		major = SharePrefsUtils.signUpDeviceMajor(ServicesMinorActivity.this);
+		minor = SharePrefsUtils.signUpDeviceMinor(ServicesMinorActivity.this);
 
 		final Intent intent = getIntent();
 		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -130,7 +130,7 @@ public class ServicesActivity extends Activity {
 		if (!bll) {
 			Toast.makeText(this, "Bind Service Failed!", Toast.LENGTH_SHORT)
 					.show();
-			ServicesActivity.this.finish();
+			ServicesMinorActivity.this.finish();
 		}
 
 		// Message msg = handler.obtainMessage();
@@ -147,7 +147,7 @@ public class ServicesActivity extends Activity {
 			//
 			// editor.putBoolean("connectFail", true);
 			// editor.commit();
-			Intent intentKidsListActivity = new Intent(ServicesActivity.this,
+			Intent intentKidsListActivity = new Intent(ServicesMinorActivity.this,
 					ErrorDialog.class);
 			startActivity(intentKidsListActivity);
 			finish();
@@ -161,7 +161,7 @@ public class ServicesActivity extends Activity {
 
 			case START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialog(
-						ServicesActivity.this,
+						ServicesMinorActivity.this,
 						getString(R.string.toast_loading));
 				dialog.show();
 				break;
@@ -177,7 +177,7 @@ public class ServicesActivity extends Activity {
 		@Override
 		public void run() {
 			final Intent intentToChara = new Intent();
-			intentToChara.setClass(ServicesActivity.this,
+			intentToChara.setClass(ServicesMinorActivity.this,
 					CharacteristicsActivity.class);
 			if (ReadService > 0) {
 				intentToChara.putExtra("servidx", ReadService);
@@ -188,7 +188,7 @@ public class ServicesActivity extends Activity {
 
 				startActivity(intentToChara);
 
-				ServicesActivity.this.finish();
+				ServicesMinorActivity.this.finish();
 			}
 
 		}
@@ -240,7 +240,7 @@ public class ServicesActivity extends Activity {
 					.equals(action)) {
 				mConnected = false;
 				status_text.setText(mDeviceName + ": Disconnected");
-				ServicesActivity.this.finish();
+				ServicesMinorActivity.this.finish();
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {
 				// Show all the supported services and characteristics on the
@@ -357,7 +357,7 @@ public class ServicesActivity extends Activity {
 				Constants.mBluetoothLeService.disconnect();
 			}
 			mConnected = false;
-			ServicesActivity.this.finish();
+			ServicesMinorActivity.this.finish();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

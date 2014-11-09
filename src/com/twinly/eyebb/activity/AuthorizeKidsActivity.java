@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.eyebb.R;
@@ -17,16 +19,18 @@ import com.twinly.eyebb.database.DBChildren;
 public class AuthorizeKidsActivity extends Activity {
 	private ListView listView;
 	private ChangeKidsListViewAdapter adapter;
+	private Button btnAddNewGuest;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle(getString(R.string.text_change_kids));
+		setTitle(getString(R.string.text_authorization));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		setContentView(R.layout.activity_kids_list);
+		setContentView(R.layout.activity_authorize_guest_list);
 
+		btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
 		listView = (ListView) findViewById(R.id.listView);
 		adapter = new ChangeKidsListViewAdapter(this,
 				DBChildren.getChildrenList(this), false);
@@ -41,6 +45,17 @@ public class AuthorizeKidsActivity extends Activity {
 				data.putExtras(bundle);
 				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
+			}
+		});
+
+		btnAddNewGuest.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(AuthorizeKidsActivity.this,
+						SearchGuestActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

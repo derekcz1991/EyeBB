@@ -109,6 +109,11 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.SearchGuestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.ChooseUsrRoleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -272,6 +277,16 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.bluetooth.CharacteristicsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+      <activity
+            android:name="com.twinly.eyebb.bluetooth.ServicesMinorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.bluetooth.CharacteristicsMinorActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>

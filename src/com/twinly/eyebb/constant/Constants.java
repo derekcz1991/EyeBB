@@ -24,6 +24,8 @@ public class Constants {
 	public static final String BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
 	public static final String APPLICATION_UUID = "00001000-0000-1000-8000-00805f9b34fb";
 	public static final String BEEP_CHAR_UUID = "1001";
+	public static final String BEEP_CHAR_MAJOR = "1008";
+	public static final String BEEP_CHAR_MINOR = "1009";
 	public final static int START_PROGRASSS_BAR = 1;
 	public final static int STOP_PROGRASSS_BAR = 2;
 	public static final int BEEP_RSSI = -90;
@@ -43,6 +45,7 @@ public class Constants {
 
 	public static int DELAY = 0;
 	public static final int PERIOD = 5000;
+	public static final int BINDING_PERIOD = 15000;
 	// private static final int SCANTIME = 5000;
 	// private static final int POSTDELAYTIME = 4500;
 
@@ -52,6 +55,7 @@ public class Constants {
 	public static boolean DEBUG = true;
 
 	public static BluetoothLeService mBluetoothLeService;
+	public static BluetoothLeService mBluetoothLeService2;
 	public static ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
 	public static ArrayList<BluetoothGattService> gattServiceObject = new ArrayList<BluetoothGattService>();
 
@@ -61,7 +65,11 @@ public class Constants {
 			R.drawable.my_progress_pink, R.drawable.my_progress_purple,
 			R.drawable.my_progress_red, R.drawable.my_progress_yellow };
 
-	public static final long validTimeDuration = 600000; //10 minutes
+	public static final long validTimeDuration = 600000; // 10 minutes
 	public static final int averageDays = 5;
-	
+
+	public static final int CONNECT_ERROR = 10001;
+	public static final int SUCCESS_SEARCH = 10002;
+	public static final int SEARCH_GUEST_NULL = 10003;
+
 }

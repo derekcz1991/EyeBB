@@ -67,4 +67,14 @@ public class DBPerformance {
 		db.close();
 		return performance;
 	}
+
+	public static void deletChildTable(Context context) {
+
+		SQLiteDatabase db = getInstance(context);
+		db.execSQL("delete from children");
+		db.execSQL("delete from activity_infos");
+		db.execSQL("delete from performance");
+		db.close();
+
+	}
 }

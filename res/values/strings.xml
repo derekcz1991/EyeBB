@@ -118,14 +118,18 @@
       <string name="text_user_information">User information</string>
       <string name="text_fill_email_or_phone">Fill in the email or phone information.</string>
     <string name="text_username_is_used">Sorry, the username is already used</string>
-      <string name="text_check_username_error">Check accout error!</string>
+      <string name="text_network_error">error! Please check your network.</string>
       <string name="text_register_successfully">Successfully register!</string>
         <string name="text_child_not_exist">This child does not exist</string>
          <string name="text_already_relationship">Error! This child has already binded.</string>
                      <string name="text_device_already_binded">Error! This EYEBB has already binded. Please change others.</string>
-      
+                           <string name="text_feed_back_successful">Successful! Thank you.</string>
+                           <string name="text_search_guest_null">Sorry,this guest is not exist.</string>
+                     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
+    <string name="btn_add_new_guest">Add guest</string>
+    <string name="btn_search_new_guest">Serach guest</string>
     <string name="btn_binding">Binding</string>
     <string name="btn_search_child">Search child</string>
     <string name="btn_logout">Logout</string>
@@ -144,7 +148,7 @@
     <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_loading">Loading&#8230;</string>
     <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
-    <string name="toast_invalid_username_or_password">Invalid username or password</string>
+    <string name="toast_invalid_username_or_password">Invalid username and password, or check your network.</string>
     <string name="toast_login_failed">Login failed, please try again</string>
 
 </resources>

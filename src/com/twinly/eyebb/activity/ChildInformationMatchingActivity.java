@@ -259,7 +259,7 @@ public class ChildInformationMatchingActivity extends Activity {
 
 			case CONNECT_ERROR:
 				Toast.makeText(ChildInformationMatchingActivity.this,
-						R.string.text_check_username_error, Toast.LENGTH_LONG)
+						R.string.text_network_error, Toast.LENGTH_LONG)
 						.show();
 
 				break;

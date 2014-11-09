@@ -69,5 +69,7 @@ public class HttpConstants {
 	public static final String CHILD_GUA_REL = "/masterService/api/regGuaChildRel";
 	public static final String CHECK_BEACON = "/masterService/api/checkBeacon";
 	public static final String DEVICE_TO_CHILD = "/masterService/api/persistBeaconChildRel";
+	public static final String FEED_BACK = "/reportService/api/feedbacks";
+	public static final String SEARCH_GUEST = "/masterService/api/searchGuest";
 
 }

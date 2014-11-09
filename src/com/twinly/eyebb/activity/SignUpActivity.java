@@ -381,6 +381,9 @@ public class SignUpActivity extends Activity {
 						SharePrefsUtils.setSignUpGuardianId(SignUpActivity.this, retStr);
 						startActivity(intent);
 						
+						SharePrefsUtils.setSignUpUsername(SignUpActivity.this, username);
+						SharePrefsUtils.setSignUpPassword(SignUpActivity.this, hashPassword);
+	
 						
 					} else if (regType.equals("G")) {
 						// login
@@ -444,7 +447,7 @@ public class SignUpActivity extends Activity {
 
 			case CONNECT_ERROR:
 				Toast.makeText(SignUpActivity.this,
-						R.string.text_check_username_error, Toast.LENGTH_LONG)
+						R.string.text_network_error, Toast.LENGTH_LONG)
 						.show();
 
 				break;

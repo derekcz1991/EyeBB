@@ -26,6 +26,7 @@ import com.google.android.gms.internal.it;
 import com.google.android.gms.internal.nw;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
 import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
@@ -48,7 +49,7 @@ public class CheckChildToBindDialog extends Activity {
 	private String childIdToPost;
 	private ArrayList<Child> child_data;
 
-	public static final int CONNECT_ERROR = 1;
+
 	public static final int CHILD_EXIST = 2;
 	public static final int ALREADY_RELATIONSHIP = 3;
 
@@ -173,7 +174,7 @@ public class CheckChildToBindDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("true")) {
@@ -207,9 +208,9 @@ public class CheckChildToBindDialog extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				Toast.makeText(CheckChildToBindDialog.this,
-						R.string.text_check_username_error, Toast.LENGTH_LONG)
+						R.string.text_network_error, Toast.LENGTH_LONG)
 						.show();
 
 				break;

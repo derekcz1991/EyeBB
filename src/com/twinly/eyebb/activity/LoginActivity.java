@@ -31,6 +31,7 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.database.DBPerformance;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -43,7 +44,7 @@ public class LoginActivity extends Activity {
 	private TextView backBtn;
 	private AlertDialog dialog;
 	private EditText edEmail;
-	//private RelativeLayout kindergartenItem;
+	// private RelativeLayout kindergartenItem;
 	private EditText loginAccount;
 	private EditText password;
 	private String hashPassword;
@@ -60,31 +61,34 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		setTitle(getString(R.string.btn_login));
 
+		DBPerformance.deletChildTable(LoginActivity.this);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		//kindergartenItem = (RelativeLayout) findViewById(R.id.kindergartenItem);
+		// kindergartenItem = (RelativeLayout)
+		// findViewById(R.id.kindergartenItem);
 		loginAccount = (EditText) findViewById(R.id.login_account);
 		loginAccount.setText(SharePrefsUtils
 				.getLoginAccount(LoginActivity.this));
 
 		password = (EditText) findViewById(R.id.password);
-//		kindergarten = (TextView) findViewById(R.id.kindergarten);
-//		if (TextUtils.isEmpty(SharePrefsUtils.getKindergartenName(this)) == false) {
-//			kindergarten.setText(SharePrefsUtils.getKindergartenName(this));
-//			kindergartenId = SharePrefsUtils.getKindergartenId(this);
-//		}
+		// kindergarten = (TextView) findViewById(R.id.kindergarten);
+		// if (TextUtils.isEmpty(SharePrefsUtils.getKindergartenName(this)) ==
+		// false) {
+		// kindergarten.setText(SharePrefsUtils.getKindergartenName(this));
+		// kindergartenId = SharePrefsUtils.getKindergartenId(this);
+		// }
 
-//		kindergartenItem.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(LoginActivity.this,
-//						KindergartenListActivity.class);
-//				startActivityForResult(intent,
-//						ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY);
-//			}
-//		});
+		// kindergartenItem.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// Intent intent = new Intent(LoginActivity.this,
+		// KindergartenListActivity.class);
+		// startActivityForResult(intent,
+		// ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY);
+		// }
+		// });
 
 		forgetPasswordBtn = (TextView) findViewById(R.id.forget_password_btn);
 		inflater = LayoutInflater.from(this);
@@ -152,13 +156,13 @@ public class LoginActivity extends Activity {
 			return;
 		} else if (TextUtils.isEmpty(password.getText().toString())) {
 			return;
-		} 
-//		else if (kindergartenId == -1) {
-//			Toast.makeText(LoginActivity.this,
-//					getString(R.string.toast_please_select_kindergartens),
-//					Toast.LENGTH_SHORT).show();
-//			return;
-//		}
+		}
+		// else if (kindergartenId == -1) {
+		// Toast.makeText(LoginActivity.this,
+		// getString(R.string.toast_please_select_kindergartens),
+		// Toast.LENGTH_SHORT).show();
+		// return;
+		// }
 
 		new AsyncTask<Void, Void, String>() {
 			Dialog dialog;
@@ -169,7 +173,7 @@ public class LoginActivity extends Activity {
 				hashPassword = CommonUtils.getSHAHashValue(password.getText()
 						.toString());
 				System.out.println("hashPassword = " + hashPassword);
-				//hashPassword = password.getText().toString();
+				// hashPassword = password.getText().toString();
 				dialog = LoadingDialog.createLoadingDialog(LoginActivity.this,
 						getString(R.string.toast_login));
 				dialog.show();

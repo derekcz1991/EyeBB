@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
+import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
@@ -147,6 +148,9 @@ public class BluetoothLeService extends Service {
 			boolean isFisish = SharePrefsUtils
 					.isfinishBeep(BluetoothLeService.this);
 
+			boolean isDeviceBinding = SharePrefsUtils
+					.isOpenBindingDevice(BluetoothLeService.this);
+			System.out.println("isDeviceBinding------>" + isDeviceBinding);
 			if (isFisish) {
 				System.out.println("--------write success----- status:"
 						+ status);
@@ -166,6 +170,23 @@ public class BluetoothLeService extends Service {
 				// device status
 				SharePrefsUtils.setDeviceConnectStatus(BluetoothLeService.this,
 						Constants.DEVICE_CONNECT_STATUS_SUCCESS);
+			}
+
+			if (isDeviceBinding) {
+				System.out.println("--------write success----- status:"
+						+ status);
+				SharePrefsUtils.setOpenBindingDevice(BluetoothLeService.this,
+						false);
+				// if (Constants.mBluetoothLeService != null) {
+				// Constants.mBluetoothLeService.disconnect();
+				// Constants.mBluetoothLeService = null;
+
+//				Intent intent = new Intent(BluetoothLeService.this,
+//						MinorCharacteristicsActivity.class);
+//				intent.putExtra("servidx", SharePrefsUtils
+//						.bleServiceIndex(BluetoothLeService.this));
+//				startActivity(intent);
+				// }
 			}
 
 		};
@@ -364,8 +385,25 @@ public class BluetoothLeService extends Service {
 		}
 
 		mBluetoothGatt.writeCharacteristic(characteristic);
-
+		System.out
+				.println("mBluetoothGatt.writeCharacteristic(characteristic)");
 		// stopService(RadarTrackingFragment.beepIntent);
+		
+	}
+
+	public void wirteCharacteristic2(BluetoothGattCharacteristic characteristic) {
+
+		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+			Log.w(TAG, "BluetoothAdapter not initialized");
+			System.out.println("BluetoothAdapter not initialized");
+			return;
+		}
+
+		mBluetoothGatt.writeCharacteristic(characteristic);
+		System.out
+				.println("mBluetoothGatt.writeCharacteristic(characteristic)");
+		// stopService(RadarTrackingFragment.beepIntent);
+		
 	}
 
 	/**
@@ -378,6 +416,14 @@ public class BluetoothLeService extends Service {
 	 *            The characteristic to read from.
 	 */
 	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
+		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+			Log.w(TAG, "BluetoothAdapter not initialized");
+			return;
+		}
+		mBluetoothGatt.readCharacteristic(characteristic);
+	}
+	
+	public void readCharacteristic2(BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			Log.w(TAG, "BluetoothAdapter not initialized");
 			return;
