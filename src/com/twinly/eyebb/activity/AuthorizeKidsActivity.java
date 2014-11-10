@@ -44,6 +44,8 @@ public class AuthorizeKidsActivity extends Activity {
 	private TextView tvHint;
 	private String retStr;
 
+	public static final int UPDATE_VIEW = 11111;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,6 +76,7 @@ public class AuthorizeKidsActivity extends Activity {
 				Intent intent = new Intent(AuthorizeKidsActivity.this,
 						SearchGuestActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 	}
@@ -123,7 +126,9 @@ public class AuthorizeKidsActivity extends Activity {
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.length() > 0) {
-					parseJson(retStr);
+					Message msg = handler.obtainMessage();
+					msg.what = UPDATE_VIEW;
+					handler.sendMessage(msg);
 				}
 			}
 
@@ -142,7 +147,7 @@ public class AuthorizeKidsActivity extends Activity {
 		Guest guestMode = new Guest();
 		try {
 
-			guest_data.clear();
+			// guest_data.clear();
 
 			JSONArray guests = new JSONObject(getData).getJSONArray("guests");
 
@@ -150,18 +155,29 @@ public class AuthorizeKidsActivity extends Activity {
 				JSONObject guest = ((JSONObject) guests.opt(i))
 						.getJSONObject("guest");
 
-				guestMode.setGuardianId(guest.getString("guardianId"));
-				guestMode.setName(guest.getString("name"));
-				guestMode.setPhoneNumber(guest.getString("phoneNumber"));
+				System.out.println("--->"
+						+ guest.getString(HttpConstants.JSON_GUEST_ID));
+
+				System.out.println("--->"
+						+ guest.getString(HttpConstants.JSON_GUEST_NAME));
+				System.out.println("--->"
+						+ guest.getString(HttpConstants.JSON_GUEST_PHONE));
+
+				guestMode.setGuardianId(guest
+						.getString(HttpConstants.JSON_GUEST_ID));
+				guestMode.setName(guest
+						.getString(HttpConstants.JSON_GUEST_NAME));
+				guestMode.setPhoneNumber(guest
+						.getString(HttpConstants.JSON_GUEST_PHONE));
 
 				guest_data.add(guestMode);
 			}
 
-			// System.out.println("guest_data>" + guest_data.size());
+			System.out.println("guest_data>" + guest_data.size());
 
-			tvHint.setVisibility(View.GONE);
-			adapter = new GuestListViewAdapter(this, guest_data, false);
-			listView.setAdapter(adapter);
+			// adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
+			// guest_data);
+			// listView.setAdapter(adapter);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			tvHint.setVisibility(View.VISIBLE);
@@ -198,6 +214,12 @@ public class AuthorizeKidsActivity extends Activity {
 				// parseJson(getData).clear();
 				break;
 
+			case UPDATE_VIEW:
+				adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
+						parseJson(retStr));
+				listView.setAdapter(adapter);
+				tvHint.setVisibility(View.GONE);
+				break;
 			}
 
 		}

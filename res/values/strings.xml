@@ -130,6 +130,8 @@
     <string name="text_unbind_fail">Oops! Eyebb unbind Unsuccessfully!</string>
     <string name="text_no_data">No data</string>
      <string name="text_no_guest">No Guest</string>
+     <string name="text_select_child">Sorry,Please select the children.</string>
+     <string name="text_grant_success">Grant Successfully!</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

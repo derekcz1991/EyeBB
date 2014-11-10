@@ -169,6 +169,11 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.GrantKidsDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.ChildBirthdayDialog"
             android:label="Date Selection"
             android:screenOrientation="portrait"

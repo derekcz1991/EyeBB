@@ -71,7 +71,10 @@ public class LoginAuthKidsActivity extends Activity {
 			finish();
 			return true;
 		} else if (item.getItemId() == 0) {
-			Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+			Intent intent = new Intent(LoginAuthKidsActivity.this,
+					ChildInformationMatchingActivity.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}

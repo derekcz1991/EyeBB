@@ -74,4 +74,6 @@ public class Constants {
 	public static final int UNBIND_SUCCESS = 10004;
 	public static final int UNBIND_FAIL = 10005;
 	public static final int NULL_FEEDBAKC_CONTENT = 10006;
+	public static final int NO_SELECT_CHILDREN = 10007;
+	public static final int GRANT_SUCCESS = 10008;
 }

@@ -10,10 +10,12 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -43,6 +45,8 @@ public class SearchGuestActivity extends Activity {
 	private String retStr;
 	private String guestId;
 
+	public static SearchGuestActivity instance = null;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -56,6 +60,8 @@ public class SearchGuestActivity extends Activity {
 		edGuestname = (EditText) findViewById(R.id.ed_guestname);
 		btnSearchNewGuest = (TextView) findViewById(R.id.btn_search_new_guest);
 		guest_data = new ArrayList<Guest>();
+
+		instance = this;
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -63,7 +69,13 @@ public class SearchGuestActivity extends Activity {
 				// TODO Auto-generated method stub
 				guestName = edGuestname.getText().toString();
 
-				new Thread(postFeedBackToServerRunnable).start();
+				if (guestName.length() > 0) {
+					new Thread(postFeedBackToServerRunnable).start();
+				} else {
+					Toast.makeText(SearchGuestActivity.this,
+							R.string.text_fill_in_something, Toast.LENGTH_LONG)
+							.show();
+				}
 
 			}
 		});
@@ -151,54 +163,54 @@ public class SearchGuestActivity extends Activity {
 
 	}
 
-	Runnable postGrantToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			postGrantToServer();
-
-		}
-	};
-
-	@SuppressLint("ShowToast")
-	private void postGrantToServer() {
-		// TODO Auto-generated method stub
-
-		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>" + guestId);
-
-		map.put("guestId", guestId);
-		map.put("childIds", guestName);
-		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			retStr = HttpRequestUtils.get(HttpConstants.GRANT_GUESTS, map);
-			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-
-				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
-				handler.sendMessage(msg);
-			} else {
-				if (retStr.length() > 2) {
-					Message msg = handler.obtainMessage();
-					msg.what = Constants.SUCCESS_SEARCH;
-					handler.sendMessage(msg);
-
-				} else if (retStr.equals("[]")) {
-					Message msg = handler.obtainMessage();
-					msg.what = Constants.SEARCH_GUEST_NULL;
-					handler.sendMessage(msg);
-				}
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-
-	}
+	// Runnable postGrantToServerRunnable = new Runnable() {
+	// @Override
+	// public void run() {
+	// postGrantToServer();
+	//
+	// }
+	// };
+	//
+	// @SuppressLint("ShowToast")
+	// private void postGrantToServer() {
+	// // TODO Auto-generated method stub
+	//
+	// Map<String, String> map = new HashMap<String, String>();
+	// System.out.println("info=>" + guestId);
+	//
+	// map.put("guestId", guestId);
+	// map.put("childIds", guestName);
+	// try {
+	// // String retStr = GetPostUtil.sendPost(url, postMessage);
+	// retStr = HttpRequestUtils.get(HttpConstants.GRANT_GUESTS, map);
+	// System.out.println("retStrpost======>" + retStr);
+	// if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+	// || retStr.equals("") || retStr.length() == 0) {
+	// System.out.println("connect error");
+	//
+	// Message msg = handler.obtainMessage();
+	// msg.what = Constants.CONNECT_ERROR;
+	// handler.sendMessage(msg);
+	// } else {
+	// if (retStr.length() > 2) {
+	// Message msg = handler.obtainMessage();
+	// msg.what = Constants.SUCCESS_SEARCH;
+	// handler.sendMessage(msg);
+	//
+	// } else if (retStr.equals("[]")) {
+	// Message msg = handler.obtainMessage();
+	// msg.what = Constants.SEARCH_GUEST_NULL;
+	// handler.sendMessage(msg);
+	// }
+	// }
+	//
+	// } catch (Exception e) {
+	//
+	// e.printStackTrace();
+	//
+	// }
+	//
+	// }
 
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
@@ -214,12 +226,12 @@ public class SearchGuestActivity extends Activity {
 				break;
 
 			case Constants.SUCCESS_SEARCH:
-				Toast.makeText(SearchGuestActivity.this,
-						R.string.text_feed_back_successful, Toast.LENGTH_LONG)
-						.show();
+				// Toast.makeText(SearchGuestActivity.this,
+				// R.string.text_feed_back_successful, Toast.LENGTH_LONG)
+				// .show();
 
 				adapter = new GuestListViewAdapter(SearchGuestActivity.this,
-						parseJson(retStr), false);
+						parseJson(retStr));
 
 				System.out.println("parseJson(retStr)-->"
 						+ parseJson(retStr).size());
@@ -228,8 +240,12 @@ public class SearchGuestActivity extends Activity {
 				listView.setOnItemClickListener(new OnItemClickListener() {
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long arg3) {
-						guestId = parseJson(retStr).get(position)
-								.getGuardianId();
+						Intent intent = new Intent(SearchGuestActivity.this,
+								GrantKidsDialog.class);
+						intent.putExtra("guestId",
+								parseJson(retStr).get(position).getGuardianId());
+						startActivity(intent);
+						finish();
 					}
 				});
 				break;
@@ -256,4 +272,14 @@ public class SearchGuestActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 }

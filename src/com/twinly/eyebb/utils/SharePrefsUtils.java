@@ -337,6 +337,17 @@ public class SharePrefsUtils {
 		setString(context,
 				ActivityConstants.SHARE_PREFS_DEVICE_MINOR, value);
 	}
+	
+	
+	public static String grantChildID(Context context) {
+		return getString(context,
+				ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID);
+	}
+
+	public static void setGrantChildID(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID, value);
+	}
     /**
      * sign up
      */

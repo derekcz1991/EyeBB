@@ -31,8 +31,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 		public TextView phone;
 	}
 
-	public GuestListViewAdapter(Context context, List<Guest> data,
-			boolean isSortByName) {
+	public GuestListViewAdapter(Context context, List<Guest> data) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
@@ -86,6 +85,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.ic_stub));
 		}
+		viewHolder.phone.setText(guest.getPhoneNumber());
 		viewHolder.name.setText(guest.getName());
 	}
 }
