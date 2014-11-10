@@ -62,12 +62,11 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 						public int compare(
 								Entry<Location, ArrayList<String>> lhs,
 								Entry<Location, ArrayList<String>> rhs) {
-							if (lhs.getKey().getName().contains("Entrance")
-									|| lhs.getKey().getName().contains("Exit")) {
+							if (lhs.getKey().getType().equals("X")
+									|| lhs.getKey().getType().equals("N")) {
 								return 1;
-							} else if (rhs.getKey().getName()
-									.contains("Entrance")
-									|| rhs.getKey().getName().contains("Exit")) {
+							} else if (rhs.getKey().getType().equals("X")
+									|| rhs.getKey().getType().equals("N")) {
 								return -1;
 							}
 
@@ -89,12 +88,11 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 						public int compare(
 								Entry<Location, ArrayList<String>> lhs,
 								Entry<Location, ArrayList<String>> rhs) {
-							if (lhs.getKey().getName().contains("Entrance")
-									|| lhs.getKey().getName().contains("Exit")) {
+							if (lhs.getKey().getType().equals("X")
+									|| lhs.getKey().getType().equals("N")) {
 								return 1;
-							} else if (rhs.getKey().getName()
-									.contains("Entrance")
-									|| rhs.getKey().getName().contains("Exit")) {
+							} else if (rhs.getKey().getType().equals("X")
+									|| rhs.getKey().getType().equals("N")) {
 								return -1;
 							}
 							return (int) (lhs.getKey().getId() - rhs.getKey()

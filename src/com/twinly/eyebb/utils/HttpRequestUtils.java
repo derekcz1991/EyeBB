@@ -131,7 +131,7 @@ public class HttpRequestUtils {
 
 	public static String post(String action, Map<String, String> map) {
 		String url = HttpConstants.SERVER_URL + action;
-		// HttpClient httpClient = new DefaultHttpClient();
+		System.out.println("url = " + url);
 		HttpPost post = new HttpPost(url);
 		try {
 			post.setEntity(new UrlEncodedFormEntity(postParameters(map),

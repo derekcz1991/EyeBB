@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +28,7 @@ import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.database.DBActivityInfo;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.database.DBPerformance;
 import com.twinly.eyebb.model.Child;
@@ -44,13 +43,10 @@ public class LoginActivity extends Activity {
 	private TextView backBtn;
 	private AlertDialog dialog;
 	private EditText edEmail;
-	// private RelativeLayout kindergartenItem;
 	private EditText loginAccount;
 	private EditText password;
 	private String hashPassword;
-	private TextView kindergarten;
 
-	private int kindergartenId = -1;
 	private String kindergartenNameEn;
 	private String kindergartenNameSc;
 	private String kindergartenNameTc;
@@ -61,34 +57,14 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		setTitle(getString(R.string.btn_login));
 
-		DBPerformance.deletChildTable(LoginActivity.this);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		// kindergartenItem = (RelativeLayout)
-		// findViewById(R.id.kindergartenItem);
 		loginAccount = (EditText) findViewById(R.id.login_account);
 		loginAccount.setText(SharePrefsUtils
 				.getLoginAccount(LoginActivity.this));
 
 		password = (EditText) findViewById(R.id.password);
-		// kindergarten = (TextView) findViewById(R.id.kindergarten);
-		// if (TextUtils.isEmpty(SharePrefsUtils.getKindergartenName(this)) ==
-		// false) {
-		// kindergarten.setText(SharePrefsUtils.getKindergartenName(this));
-		// kindergartenId = SharePrefsUtils.getKindergartenId(this);
-		// }
-
-		// kindergartenItem.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// Intent intent = new Intent(LoginActivity.this,
-		// KindergartenListActivity.class);
-		// startActivityForResult(intent,
-		// ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY);
-		// }
-		// });
 
 		forgetPasswordBtn = (TextView) findViewById(R.id.forget_password_btn);
 		inflater = LayoutInflater.from(this);
@@ -157,12 +133,6 @@ public class LoginActivity extends Activity {
 		} else if (TextUtils.isEmpty(password.getText().toString())) {
 			return;
 		}
-		// else if (kindergartenId == -1) {
-		// Toast.makeText(LoginActivity.this,
-		// getString(R.string.toast_please_select_kindergartens),
-		// Toast.LENGTH_SHORT).show();
-		// return;
-		// }
 
 		new AsyncTask<Void, Void, String>() {
 			Dialog dialog;
@@ -173,7 +143,6 @@ public class LoginActivity extends Activity {
 				hashPassword = CommonUtils.getSHAHashValue(password.getText()
 						.toString());
 				System.out.println("hashPassword = " + hashPassword);
-				// hashPassword = password.getText().toString();
 				dialog = LoadingDialog.createLoadingDialog(LoginActivity.this,
 						getString(R.string.toast_login));
 				dialog.show();
@@ -184,7 +153,6 @@ public class LoginActivity extends Activity {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("j_username", loginAccount.getText().toString());
 				map.put("j_password", hashPassword);
-				map.put("kId", String.valueOf(kindergartenId));
 
 				return HttpRequestUtils.post(HttpConstants.LOGIN, map);
 			}
@@ -197,41 +165,23 @@ public class LoginActivity extends Activity {
 					JSONObject json = new JSONObject(result);
 					JSONArray childJSONList = json
 							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-					for (int i = 0; i < childJSONList.length(); i++) {
-						JSONObject object = (JSONObject) childJSONList.get(i);
-						Child child = new Child(
-								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
-								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-						child.setMacAddress(object
-								.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
-						// get parents' phone
-						if (CommonUtils.isNotNull(object
-								.getString(HttpConstants.JSON_KEY_PARENTS))) {
-							JSONArray parents = object
-									.getJSONArray(HttpConstants.JSON_KEY_PARENTS);
-							if (parents != null) {
-								JSONObject parent = (JSONObject) parents.get(0);
-								child.setPhone(parent
-										.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
-							}
-						}
-
-						DBChildren.insert(LoginActivity.this, child);
-						// set the first child as the current reporting child
-						if (i == 0) {
-							SharePrefsUtils.setReportChildId(
-									LoginActivity.this, child.getChildId());
-						}
+					// is a new account
+					if (loginAccount
+							.getText()
+							.toString()
+							.equals(SharePrefsUtils
+									.getLoginAccount(LoginActivity.this)) == false) {
+						DBActivityInfo.deleteTable(LoginActivity.this);
+						DBChildren.deleteTable(LoginActivity.this);
+						DBPerformance.deleteTable(LoginActivity.this);
 					}
+					getAllChildren(childJSONList);
 
 					SharePrefsUtils.setLogin(LoginActivity.this, true);
 					SharePrefsUtils.setLoginAccount(LoginActivity.this,
 							loginAccount.getText().toString());
 					SharePrefsUtils.setPassowrd(LoginActivity.this,
 							hashPassword);
-					SharePrefsUtils.setKindergartenId(LoginActivity.this,
-							kindergartenId);
 					SharePrefsUtils.setKindergartenNameEn(LoginActivity.this,
 							kindergartenNameEn);
 					SharePrefsUtils.setKindergartenNameSc(LoginActivity.this,
@@ -254,16 +204,32 @@ public class LoginActivity extends Activity {
 
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY) {
-			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
-				kindergarten.setText(data.getStringExtra("displayName"));
+	private void getAllChildren(JSONArray childJSONList) throws JSONException {
+		for (int i = 0; i < childJSONList.length(); i++) {
+			JSONObject object = (JSONObject) childJSONList.get(i);
+			Child child = new Child(
+					object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+					object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+					object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+			child.setMacAddress(object
+					.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
+			// get parents' phone
+			if (CommonUtils.isNotNull(object
+					.getString(HttpConstants.JSON_KEY_PARENTS))) {
+				JSONArray parents = object
+						.getJSONArray(HttpConstants.JSON_KEY_PARENTS);
+				if (parents != null) {
+					JSONObject parent = (JSONObject) parents.get(0);
+					child.setPhone(parent
+							.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+				}
+			}
 
-				kindergartenId = data.getIntExtra("kindergartenId", -1);
-				kindergartenNameEn = data.getStringExtra("nameEn");
-				kindergartenNameTc = data.getStringExtra("nameTc");
-				kindergartenNameSc = data.getStringExtra("nameSc");
+			DBChildren.insert(LoginActivity.this, child);
+			// set the first child as the current reporting child
+			if (i == 0) {
+				SharePrefsUtils.setReportChildId(LoginActivity.this,
+						child.getChildId());
 			}
 		}
 	}

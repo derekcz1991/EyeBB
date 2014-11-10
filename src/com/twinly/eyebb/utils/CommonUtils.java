@@ -4,7 +4,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Locale;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -68,5 +72,23 @@ public class CommonUtils {
 		int hours = minutes / 60;
 		minutes = minutes - hours * 60;
 		return hours + "hr " + minutes + "min.";
+	}
+
+	public static void switchSoftKeyboardstate(Activity activity) {
+		InputMethodManager imm = (InputMethodManager) activity
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+	}
+	
+	public static void hideSoftKeyboard(View view, Activity activity) {
+		InputMethodManager imm = (InputMethodManager) activity
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+	}
+
+	public static void showSoftKeyboard(View view, Activity activity) {
+		InputMethodManager imm = (InputMethodManager) activity
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
 	}
 }

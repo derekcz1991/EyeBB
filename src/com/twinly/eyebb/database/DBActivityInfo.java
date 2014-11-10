@@ -68,4 +68,10 @@ public class DBActivityInfo {
 				new String[] { String.valueOf(childId) });
 		db.close();
 	}
+
+	public static void deleteTable(Context context) {
+		SQLiteDatabase db = getInstance(context);
+		db.execSQL("delete from activity_infos");
+		db.close();
+	}
 }

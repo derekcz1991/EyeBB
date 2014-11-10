@@ -41,12 +41,13 @@ public class KidsListViewAdapter extends BaseAdapter {
 		public LinearLayout btnBeep;
 	}
 
-	public KidsListViewAdapter(Context context, Map<String, Child> childrenMap,
-			boolean isSortByName, boolean isSortByLocator) {
+	public KidsListViewAdapter(Context context,
+			List<Map.Entry<String, Child>> data, boolean isSortByName,
+			boolean isSortByLocator) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
-		this.list = new ArrayList<Map.Entry<String, Child>>(
-				childrenMap.entrySet());
+		this.list = new ArrayList<Map.Entry<String, Child>>();
+		this.list.addAll(data);
 		if (isSortByName) {
 			Collections.sort(list, new Comparator<Map.Entry<String, Child>>() {
 

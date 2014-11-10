@@ -90,8 +90,6 @@ public class LancherActivity extends Activity {
 					SharePrefsUtils.getLoginAccount(LancherActivity.this));
 			map.put("j_password",
 					SharePrefsUtils.getPassword(LancherActivity.this));
-			map.put("kId", String.valueOf(SharePrefsUtils
-					.getKindergartenId(LancherActivity.this)));
 
 			return HttpRequestUtils.post(HttpConstants.LOGIN, map);
 		}

@@ -1,6 +1,5 @@
 package com.twinly.eyebb.adapter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -29,12 +28,6 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 		public CircleImageView avatar;
 		public TextView name;
 	}
-
-	/*
-	 * public ChangeKidsListViewAdapter(Context context, ArrayList<Child> data)
-	 * { inflater = LayoutInflater.from(context); this.context = context;
-	 * this.data = data; imageLoader = ImageLoader.getInstance(); }
-	 */
 
 	public ChangeKidsListViewAdapter(Context context, List<Child> data,
 			boolean isSortByName) {

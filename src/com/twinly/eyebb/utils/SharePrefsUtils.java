@@ -36,7 +36,7 @@ public class SharePrefsUtils {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_LOGIN, value);
 	}
 
-	public static int getKindergartenId(Context context) {
+	/*public static int getKindergartenId(Context context) {
 		return getInt(context,
 				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
 	}
@@ -44,7 +44,7 @@ public class SharePrefsUtils {
 	public static void setKindergartenId(Context context, int value) {
 		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID,
 				value);
-	}
+	}*/
 
 	public static String getKindergartenName(Context context) {
 		int locale = SharePrefsUtils.getLanguage(context);

@@ -75,7 +75,7 @@
     <string name="text_device_verified">Device Verified!</string>
     <string name="text_error_username">The User Name is not in the correct format! \n(eg.A-Z a-z 0-9 _) Length:3-30</string>
     <string name="text_error_email">The Email is not in the correct format!</string>
-     <string name="text_error_nickname">The Nickname is not in the correct format!</string>
+    <string name="text_error_nickname">The Nickname is not in the correct format!</string>
     <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:8-30</string>
     <string name="text_loading">Loading...</string>
     <string name="text_radar_status_disconnection">Close the anti-lost model</string>
@@ -113,22 +113,22 @@
     <string name="text_feedback_idea">idea</string>
     <string name="text_feedback_question">question</string>
     <string name="text_no_content">No content...</string>
-   <string name="text_fill_in_refresh_time">Please, fill in something!!</string>
-      <string name="text_contact_information">Contact information</string>
-      <string name="text_user_information">User information</string>
-      <string name="text_fill_email_or_phone">Fill in the email or phone information.</string>
+    <string name="text_fill_in_refresh_time">Please, fill in something!!</string>
+    <string name="text_contact_information">Contact information</string>
+    <string name="text_user_information">User information</string>
+    <string name="text_fill_email_or_phone">Fill in the email or phone information.</string>
     <string name="text_username_is_used">Sorry, the username is already used</string>
-      <string name="text_network_error">error! Please check your network.</string>
-      <string name="text_register_successfully">Successfully register!</string>
-        <string name="text_child_not_exist">This child does not exist</string>
-         <string name="text_already_relationship">Error! This child has already binded.</string>
-                     <string name="text_device_already_binded">Error! This EYEBB has already binded. Please change others.</string>
-                           <string name="text_feed_back_successful">Successful! Thank you.</string>
-                           <string name="text_search_guest_null">Sorry,this guest is not exist.</string>
-                        <string name="text_unbind_device">This child has already got the eyebb device. Do you want to re-bind it?</string>
-                        <string name="text_unbind_success">Eyebb unbind successfully!</string>
-                                   <string name="text_unbind_fail">Oops! Eyebb unbind Unsuccessfully!</string>
-                           
+    <string name="text_network_error">error! Please check your network.</string>
+    <string name="text_register_successfully">Successfully register!</string>
+    <string name="text_child_not_exist">This child does not exist</string>
+    <string name="text_already_relationship">Error! This child has already binded.</string>
+    <string name="text_device_already_binded">Error! This EYEBB has already binded. Please change others.</string>
+    <string name="text_feed_back_successful">Successful! Thank you.</string>
+    <string name="text_search_guest_null">Sorry,this guest is not exist.</string>
+    <string name="text_unbind_device">This child has already got the eyebb device. Do you want to re-bind it?</string>
+    <string name="text_unbind_success">Eyebb unbind successfully!</string>
+    <string name="text_unbind_fail">Oops! Eyebb unbind Unsuccessfully!</string>
+    
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
     <string name="btn_add_new_guest">Add guest</string>
@@ -146,6 +146,7 @@
     <string name="btn_skip">Skip</string>
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
+    <string name="btn_search">Search</string>
     
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

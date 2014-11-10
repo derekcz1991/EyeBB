@@ -17,20 +17,15 @@ import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.eyebb.R;
-import com.google.android.gms.internal.it;
-import com.google.android.gms.internal.nw;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
-import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 

@@ -72,7 +72,7 @@
     <string name="text_device_verified">驗證成功</string>
     <string name="text_error_username">用戶名格式錯誤！ \n(例如：A-Z a-z 0-9 _) 長度：3-30</string>
     <string name="text_error_email">郵件地址格式錯誤！</string>
-        <string name="text_error_nickname">暱稱格式錯誤!</string>
+    <string name="text_error_nickname">暱稱格式錯誤!</string>
     <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
     <string name="text_loading">加載中...</string>
     <string name="text_radar_status_disconnection">關閉防丟模式</string>
@@ -120,22 +120,21 @@
     <string name="text_no_content">暂时没有内容...</string>
     <string name="text_anti_lost_mode_miss">他/她得信號很弱或者已經丟失</string>
     <string name="text_fill_in_refresh_time">請填入時間!!</string>
-     <string name="text_contact_information">聯繫信息</string>
-      <string name="text_user_information">用戶信息</string>
-      <string name="text_fill_email_or_phone">填入電子郵件或者電話號碼信息</string> 
-      <string name="text_username_is_used">此用戶名已經使用</string>
-          <string name="text_network_error">網絡錯誤,請檢查網路!</string>
-          <string name="text_register_successfully">註冊成功!</string>
-                      <string name="text_child_not_exist">暫時沒有這個孩子的信息</string>
-       <string name="text_already_relationship">錯誤!這個孩子信息已經被用戶綁定</string>
-                    <string name="text_device_already_binded">錯誤!此貝貝安設備已經被綁定過,請更換.</string>
-                     <string name="text_feed_back_successful">提交成功,謝謝!</string> 
-                    <string name="text_search_guest_null">ohh,此用戶不存在!</string>
-                       <string name="text_unbind_device">已檢測到孩子綁定寶寶安,您需要重新綁定嗎?</string>
-                       <string name="text_unbind_success">寶寶安解除綁定!</string>
-                                   <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
-                       
-                       
+    <string name="text_contact_information">聯繫信息</string>
+    <string name="text_user_information">用戶信息</string>
+    <string name="text_fill_email_or_phone">填入電子郵件或者電話號碼信息</string>
+    <string name="text_username_is_used">此用戶名已經使用</string>
+    <string name="text_network_error">網絡錯誤,請檢查網路!</string>
+    <string name="text_register_successfully">註冊成功!</string>
+    <string name="text_child_not_exist">暫時沒有這個孩子的信息</string>
+    <string name="text_already_relationship">錯誤!這個孩子信息已經被用戶綁定</string>
+    <string name="text_device_already_binded">錯誤!此貝貝安設備已經被綁定過,請更換.</string>
+    <string name="text_feed_back_successful">提交成功,謝謝!</string>
+    <string name="text_search_guest_null">ohh,此用戶不存在!</string>
+    <string name="text_unbind_device">已檢測到孩子綁定寶寶安,您需要重新綁定嗎?</string>
+    <string name="text_unbind_success">寶寶安解除綁定!</string>
+    <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
+    
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
@@ -149,16 +148,17 @@
     <string name="btn_verify">確認</string>
     <string name="btn_binding">綁定</string>
     <string name="btn_skip">略过</string>
-        <string name="btn_next_step">下一步</string>
-         <string name="btn_search_child">查找孩子</string>
-          <string name="btn_add_new_guest">搜索副監管人</string>
-           <string name="btn_search_new_guest">搜索副監管人</string>
+    <string name="btn_next_step">下一步</string>
+    <string name="btn_search_child">查找孩子</string>
+    <string name="btn_add_new_guest">搜索副監管人</string>
+    <string name="btn_search_new_guest">搜索副監管人</string>
+    <string name="btn_search">搜索</string>
     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>
     <string name="toast_loading">讀取中&#8230;</string>
     <string name="toast_please_select_kindergartens">請選擇幼稚園</string>
-   <string name="toast_invalid_username_or_password">帳號,密碼錯誤或者請檢查您的網路</string>
+    <string name="toast_invalid_username_or_password">帳號,密碼錯誤或者請檢查您的網路</string>
     <string name="toast_login_failed">登錄失敗, 請重新登錄</string>
 
 </resources>

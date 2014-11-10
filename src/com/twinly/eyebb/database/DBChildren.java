@@ -112,4 +112,10 @@ public class DBChildren {
 		child.setLocationName("");
 		return child;
 	}
+	
+	public static void deleteTable(Context context) {
+		SQLiteDatabase db = getInstance(context);
+		db.execSQL("delete from children");
+		db.close();
+	}
 }
