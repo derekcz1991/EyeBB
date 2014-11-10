@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,10 +25,9 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
+import com.twinly.eyebb.bluetooth.CharacteristicsActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Guest;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
@@ -42,6 +42,7 @@ public class AuthorizeKidsActivity extends Activity {
 	private String phoneNumber;
 
 	private TextView tvHint;
+	private String retStr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,17 @@ public class AuthorizeKidsActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			finish();
+			System.out.println("=========>onKeyDown");
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
 	Runnable postFindGuestsToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -100,8 +112,7 @@ public class AuthorizeKidsActivity extends Activity {
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils
-					.getNoPara(HttpConstants.AUTH_FIND_GUESTS);
+			retStr = HttpRequestUtils.getNoPara(HttpConstants.AUTH_FIND_GUESTS);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
