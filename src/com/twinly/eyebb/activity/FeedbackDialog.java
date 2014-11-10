@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -46,6 +47,20 @@ public class FeedbackDialog extends Activity {
 		ed = (EditText) findViewById(R.id.feedback_comments);
 		group = (RadioGroup) findViewById(R.id.feedback_rg);
 
+		ed.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (ed.hasFocus() == true) {
+					ed.setHint("");
+				} else {
+					ed.setHint(getResources().getString(
+							R.string.text_your_comments));
+				}
+
+			}
+		});
+
 		group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -79,7 +94,13 @@ public class FeedbackDialog extends Activity {
 				// TODO Auto-generated method stub
 				content = ed.getText().toString();
 
-				new Thread(postFeedBackToServerRunnable).start();
+				if (content.length() > 0) {
+					new Thread(postFeedBackToServerRunnable).start();
+				} else {
+					Message msg = handler.obtainMessage();
+					msg.what = Constants.NULL_FEEDBAKC_CONTENT;
+					handler.sendMessage(msg);
+				}
 
 			}
 		});
@@ -157,8 +178,7 @@ public class FeedbackDialog extends Activity {
 
 			case Constants.CONNECT_ERROR:
 				Toast.makeText(FeedbackDialog.this,
-						R.string.text_network_error, Toast.LENGTH_LONG)
-						.show();
+						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 			case SUCCESS_FEEDBACK:
@@ -166,6 +186,12 @@ public class FeedbackDialog extends Activity {
 						R.string.text_feed_back_successful, Toast.LENGTH_LONG)
 						.show();
 
+				break;
+				
+			case Constants.NULL_FEEDBAKC_CONTENT:
+				Toast.makeText(FeedbackDialog.this,
+						R.string.text_fill_in_something, Toast.LENGTH_LONG)
+						.show();
 				break;
 			}
 

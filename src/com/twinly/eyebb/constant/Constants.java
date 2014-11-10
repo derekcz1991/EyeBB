@@ -73,4 +73,5 @@ public class Constants {
 	public static final int SEARCH_GUEST_NULL = 10003;
 	public static final int UNBIND_SUCCESS = 10004;
 	public static final int UNBIND_FAIL = 10005;
+	public static final int NULL_FEEDBAKC_CONTENT = 10006;
 }

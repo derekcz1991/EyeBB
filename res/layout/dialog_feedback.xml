@@ -72,7 +72,8 @@
                 android:background="@color/transparent"
                 android:hint="@string/text_your_comments"
                 android:longClickable="false"
-                android:singleLine="true" />
+                android:maxLines="4"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -84,6 +85,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >

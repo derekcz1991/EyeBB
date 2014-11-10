@@ -119,7 +119,7 @@
     <string name="text_feedback_question">問題</string>
     <string name="text_no_content">暂时没有内容...</string>
     <string name="text_anti_lost_mode_miss">他/她的信號很弱或者已經丟失</string>
-    <string name="text_fill_in_refresh_time">請填入時間!!</string>
+    <string name="text_fill_in_something">請填入內容!</string>
     <string name="text_contact_information">聯繫信息</string>
     <string name="text_user_information">用戶信息</string>
     <string name="text_fill_email_or_phone">填入電子郵件或者電話號碼信息</string>

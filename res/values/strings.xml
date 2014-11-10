@@ -113,7 +113,7 @@
     <string name="text_feedback_idea">idea</string>
     <string name="text_feedback_question">question</string>
     <string name="text_no_content">No content...</string>
-    <string name="text_fill_in_refresh_time">Please, fill in something!!</string>
+    <string name="text_fill_in_something">Please, fill in something!!</string>
     <string name="text_contact_information">Contact information</string>
     <string name="text_user_information">User information</string>
     <string name="text_fill_email_or_phone">Fill in the email or phone information.</string>

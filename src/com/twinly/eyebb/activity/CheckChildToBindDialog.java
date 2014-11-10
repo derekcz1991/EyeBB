@@ -62,6 +62,9 @@ public class CheckChildToBindDialog extends Activity {
 				parseJson(getData));
 		listView.setAdapter(adapter);
 
+		
+		
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {

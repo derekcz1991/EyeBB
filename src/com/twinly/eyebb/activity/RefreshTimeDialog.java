@@ -50,7 +50,7 @@ public class RefreshTimeDialog extends Activity {
 					}
 				} else {
 					enterMail.setHint(getResources().getString(
-							R.string.text_fill_in_refresh_time));
+							R.string.text_fill_in_something));
 					enterMail.setHintTextColor(getResources().getColor(
 							R.color.red));
 				}
