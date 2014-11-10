@@ -149,6 +149,7 @@
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
     <string name="btn_search">Search</string>
+    <string name="btn_add">Add</string>
     
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>
