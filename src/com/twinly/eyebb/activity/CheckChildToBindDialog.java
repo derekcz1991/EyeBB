@@ -97,6 +97,7 @@ public class CheckChildToBindDialog extends Activity {
 		Child child = new Child();
 		try {
 
+			child_data.clear();
 			JSONArray arr = new JSONArray(getData);
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject temp = (JSONObject) arr.get(i);
@@ -178,14 +179,9 @@ public class CheckChildToBindDialog extends Activity {
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("true")) {
-					Intent data = new Intent(CheckChildToBindDialog.this,
-							CheckBeaconActivity.class);
-
-					SharePrefsUtils.setSignUpChildId(
-							CheckChildToBindDialog.this, childIdToPost);
-
-					startActivity(data);
-					finish();
+					
+					new Thread(postCheckIfChildHasBeaconToServerRunnable).start();
+				
 				} else if (retStr.equals("false")) {
 					Message msg = handler.obtainMessage();
 					msg.what = ALREADY_RELATIONSHIP;
@@ -200,6 +196,73 @@ public class CheckChildToBindDialog extends Activity {
 		}
 
 	}
+	
+	
+	Runnable postCheckIfChildHasBeaconToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			postRelationToServer();
+
+		}
+	};
+
+	@SuppressLint("ShowToast")
+	private void postCheckIfChildHasBeaconToServer() {
+		// TODO Auto-generated method stub
+
+		Map<String, String> map = new HashMap<String, String>();
+		System.out
+				.println("info=>"
+						+ childIdToPost);
+
+		map.put("childId", childIdToPost);
+
+
+		try {
+			// String retStr = GetPostUtil.sendPost(url, postMessage);
+			String retStr = HttpRequestUtils.postTo(
+					CheckChildToBindDialog.this, HttpConstants.CHECK_IF_CHILD_HAS_BEACON,
+					map);
+			System.out.println("retStrpost======>" + retStr);
+			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+					|| retStr.equals("") || retStr.length() == 0) {
+				System.out.println("connect error");
+
+				Message msg = handler.obtainMessage();
+				msg.what = Constants.CONNECT_ERROR;
+				handler.sendMessage(msg);
+			} else {
+				if (retStr.equals("N")) {
+					Intent data = new Intent(CheckChildToBindDialog.this,
+							CheckBeaconActivity.class);
+
+					SharePrefsUtils.setSignUpChildId(
+							CheckChildToBindDialog.this, childIdToPost);
+
+					startActivity(data);
+					finish();
+					
+		
+				} else if (retStr.equals("Y")) {
+					Intent data = new Intent(CheckChildToBindDialog.this,
+							UnbindDeviceDialog.class);
+
+					SharePrefsUtils.setSignUpChildId(
+							CheckChildToBindDialog.this, childIdToPost);
+
+					startActivity(data);
+				
+				}
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
+
 
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
@@ -219,6 +282,8 @@ public class CheckChildToBindDialog extends Activity {
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_already_relationship, Toast.LENGTH_LONG)
 						.show();
+				adapter.notifyDataSetChanged();
+				//parseJson(getData).clear();
 				break;
 
 			}

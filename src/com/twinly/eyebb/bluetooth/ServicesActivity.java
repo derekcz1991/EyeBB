@@ -241,6 +241,10 @@ public class ServicesActivity extends Activity {
 				mConnected = false;
 				status_text.setText(mDeviceName + ": Disconnected");
 				ServicesActivity.this.finish();
+				//if error
+				Intent intentError = new Intent(ServicesActivity.this,
+						ErrorDialog.class);
+				startActivity(intentError);
 			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 					.equals(action)) {
 				// Show all the supported services and characteristics on the
@@ -248,13 +252,13 @@ public class ServicesActivity extends Activity {
 				// status_text.setText(mDeviceName + ": Discovered");
 				displayGattServices(Constants.mBluetoothLeService
 						.getSupportedGattServices());
-				
+
 				int num = SharePrefsUtils.BleServiceRunOnceFlag(context);
 				if (num == 1) {
 					System.out
-					.println("SharePrefsUtils.BleServiceRunOnceFlag(context)>"
-							+ SharePrefsUtils
-									.BleServiceRunOnceFlag(context));
+							.println("SharePrefsUtils.BleServiceRunOnceFlag(context)>"
+									+ SharePrefsUtils
+											.BleServiceRunOnceFlag(context));
 					new autoConnection().start();
 					SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
 				}

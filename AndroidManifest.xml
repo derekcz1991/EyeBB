@@ -124,6 +124,11 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.UnbindDeviceDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.CheckChildToBindDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
@@ -280,7 +285,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>
-      <activity
+        <activity
             android:name="com.twinly.eyebb.bluetooth.ServicesMinorActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >

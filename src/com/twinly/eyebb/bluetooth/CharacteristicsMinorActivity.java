@@ -181,7 +181,7 @@ public class CharacteristicsMinorActivity extends Activity {
 					uuid2 = uuid2.substring(4, 8);
 					// System.out.println("uuid char==>" + uuid);
 
-					name = SampleGattAttributes.lookup(uuid2, "Unknow");
+					name2 = SampleGattAttributes.lookup(uuid2, "Unknow");
 					currentCharaData.put("NAME", name2);
 					currentCharaData.put("UUID", uuid2);
 					gattCharacteristicGroupData2.add(currentCharaData);

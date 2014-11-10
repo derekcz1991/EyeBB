@@ -74,6 +74,7 @@ public class BluetoothLeService extends Service {
 	public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID
 			.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
 
+	public static boolean writeMajorSuccess = false;
 	// Implements callback methods for GATT events that the app cares about. For
 	// example,
 	// connection change and services discovered.
@@ -180,13 +181,8 @@ public class BluetoothLeService extends Service {
 				// if (Constants.mBluetoothLeService != null) {
 				// Constants.mBluetoothLeService.disconnect();
 				// Constants.mBluetoothLeService = null;
-
-//				Intent intent = new Intent(BluetoothLeService.this,
-//						MinorCharacteristicsActivity.class);
-//				intent.putExtra("servidx", SharePrefsUtils
-//						.bleServiceIndex(BluetoothLeService.this));
-//				startActivity(intent);
-				// }
+				BluetoothLeService.writeMajorSuccess = true;
+			
 			}
 
 		};
@@ -421,6 +417,7 @@ public class BluetoothLeService extends Service {
 			return;
 		}
 		mBluetoothGatt.readCharacteristic(characteristic);
+		System.out.println("readCharacteristic---->1");
 	}
 	
 	public void readCharacteristic2(BluetoothGattCharacteristic characteristic) {
@@ -429,6 +426,7 @@ public class BluetoothLeService extends Service {
 			return;
 		}
 		mBluetoothGatt.readCharacteristic(characteristic);
+		System.out.println("readCharacteristic---->2");
 	}
 
 	/**

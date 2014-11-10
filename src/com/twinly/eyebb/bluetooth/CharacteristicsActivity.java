@@ -244,8 +244,9 @@ public class CharacteristicsActivity extends Activity {
 		@SuppressLint("NewApi")
 		private void modify1008() {
 			// TODO Auto-generated method stub
-			//String data = "0033";
-			String data = SharePrefsUtils.signUpDeviceMajor(CharacteristicsActivity.this);
+			// String data = "0033";
+			String data = SharePrefsUtils
+					.signUpDeviceMajor(CharacteristicsActivity.this);
 			BluetoothGattCharacteristic characteristic = charas
 					.get(charaidxMajor);
 
@@ -254,58 +255,64 @@ public class CharacteristicsActivity extends Activity {
 			Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
 			System.out.println("---->finish1008");
 
-			Intent intent = new Intent(CharacteristicsActivity.this,
-					CharacteristicsMinorActivity.class);
-			intent.putExtra("servidx", servidx);
-			startActivity(intent);
-			finish();
+			if (BluetoothLeService.writeMajorSuccess) {
+				Intent intent = new Intent(CharacteristicsActivity.this,
+						CharacteristicsMinorActivity.class);
+				intent.putExtra("servidx", SharePrefsUtils
+						.bleServiceIndex(CharacteristicsActivity.this));
+				startActivity(intent);
+				finish();
+			}else{
+				modify1008();
+			}
 
 		}
 
 	};
 
-//	private final BroadcastReceiver mGattUpdateReceiver2 = new BroadcastReceiver() {
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			final String action = intent.getAction();
-//			System.out.println("action = " + action);
-//			if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-//				String data = intent
-//						.getStringExtra(BluetoothLeService.EXTRA_DATA);
-//				System.out.println("data========>" + data);
-//
-//				if (uuid2.equals("1009")) {
-//					System.out.println("this is 1009" + data + " "
-//							+ Integer.parseInt(data, 16));
-//					modify1009();
-//				}
-//			}
-//		}
-//
-//		@SuppressLint("NewApi")
-//		private void modify1009() {
-//			// TODO Auto-generated method stub
-//
-//			String data2 = "0333";
-//
-//			BluetoothGattCharacteristic characteristic2 = charas2
-//					.get(charaidxMinor);
-//
-//			characteristic2.setValue(BLEUtils.HexString2Bytes(data2));
-//
-//			Constants.mBluetoothLeService.wirteCharacteristic2(characteristic2);
-//			System.out.println("---->finish1009");
-//
-//		}
-//	};
+	// private final BroadcastReceiver mGattUpdateReceiver2 = new
+	// BroadcastReceiver() {
+	// @Override
+	// public void onReceive(Context context, Intent intent) {
+	// final String action = intent.getAction();
+	// System.out.println("action = " + action);
+	// if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+	// String data = intent
+	// .getStringExtra(BluetoothLeService.EXTRA_DATA);
+	// System.out.println("data========>" + data);
+	//
+	// if (uuid2.equals("1009")) {
+	// System.out.println("this is 1009" + data + " "
+	// + Integer.parseInt(data, 16));
+	// modify1009();
+	// }
+	// }
+	// }
+	//
+	// @SuppressLint("NewApi")
+	// private void modify1009() {
+	// // TODO Auto-generated method stub
+	//
+	// String data2 = "0333";
+	//
+	// BluetoothGattCharacteristic characteristic2 = charas2
+	// .get(charaidxMinor);
+	//
+	// characteristic2.setValue(BLEUtils.HexString2Bytes(data2));
+	//
+	// Constants.mBluetoothLeService.wirteCharacteristic2(characteristic2);
+	// System.out.println("---->finish1009");
+	//
+	// }
+	// };
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		registerReceiver(mGattUpdateReceiver, new IntentFilter(
 				BluetoothLeService.ACTION_DATA_AVAILABLE));
-//		registerReceiver(mGattUpdateReceiver2, new IntentFilter(
-//				BluetoothLeService.ACTION_DATA_AVAILABLE));
+		// registerReceiver(mGattUpdateReceiver2, new IntentFilter(
+		// BluetoothLeService.ACTION_DATA_AVAILABLE));
 		System.out.println("chara onResume");
 	}
 
@@ -313,7 +320,7 @@ public class CharacteristicsActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(mGattUpdateReceiver);
-		//unregisterReceiver(mGattUpdateReceiver2);
+		// unregisterReceiver(mGattUpdateReceiver2);
 	}
 
 	private void addItem(String devname, String address) {

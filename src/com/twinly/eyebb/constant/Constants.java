@@ -71,5 +71,6 @@ public class Constants {
 	public static final int CONNECT_ERROR = 10001;
 	public static final int SUCCESS_SEARCH = 10002;
 	public static final int SEARCH_GUEST_NULL = 10003;
-
+	public static final int UNBIND_SUCCESS = 10004;
+	public static final int UNBIND_FAIL = 10005;
 }

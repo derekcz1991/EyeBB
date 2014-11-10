@@ -156,38 +156,38 @@ public class CheckBeaconActivity extends Activity {
 				SharePrefsUtils.setOpenBindingDevice(CheckBeaconActivity.this,
 						true);
 
-				SharePrefsUtils.setBleServiceRunOnceFlag(
-						CheckBeaconActivity.this, 1);
-				// new Thread(postToServerRunnable).start();
+				//
+				// SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
+				// "0004");
+				// SharePrefsUtils.setSignUpDeviceMinor(CheckBeaconActivity.this,
+				// "0004");
+				// SharePrefsUtils.setMacAddress(CheckBeaconActivity.this,
+				// MACaddress4submit);
+				//
+				//
+				// Intent intent = new Intent(CheckBeaconActivity.this,
+				// ServicesActivity.class);
+				//
+				// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+				// deviceName4submit);
+				// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+				// MACaddress4submit);
+				//
+				// startActivity(intent);
 
-			
-
-				// for (int i = 0; i < 2; i++) {
-//				Intent intent = new Intent(CheckBeaconActivity.this,
-//						ServicesActivity.class);
-//
-//				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-//						deviceName4submit);
-//				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-//						MACaddress4submit);
-//
-//				startActivity(intent);
-
+				// System.out.println("new Thread(postToServerRunnable).start();");
+				// if (scan_flag) {
+				// scanLeDevice();
 				// }
-
-//				System.out.println("new Thread(postToServerRunnable).start();");
-//				if (scan_flag) {
-//					scanLeDevice();
-//				}
-//
-//				if (dialog != null && dialog.isShowing()) {
-//					dialog.dismiss();
-//				}
-//
-//				autoScanHandler.removeCallbacks(autoScan);
-//				mHandler.removeCallbacks(scanLeDeviceRunable);
-//				mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//				isWhileLoop = false;
+				//
+				// if (dialog != null && dialog.isShowing()) {
+				// dialog.dismiss();
+				// }
+				//
+				// autoScanHandler.removeCallbacks(autoScan);
+				// mHandler.removeCallbacks(scanLeDeviceRunable);
+				// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+				// isWhileLoop = false;
 
 				// finish();
 			}
@@ -520,6 +520,9 @@ public class CheckBeaconActivity extends Activity {
 					major = retStr.substring(0, retStr.indexOf(":"));
 					minor = retStr.substring(retStr.indexOf(":") + 1,
 							retStr.length());
+
+					major = checkMajor(major);
+					minor = checkMinor(minor);
 					System.out.println("retStrpost======>" + major + " "
 							+ minor);
 
@@ -532,10 +535,6 @@ public class CheckBeaconActivity extends Activity {
 					SharePrefsUtils.setMacAddress(CheckBeaconActivity.this,
 							MACaddress4submit);
 
-					
-			
-					
-				
 					Intent intent = new Intent(CheckBeaconActivity.this,
 							ServicesActivity.class);
 
@@ -568,6 +567,43 @@ public class CheckBeaconActivity extends Activity {
 
 		}
 
+	}
+
+	private String checkMinor(String minor) {
+		// TODO Auto-generated method stub
+		switch (minor.length()) {
+		case 1:
+			minor = "000" + minor;
+			break;
+
+		case 2:
+			minor = "00" + minor;
+			break;
+		case 3:
+			minor = "0" + minor;
+			break;
+
+		}
+		return minor;
+
+	}
+
+	private String checkMajor(String major) {
+		// TODO Auto-generated method stub
+		switch (major.length()) {
+		case 1:
+			major = "000" + major;
+			break;
+
+		case 2:
+			major = "00" + major;
+			break;
+		case 3:
+			major = "0" + major;
+			break;
+
+		}
+		return major;
 	}
 
 	@Override
