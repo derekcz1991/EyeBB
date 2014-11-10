@@ -142,12 +142,27 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.twinly.eyebb.customview.PullToRefreshListView
-        android:id="@+id/listView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/functionbar"
+        android:layout_below="@id/menubar" >
+
+        <TextView
+            style="@style/DarkGreyText_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/text_no_data" />
+    </RelativeLayout>
+
+    <com.twinly.eyebb.customview.PullToRefreshListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/functionbar"
         android:layout_below="@id/menubar"
+        android:background="#FFf1f1e5"
         android:cacheColorHint="@color/transparent"
         android:divider="@null"
         android:dividerHeight="8dp"

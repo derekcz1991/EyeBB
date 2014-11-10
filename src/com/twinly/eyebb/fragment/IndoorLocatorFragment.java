@@ -80,6 +80,8 @@ public class IndoorLocatorFragment extends Fragment implements
 				false);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
+		listView.setVisibility(View.GONE);
+		
 		autoUpdateButton = (ToggleButton) v.findViewById(R.id.autoUpdateButton);
 
 		indoorLocatorData = new HashMap<Location, ArrayList<String>>();
@@ -248,7 +250,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		protected void onPreExecute() {
 			super.onPreExecute();
 			if (listView != null) {
-				listView.setRefreshing(true);
+				//listView.setRefreshing(true);
 				indoorLocatorData.clear();
 			}
 		}
@@ -283,6 +285,7 @@ public class IndoorLocatorFragment extends Fragment implements
 			System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
+				listView.setVisibility(View.VISIBLE);
 				getAllLocation(json);
 				getAllChild(json);
 				adapter = new IndoorLocatorAdapter(getActivity(),
@@ -293,7 +296,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				System.out.println("reportService/api/childrenList ---->> "
 						+ e.getMessage());
 			}
-			listView.setRefreshing(false);
+			//listView.setRefreshing(false);
 			callback.resetProgressBar();
 		}
 

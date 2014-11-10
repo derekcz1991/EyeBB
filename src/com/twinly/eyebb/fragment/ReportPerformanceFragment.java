@@ -168,9 +168,9 @@ public class ReportPerformanceFragment extends Fragment implements
 	 * Set the listView state. The list cannot scroll when is refreshing, 
 	 * @param isRefreshing whether requesting server to update data
 	 */
-	public void setRefreshing(boolean isRefreshing) {
+	/*public void setRefreshing(boolean isRefreshing) {
 		if(listView != null) {
 			listView.setRefreshing(isRefreshing);
 		}
-	}
+	}*/
 }

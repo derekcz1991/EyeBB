@@ -106,9 +106,9 @@ public class ReportActivitiesFragment extends Fragment implements
 	 * @param isRefreshing
 	 *            whether requesting server to update data
 	 */
-	public void setRefreshing(boolean isRefreshing) {
+	/*public void setRefreshing(boolean isRefreshing) {
 		if (listView != null) {
 			listView.setRefreshing(isRefreshing);
 		}
-	}
+	}*/
 }

@@ -3,7 +3,6 @@ package com.twinly.eyebb.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.eyebb.R.string;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 

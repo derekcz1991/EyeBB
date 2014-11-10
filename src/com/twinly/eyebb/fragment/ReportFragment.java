@@ -251,7 +251,7 @@ public class ReportFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			setRefreshing(true);
+			//setRefreshing(true);
 		}
 
 		@Override
@@ -292,7 +292,7 @@ public class ReportFragment extends Fragment implements
 				System.out.println("reportService/api/stat ---->> "
 						+ e.getMessage());
 			}
-			setRefreshing(false);
+			//setRefreshing(false);
 			callback.resetProgressBar();
 		}
 	}
@@ -310,14 +310,14 @@ public class ReportFragment extends Fragment implements
 	 * Set the listView state. The list cannot scroll when is refreshing, 
 	 * @param isRefreshing whether requesting server to update data
 	 */
-	private void setRefreshing(boolean isRefreshing) {
+	/*private void setRefreshing(boolean isRefreshing) {
 		if (performanceFragment != null) {
 			performanceFragment.setRefreshing(isRefreshing);
 		}
 		if (activitiesFragment != null) {
 			activitiesFragment.setRefreshing(isRefreshing);
 		}
-	}
+	}*/
 
 	/**
 	 * Update the performance fragment

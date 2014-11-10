@@ -58,12 +58,12 @@ public class PullToRefreshListView extends ListView {
 	 *
 	 * @param lockScrollWhileRefreshing
 	 */
-	public void setRefreshing(boolean isRefreshing) {
+	/*public void setRefreshing(boolean isRefreshing) {
 		this.isRefreshing = isRefreshing;
 		if (isRefreshing) {
 			allowScroll = false;
 		}
-	}
+	}*/
 
 	public void setLockPullAction(boolean lockPullAction) {
 		this.lockPullAction = lockPullAction;

@@ -195,7 +195,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_pc);
 			viewHolder.rootLayout
 					.setBackgroundResource(R.drawable.bg_home_pink);
-		} else if (locationName.contains("Art")) {
+		} else if (locationName.contains("Study")) {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_art);
 			viewHolder.rootLayout
 					.setBackgroundResource(R.drawable.bg_home_purple);
@@ -207,7 +207,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_food);
 			viewHolder.rootLayout
 					.setBackgroundResource(R.drawable.bg_home_green01);
-		} else if (locationName.contains("Study")) {
+		} else if (locationName.contains("Reading")) {
 			viewHolder.icon.setBackgroundResource(R.drawable.ic_home_classroom);
 			viewHolder.rootLayout
 					.setBackgroundResource(R.drawable.bg_home_yellow02);

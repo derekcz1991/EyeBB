@@ -25,7 +25,6 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class KidsListActivity extends Activity {
 	private ListView listView;
-	//private Map<String, Child> childrenMap;
 	private List<Map.Entry<String, Child>> list;
 	private List<Map.Entry<String, Child>> searchList;
 	private KidsListViewAdapter adapter;
