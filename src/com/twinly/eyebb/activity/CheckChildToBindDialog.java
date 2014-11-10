@@ -43,8 +43,7 @@ public class CheckChildToBindDialog extends Activity {
 
 	private String childIdToPost;
 	private ArrayList<Child> child_data;
-
-
+	
 	public static final int CHILD_EXIST = 2;
 	public static final int ALREADY_RELATIONSHIP = 3;
 
@@ -54,7 +53,7 @@ public class CheckChildToBindDialog extends Activity {
 		setContentView(R.layout.dialog_check_child_to_bind_list);
 		Intent intent = getIntent();
 		child_data = new ArrayList<Child>();
-
+	
 		getData = intent.getStringExtra("child_data");
 
 		listView = (ListView) findViewById(R.id.listView);
@@ -181,6 +180,8 @@ public class CheckChildToBindDialog extends Activity {
 					new Thread(postCheckIfChildHasBeaconToServerRunnable).start();
 				
 				} else if (retStr.equals("false")) {
+					
+
 					Message msg = handler.obtainMessage();
 					msg.what = ALREADY_RELATIONSHIP;
 					handler.sendMessage(msg);

@@ -81,7 +81,7 @@ public class KindergartenListActivity extends Activity {
 			super.onPreExecute();
 			dialog = LoadingDialog.createLoadingDialog(
 					KindergartenListActivity.this,
-					getString(R.string.toast_login));
+					getString(R.string.text_loading));
 			dialog.show();
 		}
 

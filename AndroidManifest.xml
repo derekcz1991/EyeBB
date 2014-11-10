@@ -114,6 +114,11 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.LoginAuthKidsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.ChooseUsrRoleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >

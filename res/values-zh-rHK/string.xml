@@ -135,6 +135,7 @@
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
     <string name="text_no_data">無數據</string>
+      <string name="text_no_guest">無監護人</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

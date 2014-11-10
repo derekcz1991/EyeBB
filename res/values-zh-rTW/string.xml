@@ -135,6 +135,7 @@
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
     <string name="text_no_data">無數據</string>
+     <string name="text_no_guest">無監護人</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -151,7 +152,7 @@
     <string name="btn_skip">略过</string>
     <string name="btn_next_step">下一步</string>
     <string name="btn_search_child">查找孩子</string>
-    <string name="btn_add_new_guest">搜索副監管人</string>
+    <string name="btn_add_new_guest">增加副監管人</string>
     <string name="btn_search_new_guest">搜索副監管人</string>
     <string name="btn_search">搜索</string>
     

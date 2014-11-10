@@ -145,7 +145,7 @@ public class SettingsActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
-						ChildInformationMatchingActivity.class);
+						LoginAuthKidsActivity.class);
 				startActivity(intent);
 			}
 		});

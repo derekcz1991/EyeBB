@@ -1,7 +1,10 @@
 package com.twinly.eyebb.activity;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,21 +19,29 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
-import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.Guest;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class AuthorizeKidsActivity extends Activity {
 	private ListView listView;
-	private ChangeKidsListViewAdapter adapter;
+	private GuestListViewAdapter adapter;
 	private Button btnAddNewGuest;
+	private ArrayList<Guest> guest_data;
+
+	private String guardianId;
+	private String name;
+	private String phoneNumber;
+
+	private TextView tvHint;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +54,14 @@ public class AuthorizeKidsActivity extends Activity {
 		new Thread(postFindGuestsToServerRunnable).start();
 		btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
 		listView = (ListView) findViewById(R.id.listView);
-		adapter = new ChangeKidsListViewAdapter(this,
-				DBChildren.getChildrenList(this), false);
-		listView.setAdapter(adapter);
+		tvHint = (TextView) findViewById(R.id.tv_hint);
+
+		guest_data = new ArrayList<Guest>();
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 
-			
 			}
 		});
 
@@ -88,11 +98,10 @@ public class AuthorizeKidsActivity extends Activity {
 	private void postFindGuestsToServer() {
 		// TODO Auto-generated method stub
 
-
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.getNoPara(
-					HttpConstants.AUTH_FIND_GUESTS);
+			String retStr = HttpRequestUtils
+					.getNoPara(HttpConstants.AUTH_FIND_GUESTS);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
@@ -103,7 +112,7 @@ public class AuthorizeKidsActivity extends Activity {
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.length() > 0) {
-
+					parseJson(retStr);
 				}
 			}
 
@@ -113,6 +122,42 @@ public class AuthorizeKidsActivity extends Activity {
 
 		}
 
+	}
+
+	private ArrayList<Guest> parseJson(String getData) {
+		// TODO Auto-generated method stub
+		// System.out.println("getData=>" + getData);
+
+		Guest guestMode = new Guest();
+		try {
+
+			guest_data.clear();
+
+			JSONArray guests = new JSONObject(getData).getJSONArray("guests");
+
+			for (int i = 0; i < guests.length(); i++) {
+				JSONObject guest = ((JSONObject) guests.opt(i))
+						.getJSONObject("guest");
+
+				guestMode.setGuardianId(guest.getString("guardianId"));
+				guestMode.setName(guest.getString("name"));
+				guestMode.setPhoneNumber(guest.getString("phoneNumber"));
+
+				guest_data.add(guestMode);
+			}
+
+			// System.out.println("guest_data>" + guest_data.size());
+
+			tvHint.setVisibility(View.GONE);
+			adapter = new GuestListViewAdapter(this, guest_data, false);
+			listView.setAdapter(adapter);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			tvHint.setVisibility(View.VISIBLE);
+
+			e.printStackTrace();
+		}
+		return guest_data;
 	}
 
 	@SuppressLint("HandlerLeak")
