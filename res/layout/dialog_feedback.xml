@@ -42,20 +42,24 @@
             android:text="@string/text_feed_back_content" />
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="8dp"
             android:paddingRight="8dp" >
+
+            <requestFocus />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,30 +75,27 @@
                 android:layout_marginLeft="5dp"
                 android:background="@color/transparent"
                 android:hint="@string/text_your_comments"
-                android:longClickable="false"
-                android:maxLines="4"
-                />
+                android:longClickable="false" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
             android:background="@color/divider_red" >
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal" >
 
         <RadioGroup
             android:id="@+id/feedback_rg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             android:orientation="horizontal" >
+            android:orientation="horizontal" >
 
             <RadioButton
                 android:id="@+id/radio_bug"

@@ -81,7 +81,7 @@
         <activity
             android:name="com.twinly.eyebb.activity.LancherActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -91,7 +91,7 @@
         <activity
             android:name="com.twinly.eyebb.activity.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.SignUpActivity"
@@ -146,7 +146,7 @@
         <activity
             android:name="com.twinly.eyebb.activity.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.ChildDialog"
@@ -218,7 +218,7 @@
         <activity
             android:name="com.twinly.eyebb.activity.SettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.ActivityDetailsActivity"
