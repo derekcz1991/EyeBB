@@ -53,15 +53,15 @@ public class FeedbackDialog extends Activity {
 				// TODO Auto-generated method stub
 				radioButtonId = checkedId;
 				switch (checkedId) {
-				case 2131296373:
+				case R.id.radio_bug:
 					type = "B";
 					break;
 
-				case 2131296374:
+				case R.id.radio_idea:
 					type = "I";
 					break;
 
-				case 2131296375:
+				case R.id.radio_question:
 					type = "Q";
 					break;
 

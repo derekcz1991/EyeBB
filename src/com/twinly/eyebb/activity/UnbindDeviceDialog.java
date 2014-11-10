@@ -67,11 +67,7 @@ public class UnbindDeviceDialog extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>"
-				+ SharePrefsUtils.signUpChildId(UnbindDeviceDialog.this));
-
-		map.put("childId",
-				SharePrefsUtils.signUpChildId(UnbindDeviceDialog.this));
+		
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);

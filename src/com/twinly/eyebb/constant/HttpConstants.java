@@ -72,4 +72,5 @@ public class HttpConstants {
 	public static final String SEARCH_GUEST = "/masterService/api/searchGuest";
 	public static final String CHECK_IF_CHILD_HAS_BEACON = "/masterService/api/hasBeaconOrNot";
 	public static final String UNBIND_CHILD_BEACON = "/masterService/api/unbindChildBeacon";
+	public static final String AUTH_FIND_GUESTS = "/masterService/api/searchMasterGuests";
 }
