@@ -91,12 +91,13 @@ public class CheckChildToBindDialog extends Activity {
 		// TODO Auto-generated method stub
 		// System.out.println("getData=>" + getData);
 
-		Child child = new Child();
+	
 		try {
 
 			child_data.clear();
 			JSONArray arr = new JSONArray(getData);
 			for (int i = 0; i < arr.length(); i++) {
+				Child child = new Child();
 				JSONObject temp = (JSONObject) arr.get(i);
 				childId = temp
 						.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ID);

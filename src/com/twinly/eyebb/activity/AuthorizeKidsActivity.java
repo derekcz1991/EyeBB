@@ -144,7 +144,6 @@ public class AuthorizeKidsActivity extends Activity {
 		// TODO Auto-generated method stub
 		// System.out.println("getData=>" + getData);
 
-		Guest guestMode = new Guest();
 		try {
 
 			// guest_data.clear();
@@ -155,6 +154,7 @@ public class AuthorizeKidsActivity extends Activity {
 				JSONObject guest = ((JSONObject) guests.opt(i))
 						.getJSONObject("guest");
 
+				Guest guestMode = new Guest();
 				System.out.println("--->"
 						+ guest.getString(HttpConstants.JSON_GUEST_ID));
 

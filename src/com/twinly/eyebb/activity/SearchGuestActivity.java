@@ -94,7 +94,6 @@ public class SearchGuestActivity extends Activity {
 		// TODO Auto-generated method stub
 		// System.out.println("getData=>" + getData);
 
-		Guest guest = new Guest();
 		try {
 
 			if (guest_data != null && guest_data.size() > 0)
@@ -103,6 +102,7 @@ public class SearchGuestActivity extends Activity {
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject temp = (JSONObject) arr.get(i);
 
+				Guest guest = new Guest();
 				System.out.println("--->"
 						+ temp.getString(HttpConstants.JSON_GUEST_NAME));
 				guest.setGuardianId(Long.parseLong(temp
