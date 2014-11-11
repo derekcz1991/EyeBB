@@ -43,15 +43,30 @@ public class LoginAuthKidsActivity extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				Intent data = new Intent(LoginAuthKidsActivity.this,
-						CheckBeaconActivity.class);
-				SharePrefsUtils.setSignUpChildId(LoginAuthKidsActivity.this,
-						list.get(position).getChildId() + "");
-				// bundle.putSerializable("child", adapter.getItem(position));
-				// data.putExtras(bundle);
-				// setResult(ActivityConstants.RESULT_RESULT_OK, data);
-				startActivity(data);
-				finish();
+				if (list.get(position).getMacAddress().length() > 0) {
+					Intent data = new Intent(LoginAuthKidsActivity.this,
+							UnbindDeviceDialog.class);
+
+					SharePrefsUtils.setSignUpChildId(
+							LoginAuthKidsActivity.this, list.get(position)
+									.getChildId() + "");
+
+					startActivity(data);
+
+				} else {
+					Intent data = new Intent(LoginAuthKidsActivity.this,
+							CheckBeaconActivity.class);
+					SharePrefsUtils.setSignUpChildId(
+							LoginAuthKidsActivity.this, list.get(position)
+									.getChildId() + "");
+					// bundle.putSerializable("child",
+					// adapter.getItem(position));
+					// data.putExtras(bundle);
+					// setResult(ActivityConstants.RESULT_RESULT_OK, data);
+					startActivity(data);
+					finish();
+				}
+
 			}
 		});
 
