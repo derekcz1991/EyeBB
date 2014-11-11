@@ -66,7 +66,8 @@
             android:layout_marginTop="8dp"
             android:animateLayoutChanges="false"
             android:orientation="horizontal"
-            android:showDividers="middle" >
+            android:showDividers="middle"
+            app:verticalSpacing="8dp" >
         </com.twinly.eyebb.customview.FlowLayout>
     </LinearLayout>
 

@@ -81,7 +81,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 		listView.setVisibility(View.GONE);
-		
+
 		autoUpdateButton = (ToggleButton) v.findViewById(R.id.autoUpdateButton);
 
 		indoorLocatorData = new HashMap<Location, ArrayList<String>>();
@@ -247,15 +247,6 @@ public class IndoorLocatorFragment extends Fragment implements
 	private class UpdateView extends AsyncTask<Void, Void, String> {
 
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			if (listView != null) {
-				//listView.setRefreshing(true);
-				indoorLocatorData.clear();
-			}
-		}
-
-		@Override
 		protected String doInBackground(Void... params) {
 			try {
 				Thread.sleep(1000);
@@ -307,6 +298,9 @@ public class IndoorLocatorFragment extends Fragment implements
 	 * @param json
 	 */
 	private void getAllLocation(JSONObject json) {
+		if (indoorLocatorData != null) {
+			indoorLocatorData.clear();
+		}
 		try {
 			JSONArray locationJSONList = json
 					.getJSONArray(HttpConstants.JSON_KEY_LOCATION_ALL);
