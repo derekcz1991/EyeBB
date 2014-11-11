@@ -104,12 +104,12 @@ public class SearchGuestActivity extends Activity {
 
 				Guest guest = new Guest();
 				System.out.println("--->"
-						+ temp.getString(HttpConstants.JSON_GUEST_NAME));
+						+ temp.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guest.setGuardianId(Long.parseLong(temp
-						.getString(HttpConstants.JSON_GUEST_ID)) + "");
-				guest.setName(temp.getString(HttpConstants.JSON_GUEST_NAME));
+						.getString(HttpConstants.JSON_KEY_USER_ID)) + "");
+				guest.setName(temp.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guest.setPhoneNumber(temp
-						.getString(HttpConstants.JSON_GUEST_PHONE));
+						.getString(HttpConstants.JSON_KEY_USER_PHONE));
 				guest_data.add(guest);
 
 				// adapter.notifyDataSetChanged();

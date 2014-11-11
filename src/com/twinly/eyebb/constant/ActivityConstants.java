@@ -9,6 +9,9 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_LOGIN_ACCOUNT = "login_account";
 	public static final String SHARE_PREFS_ITEM_PASSWORD = "password";
 	public static final String SHARE_PREFS_ITEM_LANGUAGE = "language";
+	public static final String SHARE_PREFS_ITEM_USER_NAME = "user_name";
+	public static final String SHARE_PREFS_ITEM_USER_TYPE = "user_type";
+	public static final String SHARE_PREFS_ITEM_USER_PHONE = "user_phone";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_ID = "kindergarten_id";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC = "kindergarten_name_tc";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC = "kindergarten_name_sc";
@@ -29,7 +32,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_MAC_ADDRESSS = "device_mac_address";
 	public static final String SHARE_PREFS_DEVICE_CONNECT_STATUS = "device_status_connect";
 	public static final String SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS = "keep_device_status_connect";
-	public static final String SHARE_PREFS_CHILID_BIRTHDAY= "child_birthday";
+	public static final String SHARE_PREFS_CHILID_BIRTHDAY = "child_birthday";
 	public static final String SHARE_PREFS_BEEP_ALL_DEVICE = "all_device";
 	public static final String SHARE_PREFS_SIGN_UP_USERNAME = "sign_username";
 	public static final String SHARE_PREFS_SIGN_UP_PASSWORD = "sign_password";
@@ -44,7 +47,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_BINDING_DEVICE = "binding_device_open";
 	public static final String SHARE_PREFS_BLE_SERVICE_INDEX = "ble_service_index";
 	public static final String SHARE_PREFS_GRANT_CHILD_ID = "grant_child_id";
-	
+
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";
 

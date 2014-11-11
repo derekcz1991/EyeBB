@@ -115,7 +115,7 @@ public class AuthorizeKidsActivity extends Activity {
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			retStr = HttpRequestUtils.getNoPara(HttpConstants.AUTH_FIND_GUESTS);
+			retStr = HttpRequestUtils.get(HttpConstants.AUTH_FIND_GUESTS, null);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
@@ -156,19 +156,19 @@ public class AuthorizeKidsActivity extends Activity {
 
 				Guest guestMode = new Guest();
 				System.out.println("--->"
-						+ guest.getString(HttpConstants.JSON_GUEST_ID));
+						+ guest.getString(HttpConstants.JSON_KEY_USER_ID));
 
 				System.out.println("--->"
-						+ guest.getString(HttpConstants.JSON_GUEST_NAME));
+						+ guest.getString(HttpConstants.JSON_KEY_USER_NAME));
 				System.out.println("--->"
-						+ guest.getString(HttpConstants.JSON_GUEST_PHONE));
+						+ guest.getString(HttpConstants.JSON_KEY_USER_PHONE));
 
 				guestMode.setGuardianId(guest
-						.getString(HttpConstants.JSON_GUEST_ID));
+						.getString(HttpConstants.JSON_KEY_USER_ID));
 				guestMode.setName(guest
-						.getString(HttpConstants.JSON_GUEST_NAME));
+						.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guestMode.setPhoneNumber(guest
-						.getString(HttpConstants.JSON_GUEST_PHONE));
+						.getString(HttpConstants.JSON_KEY_USER_PHONE));
 
 				guest_data.add(guestMode);
 			}

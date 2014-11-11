@@ -129,12 +129,12 @@ public class HttpRequestUtils {
 		}
 	}
 	
-	public static String getNoPara(String action) {
+	/*public static String getNoPara(String action) {
 		String url = HttpConstants.SERVER_URL + action;
 
 		System.out.println("url = " + url);
 
-		/*
+		
 		 * AuthScope as = new AuthScope("158.182.246.221", 8089);
 		 * UsernamePasswordCredentials upc = new UsernamePasswordCredentials(
 		 * "master", "controller"); ((AbstractHttpClient)
@@ -143,22 +143,22 @@ public class HttpRequestUtils {
 		 * basicAuth = new BasicScheme();
 		 * localContext.setAttribute("preemptive-auth", basicAuth); HttpHost
 		 * targetHost = new HttpHost("158.182.246.221", 8089, "http");
-		 */
+		 
 
 		HttpGet get = new HttpGet(url);
 		get.setHeader("Content-Type", "application/json");
 		try {
-			/*
+			
 			 * HttpResponse httpResponse = httpClient.execute(targetHost, get,
 			 * localContext);
-			 */
+			 
 			HttpResponse httpResponse = httpClient.execute(get);
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
 			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
 		}
-	}
+	}*/
 
 	public static String post(String action, Map<String, String> map) {
 		String url = HttpConstants.SERVER_URL + action;

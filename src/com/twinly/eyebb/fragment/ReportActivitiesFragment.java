@@ -80,11 +80,9 @@ public class ReportActivitiesFragment extends Fragment implements
 		adapter = new ActivitiesListViewAdapter(getActivity(), list);
 		listView.setAdapter(adapter);
 
-		System.out.println("listlistlist>" + list.size());
 		if (list.size() == 0 || list == null) {
 			listIsNull.setVisibility(View.VISIBLE);
 		} else {
-
 			listIsNull.setVisibility(View.INVISIBLE);
 		}
 

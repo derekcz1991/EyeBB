@@ -41,11 +41,12 @@ public class LoginActivity extends Activity {
 	private TextView forgetPasswordBtn;
 	private LayoutInflater inflater;
 	private TextView backBtn;
-	private AlertDialog dialog;
+	private AlertDialog passwordDialog;
 	private EditText edEmail;
 	private EditText loginAccount;
 	private EditText password;
 	private String hashPassword;
+	private Dialog loginDialog;
 
 	private String kindergartenNameEn;
 	private String kindergartenNameSc;
@@ -93,12 +94,12 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						closeKeyBoard();
-						dialog.dismiss();
+						passwordDialog.dismiss();
 					}
 				});
 
-				dialog = forgetPassword.create();
-				dialog.show();
+				passwordDialog = forgetPassword.create();
+				passwordDialog.show();
 			}
 		});
 
@@ -135,7 +136,6 @@ public class LoginActivity extends Activity {
 		}
 
 		new AsyncTask<Void, Void, String>() {
-			Dialog dialog;
 
 			@Override
 			protected void onPreExecute() {
@@ -143,9 +143,9 @@ public class LoginActivity extends Activity {
 				hashPassword = CommonUtils.getSHAHashValue(password.getText()
 						.toString());
 				System.out.println("hashPassword = " + hashPassword);
-				dialog = LoadingDialog.createLoadingDialog(LoginActivity.this,
-						getString(R.string.toast_login));
-				dialog.show();
+				loginDialog = LoadingDialog.createLoadingDialog(
+						LoginActivity.this, getString(R.string.toast_login));
+				loginDialog.show();
 			}
 
 			@Override
@@ -159,38 +159,10 @@ public class LoginActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(String result) {
-				dialog.dismiss();
-				System.out.println("result = " + result);
+				System.out.println("login result = " + result);
 				try {
 					JSONObject json = new JSONObject(result);
-					JSONArray childJSONList = json
-							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-					// is a new account
-					if (loginAccount
-							.getText()
-							.toString()
-							.equals(SharePrefsUtils
-									.getLoginAccount(LoginActivity.this)) == false) {
-						DBActivityInfo.deleteTable(LoginActivity.this);
-						DBChildren.deleteTable(LoginActivity.this);
-						DBPerformance.deleteTable(LoginActivity.this);
-					}
-					getAllChildren(childJSONList);
-
-					SharePrefsUtils.setLogin(LoginActivity.this, true);
-					SharePrefsUtils.setLoginAccount(LoginActivity.this,
-							loginAccount.getText().toString());
-					SharePrefsUtils.setPassowrd(LoginActivity.this,
-							hashPassword);
-					SharePrefsUtils.setKindergartenNameEn(LoginActivity.this,
-							kindergartenNameEn);
-					SharePrefsUtils.setKindergartenNameSc(LoginActivity.this,
-							kindergartenNameSc);
-					SharePrefsUtils.setKindergartenNameTc(LoginActivity.this,
-							kindergartenNameTc);
-
-					setResult(ActivityConstants.RESULT_RESULT_OK);
-					finish();
+					new GetUserTypeTask(json).execute();
 				} catch (JSONException e) {
 					Toast.makeText(
 							LoginActivity.this,
@@ -201,6 +173,69 @@ public class LoginActivity extends Activity {
 			}
 
 		}.execute();
+
+	}
+
+	private class GetUserTypeTask extends AsyncTask<Void, Void, String> {
+
+		private JSONObject loginJSON;
+
+		public GetUserTypeTask(JSONObject loginJSON) {
+			this.loginJSON = loginJSON;
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+			return HttpRequestUtils.get(HttpConstants.LOGIN_INFO, null);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			loginDialog.dismiss();
+			System.out.println("login info result = " + result);
+			try {
+				JSONArray childJSONList = loginJSON
+						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+				// is a new account
+				if (loginAccount
+						.getText()
+						.toString()
+						.equals(SharePrefsUtils
+								.getLoginAccount(LoginActivity.this)) == false) {
+					DBActivityInfo.deleteTable(LoginActivity.this);
+					DBChildren.deleteTable(LoginActivity.this);
+					DBPerformance.deleteTable(LoginActivity.this);
+				}
+				getAllChildren(childJSONList);
+
+				JSONObject json = new JSONObject(result);
+				SharePrefsUtils.setUserType(LoginActivity.this,
+						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
+				SharePrefsUtils.setUserName(LoginActivity.this,
+						json.getString(HttpConstants.JSON_KEY_USER_NAME));
+				SharePrefsUtils.setUserPhone(LoginActivity.this,
+						json.getString(HttpConstants.JSON_KEY_USER_PHONE));
+
+				SharePrefsUtils.setLogin(LoginActivity.this, true);
+				SharePrefsUtils.setLoginAccount(LoginActivity.this,
+						loginAccount.getText().toString());
+				SharePrefsUtils.setPassowrd(LoginActivity.this, hashPassword);
+				SharePrefsUtils.setKindergartenNameEn(LoginActivity.this,
+						kindergartenNameEn);
+				SharePrefsUtils.setKindergartenNameSc(LoginActivity.this,
+						kindergartenNameSc);
+				SharePrefsUtils.setKindergartenNameTc(LoginActivity.this,
+						kindergartenNameTc);
+
+				setResult(ActivityConstants.RESULT_RESULT_OK);
+				finish();
+			} catch (JSONException e) {
+				Toast.makeText(LoginActivity.this,
+						getString(R.string.toast_invalid_username_or_password),
+						Toast.LENGTH_SHORT).show();
+				System.out.println("login info---->> " + e.getMessage());
+			}
+		}
 
 	}
 

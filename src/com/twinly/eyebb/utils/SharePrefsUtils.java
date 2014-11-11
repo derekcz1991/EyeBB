@@ -35,6 +35,30 @@ public class SharePrefsUtils {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_LOGIN, value);
 	}
 
+	public static String getUserType(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_TYPE);
+	}
+
+	public static void setUserType(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_TYPE, value);
+	}
+
+	public static String getUserName(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_NAME);
+	}
+
+	public static void setUserName(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_NAME, value);
+	}
+
+	public static String getUserPhone(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_PHONE);
+	}
+
+	public static void setUserPhone(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_PHONE, value);
+	}
+
 	/*public static int getKindergartenId(Context context) {
 		return getInt(context,
 				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
@@ -148,15 +172,13 @@ public class SharePrefsUtils {
 		setInt(context, ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE,
 				value);
 	}
-	
+
 	public static int bleServiceIndex(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX);
+		return getInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX);
 	}
 
 	public static void setBleServiceIndex(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX,
-				value);
+		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX, value);
 	}
 
 	public static boolean isUpdateNotice(Context context) {
@@ -230,17 +252,16 @@ public class SharePrefsUtils {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_BEEP_ALL_DEVICE,
 				value);
 	}
-	
+
 	public static boolean isBeepAllDevice(Context context) {
 		return getBoolean(context,
 				ActivityConstants.SHARE_PREFS_BEEP_ALL_DEVICE, false);
 	}
 
 	public static void setBeepAllDevice(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_BINDING_DEVICE,
-				value);
+		setBoolean(context, ActivityConstants.SHARE_PREFS_BINDING_DEVICE, value);
 	}
-	
+
 	public static boolean isOpenBindingDevice(Context context) {
 		return getBoolean(context,
 				ActivityConstants.SHARE_PREFS_BINDING_DEVICE, false);
@@ -258,7 +279,7 @@ public class SharePrefsUtils {
 	public static void setRefreshTime(Context context, String value) {
 		setString(context, ActivityConstants.SHARE_PREFS_REFRESH_TIME, value);
 	}
-	
+
 	public static String isMacAddress(Context context) {
 		return getString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS);
 	}
@@ -296,61 +317,53 @@ public class SharePrefsUtils {
 		setString(context,
 				ActivityConstants.SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS, value);
 	}
-	
+
 	public static String registerChildBirthday(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY);
+		return getString(context, ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY);
 	}
 
 	public static void setRegisterChildBirthday(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY, value);
+		setString(context, ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY, value);
 	}
-	
+
 	public static int BleServiceRunOnceFlag(Context context) {
 		return getInt(context,
 				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG);
 	}
 
 	public static void setBleServiceRunOnceFlag(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG,
-				value);
+		setInt(context,
+				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG, value);
 	}
-	
+
 	public static String signUpDeviceMajor(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_DEVICE_MAJOR);
+		return getString(context, ActivityConstants.SHARE_PREFS_DEVICE_MAJOR);
 	}
 
 	public static void setSignUpDeviceMajor(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_DEVICE_MAJOR, value);
+		setString(context, ActivityConstants.SHARE_PREFS_DEVICE_MAJOR, value);
 	}
-	
+
 	public static String signUpDeviceMinor(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_DEVICE_MINOR);
+		return getString(context, ActivityConstants.SHARE_PREFS_DEVICE_MINOR);
 	}
 
 	public static void setSignUpDeviceMinor(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_DEVICE_MINOR, value);
+		setString(context, ActivityConstants.SHARE_PREFS_DEVICE_MINOR, value);
 	}
-	
-	
+
 	public static String grantChildID(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID);
+		return getString(context, ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID);
 	}
 
 	public static void setGrantChildID(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID, value);
+		setString(context, ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID, value);
 	}
-    /**
-     * sign up
-     */
+
+	/**
+	 * sign up
+	 */
 	public static String signUpUsername(Context context) {
 		return getString(context,
 				ActivityConstants.SHARE_PREFS_SIGN_UP_USERNAME);
@@ -358,10 +371,10 @@ public class SharePrefsUtils {
 
 	public static void setSignUpUsername(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_SIGN_UP_USERNAME, value);
+		setString(context, ActivityConstants.SHARE_PREFS_SIGN_UP_USERNAME,
+				value);
 	}
-	
+
 	public static String signUpPassword(Context context) {
 		return getString(context,
 				ActivityConstants.SHARE_PREFS_SIGN_UP_PASSWORD);
@@ -369,21 +382,18 @@ public class SharePrefsUtils {
 
 	public static void setSignUpPassword(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_SIGN_UP_PASSWORD, value);
+		setString(context, ActivityConstants.SHARE_PREFS_SIGN_UP_PASSWORD,
+				value);
 	}
-	
+
 	public static String signUpEmail(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_SIGN_UP_EMAIL);
+		return getString(context, ActivityConstants.SHARE_PREFS_SIGN_UP_EMAIL);
 	}
 
 	public static void setSignUpEmail(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_SIGN_UP_EMAIL, value);
+		setString(context, ActivityConstants.SHARE_PREFS_SIGN_UP_EMAIL, value);
 	}
-	
 
 	public static String signUpNickname(Context context) {
 		return getString(context,
@@ -392,11 +402,9 @@ public class SharePrefsUtils {
 
 	public static void setSignUpNickname(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_SIGN_UP_NICKNAME, value);
+		setString(context, ActivityConstants.SHARE_PREFS_SIGN_UP_NICKNAME,
+				value);
 	}
-	
-	
 
 	public static String signUpPhoneNumber(Context context) {
 		return getString(context,
@@ -405,30 +413,26 @@ public class SharePrefsUtils {
 
 	public static void setSignUpPhoneNumber(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_SIGN_UP_PHONE_NUMBER, value);
+		setString(context, ActivityConstants.SHARE_PREFS_SIGN_UP_PHONE_NUMBER,
+				value);
 	}
-	
+
 	public static String signUpGuardianId(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_GUARDIANID);
+		return getString(context, ActivityConstants.SHARE_PREFS_GUARDIANID);
 	}
 
 	public static void setSignUpGuardianId(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_GUARDIANID, value);
+		setString(context, ActivityConstants.SHARE_PREFS_GUARDIANID, value);
 	}
-	
+
 	public static String signUpChildId(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_CHILDID);
+		return getString(context, ActivityConstants.SHARE_PREFS_CHILDID);
 	}
 
 	public static void setSignUpChildId(Context context, String value) {
 
-		setString(context,
-				ActivityConstants.SHARE_PREFS_CHILDID, value);
+		setString(context, ActivityConstants.SHARE_PREFS_CHILDID, value);
 	}
 
 	/**

@@ -56,15 +56,14 @@ public class HttpConstants {
 
 	public static final String UPDATE_DEVICE_FROM_CHILD_LIST = "childId";
 	
-	
-	
 	public static final String JSON_CHECK_CHILD_CHILD_ID = "childId";
 	public static final String JSON_CHECK_CHILD_CHILD_NAME = "name";
 	public static final String JSON_CHECK_CHILD_CHILD_ICON = "icon";
 	
-	public static final String JSON_GUEST_ID = "guardianId";
-	public static final String JSON_GUEST_NAME = "name";
-	public static final String JSON_GUEST_PHONE = "phoneNumber";
+	public static final String JSON_KEY_USER_ID = "guardianId";
+	public static final String JSON_KEY_USER_NAME = "name";
+	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
+	public static final String JSON_KEY_USER_TYPE = "type";
 
 	public static final String ACC_NAME_CHECK = "/regService/api/accNameCheck";
 	public static final String REG_PARENTS = "/regService/api/regParents";
@@ -78,4 +77,5 @@ public class HttpConstants {
 	public static final String UNBIND_CHILD_BEACON = "/masterService/api/unbindChildBeacon";
 	public static final String AUTH_FIND_GUESTS = "/masterService/api/searchMasterGuests";
 	public static final String GRANT_GUESTS = "/masterService/api/grantGuestAccess";
+	public static final String LOGIN_INFO = "/reportService/api/loginInfo";
 }

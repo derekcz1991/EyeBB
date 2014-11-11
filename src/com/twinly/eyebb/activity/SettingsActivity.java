@@ -198,6 +198,13 @@ public class SettingsActivity extends Activity {
 			chineseSelected.setBackgroundResource(R.drawable.ic_selected_off);
 			break;
 		}
+
+		// device item
+		if (SharePrefsUtils.getUserType(this).equals("G")) {
+			findViewById(R.id.deviceItem).setVisibility(View.VISIBLE);
+		} else {
+			findViewById(R.id.deviceItem).setVisibility(View.GONE);
+		}
 	}
 
 	// change the language
