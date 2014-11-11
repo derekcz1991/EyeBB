@@ -45,6 +45,8 @@ public class WelcomeActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(WelcomeActivity.this,
 						LoginActivity.class);
+				// Intent intent = new Intent(WelcomeActivity.this,
+				// CheckBeaconActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
 			}

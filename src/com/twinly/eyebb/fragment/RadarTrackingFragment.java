@@ -226,6 +226,8 @@ public class RadarTrackingFragment extends Fragment implements
 		initView(v);
 
 		ChildData = DBChildren.getChildrenList(getActivity());
+		getActivity().registerReceiver(updateDb,
+				new IntentFilter(Constants.FINISH_BIND));
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
@@ -1474,8 +1476,6 @@ public class RadarTrackingFragment extends Fragment implements
 								bluetoothState,
 								new IntentFilter(
 										BluetoothAdapter.ACTION_STATE_CHANGED));
-				getActivity().registerReceiver(updateDb,
-						new IntentFilter(Constants.FINISH_BIND));
 
 				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == Constants.DEVICE_CONNECT_STATUS_ERROR) {
 

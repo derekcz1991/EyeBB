@@ -102,7 +102,7 @@ public class CharacteristicsActivity extends Activity {
 		// Constans.mBluetoothLeService.readCharacteristic(characteristic);
 
 		gattService = Constants.gattServiceObject.get(servidx);
-		gattService2 = Constants.gattServiceObject.get(servidx);
+		// gattService2 = Constants.gattServiceObject.get(servidx);
 		registerReceiver(mGattUpdateReceiver, new IntentFilter(
 				BluetoothLeService.ACTION_DATA_AVAILABLE));
 		Thread disconverThread = new Thread() {
@@ -284,11 +284,16 @@ public class CharacteristicsActivity extends Activity {
 									SharePrefsUtils
 											.isMacAddress(CharacteristicsActivity.this));
 							startActivity(intent);
-							timer.cancel();
-							TimeOutTask.cancel();
-							TimeOutTask = null;
 
-							if (dialog.isShowing())
+							if (TimeOutTask != null) {
+								TimeOutTask.cancel();
+								TimeOutTask = null;
+							}
+							if (timer != null) {
+								timer.cancel();
+								timer.purge();
+							}
+							if (dialog.isShowing() && dialog != null)
 								dialog.dismiss();
 							CharacteristicsActivity.majorFinished = true;
 							finish();

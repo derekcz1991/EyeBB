@@ -307,6 +307,7 @@ public class BluetoothLeService extends Service {
 					.println("BluetoothAdapter not initialized or unspecified address.");
 			return false;
 		}
+		
 		MacronAdd = address;
 		// Previously connected device. Try to reconnect. (��ǰ���ӵ��豸��
 		// ������������)
@@ -331,7 +332,7 @@ public class BluetoothLeService extends Service {
 					"Trying to use an existing mBluetoothGatt for connection.");
 			System.out
 					.println("Trying to use an existing mBluetoothGatt for connection.");
-			mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
+			//mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
 			if (mBluetoothGatt.connect()) {
 				mConnectionState = STATE_CONNECTING;
 				return true;

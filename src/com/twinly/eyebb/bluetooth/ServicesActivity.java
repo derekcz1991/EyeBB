@@ -105,26 +105,28 @@ public class ServicesActivity extends Activity {
 			public void run() {
 				intentTime++;
 				System.out.println("intentTime==>" + intentTime);
-				if (intentTime == 20) {
+				if (intentTime == 10) {
 					intentTime = 0;
-					Intent intent = new Intent(ServicesActivity.this,
-							ErrorDialog.class);
-					startActivity(intent);
-					if (dialog.isShowing())
-						dialog.dismiss();
-					CheckBeaconActivity.instance.finish();
+					// Intent intent = new Intent(ServicesActivity.this,
+					// ErrorDialog.class);
+					// startActivity(intent);
+					// if (dialog.isShowing())
+					// dialog.dismiss();
+					// CheckBeaconActivity.instance.finish();
 
-					TimeOutTask.cancel();
-					TimeOutTask = null;
-					timer.cancel();
-					timer.purge();
+					// Constants.mBluetoothLeService.connect(mDeviceAddress);
+					registerReceiver(mGattUpdateReceiver,
+							makeGattUpdateIntentFilter());
+					// status_text.setText(mDeviceName + ": Connecting...");
+					System.out.println(": Connecting..." + mDeviceAddress);
+
 					// timer = null;
-					finish();
+					// finish();
 				}
 			}
 		};
 
-		//timer.schedule(TimeOutTask, 0, 1000);
+		timer.schedule(TimeOutTask, 0, 1000);
 		// major = MajorAndMinorPreferences.getString("major", "-1");
 		// minor = MajorAndMinorPreferences.getString("minor", "-1");
 		major = SharePrefsUtils.signUpDeviceMajor(ServicesActivity.this);
@@ -198,10 +200,10 @@ public class ServicesActivity extends Activity {
 			switch (msg.what) {
 
 			case START_PROGRASSS_BAR:
-				dialog = LoadingDialog.createLoadingDialogCanCancel(
-						ServicesActivity.this,
-						getString(R.string.toast_write_major));
-				dialog.show();
+//				dialog = LoadingDialog.createLoadingDialogCanCancel(
+//						ServicesActivity.this,
+//						getString(R.string.toast_write_major));
+//				dialog.show();
 				break;
 
 			case STOP_PROGRASSS_BAR:
@@ -229,6 +231,15 @@ public class ServicesActivity extends Activity {
 				System.out.println("servidxservidx=>" + 2);
 				if (dialog != null && dialog.isShowing()) {
 					dialog.dismiss();
+				}
+
+				if (TimeOutTask != null) {
+					TimeOutTask.cancel();
+					TimeOutTask = null;
+				}
+				if (timer != null) {
+					timer.cancel();
+					timer.purge();
 				}
 
 				startActivity(intentToChara);
@@ -303,21 +314,22 @@ public class ServicesActivity extends Activity {
 						.getSupportedGattServices());
 
 				int num = SharePrefsUtils.BleServiceRunOnceFlag(context);
-				if (num == 1) {
-					System.out
-							.println("SharePrefsUtils.BleServiceRunOnceFlag(context)>"
-									+ SharePrefsUtils
-											.BleServiceRunOnceFlag(context));
-					new autoConnection().start();
-					SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
-				}
+				// if (num == 1) {
+				System.out
+						.println("SharePrefsUtils.BleServiceRunOnceFlag(context)>"
+								+ SharePrefsUtils
+										.BleServiceRunOnceFlag(context));
+				new autoConnection().start();
+				SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
+				// }
 
+			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+				// status_text.setText(mDeviceName + ": DATA AVAILABLE");
+				String temp = intent
+						.getStringExtra(BluetoothLeService.EXTRA_DATA);
+				System.out.println("ACTION_DATA_AVAILABLE--->" + temp);
 			}
-			/*
-			 * else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action))
-			 * { status_text.setText(mDeviceName+": DATA AVAILABLE"); String
-			 * temp = intent.getStringExtra(BluetoothLeService.EXTRA_DATA); }
-			 */
+
 		}
 	};
 

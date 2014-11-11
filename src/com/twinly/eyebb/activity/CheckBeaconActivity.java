@@ -156,7 +156,26 @@ public class CheckBeaconActivity extends Activity {
 						.substring(0, 17);
 				deviceName4submit = device.getName();
 
-				new Thread(postToServerRunnable).start();
+				// new Thread(postToServerRunnable).start();
+
+				SharePrefsUtils.setBleServiceRunOnceFlag(
+						CheckBeaconActivity.this, 1);
+				SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
+						 "0333");
+				SharePrefsUtils.setSignUpDeviceMinor(CheckBeaconActivity.this,
+						 "0333");
+				SharePrefsUtils.setMacAddress(CheckBeaconActivity.this,
+						MACaddress4submit);
+
+				Intent intent = new Intent(CheckBeaconActivity.this,
+						ServicesActivity.class);
+
+				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+						deviceName4submit);
+				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+						MACaddress4submit);
+				isWhileLoop = false;
+				startActivity(intent);
 
 				//
 				// SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
@@ -350,10 +369,10 @@ public class CheckBeaconActivity extends Activity {
 
 				break;
 			case START_PROGRASSS_BAR:
-				dialog = LoadingDialog.createLoadingDialogCanCancel(
-						CheckBeaconActivity.this,
-						getString(R.string.toast_write_major));
-				dialog.show();
+				// dialog = LoadingDialog.createLoadingDialogCanCancel(
+				// CheckBeaconActivity.this,
+				// getString(R.string.toast_write_major));
+				// dialog.show();
 				break;
 
 			case STOP_PROGRASSS_BAR:
@@ -590,7 +609,7 @@ public class CheckBeaconActivity extends Activity {
 		autoScanHandler.removeCallbacks(autoScan);
 		mHandler.removeCallbacks(scanLeDeviceRunable);
 		isWhileLoop = false;
-		if (dialog.isShowing())
+		if (dialog.isShowing() && dialog != null)
 			dialog.dismiss();
 	}
 

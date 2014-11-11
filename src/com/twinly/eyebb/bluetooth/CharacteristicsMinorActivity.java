@@ -44,7 +44,7 @@ public class CharacteristicsMinorActivity extends Activity {
 	ListView myList; // ListView控件
 
 	TextView status_text;
-	final Timer timer = new Timer();
+	Timer timer = new Timer();
 	int servidx, charaidxMajor, charaidxMinor;
 	String name = null;
 	String name2 = null;
@@ -81,19 +81,17 @@ public class CharacteristicsMinorActivity extends Activity {
 		dialog.show();
 		final Intent intent = getIntent();
 		servidx = intent.getIntExtra("servidx", -1);
-
+		System.out.println("servidx--minor->" + servidx);
 		if (servidx == -1) {
 			Toast.makeText(this, "Characteristics Index Error!",
 					Toast.LENGTH_LONG).show();
 			CharacteristicsMinorActivity.this.finish();
 		}
 
-
-
 		TimeOutTask = new TimerTask() {
 			public void run() {
 				intentTime++;
-				System.out.println("intentTime==>" + intentTime);
+				System.out.println("minor ==>" + intentTime);
 				if (intentTime == 20) {
 					intentTime = 0;
 					Intent intent = new Intent(
@@ -102,10 +100,15 @@ public class CharacteristicsMinorActivity extends Activity {
 					if (dialog.isShowing())
 						dialog.dismiss();
 					CheckBeaconActivity.instance.finish();
-					timer.cancel();
-					timer.purge();
-					TimeOutTask.cancel();
-					TimeOutTask = null;
+
+					if (TimeOutTask != null) {
+						TimeOutTask.cancel();
+						TimeOutTask = null;
+					}
+					if (timer != null) {
+						timer.cancel();
+						timer.purge();
+					}
 					startActivity(intent);
 					finish();
 				}
@@ -131,70 +134,7 @@ public class CharacteristicsMinorActivity extends Activity {
 		// charaidx = 0;
 		// Constans.mBluetoothLeService.readCharacteristic(characteristic);
 
-		gattService = Constants.gattServiceObject.get(servidx);
 		gattService2 = Constants.gattServiceObject.get(servidx);
-		// registerReceiver(mGattUpdateReceiver, new IntentFilter(
-		// BluetoothLeService.ACTION_DATA_AVAILABLE));
-		// Thread disconverThread = new Thread() {
-		// @SuppressLint("NewApi")
-		// public void run() {
-		//
-		// // System.out.println("disconverThread ");
-		// List<BluetoothGattCharacteristic> gattCharacteristics = gattService
-		// .getCharacteristics();
-		//
-		// // System.out.println("disconverThread. ");
-		// // Loops through available Characteristics.
-		// if (gattCharacteristics == null) {
-		// System.out.println("gattCharacteristics NULL");
-		// }
-		//
-		// for (int i = 0; i < gattCharacteristics.size(); i++) {
-		// charas.add(gattCharacteristics.get(i));
-		// // System.out.println("disconverThread1 ");
-		// HashMap<String, String> currentCharaData = new HashMap<String,
-		// String>();
-		// // System.out.println("disconverThread2 ");
-		// uuid = gattCharacteristics.get(i).getUuid().toString();
-		// // System.out.println("disconverThread3 ");
-		// uuid = uuid.substring(4, 8);
-		// // System.out.println("uuid char==>" + uuid);
-		//
-		// name = SampleGattAttributes.lookup(uuid, "Unknow");
-		// currentCharaData.put("NAME", name);
-		// currentCharaData.put("UUID", uuid);
-		// gattCharacteristicGroupData.add(currentCharaData);
-		// addItem(name, uuid);
-		// // System.out.println("gattCharacteristic=>" +
-		// // gattCharacteristics.get(i).toString());
-		// if (uuid.equals(Constants.BEEP_CHAR_MAJOR)) {
-		// final BluetoothGattCharacteristic characteristic =
-		// gattCharacteristics
-		// .get(i);
-		// final int charaProp = characteristic.getProperties();
-		// if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-		// // uuid =
-		// // characteristic.getUuid().toString();
-		// System.out.println(" charas uuid ==>" + uuid + "  "
-		// + i);
-		// // uuid = uuid.substring(4, 8);
-		// // uuid = uuid;
-		// charaidxMajor = i;
-		// Constants.mBluetoothLeService
-		// .readCharacteristic(characteristic);
-		//
-		// majorFlag = true;
-		//
-		// break;
-		//
-		// }
-		// }
-		//
-		// }
-		//
-		// }
-		// };
-		// disconverThread.start();
 
 		registerReceiver(mGattUpdateReceiver2, new IntentFilter(
 				BluetoothLeService.ACTION_DATA_AVAILABLE));
@@ -301,10 +241,12 @@ public class CharacteristicsMinorActivity extends Activity {
 						.wirteCharacteristic(characteristic2);
 				System.out.println("---->finish1009");
 
-				timer.cancel();
-				timer.purge();
 				TimeOutTask.cancel();
 				TimeOutTask = null;
+				timer.cancel();
+				timer.purge();
+				timer = null;
+				
 				Intent intent = new Intent(CharacteristicsMinorActivity.this,
 						VerifyWhenLoginDialog.class);
 				startActivity(intent);
