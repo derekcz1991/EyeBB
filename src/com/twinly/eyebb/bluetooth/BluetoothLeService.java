@@ -58,7 +58,7 @@ public class BluetoothLeService extends Service {
 	private BluetoothAdapter mBluetoothAdapter;
 	private String mBluetoothDeviceAddress;
 	private BluetoothGatt mBluetoothGatt;
-	private int mConnectionState = STATE_DISCONNECTED;
+	private int mConnectionState = 0;
 
 	private String MacronAdd;
 	private static final int STATE_DISCONNECTED = 0;
@@ -96,10 +96,12 @@ public class BluetoothLeService extends Service {
 						+ mBluetoothGatt.discoverServices());
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-//				intentAction = ACTION_GATT_DISCONNECTED;
-//				mConnectionState = STATE_DISCONNECTED;
-//				Log.i(TAG, "Disconnected from GATT server.");
-//				broadcastUpdate(intentAction);
+				// intentAction = ACTION_GATT_DISCONNECTED;
+				// mConnectionState = STATE_DISCONNECTED;
+				// Log.i(TAG, "Disconnected from GATT server.");
+				// broadcastUpdate(intentAction);
+				Constants.mBluetoothLeService.connect(MacronAdd);
+			} else {
 				Constants.mBluetoothLeService.connect(MacronAdd);
 			}
 		}
@@ -301,6 +303,8 @@ public class BluetoothLeService extends Service {
 		if (mBluetoothAdapter == null || address == null) {
 			Log.w(TAG,
 					"BluetoothAdapter not initialized or unspecified address.");
+			System.out
+					.println("BluetoothAdapter not initialized or unspecified address.");
 			return false;
 		}
 		MacronAdd = address;
@@ -318,12 +322,16 @@ public class BluetoothLeService extends Service {
 		// return false;
 		// }
 		// }
+		final BluetoothDevice device = mBluetoothAdapter
+				.getRemoteDevice(address);
+		
 		if (mBluetoothDeviceAddress != null && mBluetoothGatt != null
 				&& address.equals(mBluetoothDeviceAddress)) {
 			Log.d(TAG,
 					"Trying to use an existing mBluetoothGatt for connection.");
 			System.out
 					.println("Trying to use an existing mBluetoothGatt for connection.");
+			mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
 			if (mBluetoothGatt.connect()) {
 				mConnectionState = STATE_CONNECTING;
 				return true;
@@ -332,8 +340,7 @@ public class BluetoothLeService extends Service {
 			}
 		}
 
-		final BluetoothDevice device = mBluetoothAdapter
-				.getRemoteDevice(address);
+	
 		if (device == null) {
 			Log.w(TAG, "Device not found.  Unable to connect.");
 			System.out.println("Device not found.  Unable to connect.");
