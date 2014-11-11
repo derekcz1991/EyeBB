@@ -162,8 +162,10 @@
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>
     <string name="toast_loading">讀取中&#8230;</string>
+    <string name="toast_write_major">正在完成第一步(1/2)&#8230;</string>
+    <string name="toast_write_minor">正在完成第二步(2/2)&#8230;</string>
     <string name="toast_please_select_kindergartens">請選擇幼稚園</string>
     <string name="toast_invalid_username_or_password">帳號,密碼錯誤或者請檢查您的網路</string>
     <string name="toast_login_failed">登錄失敗, 請重新登錄</string>
-
+   <string name="toast_read_service">讀取設備服務中&#8230;</string>
 </resources>

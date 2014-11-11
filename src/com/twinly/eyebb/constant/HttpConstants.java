@@ -4,17 +4,18 @@ public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
 	public static final String SERVER_URL = "http://158.182.246.221:8089/";
-	//public static final String SERVER_URL = "http://158.182.246.224:8080/";
+	 //public static final String SERVER_URL = "http://158.182.246.224:8080/";
 
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
 	public static final String LOGIN = "j_spring_security_check";
 	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
-	
-	//public static final String JSON_KEY_KINDERGARTENS_INFO = "allKindergartensInfo";
+
+	// public static final String JSON_KEY_KINDERGARTENS_INFO =
+	// "allKindergartensInfo";
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
-	//public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
+	// public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
 	public static final String JSON_KEY_AREAS_id = "areaId";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
@@ -55,27 +56,27 @@ public class HttpConstants {
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
 
 	public static final String UPDATE_DEVICE_FROM_CHILD_LIST = "childId";
-	
+
 	public static final String JSON_CHECK_CHILD_CHILD_ID = "childId";
 	public static final String JSON_CHECK_CHILD_CHILD_NAME = "name";
 	public static final String JSON_CHECK_CHILD_CHILD_ICON = "icon";
-	
+
 	public static final String JSON_KEY_USER_ID = "guardianId";
 	public static final String JSON_KEY_USER_NAME = "name";
 	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
 	public static final String JSON_KEY_USER_TYPE = "type";
 
-	public static final String ACC_NAME_CHECK = "/regService/api/accNameCheck";
-	public static final String REG_PARENTS = "/regService/api/regParents";
-	public static final String CHILD_CHECKING = "/masterService/api/childChecking";
-	public static final String CHILD_GUA_REL = "/masterService/api/regGuaChildRel";
-	public static final String CHECK_BEACON = "/masterService/api/checkBeacon";
-	public static final String DEVICE_TO_CHILD = "/masterService/api/persistBeaconChildRel";
-	public static final String FEED_BACK = "/reportService/api/feedbacks";
-	public static final String SEARCH_GUEST = "/masterService/api/searchGuest";
-	public static final String CHECK_IF_CHILD_HAS_BEACON = "/masterService/api/hasBeaconOrNot";
-	public static final String UNBIND_CHILD_BEACON = "/masterService/api/unbindChildBeacon";
-	public static final String AUTH_FIND_GUESTS = "/masterService/api/searchMasterGuests";
-	public static final String GRANT_GUESTS = "/masterService/api/grantGuestAccess";
-	public static final String LOGIN_INFO = "/reportService/api/loginInfo";
+	public static final String ACC_NAME_CHECK = "regService/api/accNameCheck";
+	public static final String REG_PARENTS = "regService/api/regParents";
+	public static final String CHILD_CHECKING = "masterService/api/childChecking";
+	public static final String CHILD_GUA_REL = "masterService/api/regGuaChildRel";
+	public static final String CHECK_BEACON = "masterService/api/checkBeacon";
+	public static final String DEVICE_TO_CHILD = "masterService/api/persistBeaconChildRel";
+	public static final String FEED_BACK = "reportService/api/feedbacks";
+	public static final String SEARCH_GUEST = "masterService/api/searchGuest";
+	public static final String CHECK_IF_CHILD_HAS_BEACON = "masterService/api/hasBeaconOrNot";
+	public static final String UNBIND_CHILD_BEACON = "masterService/api/unbindChildBeacon";
+	public static final String AUTH_FIND_GUESTS = "masterService/api/searchMasterGuests";
+	public static final String GRANT_GUESTS = "masterService/api/grantGuestAccess";
+	public static final String LOGIN_INFO = "reportService/api/loginInfo";
 }

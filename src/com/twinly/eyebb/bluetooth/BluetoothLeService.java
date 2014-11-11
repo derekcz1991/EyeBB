@@ -60,6 +60,7 @@ public class BluetoothLeService extends Service {
 	private BluetoothGatt mBluetoothGatt;
 	private int mConnectionState = STATE_DISCONNECTED;
 
+	private String MacronAdd;
 	private static final int STATE_DISCONNECTED = 0;
 	private static final int STATE_CONNECTING = 1;
 	private static final int STATE_CONNECTED = 2;
@@ -84,6 +85,7 @@ public class BluetoothLeService extends Service {
 				int newState) {
 			String intentAction;
 			System.out.println("=======status:" + status);
+			System.out.println("=======newState:" + newState);
 			if (newState == BluetoothProfile.STATE_CONNECTED) {
 				intentAction = ACTION_GATT_CONNECTED;
 				mConnectionState = STATE_CONNECTED;
@@ -94,10 +96,11 @@ public class BluetoothLeService extends Service {
 						+ mBluetoothGatt.discoverServices());
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-				intentAction = ACTION_GATT_DISCONNECTED;
-				mConnectionState = STATE_DISCONNECTED;
-				Log.i(TAG, "Disconnected from GATT server.");
-				broadcastUpdate(intentAction);
+//				intentAction = ACTION_GATT_DISCONNECTED;
+//				mConnectionState = STATE_DISCONNECTED;
+//				Log.i(TAG, "Disconnected from GATT server.");
+//				broadcastUpdate(intentAction);
+				Constants.mBluetoothLeService.connect(MacronAdd);
 			}
 		}
 
@@ -181,8 +184,7 @@ public class BluetoothLeService extends Service {
 				// if (Constants.mBluetoothLeService != null) {
 				// Constants.mBluetoothLeService.disconnect();
 				// Constants.mBluetoothLeService = null;
-				BluetoothLeService.writeMajorSuccess = true;
-			
+
 			}
 
 		};
@@ -301,7 +303,7 @@ public class BluetoothLeService extends Service {
 					"BluetoothAdapter not initialized or unspecified address.");
 			return false;
 		}
-
+		MacronAdd = address;
 		// Previously connected device. Try to reconnect. (��ǰ���ӵ��豸��
 		// ������������)
 		// if (mBluetoothDeviceAddress != null
@@ -334,6 +336,7 @@ public class BluetoothLeService extends Service {
 				.getRemoteDevice(address);
 		if (device == null) {
 			Log.w(TAG, "Device not found.  Unable to connect.");
+			System.out.println("Device not found.  Unable to connect.");
 			return false;
 		}
 		// We want to directly connect to the device, so we are setting the
@@ -341,6 +344,7 @@ public class BluetoothLeService extends Service {
 		// parameter to false.
 		mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
 		Log.d(TAG, "Trying to create a new connection.");
+		System.out.println("Trying to create a new connection.");
 		mBluetoothDeviceAddress = address;
 		mConnectionState = STATE_CONNECTING;
 		return true;
@@ -384,7 +388,9 @@ public class BluetoothLeService extends Service {
 		System.out
 				.println("mBluetoothGatt.writeCharacteristic(characteristic)");
 		// stopService(RadarTrackingFragment.beepIntent);
-		
+
+		BluetoothLeService.writeMajorSuccess = true;
+
 	}
 
 	public void wirteCharacteristic2(BluetoothGattCharacteristic characteristic) {
@@ -399,7 +405,7 @@ public class BluetoothLeService extends Service {
 		System.out
 				.println("mBluetoothGatt.writeCharacteristic(characteristic)");
 		// stopService(RadarTrackingFragment.beepIntent);
-		
+
 	}
 
 	/**
@@ -419,7 +425,7 @@ public class BluetoothLeService extends Service {
 		mBluetoothGatt.readCharacteristic(characteristic);
 		System.out.println("readCharacteristic---->1");
 	}
-	
+
 	public void readCharacteristic2(BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			Log.w(TAG, "BluetoothAdapter not initialized");

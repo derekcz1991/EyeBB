@@ -129,6 +129,11 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.VerifyWhenLoginDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.UnbindDeviceDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
@@ -350,6 +355,12 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <category android:name="com.eyebb" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
+            <intent-filter>
+                <action android:name="FINISH_BIND" />
             </intent-filter>
         </receiver>
         <!--

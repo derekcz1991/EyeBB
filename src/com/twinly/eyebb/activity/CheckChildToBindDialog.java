@@ -43,7 +43,7 @@ public class CheckChildToBindDialog extends Activity {
 
 	private String childIdToPost;
 	private ArrayList<Child> child_data;
-	
+
 	public static final int CHILD_EXIST = 2;
 	public static final int ALREADY_RELATIONSHIP = 3;
 
@@ -53,7 +53,7 @@ public class CheckChildToBindDialog extends Activity {
 		setContentView(R.layout.dialog_check_child_to_bind_list);
 		Intent intent = getIntent();
 		child_data = new ArrayList<Child>();
-	
+
 		getData = intent.getStringExtra("child_data");
 
 		listView = (ListView) findViewById(R.id.listView);
@@ -61,9 +61,6 @@ public class CheckChildToBindDialog extends Activity {
 				parseJson(getData));
 		listView.setAdapter(adapter);
 
-		
-		
-		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
@@ -91,7 +88,6 @@ public class CheckChildToBindDialog extends Activity {
 		// TODO Auto-generated method stub
 		// System.out.println("getData=>" + getData);
 
-	
 		try {
 
 			child_data.clear();
@@ -117,11 +113,10 @@ public class CheckChildToBindDialog extends Activity {
 				child.setName(name);
 				child.setIcon(icon);
 				child_data.add(child);
-				
-				//adapter.notifyDataSetChanged();
+
+				// adapter.notifyDataSetChanged();
 			}
-			
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -177,11 +172,11 @@ public class CheckChildToBindDialog extends Activity {
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("true")) {
-					
-					new Thread(postCheckIfChildHasBeaconToServerRunnable).start();
-				
+
+					new Thread(postCheckIfChildHasBeaconToServerRunnable)
+							.start();
+
 				} else if (retStr.equals("false")) {
-					
 
 					Message msg = handler.obtainMessage();
 					msg.what = ALREADY_RELATIONSHIP;
@@ -196,8 +191,7 @@ public class CheckChildToBindDialog extends Activity {
 		}
 
 	}
-	
-	
+
 	Runnable postCheckIfChildHasBeaconToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -211,18 +205,15 @@ public class CheckChildToBindDialog extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		System.out
-				.println("info=>"
-						+ childIdToPost);
+		System.out.println("info=>" + childIdToPost);
 
 		map.put("childId", childIdToPost);
-
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(
-					CheckChildToBindDialog.this, HttpConstants.CHECK_IF_CHILD_HAS_BEACON,
-					map);
+					CheckChildToBindDialog.this,
+					HttpConstants.CHECK_IF_CHILD_HAS_BEACON, map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
@@ -241,8 +232,7 @@ public class CheckChildToBindDialog extends Activity {
 
 					startActivity(data);
 					finish();
-					
-		
+
 				} else if (retStr.equals("Y")) {
 					Intent data = new Intent(CheckChildToBindDialog.this,
 							UnbindDeviceDialog.class);
@@ -251,7 +241,7 @@ public class CheckChildToBindDialog extends Activity {
 							CheckChildToBindDialog.this, childIdToPost);
 
 					startActivity(data);
-				
+
 				}
 			}
 
@@ -263,7 +253,6 @@ public class CheckChildToBindDialog extends Activity {
 
 	}
 
-
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
@@ -273,8 +262,7 @@ public class CheckChildToBindDialog extends Activity {
 
 			case Constants.CONNECT_ERROR:
 				Toast.makeText(CheckChildToBindDialog.this,
-						R.string.text_network_error, Toast.LENGTH_LONG)
-						.show();
+						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
@@ -283,7 +271,7 @@ public class CheckChildToBindDialog extends Activity {
 						R.string.text_already_relationship, Toast.LENGTH_LONG)
 						.show();
 				adapter.notifyDataSetChanged();
-				//parseJson(getData).clear();
+				// parseJson(getData).clear();
 				break;
 
 			}

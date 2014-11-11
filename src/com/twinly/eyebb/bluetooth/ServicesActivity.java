@@ -3,6 +3,8 @@ package com.twinly.eyebb.bluetooth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -33,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.constant.Constants;
@@ -64,7 +67,7 @@ public class ServicesActivity extends Activity {
 
 	private String major;
 	private String minor;
-
+	final Timer timer = new Timer();
 	// private ArrayList<ArrayList<BluetoothGattCharacteristic>>
 	// mGattCharacteristics = new
 	// ArrayList<ArrayList<BluetoothGattCharacteristic>>();
@@ -72,6 +75,9 @@ public class ServicesActivity extends Activity {
 	private String mDeviceAddress;
 	private boolean mConnected = false;
 	private int ReadService = 0;
+
+	private TimerTask TimeOutTask = null;
+	private int intentTime = 0;
 
 	@SuppressLint({ "NewApi", "ShowToast" })
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,10 +89,42 @@ public class ServicesActivity extends Activity {
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
-		dialog = LoadingDialog.createLoadingDialog(ServicesActivity.this,
-				getString(R.string.toast_loading));
-		dialog.show();
+		if (CharacteristicsActivity.majorFinished) {
+			dialog = LoadingDialog.createLoadingDialogCanCancel(
+					ServicesActivity.this,
+					getString(R.string.toast_read_service));
+			dialog.show();
+		} else {
+			dialog = LoadingDialog.createLoadingDialogCanCancel(
+					ServicesActivity.this,
+					getString(R.string.toast_read_service));
+			dialog.show();
+		}
 
+		TimeOutTask = new TimerTask() {
+			public void run() {
+				intentTime++;
+				System.out.println("intentTime==>" + intentTime);
+				if (intentTime == 20) {
+					intentTime = 0;
+					Intent intent = new Intent(ServicesActivity.this,
+							ErrorDialog.class);
+					startActivity(intent);
+					if (dialog.isShowing())
+						dialog.dismiss();
+					CheckBeaconActivity.instance.finish();
+
+					TimeOutTask.cancel();
+					TimeOutTask = null;
+					timer.cancel();
+					timer.purge();
+					// timer = null;
+					finish();
+				}
+			}
+		};
+
+		//timer.schedule(TimeOutTask, 0, 1000);
 		// major = MajorAndMinorPreferences.getString("major", "-1");
 		// minor = MajorAndMinorPreferences.getString("minor", "-1");
 		major = SharePrefsUtils.signUpDeviceMajor(ServicesActivity.this);
@@ -160,9 +198,9 @@ public class ServicesActivity extends Activity {
 			switch (msg.what) {
 
 			case START_PROGRASSS_BAR:
-				dialog = LoadingDialog.createLoadingDialog(
+				dialog = LoadingDialog.createLoadingDialogCanCancel(
 						ServicesActivity.this,
-						getString(R.string.toast_loading));
+						getString(R.string.toast_write_major));
 				dialog.show();
 				break;
 
@@ -177,9 +215,16 @@ public class ServicesActivity extends Activity {
 		@Override
 		public void run() {
 			final Intent intentToChara = new Intent();
-			intentToChara.setClass(ServicesActivity.this,
-					CharacteristicsActivity.class);
+			if (CharacteristicsActivity.majorFinished) {
+				intentToChara.setClass(ServicesActivity.this,
+						CharacteristicsMinorActivity.class);
+			} else {
+				intentToChara.setClass(ServicesActivity.this,
+						CharacteristicsActivity.class);
+			}
+
 			if (ReadService > 0) {
+
 				intentToChara.putExtra("servidx", ReadService);
 				System.out.println("servidxservidx=>" + 2);
 				if (dialog != null && dialog.isShowing()) {
@@ -211,7 +256,7 @@ public class ServicesActivity extends Activity {
 			// initialization.
 			Constants.mBluetoothLeService.connect(mDeviceAddress);
 			// status_text.setText(mDeviceName + ": Connecting...");
-			System.out.println(": Connecting...");
+			System.out.println(": Connecting..." + mDeviceAddress);
 		}
 
 		@Override
@@ -241,7 +286,11 @@ public class ServicesActivity extends Activity {
 				mConnected = false;
 				status_text.setText(mDeviceName + ": Disconnected");
 				ServicesActivity.this.finish();
-				//if error
+				// if error
+				TimeOutTask.cancel();
+				TimeOutTask = null;
+				timer.cancel();
+				timer.purge();
 				Intent intentError = new Intent(ServicesActivity.this,
 						ErrorDialog.class);
 				startActivity(intentError);
@@ -339,6 +388,8 @@ public class ServicesActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(mServiceConnection);
+		if (dialog.isShowing())
+			dialog.dismiss();
 		Constants.mBluetoothLeService = null;
 	}
 

@@ -159,5 +159,7 @@
     <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username and password, or check your network.</string>
     <string name="toast_login_failed">Login failed, please try again</string>
-
+    <string name="toast_write_major">Writing major(1/2)&#8230;</string>
+    <string name="toast_write_minor">Writing minor(2/2)&#8230;</string>
+       <string name="toast_read_service">Reading Service&#8230;</string>
 </resources>

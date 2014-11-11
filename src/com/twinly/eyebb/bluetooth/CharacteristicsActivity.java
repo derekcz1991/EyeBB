@@ -3,9 +3,12 @@ package com.twinly.eyebb.bluetooth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -13,19 +16,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.View;
+import android.os.Message;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.activity.VerifyDialog;
+import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -52,6 +53,12 @@ public class CharacteristicsActivity extends Activity {
 	private boolean majorFlag = false;
 	private boolean minorFlag = false;
 
+	private TimerTask TimeOutTask = null;
+	private int intentTime = 0;
+
+	private Dialog dialog;
+	public static boolean majorFinished = false;
+
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,7 +69,10 @@ public class CharacteristicsActivity extends Activity {
 		BaseApp.getInstance().addActivity(this);
 
 		status_text = (TextView) findViewById(R.id.characteristics_status);
-
+		dialog = LoadingDialog.createLoadingDialogCanCancel(
+				CharacteristicsActivity.this,
+				getString(R.string.toast_write_major));
+		dialog.show();
 		final Intent intent = getIntent();
 		servidx = intent.getIntExtra("servidx", -1);
 
@@ -74,6 +84,8 @@ public class CharacteristicsActivity extends Activity {
 
 		SharePrefsUtils.setBleServiceIndex(CharacteristicsActivity.this,
 				servidx);
+		SharePrefsUtils
+				.setOpenBindingDevice(CharacteristicsActivity.this, true);
 
 		listItem = new ArrayList<HashMap<String, Object>>();
 		listItemAdapter = new SimpleAdapter(this, listItem,
@@ -245,25 +257,63 @@ public class CharacteristicsActivity extends Activity {
 		private void modify1008() {
 			// TODO Auto-generated method stub
 			// String data = "0033";
-			String data = SharePrefsUtils
-					.signUpDeviceMajor(CharacteristicsActivity.this);
-			BluetoothGattCharacteristic characteristic = charas
-					.get(charaidxMajor);
+			final Timer timer = new Timer();
 
-			characteristic.setValue(BLEUtils.HexString2Bytes(data));
+			TimeOutTask = new TimerTask() {
+				public void run() {
+					intentTime++;
+					System.out.println("MajorTime==>" + intentTime);
+					if (intentTime == 5) {
+						intentTime = 0;
+						if (BluetoothLeService.writeMajorSuccess) {
 
-			Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
-			System.out.println("---->finish1008");
+							Intent intent = new Intent(
+									CharacteristicsActivity.this,
+									ServicesActivity.class);
+							// intent.putExtra(
+							// "servidx",
+							// SharePrefsUtils
+							// .bleServiceIndex(CharacteristicsActivity.this));
+							SharePrefsUtils.setBleServiceRunOnceFlag(
+									CharacteristicsActivity.this, 1);
+							intent.putExtra(
+									ServicesActivity.EXTRAS_DEVICE_NAME,
+									"Macaron");
+							intent.putExtra(
+									ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+									SharePrefsUtils
+											.isMacAddress(CharacteristicsActivity.this));
+							startActivity(intent);
+							timer.cancel();
+							TimeOutTask.cancel();
+							TimeOutTask = null;
 
-			if (BluetoothLeService.writeMajorSuccess) {
-				Intent intent = new Intent(CharacteristicsActivity.this,
-						CharacteristicsMinorActivity.class);
-				intent.putExtra("servidx", SharePrefsUtils
-						.bleServiceIndex(CharacteristicsActivity.this));
-				startActivity(intent);
-				finish();
-			}else{
-				modify1008();
+							if (dialog.isShowing())
+								dialog.dismiss();
+							CharacteristicsActivity.majorFinished = true;
+							finish();
+						}
+
+					}
+				}
+			};
+
+			timer.schedule(TimeOutTask, 0, 1000);
+
+			try {
+				String data = SharePrefsUtils
+						.signUpDeviceMajor(CharacteristicsActivity.this);
+				BluetoothGattCharacteristic characteristic = charas
+						.get(charaidxMajor);
+
+				characteristic.setValue(BLEUtils.HexString2Bytes(data));
+
+				Constants.mBluetoothLeService
+						.wirteCharacteristic(characteristic);
+				System.out.println("---->finish1008");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		}
@@ -320,6 +370,7 @@ public class CharacteristicsActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(mGattUpdateReceiver);
+
 		// unregisterReceiver(mGattUpdateReceiver2);
 	}
 

@@ -22,22 +22,20 @@
 
         <LinearLayout
             android:id="@+id/report_change_btn"
+            style="?android:attr/actionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:clickable="true"
-            style="?android:attr/actionButtonStyle"
-             >
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
             <com.twinly.eyebb.customview.CircleImageView
                 android:id="@+id/avatar"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/hugh"
                 app:border_color="@color/white"
                 app:border_width="2dp" />
 

@@ -364,8 +364,8 @@ public class RadarTrackingFragment extends Fragment implements
 		return v;
 
 	}
-	
-	private void closeAntiMode(){
+
+	private void closeAntiMode() {
 		openAnti = false;
 		openAntiCurrentDataFlag = false;
 		// openAntiTheftTX.setText(getResources().getString(
@@ -375,36 +375,21 @@ public class RadarTrackingFragment extends Fragment implements
 				openAntiData.clear();
 			}
 		}
-		scanImg1.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg2.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg3.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg4.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg5.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg6.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg7.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg8.setBorderColor(getResources().getColor(
-				R.color.white));
-		scanImg9.setBorderColor(getResources().getColor(
-				R.color.white));
-		missImg1.setBorderColor(getResources().getColor(
-				R.color.dark_grey));
-		missImg2.setBorderColor(getResources().getColor(
-				R.color.dark_grey));
-		missImg3.setBorderColor(getResources().getColor(
-				R.color.dark_grey));
-		missImg4.setBorderColor(getResources().getColor(
-				R.color.dark_grey));
-		missImg5.setBorderColor(getResources().getColor(
-				R.color.dark_grey));
-		missImg6.setBorderColor(getResources().getColor(
-				R.color.dark_grey));
+		scanImg1.setBorderColor(getResources().getColor(R.color.white));
+		scanImg2.setBorderColor(getResources().getColor(R.color.white));
+		scanImg3.setBorderColor(getResources().getColor(R.color.white));
+		scanImg4.setBorderColor(getResources().getColor(R.color.white));
+		scanImg5.setBorderColor(getResources().getColor(R.color.white));
+		scanImg6.setBorderColor(getResources().getColor(R.color.white));
+		scanImg7.setBorderColor(getResources().getColor(R.color.white));
+		scanImg8.setBorderColor(getResources().getColor(R.color.white));
+		scanImg9.setBorderColor(getResources().getColor(R.color.white));
+		missImg1.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg2.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg3.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg4.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg5.setBorderColor(getResources().getColor(R.color.dark_grey));
+		missImg6.setBorderColor(getResources().getColor(R.color.dark_grey));
 		openAntiTheft.setBackground(getResources().getDrawable(
 				R.drawable.ic_selected_off));
 	}
@@ -1345,8 +1330,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
-
-
 	public Bitmap getBitmapFromUri(Uri uri) {
 		try {
 			// 读取uri所在的图片
@@ -1491,6 +1474,8 @@ public class RadarTrackingFragment extends Fragment implements
 								bluetoothState,
 								new IntentFilter(
 										BluetoothAdapter.ACTION_STATE_CHANGED));
+				getActivity().registerReceiver(updateDb,
+						new IntentFilter(Constants.FINISH_BIND));
 
 				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == Constants.DEVICE_CONNECT_STATUS_ERROR) {
 
@@ -1596,6 +1581,9 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 	};
 
+	/**
+	 * broadcast
+	 */
 	BroadcastReceiver bluetoothState = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			String stateExtra = BluetoothAdapter.EXTRA_STATE;
@@ -1617,7 +1605,25 @@ public class RadarTrackingFragment extends Fragment implements
 				closeBluetooth();
 				closeAntiMode();
 				break;
+
 			}
+
+			if (intent.getAction().equals(Constants.FINISH_BIND)) {
+				ChildData = DBChildren.getChildrenList(getActivity());
+				System.out
+						.println("ChildData = DBChildren.getChildrenList(getActivity())");
+			}
+
+		}
+	};
+
+	BroadcastReceiver updateDb = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+
+			ChildData = DBChildren.getChildrenList(getActivity());
+			System.out
+					.println("ChildData = DBChildren.getChildrenList(getActivity())");
+
 		}
 	};
 
@@ -1926,7 +1932,7 @@ public class RadarTrackingFragment extends Fragment implements
 							RadarOutOfRssiBeepDialog.class);
 					beepForAntiIntent.putExtra("child_information",
 							openAntiData2.get(i));
-					
+
 					startActivity(beepForAntiIntent);
 					beepAllTime = 0;
 					// }

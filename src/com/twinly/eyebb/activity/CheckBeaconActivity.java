@@ -71,6 +71,8 @@ public class CheckBeaconActivity extends Activity {
 	String UUID;
 	List<String> address_temp = new ArrayList<String>();
 
+	public static CheckBeaconActivity instance;
+
 	int UUID_i = 0;
 	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
 
@@ -105,7 +107,7 @@ public class CheckBeaconActivity extends Activity {
 		BaseApp.getInstance().addActivity(this);
 		Constants.gattServiceData.clear();
 		Constants.gattServiceObject.clear();
-
+		instance = this;
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
@@ -149,12 +151,12 @@ public class CheckBeaconActivity extends Activity {
 				System.out.println("ChildIDfromKidsList=>"
 						+ ChildIDfromKidsList);
 
-				MACaddress4submit = device.getAddress();
+				// MACaddress4submit = device.getAddress();
+				MACaddress4submit = listItem.get(arg2).get("text").toString()
+						.substring(0, 17);
 				deviceName4submit = device.getName();
 
 				new Thread(postToServerRunnable).start();
-				SharePrefsUtils.setOpenBindingDevice(CheckBeaconActivity.this,
-						true);
 
 				//
 				// SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
@@ -316,34 +318,6 @@ public class CheckBeaconActivity extends Activity {
 
 		}
 	};
-	//
-	// @SuppressLint("NewApi")
-	// public void scanLeDevice(final boolean enable) {
-	// if (enable) {
-	// // // Stops scanning after a pre-defined scan period.
-	// mHandler.postDelayed(scanLeDeviceRunable, POSTDELAYTIME);
-	//
-	// mBluetoothAdapter.startLeScan(mLeScanCallback);
-	//
-	// scan_flag = true;
-	//
-	// Message msg = handler.obtainMessage();
-	// msg.what = STOP_SCAN;
-	// handler.sendMessage(msg);
-	//
-	// } else {
-	//
-	// mBluetoothAdapter.stopLeScan(mLeScanCallback);
-	// scan_flag = false;
-	//
-	// Message msg = handler.obtainMessage();
-	// msg.what = DELETE_SCAN;
-	// handler.sendMessage(msg);
-	//
-	// // autoScan.start();
-	// }
-	//
-	// }
 
 	Handler handler = new Handler() {
 
@@ -363,7 +337,7 @@ public class CheckBeaconActivity extends Activity {
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
-				System.out.println("AAAAASSS");
+				// System.out.println("AAAAASSS");
 				listItem.clear();
 
 				listItemAdapter.notifyDataSetChanged();
@@ -376,9 +350,9 @@ public class CheckBeaconActivity extends Activity {
 
 				break;
 			case START_PROGRASSS_BAR:
-				dialog = LoadingDialog.createLoadingDialog(
+				dialog = LoadingDialog.createLoadingDialogCanCancel(
 						CheckBeaconActivity.this,
-						getString(R.string.toast_loading));
+						getString(R.string.toast_write_major));
 				dialog.show();
 				break;
 
@@ -503,8 +477,7 @@ public class CheckBeaconActivity extends Activity {
 			String retStr = HttpRequestUtils.post(HttpConstants.CHECK_BEACON,
 					map);
 			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
+			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
 				System.out.println("connect error");
 				Message msg = handler.obtainMessage();
 				msg.what = Constants.CONNECT_ERROR;
@@ -512,7 +485,7 @@ public class CheckBeaconActivity extends Activity {
 
 			} else {
 				// successful
-				if (retStr.length() > 0) {
+				if (retStr.length() > 0 && !retStr.equals("USED")) {
 					Message msg = handler.obtainMessage();
 					msg.what = START_PROGRASSS_BAR;
 					handler.sendMessage(msg);
@@ -542,13 +515,17 @@ public class CheckBeaconActivity extends Activity {
 							deviceName4submit);
 					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
 							MACaddress4submit);
-
+					isWhileLoop = false;
 					startActivity(intent);
+
 					// new Thread(postDeviceToChildToServerRunnable).start();
 					// save to database
 					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
 					// MACaddress4submit);
-				} else {
+				} else if (retStr.equals("USED")) {
+					// Intent intent = new Intent(CheckBeaconActivity.this,
+					// UnbindDeviceDialog.class);
+					// startActivity(intent);
 					Message msg = handler.obtainMessage();
 					msg.what = ALREADY_BING_DEVICE;
 					handler.sendMessage(msg);
@@ -613,15 +590,18 @@ public class CheckBeaconActivity extends Activity {
 		autoScanHandler.removeCallbacks(autoScan);
 		mHandler.removeCallbacks(scanLeDeviceRunable);
 		isWhileLoop = false;
+		if (dialog.isShowing())
+			dialog.dismiss();
 	}
 
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		autoScanHandler.removeCallbacks(autoScan);
-		mHandler.removeCallbacks(scanLeDeviceRunable);
-		isWhileLoop = false;
+
+		// autoScanHandler.removeCallbacks(autoScan);
+		// mHandler.removeCallbacks(scanLeDeviceRunable);
+		// isWhileLoop = false;
 	}
 
 }

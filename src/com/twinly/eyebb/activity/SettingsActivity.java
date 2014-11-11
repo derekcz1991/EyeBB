@@ -200,7 +200,7 @@ public class SettingsActivity extends Activity {
 		}
 
 		// device item
-		if (SharePrefsUtils.getUserType(this).equals("G")) {
+		if (SharePrefsUtils.getUserType(this).equals("P")) {
 			findViewById(R.id.deviceItem).setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.deviceItem).setVisibility(View.GONE);

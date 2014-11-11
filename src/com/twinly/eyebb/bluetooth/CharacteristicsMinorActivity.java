@@ -3,9 +3,12 @@ package com.twinly.eyebb.bluetooth;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -13,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -24,8 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.activity.CheckBeaconActivity;
+import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.activity.VerifyDialog;
+import com.twinly.eyebb.activity.VerifyWhenLoginDialog;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -36,7 +44,7 @@ public class CharacteristicsMinorActivity extends Activity {
 	ListView myList; // ListView控件
 
 	TextView status_text;
-
+	final Timer timer = new Timer();
 	int servidx, charaidxMajor, charaidxMinor;
 	String name = null;
 	String name2 = null;
@@ -49,8 +57,10 @@ public class CharacteristicsMinorActivity extends Activity {
 	private String uuid;
 	private String uuid2;
 
-	private boolean majorFlag = false;
-	private boolean minorFlag = false;
+	private Dialog dialog;
+
+	private TimerTask TimeOutTask = null;
+	private int intentTime = 0;
 
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +71,14 @@ public class CharacteristicsMinorActivity extends Activity {
 
 		BaseApp.getInstance().addActivity(this);
 
-		status_text = (TextView) findViewById(R.id.characteristics_status);
+		SharePrefsUtils.setOpenBindingDevice(CharacteristicsMinorActivity.this,
+				true);
 
+		status_text = (TextView) findViewById(R.id.characteristics_status);
+		dialog = LoadingDialog.createLoadingDialogCanCancel(
+				CharacteristicsMinorActivity.this,
+				getString(R.string.toast_write_minor));
+		dialog.show();
 		final Intent intent = getIntent();
 		servidx = intent.getIntExtra("servidx", -1);
 
@@ -71,6 +87,32 @@ public class CharacteristicsMinorActivity extends Activity {
 					Toast.LENGTH_LONG).show();
 			CharacteristicsMinorActivity.this.finish();
 		}
+
+
+
+		TimeOutTask = new TimerTask() {
+			public void run() {
+				intentTime++;
+				System.out.println("intentTime==>" + intentTime);
+				if (intentTime == 20) {
+					intentTime = 0;
+					Intent intent = new Intent(
+							CharacteristicsMinorActivity.this,
+							ErrorDialog.class);
+					if (dialog.isShowing())
+						dialog.dismiss();
+					CheckBeaconActivity.instance.finish();
+					timer.cancel();
+					timer.purge();
+					TimeOutTask.cancel();
+					TimeOutTask = null;
+					startActivity(intent);
+					finish();
+				}
+			}
+		};
+
+		timer.schedule(TimeOutTask, 0, 1000);
 
 		SharePrefsUtils.setBleServiceIndex(CharacteristicsMinorActivity.this,
 				servidx);
@@ -199,8 +241,9 @@ public class CharacteristicsMinorActivity extends Activity {
 							// uuid = uuid.substring(4, 8);
 							// uuid = uuid;
 							charaidxMinor = i;
-							Constants.mBluetoothLeService
-									.readCharacteristic2(characteristic2);
+							if (Constants.mBluetoothLeService != null)
+								Constants.mBluetoothLeService
+										.readCharacteristic(characteristic2);
 
 							break;
 						}
@@ -222,42 +265,6 @@ public class CharacteristicsMinorActivity extends Activity {
 		// finish();
 
 	}
-
-	// private final BroadcastReceiver mGattUpdateReceiver = new
-	// BroadcastReceiver() {
-	// @Override
-	// public void onReceive(Context context, Intent intent) {
-	// final String action = intent.getAction();
-	// System.out.println("action = " + action);
-	// if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-	// String data = intent
-	// .getStringExtra(BluetoothLeService.EXTRA_DATA);
-	// System.out.println("data========>" + data);
-	//
-	// if (uuid.equals("1008")) {
-	// System.out.println("this is 1008" + data + " "
-	// + Integer.parseInt(data, 16));
-	// modify1008();
-	// }
-	// }
-	// }
-	//
-	// @SuppressLint("NewApi")
-	// private void modify1008() {
-	// // TODO Auto-generated method stub
-	// String data = "0033";
-	//
-	// BluetoothGattCharacteristic characteristic = charas
-	// .get(charaidxMajor);
-	//
-	// characteristic.setValue(BLEUtils.HexString2Bytes(data));
-	//
-	// Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
-	// System.out.println("---->finish1008");
-	//
-	// }
-	//
-	// };
 
 	private final BroadcastReceiver mGattUpdateReceiver2 = new BroadcastReceiver() {
 		@Override
@@ -281,20 +288,33 @@ public class CharacteristicsMinorActivity extends Activity {
 		private void modify1009() {
 			// TODO Auto-generated method stub
 
-			String data2 = SharePrefsUtils
-					.signUpDeviceMinor(CharacteristicsMinorActivity.this);
+			try {
+				String data2 = SharePrefsUtils
+						.signUpDeviceMinor(CharacteristicsMinorActivity.this);
 
-			BluetoothGattCharacteristic characteristic2 = charas2
-					.get(charaidxMinor);
+				BluetoothGattCharacteristic characteristic2 = charas2
+						.get(charaidxMinor);
 
-			characteristic2.setValue(BLEUtils.HexString2Bytes(data2));
+				characteristic2.setValue(BLEUtils.HexString2Bytes(data2));
 
-			Constants.mBluetoothLeService.wirteCharacteristic2(characteristic2);
-			System.out.println("---->finish1009");
+				Constants.mBluetoothLeService
+						.wirteCharacteristic(characteristic2);
+				System.out.println("---->finish1009");
 
-			Intent intent = new Intent(CharacteristicsMinorActivity.this,
-					VerifyDialog.class);
-			startActivity(intent);
+				timer.cancel();
+				timer.purge();
+				TimeOutTask.cancel();
+				TimeOutTask = null;
+				Intent intent = new Intent(CharacteristicsMinorActivity.this,
+						VerifyWhenLoginDialog.class);
+				startActivity(intent);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (dialog.isShowing())
+				dialog.dismiss();
+			finish();
 		}
 	};
 
@@ -312,6 +332,8 @@ public class CharacteristicsMinorActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		// unregisterReceiver(mGattUpdateReceiver);
+		if (dialog.isShowing())
+			dialog.dismiss();
 		unregisterReceiver(mGattUpdateReceiver2);
 	}
 
