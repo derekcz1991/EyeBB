@@ -32,10 +32,10 @@ public class VerifyWhenLoginDialog extends Activity {
 		setContentView(R.layout.dialog_verify);
 
 		
-		Intent broadcast = new Intent();
-		broadcast.setAction(Constants.FINISH_BIND);
-		broadcast.putExtra("msg", true);
-		sendBroadcast(broadcast);
+//		Intent broadcast = new Intent();
+//		broadcast.setAction(Constants.FINISH_BIND);
+//		broadcast.putExtra("msg", true);
+//		sendBroadcast(broadcast);
 		
 		btnVerify = (TextView) findViewById(R.id.btn_verify);
 		btnVerify.setOnClickListener(new OnClickListener() {
@@ -111,7 +111,7 @@ public class VerifyWhenLoginDialog extends Activity {
 				if (retStr.equals("true")) {
 
 					Intent intent = new Intent(VerifyWhenLoginDialog.this,
-							SettingsActivity.class);
+							LancherActivity.class);
 
 					startActivity(intent);
 

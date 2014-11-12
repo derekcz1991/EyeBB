@@ -400,8 +400,13 @@ public class ServicesActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(mServiceConnection);
-		if (dialog.isShowing())
-			dialog.dismiss();
+		try {
+			if (dialog.isShowing())
+				dialog.dismiss();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Constants.mBluetoothLeService = null;
 	}
 

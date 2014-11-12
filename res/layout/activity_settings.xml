@@ -335,6 +335,25 @@
                         android:text="@string/text_about" />
                 </LinearLayout>
 
+                 <!-- update password -->
+
+                <LinearLayout
+                    android:id="@+id/update_psw_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/settings_column_center"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/update_password"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/text_update_password" />
+                </LinearLayout>
+                
                 <!-- Terms of Service -->
 
                 <LinearLayout

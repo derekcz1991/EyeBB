@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_addr"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <EditText
+        android:id="@+id/edit_1"
+        style="@style/WhiteText_18"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/btn_search"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorHint="@color/white" >
+
+        <!-- <requestFocus /> -->
+
+    </EditText>
+
+    <TextView
+        style="@style/DarkGreyText_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":" />
+
+    <EditText
+        android:id="@+id/edit_2"
+        style="@style/WhiteText_18"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/btn_search"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorHint="@color/white" >
+
+        <!-- <requestFocus /> -->
+
+    </EditText>
+
+    <TextView
+        style="@style/DarkGreyText_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":" />
+
+    <EditText
+        android:id="@+id/edit_3"
+        style="@style/WhiteText_18"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/btn_search"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorHint="@color/white" >
+
+        <!-- <requestFocus /> -->
+
+    </EditText>
+
+    <TextView
+        style="@style/DarkGreyText_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":" />
+
+    <EditText
+        android:id="@+id/edit_4"
+        style="@style/WhiteText_18"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/btn_search"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorHint="@color/white" >
+
+        <!-- <requestFocus /> -->
+
+    </EditText>
+
+    <TextView
+        style="@style/DarkGreyText_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":" />
+
+    <EditText
+        android:id="@+id/edit_5"
+        style="@style/WhiteText_18"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/btn_search"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorHint="@color/white" >
+
+        <!-- <requestFocus /> -->
+
+    </EditText>
+
+    <TextView
+        style="@style/DarkGreyText_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":" />
+
+    <EditText
+        android:id="@+id/edit_6"
+        style="@style/WhiteText_18"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/btn_search"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:textColorHint="@color/white" >
+
+        <!-- <requestFocus /> -->
+
+    </EditText>
+
+</LinearLayout>

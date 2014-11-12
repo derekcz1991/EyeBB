@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
@@ -33,6 +37,7 @@ public class FeedbackDialog extends Activity {
 	private RadioGroup group;
 	private int radioButtonId;
 	private String type;
+	private TextView textLast;
 
 	public static final int SUCCESS_FEEDBACK = 2;
 
@@ -46,6 +51,41 @@ public class FeedbackDialog extends Activity {
 		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
 		ed = (EditText) findViewById(R.id.feedback_comments);
 		group = (RadioGroup) findViewById(R.id.feedback_rg);
+		textLast = (TextView) findViewById(R.id.text_last);
+
+		ed.addTextChangedListener(new TextWatcher() {
+			private CharSequence temp;
+			private int editStart;
+			private int editEnd;
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				temp = s;
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				editStart = ed.getSelectionStart();
+				editEnd = ed.getSelectionEnd();
+				textLast.setText("(" + temp.length() + "/144)");
+				if (temp.length() > 144) {
+					s.delete(editStart - 1, editEnd);
+					int tempSelection = editStart;
+					ed.setText(s);
+					ed.setSelection(tempSelection);
+				}
+			}
+		});
 
 		ed.setOnFocusChangeListener(new OnFocusChangeListener() {
 
@@ -172,26 +212,30 @@ public class FeedbackDialog extends Activity {
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
+	
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
+			Toast toast = null;
 			switch (msg.what) {
 
 			case Constants.CONNECT_ERROR:
-				Toast.makeText(FeedbackDialog.this,
-						R.string.text_network_error, Toast.LENGTH_LONG).show();
-
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_network_error, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
 				break;
 			case SUCCESS_FEEDBACK:
-				Toast.makeText(FeedbackDialog.this,
-						R.string.text_feed_back_successful, Toast.LENGTH_LONG)
-						.show();
-
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_feed_back_successful, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
 				break;
-				
+
 			case Constants.NULL_FEEDBAKC_CONTENT:
-				Toast.makeText(FeedbackDialog.this,
-						R.string.text_fill_in_something, Toast.LENGTH_LONG)
-						.show();
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_something, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
 				break;
 			}
 

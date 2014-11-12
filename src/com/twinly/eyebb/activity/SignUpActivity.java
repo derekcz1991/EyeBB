@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +38,7 @@ public class SignUpActivity extends Activity {
 	private EditText ed_email;
 	private EditText ed_password;
 	private EditText ed_nickname;
-	private EditText ed_phone;
+	// private EditText ed_phone;
 	private String username;
 	private String email;
 	private String password;
@@ -48,7 +50,7 @@ public class SignUpActivity extends Activity {
 	private TextView tv_email;
 	private TextView tv_password;
 	private TextView tv_nickname;
-	private TextView tv_phone;
+	// private TextView tv_phone;
 
 	private boolean usernameFlag = false;
 	private boolean regSuccessFlag = false;
@@ -71,17 +73,17 @@ public class SignUpActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 
 		// username password email
-		ed_username = (EditText) findViewById(R.id.ed_username);
+		ed_username = (EditText) findViewById(R.id.ed_phone_number);
 		ed_email = (EditText) findViewById(R.id.ed_email);
 		ed_password = (EditText) findViewById(R.id.ed_password);
 		ed_nickname = (EditText) findViewById(R.id.ed_nickname);
-		ed_phone = (EditText) findViewById(R.id.ed_phone_number);
+		// ed_phone = (EditText) findViewById(R.id.ed_phone_number);
 
-		tv_username = (TextView) findViewById(R.id.ic_signup_name);
+		tv_username = (TextView) findViewById(R.id.ic_signup_phone);
 		tv_email = (TextView) findViewById(R.id.ic_signup_email);
 		tv_password = (TextView) findViewById(R.id.ic_signup_pw);
 		tv_nickname = (TextView) findViewById(R.id.ic_signup_nickname);
-		tv_phone = (TextView) findViewById(R.id.ic_signup_phone);
+		// tv_phone = (TextView) findViewById(R.id.ic_signup_phone);
 
 		btnContinue = (Button) findViewById(R.id.btn_signup_continue);
 		btnSkip = (Button) findViewById(R.id.btn_signup_skip);
@@ -105,6 +107,40 @@ public class SignUpActivity extends Activity {
 			}
 		});
 
+		ed_username.addTextChangedListener(new TextWatcher() {
+			private CharSequence temp;
+			private int editStart;
+			private int editEnd;
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				temp = s;
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				editStart = ed_username.getSelectionStart();
+				editEnd = ed_username.getSelectionEnd();
+				if (temp.length() > 8) {
+					s.delete(editStart - 1, editEnd);
+					int tempSelection = editStart;
+					ed_username.setText(s);
+					ed_username.setSelection(tempSelection);
+				}
+
+			}
+		});
+
 		btnContinue.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -114,7 +150,7 @@ public class SignUpActivity extends Activity {
 				email = ed_email.getText().toString();
 				password = ed_password.getText().toString();
 				nickname = ed_nickname.getText().toString();
-				phone = ed_phone.getText().toString();
+				phone = ed_username.getText().toString();
 				regType = "P";
 
 				System.out.println("username + email + password" + username
@@ -159,8 +195,8 @@ public class SignUpActivity extends Activity {
 										Toast.LENGTH_LONG).show();
 								tv_email.setBackground(getResources()
 										.getDrawable(R.drawable.ic_radar_missed));
-								tv_phone.setBackground(getResources()
-										.getDrawable(R.drawable.ic_radar_missed));
+								// tv_phone.setBackground(getResources()
+								// .getDrawable(R.drawable.ic_radar_missed));
 
 							}
 						} else {
@@ -198,7 +234,7 @@ public class SignUpActivity extends Activity {
 				email = ed_email.getText().toString();
 				password = ed_password.getText().toString();
 				nickname = ed_nickname.getText().toString();
-				phone = ed_phone.getText().toString();
+				phone = ed_username.getText().toString();
 				regType = "G";
 
 				System.out.println("username + email + password" + username
@@ -244,8 +280,8 @@ public class SignUpActivity extends Activity {
 										Toast.LENGTH_LONG).show();
 								tv_email.setBackground(getResources()
 										.getDrawable(R.drawable.ic_radar_missed));
-								tv_phone.setBackground(getResources()
-										.getDrawable(R.drawable.ic_radar_missed));
+								// tv_phone.setBackground(getResources()
+								// .getDrawable(R.drawable.ic_radar_missed));
 
 							}
 						} else {
@@ -377,20 +413,22 @@ public class SignUpActivity extends Activity {
 						// binding
 						Intent intent = new Intent(SignUpActivity.this,
 								ChildInformationMatchingActivity.class);
-						//intent.putExtra("guardianId", retStr);
-						SharePrefsUtils.setSignUpGuardianId(SignUpActivity.this, retStr);
+						// intent.putExtra("guardianId", retStr);
+						SharePrefsUtils.setSignUpGuardianId(
+								SignUpActivity.this, retStr);
 						startActivity(intent);
-						
-						SharePrefsUtils.setSignUpUsername(SignUpActivity.this, username);
-						SharePrefsUtils.setSignUpPassword(SignUpActivity.this, hashPassword);
-	
-						
+
+						SharePrefsUtils.setSignUpUsername(SignUpActivity.this,
+								username);
+						SharePrefsUtils.setSignUpPassword(SignUpActivity.this,
+								hashPassword);
+
 					} else if (regType.equals("G")) {
 						// login
 						Intent intent = new Intent(SignUpActivity.this,
 								LancherActivity.class);
 
-						//use to login
+						// use to login
 						SharePrefsUtils.setLogin(SignUpActivity.this, true);
 						SharePrefsUtils.setLoginAccount(SignUpActivity.this,
 								username);
@@ -447,8 +485,7 @@ public class SignUpActivity extends Activity {
 
 			case CONNECT_ERROR:
 				Toast.makeText(SignUpActivity.this,
-						R.string.text_network_error, Toast.LENGTH_LONG)
-						.show();
+						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
@@ -471,14 +508,14 @@ public class SignUpActivity extends Activity {
 	}
 
 	public static boolean isUsername(String usrname) {
-		Pattern p = Pattern.compile("^[a-zA-Z0-9_]{3,30}$");
+		Pattern p = Pattern.compile("^[0-9_]{8,20}$");
 		Matcher m = p.matcher(usrname);
 		System.out.println(m.matches() + "---");
 		return m.matches();
 	}
 
 	public static boolean isPassword(String password) {
-		Pattern p = Pattern.compile("^[a-zA-Z0-9]{8,30}$");
+		Pattern p = Pattern.compile("^[a-zA-Z0-9]{6,20}$");
 		Matcher m = p.matcher(password);
 		System.out.println(m.matches() + "---");
 		return m.matches();

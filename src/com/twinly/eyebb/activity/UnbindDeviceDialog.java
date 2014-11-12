@@ -68,7 +68,7 @@ public class UnbindDeviceDialog extends Activity {
 
 		Map<String, String> map = new HashMap<String, String>();
 		
-
+		map.put("childId", SharePrefsUtils.signUpChildId(UnbindDeviceDialog.this));
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(UnbindDeviceDialog.this,
@@ -90,12 +90,12 @@ public class UnbindDeviceDialog extends Activity {
 
 				} else if (retStr.equals("Y")) {
 					Intent data = new Intent(UnbindDeviceDialog.this,
-							ChildInformationMatchingActivity.class);
+							LancherActivity.class);
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.UNBIND_SUCCESS;
 					handler.sendMessage(msg);
 					startActivity(data);
-
+					finish();
 				}
 			}
 

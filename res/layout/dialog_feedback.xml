@@ -83,6 +83,13 @@
             android:layout_height="1dp"
             android:background="@color/divider_red" >
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_last"
+            style="@style/RedText_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" />
     </LinearLayout>
 
     <LinearLayout

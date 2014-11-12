@@ -30,6 +30,7 @@ public class SettingsActivity extends Activity {
 	private View aboutBtn;
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
+	private LinearLayout updatePswBtn;
 
 	private boolean isAutoUpdate;
 	private TextView refreshTimeNumber;
@@ -50,7 +51,8 @@ public class SettingsActivity extends Activity {
 		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
 		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
-
+		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
+		
 		setupView();
 
 		tittlebarBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +161,15 @@ public class SettingsActivity extends Activity {
 						AuthorizeKidsActivity.class);
 				startActivity(intent);
 
+			}
+		});
+		
+		updatePswBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 

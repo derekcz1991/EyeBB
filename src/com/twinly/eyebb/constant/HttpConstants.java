@@ -79,4 +79,14 @@ public class HttpConstants {
 	public static final String AUTH_FIND_GUESTS = "masterService/api/searchMasterGuests";
 	public static final String GRANT_GUESTS = "masterService/api/grantGuestAccess";
 	public static final String LOGIN_INFO = "reportService/api/loginInfo";
+	
+	
+	public static final String SERVER_RETURN_true = "true";
+	public static final String SERVER_RETURN_TRUE = "TRUE";
+	public static final String SERVER_RETURN_false = "false";
+	public static final String SERVER_RETURN_fALSE = "fALSE";
+	public static final String SERVER_RETURN_USED = "USED";
+	public static final String SERVER_RETURN_N = "N";
+	public static final String SERVER_RETURN_Y = "Y";
+	
 }

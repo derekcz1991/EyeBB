@@ -22,16 +22,23 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.MenuItem.OnActionExpandListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
+import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
 import com.twinly.eyebb.bluetooth.BaseApp;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
@@ -40,16 +47,19 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class CheckBeaconActivity extends Activity {
-	SimpleAdapter listItemAdapter; // ListView的适配器
-	ArrayList<HashMap<String, Object>> listItem; // ListView的数据源，这里是一个HashMap的列表
+	// ListView的适配器
+	SimpleAdapter listItemAdapter;
+	// ListView的数据源，这里是一个HashMap的列表
+	ArrayList<HashMap<String, Object>> listItem;
 	ListView myList; // ListView控件
-
+	private ArrayList<HashMap<String, Object>> searchList;
 	private Button scanBtn;
 	private boolean scan_flag = false;
 	private final static int START_SCAN = 4;
@@ -111,10 +121,11 @@ public class CheckBeaconActivity extends Activity {
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
+		searchList = new ArrayList<HashMap<String, Object>>();
 
 		listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this, listItem,
 				R.layout.ble_listview,
-				new String[] { "image", "title", "text" }, new int[] {
+				new String[] { "image", "search", "text" }, new int[] {
 						R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
 		myList = (ListView) findViewById(R.id.listView_peripheral);
 		myList.setAdapter(listItemAdapter);
@@ -152,30 +163,30 @@ public class CheckBeaconActivity extends Activity {
 						+ ChildIDfromKidsList);
 
 				// MACaddress4submit = device.getAddress();
-				MACaddress4submit = listItem.get(arg2).get("text").toString()
-						.substring(0, 17);
+				MACaddress4submit = listItem.get(arg2).get("title").toString()
+						.substring(4, 21);
 				deviceName4submit = device.getName();
+				System.out.println("MACaddress4submit-->" + MACaddress4submit);
+				new Thread(postToServerRunnable).start();
 
-				// new Thread(postToServerRunnable).start();
-
-				SharePrefsUtils.setBleServiceRunOnceFlag(
-						CheckBeaconActivity.this, 1);
-				SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
-						 "0333");
-				SharePrefsUtils.setSignUpDeviceMinor(CheckBeaconActivity.this,
-						 "0333");
-				SharePrefsUtils.setMacAddress(CheckBeaconActivity.this,
-						MACaddress4submit);
-
-				Intent intent = new Intent(CheckBeaconActivity.this,
-						ServicesActivity.class);
-
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-						deviceName4submit);
-				intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-						MACaddress4submit);
-				isWhileLoop = false;
-				startActivity(intent);
+				// SharePrefsUtils.setBleServiceRunOnceFlag(
+				// CheckBeaconActivity.this, 1);
+				// SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
+				// "0333");
+				// SharePrefsUtils.setSignUpDeviceMinor(CheckBeaconActivity.this,
+				// "0333");
+				// SharePrefsUtils.setMacAddress(CheckBeaconActivity.this,
+				// MACaddress4submit);
+				//
+				// Intent intent = new Intent(CheckBeaconActivity.this,
+				// ServicesActivity.class);
+				//
+				// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
+				// deviceName4submit);
+				// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+				// MACaddress4submit);
+				// isWhileLoop = false;
+				// startActivity(intent);
 
 				//
 				// SharePrefsUtils.setSignUpDeviceMajor(CheckBeaconActivity.this,
@@ -360,26 +371,6 @@ public class CheckBeaconActivity extends Activity {
 				listItem.clear();
 
 				listItemAdapter.notifyDataSetChanged();
-				// listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this,
-				// listItem, R.layout.ble_listview, new String[] {
-				// "image", "title", "text" }, new int[] {
-				// R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
-				// myList = (ListView) findViewById(R.id.listView_peripheral);
-				// myList.setAdapter(listItemAdapter);
-
-				break;
-			case START_PROGRASSS_BAR:
-				// dialog = LoadingDialog.createLoadingDialogCanCancel(
-				// CheckBeaconActivity.this,
-				// getString(R.string.toast_write_major));
-				// dialog.show();
-				break;
-
-			case STOP_PROGRASSS_BAR:
-				// Toast.makeText(DeviceListAcitivity.this,
-				// R.string.text_connect_error,
-				// Toast.LENGTH_LONG);
-				dialog.dismiss();
 
 				break;
 
@@ -420,14 +411,15 @@ public class CheckBeaconActivity extends Activity {
 								HashMap<String, Object> map = new HashMap<String, Object>();
 								Map.Entry<String, Device> entry = it.next();
 								map.put("image", R.drawable.ble_icon);
-								map.put("title", entry.getValue().getName());
-								map.put("text", entry.getValue().getAddress()
-										+ " UUID:" + entry.getValue().getUuid()
-										+ " MajorID:"
-										+ entry.getValue().getMajor()
-										+ " MinorID:"
-										+ entry.getValue().getMinor()
-										+ " RSSI:" + entry.getValue().getRssi());
+
+								map.put("text", "UUID:"
+										+ entry.getValue().getUuid() + "\n強度:"
+										+ entry.getValue().getRssi());
+								map.put("title", "Mac:"
+										+ entry.getValue().getAddress());
+								map.put("search", "Mac:"
+										+ entry.getValue().getAddress()
+												.replace(":", "").toLowerCase());
 								listItem.add(map);
 								mLeDevices.add(device);
 								// System.out.println("mLeDevicesmLeDevices=>"
@@ -504,7 +496,8 @@ public class CheckBeaconActivity extends Activity {
 
 			} else {
 				// successful
-				if (retStr.length() > 0 && !retStr.equals("USED")) {
+				if (retStr.length() > 0
+						&& !retStr.equals(HttpConstants.SERVER_RETURN_USED)) {
 					Message msg = handler.obtainMessage();
 					msg.what = START_PROGRASSS_BAR;
 					handler.sendMessage(msg);
@@ -518,8 +511,8 @@ public class CheckBeaconActivity extends Activity {
 					System.out.println("retStrpost======>" + major + " "
 							+ minor);
 
-					SharePrefsUtils.setBleServiceRunOnceFlag(
-							CheckBeaconActivity.this, 1);
+					// SharePrefsUtils.setBleServiceRunOnceFlag(
+					// CheckBeaconActivity.this, 1);
 					SharePrefsUtils.setSignUpDeviceMajor(
 							CheckBeaconActivity.this, major);
 					SharePrefsUtils.setSignUpDeviceMinor(
@@ -541,7 +534,7 @@ public class CheckBeaconActivity extends Activity {
 					// save to database
 					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
 					// MACaddress4submit);
-				} else if (retStr.equals("USED")) {
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_USED)) {
 					// Intent intent = new Intent(CheckBeaconActivity.this,
 					// UnbindDeviceDialog.class);
 					// startActivity(intent);
@@ -609,8 +602,13 @@ public class CheckBeaconActivity extends Activity {
 		autoScanHandler.removeCallbacks(autoScan);
 		mHandler.removeCallbacks(scanLeDeviceRunable);
 		isWhileLoop = false;
-		if (dialog.isShowing() && dialog != null)
-			dialog.dismiss();
+		try {
+			if (dialog.isShowing() && dialog != null)
+				dialog.dismiss();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -621,6 +619,99 @@ public class CheckBeaconActivity extends Activity {
 		// autoScanHandler.removeCallbacks(autoScan);
 		// mHandler.removeCallbacks(scanLeDeviceRunable);
 		// isWhileLoop = false;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_search));
+		search.setIcon(R.drawable.ic_search)
+				.setActionView(R.layout.actionbar_search)
+				.setShowAsAction(
+						MenuItem.SHOW_AS_ACTION_ALWAYS
+								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+
+		final EditText etSearch = (EditText) search.getActionView()
+				.findViewById(R.id.search_addr);
+
+		search.setOnActionExpandListener(new OnActionExpandListener() {
+
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem item) {
+				etSearch.requestFocus();
+				CommonUtils.switchSoftKeyboardstate(CheckBeaconActivity.this);
+				return true;
+			}
+
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem item) {
+				etSearch.clearFocus();
+				CommonUtils
+						.hideSoftKeyboard(etSearch, CheckBeaconActivity.this);
+				// adapter = new ChangeKidsListViewAdapter(
+				// ChangeKidsActivity.this, list, isSortByName);
+				// listView.setAdapter(adapter);
+				return true;
+			}
+		});
+
+		etSearch.addTextChangedListener(new TextWatcher() {
+			private CharSequence temp;
+			private int editStart;
+			private int editEnd;
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				temp = s;
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+
+				// editStart = etSearch.getSelectionStart();
+				// editEnd = etSearch.getSelectionEnd();
+				// System.out.println(editStart + " " + editEnd);
+				// if (temp.length() % 2 == 0) {
+				//
+				// s.insert(editEnd, ":");
+				// //int tempSelection = editStart;
+				// etSearch.setText(s);
+				// //etSearch.setSelection(tempSelection);
+				// }
+				search(etSearch.getText().toString());
+			}
+		});
+		// search.collapseActionView();
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	private void search(String keyword) {
+		if (!TextUtils.isEmpty(keyword)) {
+			searchList.clear();
+			for (int i = 0; i < listItem.size(); i++) {
+				if (listItem.get(i).get("search").toString().contains(keyword)) {
+					searchList.add(listItem.get(i));
+				}
+			}
+
+			listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this,
+					searchList, R.layout.ble_listview, new String[] { "image",
+							"search", "text" }, new int[] { R.id.ItemImage,
+							R.id.ItemTitle, R.id.ItemText });
+			myList.setAdapter(listItemAdapter);
+		} else {
+			listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this,
+					listItem, R.layout.ble_listview, new String[] { "image",
+							"search", "text" }, new int[] { R.id.ItemImage,
+							R.id.ItemTitle, R.id.ItemText });
+			myList.setAdapter(listItemAdapter);
+		}
 	}
 
 }

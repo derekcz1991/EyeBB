@@ -226,8 +226,8 @@ public class RadarTrackingFragment extends Fragment implements
 		initView(v);
 
 		ChildData = DBChildren.getChildrenList(getActivity());
-		getActivity().registerReceiver(updateDb,
-				new IntentFilter(Constants.FINISH_BIND));
+//		getActivity().registerReceiver(updateDb,
+//				new IntentFilter(Constants.FINISH_BIND));
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();

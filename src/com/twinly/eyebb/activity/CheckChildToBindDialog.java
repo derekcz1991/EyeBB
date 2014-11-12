@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.google.android.gms.internal.hr;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
@@ -171,12 +172,12 @@ public class CheckChildToBindDialog extends Activity {
 				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-				if (retStr.equals("true")) {
+				if (retStr.equals(HttpConstants.SERVER_RETURN_true)) {
 
 					new Thread(postCheckIfChildHasBeaconToServerRunnable)
 							.start();
 
-				} else if (retStr.equals("false")) {
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_false)) {
 
 					Message msg = handler.obtainMessage();
 					msg.what = ALREADY_RELATIONSHIP;
@@ -223,7 +224,7 @@ public class CheckChildToBindDialog extends Activity {
 				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-				if (retStr.equals("N")) {
+				if (retStr.equals(HttpConstants.SERVER_RETURN_N)) {
 					Intent data = new Intent(CheckChildToBindDialog.this,
 							CheckBeaconActivity.class);
 
@@ -233,7 +234,7 @@ public class CheckChildToBindDialog extends Activity {
 					startActivity(data);
 					finish();
 
-				} else if (retStr.equals("Y")) {
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_Y)) {
 					Intent data = new Intent(CheckChildToBindDialog.this,
 							UnbindDeviceDialog.class);
 

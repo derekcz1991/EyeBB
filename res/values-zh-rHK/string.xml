@@ -4,8 +4,8 @@
     <string name="app_name">寶寶安</string>
     <string name="text_policy">By Continuing, you agree to our <u>Terms</u> and <u>Privacy Policy</u>.</string>
     <string name="text_user_name">用戶名</string>
-    <string name="text_email">電郵</string>
-    <string name="text_phone_number">電話</string>
+    <string name="text_email">電郵 (可選)</string>
+    <string name="text_phone_number">電話 (用戶名)</string>
     <string name="text_password">密碼</string>
     <string name="text_login_account">用戶名或電郵</string>
     <string name="text_select_kid_kindergarten">選擇幼稚園</string>
@@ -46,12 +46,13 @@
     <string name="text_language">語言</string>
     <string name="text_english">English</string>
     <string name="text_chinese">繁體中文</string>
-    <string name="text_others">其它</string>
-    <string name="text_about">关于</string>
+    <string name="text_others">其他</string>
+    <string name="text_about">關於</string>
     <string name="text_TermsOfService">服務條款</string>
     <string name="text_privacyPolicy">隱私政策</string>
     <string name="text_forgetPassword">忘記密碼</string>
-    <string name="text_forgetPassword_details">請輸入您註冊的電郵地址，以便獲取密碼.</string>
+    <string name="text_forgetPassword_details">請輸入您註冊的用戶名(電話)，以便獲取密碼.</string>
+     <string name="text_forgetPassword_phone">輸入用戶名(電話)</string>
     <string name="text_forgetPassword_email">輸入電郵地址</string>
     <string name="text_activityDetails">活動詳情</string>
     <string name="text_notificationDetails">通告詳情</string>
@@ -67,14 +68,14 @@
     <string name="text_http">歡迎訪問 www.eyebb.com</string>
     <string name="text_invalidKindergarten">選擇幼稚園</string>
     <string name="text_change_kids">選擇兒童</string>
-    <string name="text_feed_back">反饋</string>
+    <string name="text_feed_back">意見回饋</string>
     <string name="text_matching_verification">匹配驗證</string>
     <string name="text_matching_device">匹配設備</string>
     <string name="text_device_verified">驗證成功</string>
-    <string name="text_error_username">用戶名格式錯誤！ \n(例如：A-Z a-z 0-9 _) 長度：3-30</string>
-    <string name="text_error_email">郵件地址格式錯誤！</string>
+    <string name="text_error_username">用戶名格式錯誤!</string>
+    <string name="text_error_email">郵件地址格式錯誤!</string>
     <string name="text_error_nickname">暱稱格式錯誤!</string>
-    <string name="text_error_password">密碼格式錯誤！ \n(例如：A-Z a-z 0-9) 長度：8-30</string>
+    <string name="text_error_password">密碼格式錯誤! \n(例如：A-Z a-z 0-9) 長度：6-20</string>
     <string name="text_loading">加載中...</string>
     <string name="text_radar_status_disconnection">關閉防丟模式</string>
     <string name="text_radar_status_start_connected">開啟防丟模式</string>
@@ -117,7 +118,7 @@
     <string name="text_feedback_bug">錯誤</string>
     <string name="text_feedback_idea">想法</string>
     <string name="text_feedback_question">問題</string>
-    <string name="text_no_content">暂时没有内容...</string>
+    <string name="text_no_content">(暫時)沒有內容...</string>
     <string name="text_anti_lost_mode_miss">他/她的信號很弱或者已經丟失</string>
     <string name="text_fill_in_something">請填入內容!</string>
     <string name="text_contact_information">聯繫信息</string>
@@ -128,7 +129,7 @@
     <string name="text_register_successfully">註冊成功!</string>
     <string name="text_child_not_exist">暫時沒有這個孩子的信息</string>
     <string name="text_already_relationship">錯誤!這個孩子信息已經被用戶綁定</string>
-    <string name="text_device_already_binded">錯誤!此貝貝安設備已經被綁定過,請更換.</string>
+    <string name="text_device_already_binded">錯誤!此寶寶安設備已經被綁定過,請更換.</string>
     <string name="text_feed_back_successful">提交成功,謝謝!</string>
     <string name="text_search_guest_null">ohh,此用戶不存在!</string>
     <string name="text_unbind_device">已檢測到孩子綁定寶寶安,您需要重新綁定嗎?</string>
@@ -138,7 +139,7 @@
       <string name="text_no_guest">無監護人</string>
           <string name="text_select_child">請選擇孩子.</string>
     <string name="text_grant_success">授權成功!</string>
-
+<string name="text_update_password">修改密碼</string>
           
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

@@ -45,7 +45,7 @@ public class Constants {
 
 	public static int DELAY = 0;
 	public static final int PERIOD = 5000;
-	public static final int BINDING_PERIOD = 15000;
+	public static final int BINDING_PERIOD = 40000;
 	
 	public static final String FINISH_BIND = "FINISH_BIND";
 	// private static final int SCANTIME = 5000;
