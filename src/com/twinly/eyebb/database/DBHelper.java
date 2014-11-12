@@ -64,14 +64,18 @@ public class DBHelper extends SQLiteOpenHelper {
 				.append("icon text)");
 		db.execSQL(tableCreate.toString());
 		
-		/*tableCreate = new StringBuffer();
+		tableCreate = new StringBuffer();
 		tableCreate.append("create table if not exists notification")
 				.append("(id integer primary key autoincrement,")
-				.append("notification_id integer,").append("title text,")
-				.append("date integer,").append("icon text,")
-				.append("url text,").append("is_read boolean)");
-		db.execSQL(tableCreate.toString());*/
-		
+				.append("title text,")
+				.append("title_tc text,")
+				.append("title_sc text,")
+				.append("url text,")
+				.append("url_tc text,")
+				.append("url_sc text,")
+				.append("date text,")
+				.append("icon text)");
+		db.execSQL(tableCreate.toString());
 		
 	}
 

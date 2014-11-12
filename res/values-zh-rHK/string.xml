@@ -135,7 +135,7 @@
     <string name="text_unbind_device">已檢測到孩子綁定寶寶安,您需要重新綁定嗎?</string>
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
-    <string name="text_no_data">無數據</string>
+    <string name="text_no_data">未綁定小童</string>
       <string name="text_no_guest">無監護人</string>
           <string name="text_select_child">請選擇孩子.</string>
     <string name="text_grant_success">授權成功!</string>

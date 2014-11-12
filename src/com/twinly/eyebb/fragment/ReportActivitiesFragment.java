@@ -13,8 +13,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.activity.ActivityDetailsActivity;
+import com.twinly.eyebb.activity.WebViewActivity;
 import com.twinly.eyebb.adapter.ActivitiesListViewAdapter;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBActivityInfo;
@@ -51,7 +52,6 @@ public class ReportActivitiesFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		System.out.println("---->>onCreateView");
 		View v = inflater.inflate(R.layout.fragment_report_activities,
 				container, false);
 		listIsNull = (TextView) v.findViewById(R.id.list_is_null);
@@ -63,12 +63,12 @@ public class ReportActivitiesFragment extends Fragment implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				System.out.println("CLICK");
-				Intent intent = new Intent(getActivity(),
-						ActivityDetailsActivity.class);
+				Intent intent = new Intent(getActivity(), WebViewActivity.class);
 				Bundle bundle = new Bundle();
+				bundle.putInt("from", ActivityConstants.FRAGMENT_REPORT_ACTIVITY);
 				bundle.putSerializable("activityInfo",
 						(ActivityInfo) adapter.getItem(position));
+				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 		});

@@ -64,4 +64,7 @@ public class ActivityConstants {
 	public static final int RESULT_AUTO_UPDATE_ON = 202;
 	public static final int RESULT_AUTO_UPDATE_OFF = 203;
 	public static final int RESULT_RESULT_BIRTHDAY_OK = 204;
+
+	public static final int FRAGMENT_REPORT_ACTIVITY = 1;
+	public static final int FRAGMENT_PROFILE = 2;
 }

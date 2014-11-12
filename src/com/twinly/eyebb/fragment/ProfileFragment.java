@@ -1,50 +1,72 @@
 package com.twinly.eyebb.fragment;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.eyebb.R;
-
 import com.twinly.eyebb.activity.FeedbackDialog;
 import com.twinly.eyebb.activity.LancherActivity;
-import com.twinly.eyebb.activity.NotificationActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
+import com.twinly.eyebb.activity.WebViewActivity;
+import com.twinly.eyebb.adapter.NotificationsListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.database.DBNotifications;
+import com.twinly.eyebb.model.Notifications;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class ProfileFragment extends Fragment {
 
 	private TextView settingBtn;
 	private View notificationDetailsBtn;
-	private View notificationDetailsBtn2;
-	private View notificationDetailsBtn3;
+	private ArrayList<Notifications> list;
+	private ListView listView;
+	private NotificationsListViewAdapter adapter;
 	//没用的东西
 	int child;
-	TextView v1;
-	TextView v2;
-	TextView v3;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_profile, container, false);
+		listView = (ListView) v.findViewById(R.id.listView);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent = new Intent(getActivity(), WebViewActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("from",
+						ActivityConstants.FRAGMENT_PROFILE);
+				bundle.putSerializable("notifications",
+						(Notifications) adapter.getItem(position));
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+
 		((TextView) v.findViewById(R.id.username)).setText(SharePrefsUtils
 				.getLoginAccount(getActivity()));
 
-		return v;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		settingBtn = (TextView) getActivity().findViewById(R.id.options_btn);
+		settingBtn = (TextView) v.findViewById(R.id.options_btn);
 		settingBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -58,12 +80,8 @@ public class ProfileFragment extends Fragment {
 			}
 		});
 
-		notificationDetailsBtn = getActivity().findViewById(
-				R.id.notification_details_btn);
+		notificationDetailsBtn = v.findViewById(R.id.notification_details_btn);
 
-		v1 = (TextView) getActivity().findViewById(R.id.vi_1);
-		v2 = (TextView) getActivity().findViewById(R.id.vi_2);
-		v3 = (TextView) getActivity().findViewById(R.id.vi_3);
 		notificationDetailsBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -71,51 +89,80 @@ public class ProfileFragment extends Fragment {
 
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), FeedbackDialog.class);
-				v1.setVisibility(0);
-				v2.setVisibility(8);
-				v3.setVisibility(8);
 
 				startActivity(intent);
 			}
 		});
+		updateView();
+		return v;
+	}
 
-		notificationDetailsBtn2 = getActivity().findViewById(
-				R.id.notification_details_btn2);
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	}
 
-		notificationDetailsBtn2.setOnClickListener(new View.OnClickListener() {
+	private void updateView() {
+		list = DBNotifications.getNotifications(getActivity());
+		adapter = new NotificationsListViewAdapter(getActivity(), list);
+		listView.setAdapter(adapter);
+	}
 
-			@Override
-			public void onClick(View v) {
+	private class UpdateView extends AsyncTask<Void, Void, String> {
 
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), NotificationActivity.class);
-				v1.setVisibility(8);
-				v2.setVisibility(0);
-				v3.setVisibility(8);
-				child = 1;
-				intent.putExtra("child", child);
-				startActivity(intent);
+		@Override
+		protected String doInBackground(Void... params) {
+			String result = HttpRequestUtils.get(HttpConstants.GET_NOTICES,
+					null);
+			try {
+				new JSONObject(result);
+			} catch (JSONException e) {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+					result = HttpRequestUtils.get(HttpConstants.GET_NOTICES,
+							null);
+				}
 			}
-		});
+			return result;
+		}
 
-		notificationDetailsBtn3 = getActivity().findViewById(
-				R.id.notification_details_btn3);
-
-		notificationDetailsBtn3.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), NotificationActivity.class);
-				v1.setVisibility(8);
-				v2.setVisibility(8);
-				v3.setVisibility(0);
-				child = 1;
-				intent.putExtra("child", child);
-				startActivity(intent);
+		@Override
+		protected void onPostExecute(String result) {
+			System.out.println("notice = " + result);
+			try {
+				JSONObject json = new JSONObject(result);
+				JSONArray array = json
+						.getJSONArray(HttpConstants.JSON_KEY_NOTICES);
+				DBNotifications.deleteTable(getActivity());
+				for (int i = 0; i < array.length(); i++) {
+					JSONObject JSONNotice = array.getJSONObject(i);
+					Notifications notice = new Notifications();
+					notice.setTitle(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_TITLE));
+					notice.setTitleTc(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_TITLE_TC));
+					notice.setTitleSc(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_TITLE_SC));
+					notice.setUrl(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_NOTICE));
+					notice.setUrlTc(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_NOTICE_TC));
+					notice.setUrlSc(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_NOTICE_SC));
+					notice.setIcon(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_ICON));
+					notice.setDate(JSONNotice
+							.getString(HttpConstants.JSON_KEY_NOTICES_VALID_UNTIL));
+					DBNotifications.insert(getActivity(), notice);
+				}
+				updateView();
+			} catch (JSONException e) {
+				System.out.println(HttpConstants.GET_NOTICES + e.getMessage());
 			}
-		});
+		}
 
 	}
 

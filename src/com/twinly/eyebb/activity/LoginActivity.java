@@ -30,6 +30,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBActivityInfo;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.database.DBNotifications;
 import com.twinly.eyebb.database.DBPerformance;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -164,6 +165,7 @@ public class LoginActivity extends Activity {
 					JSONObject json = new JSONObject(result);
 					new GetUserTypeTask(json).execute();
 				} catch (JSONException e) {
+					loginDialog.dismiss();
 					Toast.makeText(
 							LoginActivity.this,
 							getString(R.string.toast_invalid_username_or_password),
@@ -205,6 +207,7 @@ public class LoginActivity extends Activity {
 					DBActivityInfo.deleteTable(LoginActivity.this);
 					DBChildren.deleteTable(LoginActivity.this);
 					DBPerformance.deleteTable(LoginActivity.this);
+					DBNotifications.deleteTable(LoginActivity.this);
 				}
 				getAllChildren(childJSONList);
 

@@ -3,16 +3,13 @@ package com.twinly.eyebb.constant;
 public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
-	public static final String SERVER_URL = "http://158.182.246.221:8089/";
-	 //public static final String SERVER_URL = "http://158.182.246.224:8080/";
+	public static final String SERVER_URL = "http://srv.eyebb.com:8089/";
+	//public static final String SERVER_URL = "http://158.182.246.221:8089/";
+	//public static final String SERVER_URL = "http://158.182.246.224:8080/";
 
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
-	public static final String LOGIN = "j_spring_security_check";
-	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
-
-	// public static final String JSON_KEY_KINDERGARTENS_INFO =
 	// "allKindergartensInfo";
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
 	// public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
@@ -66,6 +63,18 @@ public class HttpConstants {
 	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
 	public static final String JSON_KEY_USER_TYPE = "type";
 
+	public static final String JSON_KEY_NOTICES = "notices";
+	public static final String JSON_KEY_NOTICES_TITLE = "title";
+	public static final String JSON_KEY_NOTICES_TITLE_TC = "titleTc";
+	public static final String JSON_KEY_NOTICES_TITLE_SC = "titleSc";
+	public static final String JSON_KEY_NOTICES_NOTICE = "notice";
+	public static final String JSON_KEY_NOTICES_NOTICE_TC = "noticeTc";
+	public static final String JSON_KEY_NOTICES_NOTICE_SC = "noticeSc";
+	public static final String JSON_KEY_NOTICES_ICON = "icon";
+	public static final String JSON_KEY_NOTICES_VALID_UNTIL = "validUntil";
+
+	public static final String LOGIN = "j_spring_security_check";
+	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
 	public static final String ACC_NAME_CHECK = "regService/api/accNameCheck";
 	public static final String REG_PARENTS = "regService/api/regParents";
 	public static final String CHILD_CHECKING = "masterService/api/childChecking";
@@ -79,8 +88,9 @@ public class HttpConstants {
 	public static final String AUTH_FIND_GUESTS = "masterService/api/searchMasterGuests";
 	public static final String GRANT_GUESTS = "masterService/api/grantGuestAccess";
 	public static final String LOGIN_INFO = "reportService/api/loginInfo";
-	
-	
+	public static final String GET_REPORTS = "reportService/api/stat";
+	public static final String GET_NOTICES = "reportService/api/notices";
+
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
 	public static final String SERVER_RETURN_false = "false";
@@ -88,5 +98,5 @@ public class HttpConstants {
 	public static final String SERVER_RETURN_USED = "USED";
 	public static final String SERVER_RETURN_N = "N";
 	public static final String SERVER_RETURN_Y = "Y";
-	
+
 }

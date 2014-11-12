@@ -6,45 +6,73 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup.LayoutParams;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ShareActionProvider;
-import android.widget.ViewFlipper;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.model.ActivityInfo;
+import com.twinly.eyebb.model.Notifications;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class ActivityDetailsActivity extends Activity {
-	final Activity activity = this;
-	private ImageView Image2;
-	private ViewFlipper mainLayout;
-	private float startX;
-	private int imageHight = 350;
+public class WebViewActivity extends Activity {
 	private WebView webViewDetails;
 	private String webViewDetailsURL = " http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
-	//"http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
-	private int width;
+	private String actionBarTitle;
 
 	@SuppressLint("SetJavaScriptEnabled")
-	@JavascriptInterface
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_details);
-		setTitle(getString(R.string.text_activityDetails));
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setIcon(android.R.color.transparent);
 
+		Bundle bundle = getIntent().getExtras();
+		switch (bundle.getInt("from")) {
+		case ActivityConstants.FRAGMENT_REPORT_ACTIVITY:
+			ActivityInfo activityInfo = (ActivityInfo) bundle
+					.getSerializable("activityInfo");
+			switch (SharePrefsUtils.getLanguage(this)) {
+			case Constants.LOCALE_TW:
+			case Constants.LOCALE_HK:
+			case Constants.LOCALE_CN:
+				webViewDetailsURL = activityInfo.getUrlTc();
+				actionBarTitle = activityInfo.getTitleTc();
+				break;
+			default:
+				webViewDetailsURL = activityInfo.getUrl();
+				actionBarTitle = activityInfo.getTitle();
+				break;
+			}
+			break;
+		case ActivityConstants.FRAGMENT_PROFILE:
+			Notifications notification = (Notifications) bundle
+					.getSerializable("notifications");
+			switch (SharePrefsUtils.getLanguage(this)) {
+			case Constants.LOCALE_TW:
+			case Constants.LOCALE_HK:
+			case Constants.LOCALE_CN:
+				webViewDetailsURL = notification.getUrlTc();
+				actionBarTitle = notification.getTitleTc();
+				break;
+			default:
+				webViewDetailsURL = notification.getUrl();
+				actionBarTitle = notification.getTitle();
+				break;
+			}
+			break;
+		}
+
+		setTitle(actionBarTitle);
 		webViewDetails = (WebView) findViewById(R.id.webview_show);
 		// 获取当前显示的界面大小
 		WebSettings webSettings = webViewDetails.getSettings();
 		webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-
-		System.out.println("webViewDetailswebViewDetails"
-				+ webViewDetails.getScale());
 
 		// 设置可以支持缩放
 		webViewDetails.getSettings().setSupportZoom(true);
@@ -58,18 +86,12 @@ public class ActivityDetailsActivity extends Activity {
 		webViewDetails.getSettings().setDomStorageEnabled(true);
 		webViewDetails.getSettings().setJavaScriptEnabled(true);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setIcon(android.R.color.transparent);
-		// addImageView(R.drawable.activity_details_img1);
-		// addImageView(R.drawable.activity_details_img2);
-		// addImageView(R.drawable.activity_details_img3);
-		// init();
 		webViewDetails.setWebChromeClient(new WebChromeClient() {
 			public void onProgressChanged(WebView view, int progress) {
-				activity.setTitle(R.string.text_loading);
-				activity.setProgress(progress * 100);
+				setTitle(R.string.text_loading);
+				setProgress(progress * 100);
 				if (progress == 100)
-					activity.setTitle(R.string.text_activityDetails);
+					setTitle(actionBarTitle);
 			}
 		});
 		webViewDetails.setWebViewClient(new WebViewClient() {
@@ -88,12 +110,6 @@ public class ActivityDetailsActivity extends Activity {
 		});
 
 		webViewDetails.loadUrl(webViewDetailsURL);
-
-	}
-
-	private void init() {
-		// TODO Auto-generated method stub
-		// mainLayout = (ViewFlipper) this.findViewById(R.id.viewFlipper);
 
 	}
 
@@ -136,44 +152,4 @@ public class ActivityDetailsActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void addImageView(int img) {
-		// 手动添加imageview
-		// mainLayout = (ViewFlipper) findViewById(R.id.viewFlipper);
-		Image2 = new ImageView(this);
-		Image2.setImageResource(img);
-		// DensityUtil.px2dip(this, imageHight);
-		// Image2.setId(110); //注意这点 设置id
-		// Image2.setOnClickListener(this);
-		RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		// lp1.addRule(RelativeLayout.ALIGN_TOP);
-		// lp1.setMargins(30, 50, 100, 100);//(int left, int top, int right, int
-		// bottom)
-		// lp1.leftMargin = 30;
-		// lp1.topMargin = 100;
-		mainLayout.addView(Image2, lp1);
-	}
-
-	// add flipper
-	// public boolean onTouchEvent(MotionEvent event) {
-	// switch (event.getAction()) {
-	// case MotionEvent.ACTION_DOWN:
-	// startX = event.getX();
-	// break;
-	// case MotionEvent.ACTION_UP:
-	//
-	// if (event.getX() > startX) { // 向右滑动
-	// mainLayout.setInAnimation(this, R.anim.in_leftright);
-	// mainLayout.setOutAnimation(this, R.anim.out_leftright);
-	// mainLayout.showNext();
-	// } else if (event.getX() < startX) { // 向左滑动
-	// mainLayout.setInAnimation(this, R.anim.in_rightleft);
-	// mainLayout.setOutAnimation(this, R.anim.out_rightleft);
-	// mainLayout.showPrevious();
-	// }
-	// break;
-	// }
-	//
-	// return super.onTouchEvent(event);
-	// }
 }

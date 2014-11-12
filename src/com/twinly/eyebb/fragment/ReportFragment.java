@@ -249,12 +249,6 @@ public class ReportFragment extends Fragment implements
 	private class UpdateView extends AsyncTask<Void, Void, String> {
 
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			//setRefreshing(true);
-		}
-
-		@Override
 		protected String doInBackground(Void... params) {
 			try {
 				Thread.sleep(1000);
@@ -264,7 +258,8 @@ public class ReportFragment extends Fragment implements
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(child.getChildId()));
 			map.put("avgDays", String.valueOf(Constants.averageDays));
-			String result = HttpRequestUtils.get("reportService/api/stat", map);
+			String result = HttpRequestUtils
+					.get(HttpConstants.GET_REPORTS, map);
 			try {
 				new JSONObject(result);
 			} catch (JSONException e) {
@@ -272,8 +267,8 @@ public class ReportFragment extends Fragment implements
 					Thread.sleep(500);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
-					result = HttpRequestUtils
-							.get("reportService/api/stat", map);
+					result = HttpRequestUtils.get(HttpConstants.GET_REPORTS,
+							map);
 				}
 			}
 			return result;
@@ -289,10 +284,8 @@ public class ReportFragment extends Fragment implements
 
 			} catch (JSONException e) {
 				reInitView();
-				System.out.println("reportService/api/stat ---->> "
-						+ e.getMessage());
+				System.out.println(HttpConstants.GET_REPORTS + e.getMessage());
 			}
-			//setRefreshing(false);
 			callback.resetProgressBar();
 		}
 	}

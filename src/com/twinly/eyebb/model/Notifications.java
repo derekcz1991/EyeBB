@@ -1,55 +1,91 @@
 package com.twinly.eyebb.model;
 
-public class Notifications {
-	private long notificationId;
-	private String title;
-	private long date;
-	private String icon;
-	private String url;
-	private boolean isRead;
+import java.io.Serializable;
 
+public class Notifications implements Serializable {
 	/**
 	 * 
-	 * @param notificationId
-	 * @param title
-	 * @param date
-	 * @param icon
-	 * @param url
-	 * @param isRead
 	 */
-	public Notifications(long notificationId, String title, long date,
-			String icon, String url, boolean isRead) {
-		super();
-		this.notificationId = notificationId;
-		this.title = title;
-		this.date = date;
-		this.icon = icon;
-		this.url = url;
-		this.isRead = isRead;
-	}
-
-	public long getNotificationId() {
-		return notificationId;
-	}
+	private static final long serialVersionUID = 4L;
+	private String title;
+	private String titleTc;
+	private String titleSc;
+	private String url;
+	private String urlTc;
+	private String urlSc;
+	private String date;
+	private String icon;
 
 	public String getTitle() {
 		return title;
 	}
 
-	public long getDate() {
-		return date;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getIcon() {
-		return icon;
+	public String getTitleTc() {
+		return titleTc;
+	}
+
+	public void setTitleTc(String titleTc) {
+		this.titleTc = titleTc;
+	}
+
+	public String getTitleSc() {
+		return titleSc;
+	}
+
+	public void setTitleSc(String titleSc) {
+		this.titleSc = titleSc;
 	}
 
 	public String getUrl() {
 		return url;
 	}
 
-	public boolean isRead() {
-		return isRead;
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUrlTc() {
+		return urlTc;
+	}
+
+	public void setUrlTc(String urlTc) {
+		this.urlTc = urlTc;
+	}
+
+	public String getUrlSc() {
+		return urlSc;
+	}
+
+	public void setUrlSc(String urlSc) {
+		this.urlSc = urlSc;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	@Override
+	public String toString() {
+		return "Notifications [title=" + title + ", titleTc=" + titleTc
+				+ ", titleSc=" + titleSc + ", url=" + url + ", urlTc=" + urlTc
+				+ ", urlSc=" + urlSc + ", date=" + date + ", icon=" + icon
+				+ "]";
 	}
 
 }

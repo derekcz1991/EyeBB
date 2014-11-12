@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.eyebb.R;
@@ -38,6 +40,8 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class IndoorLocatorFragment extends Fragment implements
 		PullToRefreshListener {
 	private PullToRefreshListView listView;
+	private ProgressBar progressBar;
+	private TextView hint;
 	private CallbackInterface callback;
 	private Map<String, Child> childrenMap;
 	private SerializableChildrenMap myMap;
@@ -82,6 +86,9 @@ public class IndoorLocatorFragment extends Fragment implements
 		listView.setPullToRefreshListener(this);
 		listView.setVisibility(View.GONE);
 
+		progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+		hint = (TextView) v.findViewById(R.id.hint);
+		hint.setVisibility(View.INVISIBLE);
 		autoUpdateButton = (ToggleButton) v.findViewById(R.id.autoUpdateButton);
 
 		indoorLocatorData = new HashMap<Location, ArrayList<String>>();
@@ -145,9 +152,7 @@ public class IndoorLocatorFragment extends Fragment implements
 					}
 				});
 
-		/*
-		 * children dialog
-		 */
+		// children dialog
 		v.findViewById(R.id.btn_kidslist).setOnClickListener(
 				new OnClickListener() {
 					@Override
@@ -247,6 +252,13 @@ public class IndoorLocatorFragment extends Fragment implements
 	private class UpdateView extends AsyncTask<Void, Void, String> {
 
 		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			progressBar.setVisibility(View.VISIBLE);
+			hint.setVisibility(View.INVISIBLE);
+		}
+
+		@Override
 		protected String doInBackground(Void... params) {
 			try {
 				Thread.sleep(1000);
@@ -284,10 +296,11 @@ public class IndoorLocatorFragment extends Fragment implements
 				listView.setAdapter(adapter);
 
 			} catch (JSONException e) {
+				progressBar.setVisibility(View.INVISIBLE);
+				hint.setVisibility(View.VISIBLE);
 				System.out.println("reportService/api/childrenList ---->> "
 						+ e.getMessage());
 			}
-			//listView.setRefreshing(false);
 			callback.resetProgressBar();
 		}
 
@@ -296,72 +309,69 @@ public class IndoorLocatorFragment extends Fragment implements
 	/**
 	 * Parse json data get all locations
 	 * @param json
+	 * @throws JSONException 
 	 */
-	private void getAllLocation(JSONObject json) {
+	private void getAllLocation(JSONObject json) throws JSONException {
 		if (indoorLocatorData != null) {
 			indoorLocatorData.clear();
 		}
-		try {
-			JSONArray locationJSONList = json
-					.getJSONArray(HttpConstants.JSON_KEY_LOCATION_ALL);
-			for (int i = 0; i < locationJSONList.length(); i++) {
+		JSONArray locationJSONList = json
+				.getJSONArray(HttpConstants.JSON_KEY_LOCATION_ALL);
 
-				JSONObject object = (JSONObject) locationJSONList.get(i);
-				Location location = new Location();
-				location.setId(object
-						.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
-				location.setName(object
-						.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
-				location.setType(object
-						.getString(HttpConstants.JSON_KEY_LOCATION_TYPE));
-				indoorLocatorData.put(location, new ArrayList<String>());
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+		Location location = new Location();
+		location.setId(0);
+		location.setName("kindergarten");
+		location.setType("title");
+		indoorLocatorData.put(location, new ArrayList<String>());
+
+		for (int i = 0; i < locationJSONList.length(); i++) {
+			JSONObject object = (JSONObject) locationJSONList.get(i);
+			location = new Location();
+			location.setId(object.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
+			location.setName(object
+					.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
+			location.setType(object
+					.getString(HttpConstants.JSON_KEY_LOCATION_TYPE));
+			indoorLocatorData.put(location, new ArrayList<String>());
 		}
 	}
 
 	/**
 	 * Parse json data get all children informations and location
 	 * @param json
+	 * @throws JSONException 
 	 */
-	private void getAllChild(JSONObject json) {
+	private void getAllChild(JSONObject json) throws JSONException {
 		childrenMap = DBChildren.getChildrenMap(getActivity());
-		try {
-			JSONArray childJSONList = json
-					.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-			for (int i = 0; i < childJSONList.length(); i++) {
-				JSONObject object = (JSONObject) childJSONList.get(i);
-				insertChild(object);
+		JSONArray childJSONList = json
+				.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+		for (int i = 0; i < childJSONList.length(); i++) {
+			JSONObject object = (JSONObject) childJSONList.get(i);
+			insertChild(object);
 
-				String childId = object
-						.getString(HttpConstants.JSON_KEY_CHILD_ID);
-				if (CommonUtils.isNotNull(object
-						.getString(HttpConstants.JSON_KEY_LOCATION_TIME))) {
-					JSONObject locationTime = object
-							.getJSONObject(HttpConstants.JSON_KEY_LOCATION_TIME);
-					childrenMap
-							.get(childId)
-							.setLastAppearTime(
-									locationTime
-											.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
+			String childId = object.getString(HttpConstants.JSON_KEY_CHILD_ID);
+			if (CommonUtils.isNotNull(object
+					.getString(HttpConstants.JSON_KEY_LOCATION_TIME))) {
+				JSONObject locationTime = object
+						.getJSONObject(HttpConstants.JSON_KEY_LOCATION_TIME);
+				childrenMap
+						.get(childId)
+						.setLastAppearTime(
+								locationTime
+										.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
 
-					JSONObject locationJSON = locationTime
-							.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
-					Location location = new Location();
-					location.setId(locationJSON
-							.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
-					location.setName(locationJSON
-							.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
-					location.setType(HttpConstants.JSON_KEY_LOCATION_TYPE);
-					childrenMap.get(childId)
-							.setLocationName(location.getName());
-					updateLocationData(childId, location);
-				}
-
+				JSONObject locationJSON = locationTime
+						.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
+				Location location = new Location();
+				location.setId(locationJSON
+						.getLong(HttpConstants.JSON_KEY_LOCATION_ID));
+				location.setName(locationJSON
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
+				location.setType(HttpConstants.JSON_KEY_LOCATION_TYPE);
+				childrenMap.get(childId).setLocationName(location.getName());
+				updateLocationData(childId, location);
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+
 		}
 	}
 
