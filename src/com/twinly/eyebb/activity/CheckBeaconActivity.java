@@ -623,7 +623,7 @@ public class CheckBeaconActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_search));
+		MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_search_mac));
 		search.setIcon(R.drawable.ic_search)
 				.setActionView(R.layout.actionbar_search)
 				.setShowAsAction(

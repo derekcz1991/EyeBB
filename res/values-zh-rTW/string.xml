@@ -159,6 +159,7 @@
     <string name="btn_add_new_guest">增加副監管人</string>
     <string name="btn_search_new_guest">搜索副監管人</string>
     <string name="btn_search">搜索</string>
+    <string name="btn_search_mac">搜索Mac地址</string>
     <string name="btn_add">添加</string>
     
     <string name="toast_login">登錄中&#8230;</string>

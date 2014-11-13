@@ -36,7 +36,8 @@ public class LancherActivity extends Activity {
 		logo = (ImageView) findViewById(R.id.icon);
 		checkLogo();
 		SystemUtils.initImageLoader(getApplicationContext());
-
+		//when login clear the guardian id
+		SharePrefsUtils.setSignUpGuardianId(LancherActivity.this, "");
 		setLanguage();
 		new HttpRequestUtils();
 
