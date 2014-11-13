@@ -1,6 +1,7 @@
 package com.twinly.eyebb.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
@@ -32,9 +33,10 @@ public class SystemUtils {
 	}
 
 	public static void initImageLoader(Context context) {
-		// This configuration tuning is custom. You can tune every option, you may tune some of them,
+		// This configuration tuning is custom. You can tune every option, you
+		// may tune some of them,
 		// or you can create default configuration by
-		//  ImageLoaderConfiguration.createDefault(this);
+		// ImageLoaderConfiguration.createDefault(this);
 		// method.
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				context).threadPriority(Thread.NORM_PRIORITY - 2)
@@ -48,5 +50,7 @@ public class SystemUtils {
 		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);
 	}
+
+	
 
 }

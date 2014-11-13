@@ -67,7 +67,7 @@ public class ServicesActivity extends Activity {
 
 	private String major;
 	private String minor;
-	final Timer timer = new Timer();
+	Timer timer = new Timer();
 	// private ArrayList<ArrayList<BluetoothGattCharacteristic>>
 	// mGattCharacteristics = new
 	// ArrayList<ArrayList<BluetoothGattCharacteristic>>();
@@ -184,12 +184,10 @@ public class ServicesActivity extends Activity {
 			Toast.makeText(this, R.string.text_connect_error, Toast.LENGTH_LONG);
 			if (dialog != null)
 				dialog.dismiss();
-			//
-			// editor.putBoolean("connectFail", true);
-			// editor.commit();
-			Intent intentKidsListActivity = new Intent(ServicesActivity.this,
-					ErrorDialog.class);
-			startActivity(intentKidsListActivity);
+
+			Toast.makeText(ServicesActivity.this, R.string.text_network_error,
+					Toast.LENGTH_LONG).show();
+
 			finish();
 		}
 	}
@@ -200,10 +198,10 @@ public class ServicesActivity extends Activity {
 			switch (msg.what) {
 
 			case START_PROGRASSS_BAR:
-//				dialog = LoadingDialog.createLoadingDialogCanCancel(
-//						ServicesActivity.this,
-//						getString(R.string.toast_write_major));
-//				dialog.show();
+				// dialog = LoadingDialog.createLoadingDialogCanCancel(
+				// ServicesActivity.this,
+				// getString(R.string.toast_write_major));
+				// dialog.show();
 				break;
 
 			case STOP_PROGRASSS_BAR:
@@ -233,13 +231,15 @@ public class ServicesActivity extends Activity {
 					dialog.dismiss();
 				}
 
-				if (TimeOutTask != null) {
+				try {
 					TimeOutTask.cancel();
 					TimeOutTask = null;
-				}
-				if (timer != null) {
 					timer.cancel();
 					timer.purge();
+					timer = null;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 				startActivity(intentToChara);
@@ -298,10 +298,17 @@ public class ServicesActivity extends Activity {
 				status_text.setText(mDeviceName + ": Disconnected");
 				ServicesActivity.this.finish();
 				// if error
-				TimeOutTask.cancel();
-				TimeOutTask = null;
-				timer.cancel();
-				timer.purge();
+				try {
+					TimeOutTask.cancel();
+					TimeOutTask = null;
+					timer.cancel();
+					timer.purge();
+					timer = null;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				Intent intentError = new Intent(ServicesActivity.this,
 						ErrorDialog.class);
 				startActivity(intentError);
@@ -401,8 +408,14 @@ public class ServicesActivity extends Activity {
 		super.onDestroy();
 		unbindService(mServiceConnection);
 		try {
-			if (dialog.isShowing())
+			if (dialog.isShowing()) {
 				dialog.dismiss();
+			}
+			TimeOutTask.cancel();
+			TimeOutTask = null;
+			timer.cancel();
+			timer.purge();
+			timer = null;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

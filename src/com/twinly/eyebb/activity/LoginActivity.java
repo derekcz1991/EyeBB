@@ -12,9 +12,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +30,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBActivityInfo;
@@ -48,6 +53,8 @@ public class LoginActivity extends Activity {
 	private EditText password;
 	private String hashPassword;
 	private Dialog loginDialog;
+
+	private String userAccout;
 
 	private String kindergartenNameEn;
 	private String kindergartenNameSc;
@@ -91,7 +98,7 @@ public class LoginActivity extends Activity {
 
 				forgetPassword.setView(layout);
 
-				backBtn = (TextView) layout.findViewById(R.id.back_btn);
+				backBtn = (TextView) layout.findViewById(R.id.back_confirm);
 
 				backBtn.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -99,6 +106,8 @@ public class LoginActivity extends Activity {
 					public void onClick(View v) {
 						closeKeyBoard();
 						passwordDialog.dismiss();
+
+						new Thread(postResetPasswordToServerRunnable).start();
 					}
 				});
 
@@ -108,6 +117,109 @@ public class LoginActivity extends Activity {
 		});
 
 	}
+
+	Runnable postResetPasswordToServerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			userAccout = edEmail.getText().toString();
+
+			if (userAccout.length() > 0) {
+
+				postResetPasswordToServer();
+
+			} else {
+				Message msg = handler.obtainMessage();
+				msg.what = Constants.NULL_FEEDBAKC_CONTENT;
+				handler.sendMessage(msg);
+			}
+
+		}
+
+	};
+
+	@SuppressLint("ShowToast")
+	private void postResetPasswordToServer() {
+		// TODO Auto-generated method stub
+
+		Map<String, String> map = new HashMap<String, String>();
+		System.out.println("info=>" + userAccout);
+
+		map.put("accName", userAccout);
+
+		try {
+			// String retStr = GetPostUtil.sendPost(url, postMessage);
+			String retStr = HttpRequestUtils.postTo(LoginActivity.this,
+					HttpConstants.RESET_PASSWORD, map);
+			System.out.println("retStrpost======>" + retStr);
+			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+					|| retStr.equals("") || retStr.length() == 0) {
+				System.out.println("connect error");
+
+				Message msg = handler.obtainMessage();
+				msg.what = Constants.CONNECT_ERROR;
+				handler.sendMessage(msg);
+			} else {
+				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
+					Message msg = handler.obtainMessage();
+					msg.what = Constants.PASSWORD_RESET_SUCCESS;
+					handler.sendMessage(msg);
+
+					
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
+					Message msg = handler.obtainMessage();
+					msg.what = Constants.ACCOUNT_NOT_EXIST;
+					handler.sendMessage(msg);
+				}
+			}
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
+
+	@SuppressLint("HandlerLeak")
+	Handler handler = new Handler() {
+
+		@SuppressLint("ShowToast")
+		public void handleMessage(Message msg) {
+			Toast toast = null;
+			switch (msg.what) {
+
+			case Constants.CONNECT_ERROR:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_network_error, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+			case Constants.PASSWORD_RESET_SUCCESS:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_feed_back_successful,
+						Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case Constants.NULL_FEEDBAKC_CONTENT:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_something, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case Constants.ACCOUNT_NOT_EXIST:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_user_do_not_exist, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+
+				break;
+			}
+
+		}
+	};
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

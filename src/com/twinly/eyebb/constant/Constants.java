@@ -78,4 +78,10 @@ public class Constants {
 	public static final int NULL_FEEDBAKC_CONTENT = 10006;
 	public static final int NO_SELECT_CHILDREN = 10007;
 	public static final int GRANT_SUCCESS = 10008;
+	public static final int UPDATE_PASSWORD_SUCCESS = 10008;
+	public static final int TWO_DIFFERENT_PASSWORD_SUCCESS = 10009;
+	public static final int OLD_PASSWORD_ERROR = 10010;
+	public static final int PASSWORD_FORMAT_ERROR = 10011;
+	public static final int PASSWORD_RESET_SUCCESS = 10012;
+	public static final int ACCOUNT_NOT_EXIST = 10013;
 }

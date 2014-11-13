@@ -19,6 +19,7 @@ import com.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -31,12 +32,11 @@ public class VerifyWhenLoginDialog extends Activity {
 
 		setContentView(R.layout.dialog_verify);
 
-		
-//		Intent broadcast = new Intent();
-//		broadcast.setAction(Constants.FINISH_BIND);
-//		broadcast.putExtra("msg", true);
-//		sendBroadcast(broadcast);
-		
+		// Intent broadcast = new Intent();
+		// broadcast.setAction(Constants.FINISH_BIND);
+		// broadcast.putExtra("msg", true);
+		// sendBroadcast(broadcast);
+
 		btnVerify = (TextView) findViewById(R.id.btn_verify);
 		btnVerify.setOnClickListener(new OnClickListener() {
 
@@ -110,16 +110,17 @@ public class VerifyWhenLoginDialog extends Activity {
 				// successful
 				if (retStr.equals("true")) {
 
-					Intent intent = new Intent(VerifyWhenLoginDialog.this,
-							LancherActivity.class);
-
-					startActivity(intent);
-
-					
-					SettingsActivity.instance.finish();
-					CheckBeaconActivity.instance.finish();
-					finish();
-
+					// Intent intent = new Intent(VerifyWhenLoginDialog.this,
+					// LancherActivity.class);
+					//
+					// startActivity(intent);
+					//
+					//
+					// SettingsActivity.instance.finish();
+					// CheckBeaconActivity.instance.finish();
+					// finish();
+					DBChildren.deleteTable(VerifyWhenLoginDialog.this);
+					restartApplication();
 					// save to database
 					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
 					// MACaddress4submit);
@@ -163,6 +164,13 @@ public class VerifyWhenLoginDialog extends Activity {
 
 		}
 
+	}
+
+	private void restartApplication() {
+		final Intent intent = getPackageManager().getLaunchIntentForPackage(
+				getPackageName());
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
 	}
 
 	Handler handler = new Handler() {

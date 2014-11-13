@@ -224,7 +224,7 @@ public class CheckChildToBindDialog extends Activity {
 				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-				if (retStr.equals(HttpConstants.SERVER_RETURN_N)) {
+				if (retStr.equals(HttpConstants.SERVER_RETURN_false)) {
 					Intent data = new Intent(CheckChildToBindDialog.this,
 							CheckBeaconActivity.class);
 
@@ -234,7 +234,7 @@ public class CheckChildToBindDialog extends Activity {
 					startActivity(data);
 					finish();
 
-				} else if (retStr.equals(HttpConstants.SERVER_RETURN_Y)) {
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_true)) {
 					Intent data = new Intent(CheckChildToBindDialog.this,
 							UnbindDeviceDialog.class);
 

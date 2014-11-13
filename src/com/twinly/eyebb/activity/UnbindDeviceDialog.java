@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -89,13 +90,15 @@ public class UnbindDeviceDialog extends Activity {
 					finish();
 
 				} else if (retStr.equals("Y")) {
-					Intent data = new Intent(UnbindDeviceDialog.this,
-							LancherActivity.class);
+					// Intent data = new Intent(UnbindDeviceDialog.this,
+					// LancherActivity.class);
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.UNBIND_SUCCESS;
 					handler.sendMessage(msg);
-					startActivity(data);
-					finish();
+					DBChildren.deleteTable(UnbindDeviceDialog.this);
+					restartApplication();
+//					startActivity(data);
+//					finish();
 				}
 			}
 
@@ -138,4 +141,11 @@ public class UnbindDeviceDialog extends Activity {
 
 		}
 	};
+	
+	private void restartApplication() {
+		final Intent intent = getPackageManager().getLaunchIntentForPackage(
+				getPackageName());
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+	}
 }

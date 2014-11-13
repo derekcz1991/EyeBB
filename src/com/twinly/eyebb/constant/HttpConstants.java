@@ -90,6 +90,8 @@ public class HttpConstants {
 	public static final String LOGIN_INFO = "reportService/api/loginInfo";
 	public static final String GET_REPORTS = "reportService/api/stat";
 	public static final String GET_NOTICES = "reportService/api/notices";
+	public static final String UPDATE_PASSWORD = "accSetting/api/updatePassword";
+	public static final String RESET_PASSWORD = "regService/api/resetPassword";
 
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
@@ -98,5 +100,7 @@ public class HttpConstants {
 	public static final String SERVER_RETURN_USED = "USED";
 	public static final String SERVER_RETURN_N = "N";
 	public static final String SERVER_RETURN_Y = "Y";
+	public static final String SERVER_RETURN_T = "T";
+	public static final String SERVER_RETURN_F = "F";
 
 }

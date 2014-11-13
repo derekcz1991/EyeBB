@@ -453,6 +453,18 @@ public class CheckBeaconActivity extends Activity {
 				scanLeDevice();
 			}
 			isWhileLoop = false;
+			
+			try {
+				timer.cancel();
+				timer.purge();
+				timer = null;
+				task.cancel();
+				task = null;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			finish();
 			return true;
 		}
@@ -603,8 +615,14 @@ public class CheckBeaconActivity extends Activity {
 		mHandler.removeCallbacks(scanLeDeviceRunable);
 		isWhileLoop = false;
 		try {
-			if (dialog.isShowing() && dialog != null)
+			if (dialog.isShowing() && dialog != null) {
 				dialog.dismiss();
+			}
+			timer.cancel();
+			timer.purge();
+			timer = null;
+			task.cancel();
+			task = null;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -625,7 +643,7 @@ public class CheckBeaconActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_search_mac));
 		search.setIcon(R.drawable.ic_search)
-				.setActionView(R.layout.actionbar_search)
+				.setActionView(R.layout.actionbar_search_device)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_ALWAYS
 								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
@@ -713,5 +731,6 @@ public class CheckBeaconActivity extends Activity {
 			myList.setAdapter(listItemAdapter);
 		}
 	}
+
 
 }

@@ -101,14 +101,18 @@ public class CharacteristicsMinorActivity extends Activity {
 						dialog.dismiss();
 					CheckBeaconActivity.instance.finish();
 
-					if (TimeOutTask != null) {
+					try {
+						intentTime = 21;
 						TimeOutTask.cancel();
 						TimeOutTask = null;
-					}
-					if (timer != null) {
 						timer.cancel();
 						timer.purge();
+						timer = null;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
+
 					startActivity(intent);
 					finish();
 				}
@@ -241,12 +245,17 @@ public class CharacteristicsMinorActivity extends Activity {
 						.wirteCharacteristic(characteristic2);
 				System.out.println("---->finish1009");
 
-				TimeOutTask.cancel();
-				TimeOutTask = null;
-				timer.cancel();
-				timer.purge();
-				timer = null;
-				
+				try {
+					TimeOutTask.cancel();
+					TimeOutTask = null;
+					timer.cancel();
+					timer.purge();
+					timer = null;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				Intent intent = new Intent(CharacteristicsMinorActivity.this,
 						VerifyWhenLoginDialog.class);
 				startActivity(intent);
@@ -276,6 +285,16 @@ public class CharacteristicsMinorActivity extends Activity {
 		// unregisterReceiver(mGattUpdateReceiver);
 		if (dialog.isShowing())
 			dialog.dismiss();
+		try {
+			TimeOutTask.cancel();
+			TimeOutTask = null;
+			timer.cancel();
+			timer.purge();
+			timer = null;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		unregisterReceiver(mGattUpdateReceiver2);
 	}
 
