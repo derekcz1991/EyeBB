@@ -112,10 +112,25 @@ public class DBChildren {
 		child.setLocationName("");
 		return child;
 	}
-	
+
 	public static void deleteTable(Context context) {
 		SQLiteDatabase db = getInstance(context);
 		db.execSQL("delete from children");
+		db.close();
+	}
+
+	public static void deleteDeviceOfChild(Context context, String childId) {
+		SQLiteDatabase db = getInstance(context);
+		db.execSQL("UPDATE children SET mac_address = ? WHERE child_id = ?",
+				new String[] { "", childId });
+		db.close();
+	}
+
+	public static void addDeviceOfChild(Context context, String childId,
+			String mac_address) {
+		SQLiteDatabase db = getInstance(context);
+		db.execSQL("UPDATE children SET mac_address = ? WHERE child_id = ?",
+				new String[] { mac_address, childId });
 		db.close();
 	}
 }

@@ -122,6 +122,7 @@ public class IndoorLocatorFragment extends Fragment implements
 
 	/**
 	 * beepall will post children data (ID and macAddress) to the server
+	 * 
 	 * @param v
 	 */
 	private void setUpListener(View v) {
@@ -129,13 +130,11 @@ public class IndoorLocatorFragment extends Fragment implements
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						/*if (CommonUtils.isFastDoubleClick()) {
-							return;
-						} else {
-							Intent intent = new Intent(getActivity(),
-									BeepDialog.class);
-							startActivity(intent);
-						}*/
+						/*
+						 * if (CommonUtils.isFastDoubleClick()) { return; } else
+						 * { Intent intent = new Intent(getActivity(),
+						 * BeepDialog.class); startActivity(intent); }
+						 */
 
 					}
 				});
@@ -313,8 +312,9 @@ public class IndoorLocatorFragment extends Fragment implements
 
 	/**
 	 * Parse json data get all locations
+	 * 
 	 * @param json
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	private void getAllLocation(JSONObject json) throws JSONException {
 		if (indoorLocatorData != null) {
@@ -343,8 +343,9 @@ public class IndoorLocatorFragment extends Fragment implements
 
 	/**
 	 * Parse json data get all children informations and location
+	 * 
 	 * @param json
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	private void getAllChild(JSONObject json) throws JSONException {
 		childrenMap = DBChildren.getChildrenMap(getActivity());
@@ -359,11 +360,14 @@ public class IndoorLocatorFragment extends Fragment implements
 					.getString(HttpConstants.JSON_KEY_LOCATION_TIME))) {
 				JSONObject locationTime = object
 						.getJSONObject(HttpConstants.JSON_KEY_LOCATION_TIME);
-				childrenMap
-						.get(childId)
-						.setLastAppearTime(
-								locationTime
-										.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
+				if (childrenMap.size() > 0) {
+					childrenMap
+							.get(childId)
+							.setLastAppearTime(
+									locationTime
+											.getLong(HttpConstants.JSON_KEY_LOCATION_LAST_APPEAR_TIME));
+
+				}
 
 				JSONObject locationJSON = locationTime
 						.getJSONObject(HttpConstants.JSON_KEY_LOCATION);
@@ -373,7 +377,10 @@ public class IndoorLocatorFragment extends Fragment implements
 				location.setName(locationJSON
 						.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
 				location.setType(HttpConstants.JSON_KEY_LOCATION_TYPE);
-				childrenMap.get(childId).setLocationName(location.getName());
+				if (childrenMap.size() > 0) {
+					childrenMap.get(childId)
+							.setLocationName(location.getName());
+				}
 				updateLocationData(childId, location);
 			}
 

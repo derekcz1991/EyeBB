@@ -64,7 +64,7 @@ public class LoginAuthKidsActivity extends Activity {
 					// data.putExtras(bundle);
 					// setResult(ActivityConstants.RESULT_RESULT_OK, data);
 					startActivity(data);
-					finish();
+					//finish();
 				}
 
 			}

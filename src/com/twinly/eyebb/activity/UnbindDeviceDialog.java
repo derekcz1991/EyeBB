@@ -68,8 +68,9 @@ public class UnbindDeviceDialog extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		
-		map.put("childId", SharePrefsUtils.signUpChildId(UnbindDeviceDialog.this));
+
+		map.put("childId",
+				SharePrefsUtils.signUpChildId(UnbindDeviceDialog.this));
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(UnbindDeviceDialog.this,
@@ -95,10 +96,12 @@ public class UnbindDeviceDialog extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.UNBIND_SUCCESS;
 					handler.sendMessage(msg);
-					DBChildren.deleteTable(UnbindDeviceDialog.this);
+					DBChildren.deleteDeviceOfChild(UnbindDeviceDialog.this,
+							SharePrefsUtils
+									.signUpChildId(UnbindDeviceDialog.this));
 					restartApplication();
-//					startActivity(data);
-//					finish();
+					// startActivity(data);
+					// finish();
 				}
 			}
 
@@ -141,11 +144,11 @@ public class UnbindDeviceDialog extends Activity {
 
 		}
 	};
-	
+
 	private void restartApplication() {
-		final Intent intent = getPackageManager().getLaunchIntentForPackage(
-				getPackageName());
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Intent intent = new Intent(this, LancherActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
 }

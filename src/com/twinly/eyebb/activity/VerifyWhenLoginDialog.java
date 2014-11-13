@@ -110,20 +110,13 @@ public class VerifyWhenLoginDialog extends Activity {
 				// successful
 				if (retStr.equals("true")) {
 
-					// Intent intent = new Intent(VerifyWhenLoginDialog.this,
-					// LancherActivity.class);
-					//
-					// startActivity(intent);
-					//
-					//
-					// SettingsActivity.instance.finish();
-					// CheckBeaconActivity.instance.finish();
-					// finish();
-					DBChildren.deleteTable(VerifyWhenLoginDialog.this);
+					// DBChildren.deleteTable(VerifyWhenLoginDialog.this);
 					restartApplication();
-					// save to database
-					// DBChildren.updateMacAddress(this, childIDfromDeviceList,
-					// MACaddress4submit);
+					DBChildren.addDeviceOfChild(VerifyWhenLoginDialog.this,
+							SharePrefsUtils
+									.signUpChildId(VerifyWhenLoginDialog.this),
+							SharePrefsUtils
+									.isMacAddress(VerifyWhenLoginDialog.this));
 				} else {
 					String major = retStr.substring(0, retStr.indexOf(":"));
 					String minor = retStr.substring(retStr.indexOf(":") + 1,
@@ -136,15 +129,6 @@ public class VerifyWhenLoginDialog extends Activity {
 					SharePrefsUtils.setSignUpDeviceMinor(
 							VerifyWhenLoginDialog.this, minor);
 
-					// Intent intent = new Intent(CheckBeaconActivity.this,
-					// ServicesActivity.class);
-					//
-					// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
-					// deviceName4submit);
-					// intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-					// MACaddress4submit);
-					//
-					// startActivity(intent);
 					Intent intent = new Intent(VerifyWhenLoginDialog.this,
 							ErrorDialog.class);
 					startActivity(intent);
@@ -167,9 +151,9 @@ public class VerifyWhenLoginDialog extends Activity {
 	}
 
 	private void restartApplication() {
-		final Intent intent = getPackageManager().getLaunchIntentForPackage(
-				getPackageName());
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Intent intent = new Intent(this, LancherActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
 
