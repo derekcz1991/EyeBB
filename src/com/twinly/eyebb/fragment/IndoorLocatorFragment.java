@@ -84,7 +84,6 @@ public class IndoorLocatorFragment extends Fragment implements
 				false);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
-		listView.setVisibility(View.GONE);
 
 		progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
 		hint = (TextView) v.findViewById(R.id.hint);
@@ -288,7 +287,6 @@ public class IndoorLocatorFragment extends Fragment implements
 			System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
-				listView.setVisibility(View.VISIBLE);
 				getAllLocation(json);
 				getAllChild(json);
 				adapter = new IndoorLocatorAdapter(getActivity(),
@@ -296,11 +294,16 @@ public class IndoorLocatorFragment extends Fragment implements
 				listView.setAdapter(adapter);
 
 			} catch (JSONException e) {
-				progressBar.setVisibility(View.INVISIBLE);
-				hint.setVisibility(View.VISIBLE);
 				System.out.println("reportService/api/childrenList ---->> "
 						+ e.getMessage());
 			}
+			progressBar.setVisibility(View.INVISIBLE);
+			if (indoorLocatorData.size() <= 1) {
+				hint.setVisibility(View.VISIBLE);
+			} else {
+				hint.setVisibility(View.INVISIBLE);
+			}
+
 			callback.resetProgressBar();
 		}
 

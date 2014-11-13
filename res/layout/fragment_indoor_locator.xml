@@ -142,11 +142,27 @@
         </LinearLayout>
     </LinearLayout>
 
+    <com.twinly.eyebb.customview.PullToRefreshListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/functionbar"
+        android:layout_below="@id/menubar"
+        android:background="#FFf1f1e5"
+        android:cacheColorHint="@color/transparent"
+        android:divider="@null"
+        android:dividerHeight="8dp"
+        android:listSelector="@drawable/list_selector"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+    </com.twinly.eyebb.customview.PullToRefreshListView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/functionbar"
-        android:layout_below="@id/menubar" >
+        android:layout_below="@id/menubar"
+        android:focusable="false">
 
         <TextView
             android:id="@+id/hint"
@@ -163,20 +179,5 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
     </RelativeLayout>
-
-    <com.twinly.eyebb.customview.PullToRefreshListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/functionbar"
-        android:layout_below="@id/menubar"
-        android:background="#FFf1f1e5"
-        android:cacheColorHint="@color/transparent"
-        android:divider="@null"
-        android:dividerHeight="8dp"
-        android:listSelector="@drawable/list_selector"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" >
-    </com.twinly.eyebb.customview.PullToRefreshListView>
 
 </RelativeLayout>

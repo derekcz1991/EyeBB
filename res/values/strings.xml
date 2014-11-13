@@ -130,7 +130,7 @@
     <string name="text_unbind_device">This child has already got the eyebb device. Do you want to re-bind it?</string>
     <string name="text_unbind_success">Eyebb unbind successfully!</string>
     <string name="text_unbind_fail">Oops! Eyebb unbind Unsuccessfully!</string>
-    <string name="text_no_data">No data</string>
+    <string name="text_no_data">No data, no bind child</string>
      <string name="text_no_guest">No Guest</string>
      <string name="text_select_child">Sorry,Please select the children.</string>
      <string name="text_grant_success">Grant Successfully!</string>
