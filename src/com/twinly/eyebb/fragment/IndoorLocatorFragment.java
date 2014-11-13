@@ -253,8 +253,10 @@ public class IndoorLocatorFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			progressBar.setVisibility(View.VISIBLE);
-			hint.setVisibility(View.INVISIBLE);
+			if (autoUpdateFlag == false) {
+				progressBar.setVisibility(View.VISIBLE);
+				hint.setVisibility(View.INVISIBLE);
+			}
 		}
 
 		@Override
