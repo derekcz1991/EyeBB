@@ -15,7 +15,7 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginRight="16dp"
-        android:src="@drawable/hugh"
+        android:src="@drawable/ic_stub"
         app:border_color="@color/white"
         app:border_width="2dp" />
 
@@ -27,13 +27,27 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="60dp" />
 
-    <TextView
-        android:id="@+id/phone"
-        style="@style/DarkGreyText_18"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="16dp"
+        android:background="@drawable/btn_bg_red" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/btn_list_call" />
+
+        <TextView
+            android:id="@+id/phone"
+            style="@style/WhiteText_18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp" />
+    </LinearLayout>
 
 </RelativeLayout>
