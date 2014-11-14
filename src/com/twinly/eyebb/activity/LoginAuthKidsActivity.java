@@ -24,6 +24,8 @@ public class LoginAuthKidsActivity extends Activity {
 	private ChangeKidsListViewAdapter adapter;
 	private boolean isSortByName;
 	private ArrayList<Child> list;
+	
+	public static LoginAuthKidsActivity instance = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class LoginAuthKidsActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 
 		setContentView(R.layout.activity_login_auth_kids);
-
+		instance = this;
 		listView = (ListView) findViewById(R.id.listView);
 		list = DBChildren.getChildrenList(this);
 

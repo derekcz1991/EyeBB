@@ -99,9 +99,15 @@ public class UnbindDeviceDialog extends Activity {
 					DBChildren.deleteDeviceOfChild(UnbindDeviceDialog.this,
 							SharePrefsUtils
 									.signUpChildId(UnbindDeviceDialog.this));
-					restartApplication();
-					// startActivity(data);
-					// finish();
+					//restartApplication();
+					Intent intent = new Intent(UnbindDeviceDialog.this,
+							SettingsActivity.class);
+					
+					startActivity(intent);
+					
+					SettingsActivity.instance.finish();
+					LoginAuthKidsActivity.instance.finish();
+					finish();
 				}
 			}
 

@@ -111,12 +111,20 @@ public class VerifyWhenLoginDialog extends Activity {
 				if (retStr.equals("true")) {
 
 					// DBChildren.deleteTable(VerifyWhenLoginDialog.this);
-					restartApplication();
+					// /restartApplication();
 					DBChildren.addDeviceOfChild(VerifyWhenLoginDialog.this,
 							SharePrefsUtils
 									.signUpChildId(VerifyWhenLoginDialog.this),
 							SharePrefsUtils
 									.isMacAddress(VerifyWhenLoginDialog.this));
+
+					Intent intent = new Intent(VerifyWhenLoginDialog.this,
+							SettingsActivity.class);
+					SettingsActivity.instance.finish();
+					LoginAuthKidsActivity.instance.finish();
+					CheckBeaconActivity.instance.finish();
+					startActivity(intent);
+					finish();
 				} else {
 					String major = retStr.substring(0, retStr.indexOf(":"));
 					String minor = retStr.substring(retStr.indexOf(":") + 1,

@@ -55,7 +55,7 @@ public class CharacteristicsActivity extends Activity {
 
 	private TimerTask TimeOutTask = null;
 	private int intentTime = 0;
-
+	final Timer timer = new Timer();
 	private Dialog dialog;
 	public static boolean majorFinished = false;
 
@@ -164,75 +164,6 @@ public class CharacteristicsActivity extends Activity {
 		};
 		disconverThread.start();
 
-		// registerReceiver(mGattUpdateReceiver2, new IntentFilter(
-		// BluetoothLeService.ACTION_DATA_AVAILABLE));
-		//
-		// Thread disconverThread2 = new Thread() {
-		// @SuppressLint("NewApi")
-		// public void run() {
-		//
-		// // System.out.println("disconverThread ");
-		// List<BluetoothGattCharacteristic> gattCharacteristics = gattService2
-		// .getCharacteristics();
-		//
-		// // System.out.println("disconverThread. ");
-		// // Loops through available Characteristics.
-		// if (gattCharacteristics == null) {
-		// System.out.println("gattCharacteristics NULL");
-		// }
-		//
-		// for (int i = 0; i < gattCharacteristics.size(); i++) {
-		// charas2.add(gattCharacteristics.get(i));
-		// // System.out.println("disconverThread1 ");
-		// HashMap<String, String> currentCharaData = new HashMap<String,
-		// String>();
-		// // System.out.println("disconverThread2 ");
-		// uuid2 = gattCharacteristics.get(i).getUuid().toString();
-		// // System.out.println("disconverThread3 ");
-		// uuid2 = uuid2.substring(4, 8);
-		// // System.out.println("uuid char==>" + uuid);
-		//
-		// name = SampleGattAttributes.lookup(uuid2, "Unknow");
-		// currentCharaData.put("NAME", name2);
-		// currentCharaData.put("UUID", uuid2);
-		// gattCharacteristicGroupData2.add(currentCharaData);
-		// addItem(name2, uuid2);
-		//
-		// if (uuid2.equals(Constants.BEEP_CHAR_MINOR)) {
-		// final BluetoothGattCharacteristic characteristic2 =
-		// gattCharacteristics
-		// .get(i);
-		// final int charaProp = characteristic2.getProperties();
-		// if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-		// // uuid =
-		// // characteristic.getUuid().toString();
-		// System.out.println(" charas2 uuid ==>" + uuid2
-		// + "  " + i);
-		// // uuid = uuid.substring(4, 8);
-		// // uuid = uuid;
-		// charaidxMinor = i;
-		// Constants.mBluetoothLeService
-		// .readCharacteristic2(characteristic2);
-		//
-		// break;
-		// }
-		// }
-		// }
-		//
-		// }
-		// };
-		// disconverThread2.start();
-
-		// Intent intentToVerify = new Intent();
-		//
-		// intentToVerify.setClass(CharacteristicsActivity.this,
-		// VerifyDialog.class);
-		// // 關掉BLE服務
-		//
-		// startActivity(intentToVerify);
-		// unregisterReceiver(mGattUpdateReceiver);
-		// finish();
-
 	}
 
 	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
@@ -257,7 +188,6 @@ public class CharacteristicsActivity extends Activity {
 		private void modify1008() {
 			// TODO Auto-generated method stub
 			// String data = "0033";
-			final Timer timer = new Timer();
 
 			TimeOutTask = new TimerTask() {
 				public void run() {
@@ -285,16 +215,6 @@ public class CharacteristicsActivity extends Activity {
 											.isMacAddress(CharacteristicsActivity.this));
 							startActivity(intent);
 
-							if (TimeOutTask != null) {
-								TimeOutTask.cancel();
-								TimeOutTask = null;
-							}
-							if (timer != null) {
-								timer.cancel();
-								timer.purge();
-							}
-							if (dialog.isShowing() && dialog != null)
-								dialog.dismiss();
 							CharacteristicsActivity.majorFinished = true;
 							finish();
 						}
@@ -376,6 +296,19 @@ public class CharacteristicsActivity extends Activity {
 		super.onPause();
 		unregisterReceiver(mGattUpdateReceiver);
 
+		try {
+			TimeOutTask.cancel();
+			TimeOutTask = null;
+
+			timer.cancel();
+			timer.purge();
+
+			if (dialog.isShowing() && dialog != null)
+				dialog.dismiss();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// unregisterReceiver(mGattUpdateReceiver2);
 	}
 
