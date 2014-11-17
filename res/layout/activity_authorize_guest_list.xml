@@ -15,19 +15,84 @@
         android:text="@string/text_no_guest"
         android:visibility="gone" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:cacheColorHint="@color/transparent"
-        android:divider="@null"
-        android:dividerHeight="8dp"
-        android:listSelector="@drawable/list_selector"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp" 
-        android:layout_marginTop="8dp"/>
+    <LinearLayout
+        android:id="@+id/view_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="vertical" >
 
-    <Button
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_authorized_to_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="6dp"
+                android:text="@string/text_authorized_to_others" />
+
+            <TextView
+                android:id="@+id/tv_hint_authorized_to_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:text="@string/text_no_guest"
+                android:visibility="gone" />
+
+            <ListView
+                android:id="@+id/listView_authorized_to_others"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="8dp"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/activity_background_yellow"
+                android:dividerHeight="8dp"
+                android:listSelector="@drawable/list_selector"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="6dp"
+                android:text="@string/text_authorization_from_others" />
+
+            <TextView
+                android:id="@+id/tv_hint_authorization_from_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="6dp"
+                android:text="@string/text_no_guest"
+                android:visibility="gone" />
+
+            <ListView
+                android:id="@+id/listView_authorization_from_others"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="8dp"
+                android:cacheColorHint="@color/transparent"
+                android:divider="@color/activity_background_yellow"
+                android:dividerHeight="8dp"
+                android:listSelector="@drawable/list_selector"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
+        </LinearLayout>
+        <!--
+         <Button
         android:id="@+id/btn_add_new_guest"
         style="@style/WhiteText_18"
         android:layout_width="180dp"
@@ -37,5 +102,7 @@
         android:background="@drawable/btn_bg_red"
         android:onClick="OnLoginClicked"
         android:text="@string/btn_add_new_guest" />
+        -->
+    </LinearLayout>
 
 </LinearLayout>

@@ -25,6 +25,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -63,6 +64,7 @@ public class ServicesActivity extends Activity {
 	final static int START_PROGRASSS_BAR = 1;
 	final static int STOP_PROGRASSS_BAR = 2;
 
+	private int repeat_read_times = 0;
 	// sharedPreferences
 
 	private String major;
@@ -90,10 +92,12 @@ public class ServicesActivity extends Activity {
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
 		if (CharacteristicsActivity.majorFinished) {
+			CharacteristicsActivity.instance.finish();
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
 					getString(R.string.toast_read_service));
 			dialog.show();
+			
 		} else {
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
@@ -113,13 +117,52 @@ public class ServicesActivity extends Activity {
 					// if (dialog.isShowing())
 					// dialog.dismiss();
 					// CheckBeaconActivity.instance.finish();
+					repeat_read_times++;
+
+					// if (dialog.isShowing() && dialog != null) {
+					// dialog.dismiss();
+					// }
+					//
+					// dialog = LoadingDialog.createLoadingDialogCanCancel(
+					// ServicesActivity.this,
+					// getString(R.string.toast_repeat_read_service)
+					// + repeat_read_times);
+					// dialog.show();
+
+					Message msg = handler.obtainMessage();
+					msg.what = START_PROGRASSS_BAR;
+					handler.sendMessage(msg);
 
 					// Constants.mBluetoothLeService.connect(mDeviceAddress);
 					registerReceiver(mGattUpdateReceiver,
 							makeGattUpdateIntentFilter());
 					// status_text.setText(mDeviceName + ": Connecting...");
-					System.out.println(": Connecting..." + mDeviceAddress);
+					System.out.println(": Connecting..." + mDeviceAddress + " "
+							+ repeat_read_times);
 
+					if (repeat_read_times == 5) {
+						repeat_read_times = 0;
+
+						// finish activity
+
+						// if error
+						try {
+							TimeOutTask.cancel();
+							TimeOutTask = null;
+							timer.cancel();
+							timer.purge();
+							timer = null;
+						} catch (Exception e) {
+
+							e.printStackTrace();
+						}
+
+						Intent intentError = new Intent(ServicesActivity.this,
+								ErrorDialog.class);
+						startActivity(intentError);
+						CheckBeaconActivity.instance.finish();
+						finish();
+					}
 					// timer = null;
 					// finish();
 				}
@@ -198,10 +241,10 @@ public class ServicesActivity extends Activity {
 			switch (msg.what) {
 
 			case START_PROGRASSS_BAR:
-				// dialog = LoadingDialog.createLoadingDialogCanCancel(
-				// ServicesActivity.this,
-				// getString(R.string.toast_write_major));
-				// dialog.show();
+				LoadingDialog.createLoadingDialogCanCancelForMsg(getResources()
+						.getString(R.string.toast_repeat_read_service)
+						+ repeat_read_times);
+
 				break;
 
 			case STOP_PROGRASSS_BAR:
@@ -215,6 +258,7 @@ public class ServicesActivity extends Activity {
 		@Override
 		public void run() {
 			final Intent intentToChara = new Intent();
+			System.out.println("CharacteristicsActivity.majorFinished-->" + CharacteristicsActivity.majorFinished);
 			if (CharacteristicsActivity.majorFinished) {
 				intentToChara.setClass(ServicesActivity.this,
 						CharacteristicsMinorActivity.class);
@@ -322,12 +366,9 @@ public class ServicesActivity extends Activity {
 
 				int num = SharePrefsUtils.BleServiceRunOnceFlag(context);
 				// if (num == 1) {
-				System.out
-						.println("SharePrefsUtils.BleServiceRunOnceFlag(context)>"
-								+ SharePrefsUtils
-										.BleServiceRunOnceFlag(context));
+			
 				new autoConnection().start();
-				SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
+				// SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
 				// }
 
 			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -446,5 +487,14 @@ public class ServicesActivity extends Activity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

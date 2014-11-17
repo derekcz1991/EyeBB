@@ -136,7 +136,7 @@
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
     <string name="text_no_data">未綁定小童</string>
-    <string name="text_no_guest">無監護人</string>
+    <string name="text_no_guest">無監護人...</string>
     <string name="text_select_child">請選擇孩子.</string>
     <string name="text_grant_success">授權成功!</string>
     <string name="text_update_password">修改密碼</string>
@@ -148,6 +148,8 @@
        <string name="text_tips">溫馨提示</string>  
         <string name="text_old_password_incorrect">原始密碼不正確.</string>
       <string name="text_user_do_not_exist">此用戶不存在.</string>
+       <string name="text_authorized_to_others">已授權的親友:</string>
+                        <string name="text_authorization_from_others">被哪些親友授權:</string>
         
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -178,5 +180,6 @@
     <string name="toast_invalid_username_or_password">帳號,密碼錯誤或者請檢查您的網路</string>
     <string name="toast_login_failed">登錄失敗, 請重新登錄</string>
     <string name="toast_read_service">讀取設備服務中&#8230;</string>
+    <string name="toast_repeat_read_service">重新讀取設備服務次數:</string>
 
 </resources>

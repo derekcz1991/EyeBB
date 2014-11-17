@@ -412,8 +412,9 @@ public class CheckBeaconActivity extends Activity {
 								Map.Entry<String, Device> entry = it.next();
 								map.put("image", R.drawable.ble_icon);
 
-								map.put("text", "UUID:"
-										+ entry.getValue().getUuid() + "\n強度:"
+//								map.put("text", "UUID:"
+//										+ entry.getValue().getUuid() + "\n強度:"
+								map.put("text","強度:"
 										+ entry.getValue().getRssi());
 								map.put("title", "Mac:"
 										+ entry.getValue().getAddress());

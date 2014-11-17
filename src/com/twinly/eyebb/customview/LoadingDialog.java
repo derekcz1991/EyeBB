@@ -2,6 +2,7 @@ package com.twinly.eyebb.customview;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ public class LoadingDialog {
 	private static LayoutInflater inflater;
 	private static View v;
 	private static Dialog loadingDialog;
+	private static TextView content;
 
 	public static Dialog createLoadingDialog(Context context, String msg) {
 
@@ -42,8 +44,9 @@ public class LoadingDialog {
 
 		inflater = LayoutInflater.from(context);
 		v = inflater.inflate(R.layout.dialog_loading, null);// 得到加载view
-		((TextView) v.findViewById(R.id.msg)).setText(msg);
-
+		content = ((TextView) v.findViewById(R.id.msg));
+		content.setText(msg);
+		content.setGravity(Gravity.CENTER_HORIZONTAL);
 		loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
 
 		loadingDialog.setContentView(v, new LinearLayout.LayoutParams(
@@ -55,7 +58,7 @@ public class LoadingDialog {
 
 	public static void createLoadingDialogCanCancelForMsg(String beepAlli) {
 
-		((TextView) v.findViewById(R.id.msg)).setText(beepAlli + "");
+		content.setText(beepAlli + "");
 
 	}
 

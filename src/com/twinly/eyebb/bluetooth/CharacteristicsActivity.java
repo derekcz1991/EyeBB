@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.PendingIntent.OnFinished;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -16,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.view.Window;
 import android.widget.ListView;
@@ -37,7 +39,7 @@ public class CharacteristicsActivity extends Activity {
 	ListView myList; // ListView控件
 
 	TextView status_text;
-
+	public static CharacteristicsActivity instance;
 	int servidx, charaidxMajor, charaidxMinor;
 	String name = null;
 	String name2 = null;
@@ -55,7 +57,7 @@ public class CharacteristicsActivity extends Activity {
 
 	private TimerTask TimeOutTask = null;
 	private int intentTime = 0;
-	final Timer timer = new Timer();
+	Timer timer = new Timer();
 	private Dialog dialog;
 	public static boolean majorFinished = false;
 
@@ -67,7 +69,7 @@ public class CharacteristicsActivity extends Activity {
 		setContentView(R.layout.ble_characteristics);
 
 		BaseApp.getInstance().addActivity(this);
-
+		instance = this;
 		status_text = (TextView) findViewById(R.id.characteristics_status);
 		dialog = LoadingDialog.createLoadingDialogCanCancel(
 				CharacteristicsActivity.this,
@@ -188,43 +190,6 @@ public class CharacteristicsActivity extends Activity {
 		private void modify1008() {
 			// TODO Auto-generated method stub
 			// String data = "0033";
-
-			TimeOutTask = new TimerTask() {
-				public void run() {
-					intentTime++;
-					System.out.println("MajorTime==>" + intentTime);
-					if (intentTime == 5) {
-						intentTime = 0;
-						if (BluetoothLeService.writeMajorSuccess) {
-
-							Intent intent = new Intent(
-									CharacteristicsActivity.this,
-									ServicesActivity.class);
-							// intent.putExtra(
-							// "servidx",
-							// SharePrefsUtils
-							// .bleServiceIndex(CharacteristicsActivity.this));
-							SharePrefsUtils.setBleServiceRunOnceFlag(
-									CharacteristicsActivity.this, 1);
-							intent.putExtra(
-									ServicesActivity.EXTRAS_DEVICE_NAME,
-									"Macaron");
-							intent.putExtra(
-									ServicesActivity.EXTRAS_DEVICE_ADDRESS,
-									SharePrefsUtils
-											.isMacAddress(CharacteristicsActivity.this));
-							startActivity(intent);
-
-							CharacteristicsActivity.majorFinished = true;
-							finish();
-						}
-
-					}
-				}
-			};
-
-			timer.schedule(TimeOutTask, 0, 1000);
-
 			try {
 				String data = SharePrefsUtils
 						.signUpDeviceMajor(CharacteristicsActivity.this);
@@ -241,8 +206,72 @@ public class CharacteristicsActivity extends Activity {
 				e.printStackTrace();
 			}
 
+			TimeOutTask = new TimerTask() {
+				public void run() {
+					intentTime++;
+					System.out.println("MajorTime==>" + intentTime);
+					if (intentTime == 5) {
+						intentTime = 0;
+						if (BluetoothLeService.writeMajorSuccess) {
+
+							Intent intent = new Intent(
+									CharacteristicsActivity.this,
+									ServicesActivity.class);
+
+							intent.putExtra(
+									ServicesActivity.EXTRAS_DEVICE_NAME,
+									"Macaron");
+							intent.putExtra(
+									ServicesActivity.EXTRAS_DEVICE_ADDRESS,
+									SharePrefsUtils
+											.isMacAddress(CharacteristicsActivity.this));
+							try {
+
+								dialog.dismiss();
+
+								TimeOutTask.cancel();
+								TimeOutTask = null;
+								timer.cancel();
+								timer.purge();
+								timer = null;
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+							CharacteristicsActivity.majorFinished = true;
+
+							Message msg = handler.obtainMessage();
+							msg.what = Constants.FINISH_WRITE_MAJOR_CHARA;
+							handler.sendMessage(msg);
+							startActivity(intent);
+							// CharacteristicsActivity.this.finish();
+						}
+
+					}
+				}
+			};
+
+			timer.schedule(TimeOutTask, 0, 1000);
+
 		}
 
+	};
+
+	Handler handler = new Handler() {
+
+		@SuppressLint("ShowToast")
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case Constants.FINISH_WRITE_MAJOR_CHARA:
+
+				// unregisterReceiver(mGattUpdateReceiver);
+				finish();
+				System.out.println("chara1008 handler");
+				break;
+
+			}
+		}
 	};
 
 	// private final BroadcastReceiver mGattUpdateReceiver2 = new
@@ -288,7 +317,7 @@ public class CharacteristicsActivity extends Activity {
 				BluetoothLeService.ACTION_DATA_AVAILABLE));
 		// registerReceiver(mGattUpdateReceiver2, new IntentFilter(
 		// BluetoothLeService.ACTION_DATA_AVAILABLE));
-		System.out.println("chara onResume");
+		System.out.println("chara1008 onResume");
 	}
 
 	@Override
@@ -310,6 +339,27 @@ public class CharacteristicsActivity extends Activity {
 			e.printStackTrace();
 		}
 		// unregisterReceiver(mGattUpdateReceiver2);
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		// unregisterReceiver(mGattUpdateReceiver);
+		System.out.println("1008 destroy");
+		try {
+			TimeOutTask.cancel();
+			TimeOutTask = null;
+
+			timer.cancel();
+			timer.purge();
+
+			// if (dialog.isShowing() && dialog != null)
+			dialog.dismiss();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.onDestroy();
 	}
 
 	private void addItem(String devname, String address) {

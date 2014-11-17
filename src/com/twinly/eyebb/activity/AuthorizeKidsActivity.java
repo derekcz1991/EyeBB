@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,14 +36,17 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 public class AuthorizeKidsActivity extends Activity {
 	private ListView listView;
 	private GuestListViewAdapter adapter;
-	private Button btnAddNewGuest;
-	private ArrayList<Guest> guest_data;
-
+	// private Button btnAddNewGuest;
+	private ArrayList<Guest> auth_to_guest_data;
+	private ArrayList<Guest> auth_from_guest_data;
+	private LinearLayout content;
 	private String guardianId;
 	private String name;
 	private String phoneNumber;
 
 	private TextView tvHint;
+	private TextView tvHint_auth_to;
+	private TextView tvHint_auth_from;
 	private String retStr;
 
 	public static final int UPDATE_VIEW = 11111;
@@ -56,11 +60,15 @@ public class AuthorizeKidsActivity extends Activity {
 
 		setContentView(R.layout.activity_authorize_guest_list);
 		new Thread(postFindGuestsToServerRunnable).start();
-		btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
-		listView = (ListView) findViewById(R.id.listView);
+		// btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
+		listView = (ListView) findViewById(R.id.listView_authorized_to_others);
 		tvHint = (TextView) findViewById(R.id.tv_hint);
+		tvHint_auth_to = (TextView) findViewById(R.id.tv_hint_authorized_to_others);
+		tvHint_auth_from = (TextView) findViewById(R.id.tv_hint_authorization_from_others);
 
-		guest_data = new ArrayList<Guest>();
+		content = (LinearLayout) findViewById(R.id.view_content);
+		auth_to_guest_data = new ArrayList<Guest>();
+		auth_from_guest_data = new ArrayList<Guest>();
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -69,19 +77,7 @@ public class AuthorizeKidsActivity extends Activity {
 			}
 		});
 
-		btnAddNewGuest.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(AuthorizeKidsActivity.this,
-						SearchGuestActivity.class);
-				startActivity(intent);
-				finish();
-			}
-		});
 	}
-
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -163,10 +159,10 @@ public class AuthorizeKidsActivity extends Activity {
 				guestMode.setPhoneNumber(guest
 						.getString(HttpConstants.JSON_KEY_USER_PHONE));
 
-				guest_data.add(guestMode);
+				auth_to_guest_data.add(guestMode);
 			}
 
-			System.out.println("guest_data>" + guest_data.size());
+			System.out.println("guest_data>" + auth_to_guest_data.size());
 
 			// adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
 			// guest_data);
@@ -174,10 +170,10 @@ public class AuthorizeKidsActivity extends Activity {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			tvHint.setVisibility(View.VISIBLE);
-
+			content.setVisibility(View.GONE);
 			e.printStackTrace();
 		}
-		return guest_data;
+		return auth_to_guest_data;
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -211,13 +207,17 @@ public class AuthorizeKidsActivity extends Activity {
 				adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
 						parseJson(retStr));
 				listView.setAdapter(adapter);
-				tvHint.setVisibility(View.GONE);
+				if (auth_from_guest_data.size() == 0) {
+					tvHint_auth_from.setVisibility(View.VISIBLE);
+				}
+				tvHint_auth_to.setVisibility(View.GONE);
+				// content.setVisibility(View.VISIBLE);
 				break;
 			}
 
 		}
 	};
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, 0, 0, R.string.btn_add).setShowAsAction(

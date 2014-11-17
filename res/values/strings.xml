@@ -142,6 +142,8 @@
           <string name="text_tips">Tips.</string>
            <string name="text_old_password_incorrect">The original password is not correct.</string>
             <string name="text_user_do_not_exist">Sorry. This user may not exist.</string>
+            <string name="text_authorized_to_others">Authorized to others</string>
+                        <string name="text_authorization_from_others">Authorization from others</string>
      
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -173,4 +175,5 @@
     <string name="toast_write_major">Writing major(1/2)&#8230;</string>
     <string name="toast_write_minor">Writing minor(2/2)&#8230;</string>
        <string name="toast_read_service">Reading Service&#8230;</string>
+        <string name="toast_repeat_read_service">Reading service again:</string>
 </resources>

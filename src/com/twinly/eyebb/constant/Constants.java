@@ -84,4 +84,5 @@ public class Constants {
 	public static final int PASSWORD_FORMAT_ERROR = 10011;
 	public static final int PASSWORD_RESET_SUCCESS = 10012;
 	public static final int ACCOUNT_NOT_EXIST = 10013;
+	public static final int FINISH_WRITE_MAJOR_CHARA = 10014;
 }

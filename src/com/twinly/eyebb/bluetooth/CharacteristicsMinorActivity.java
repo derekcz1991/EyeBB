@@ -255,17 +255,19 @@ public class CharacteristicsMinorActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				if (dialog.isShowing())
+					dialog.dismiss();
 				Intent intent = new Intent(CharacteristicsMinorActivity.this,
 						VerifyWhenLoginDialog.class);
 				startActivity(intent);
+
+			
+				finish();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (dialog.isShowing())
-				dialog.dismiss();
-			finish();
+
 		}
 	};
 
@@ -283,6 +285,7 @@ public class CharacteristicsMinorActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		// unregisterReceiver(mGattUpdateReceiver);
+		//System.out.println("1009 onpause");
 		if (dialog.isShowing())
 			dialog.dismiss();
 		try {
