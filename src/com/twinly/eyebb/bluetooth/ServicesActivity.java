@@ -64,6 +64,7 @@ public class ServicesActivity extends Activity {
 	final static int START_PROGRASSS_BAR = 1;
 	final static int STOP_PROGRASSS_BAR = 2;
 
+	private boolean runOnceFlag = true;
 	private int repeat_read_times = 0;
 	// sharedPreferences
 
@@ -92,12 +93,12 @@ public class ServicesActivity extends Activity {
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
 		if (CharacteristicsActivity.majorFinished) {
-			CharacteristicsActivity.instance.finish();
+			//CharacteristicsActivity.instance.finish();
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
 					getString(R.string.toast_read_service));
 			dialog.show();
-			
+
 		} else {
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
@@ -257,38 +258,43 @@ public class ServicesActivity extends Activity {
 	public class autoConnection extends Thread {
 		@Override
 		public void run() {
-			final Intent intentToChara = new Intent();
-			System.out.println("CharacteristicsActivity.majorFinished-->" + CharacteristicsActivity.majorFinished);
-			if (CharacteristicsActivity.majorFinished) {
-				intentToChara.setClass(ServicesActivity.this,
-						CharacteristicsMinorActivity.class);
-			} else {
-				intentToChara.setClass(ServicesActivity.this,
-						CharacteristicsActivity.class);
-			}
-
-			if (ReadService > 0) {
-
-				intentToChara.putExtra("servidx", ReadService);
-				System.out.println("servidxservidx=>" + 2);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
+			if (runOnceFlag) {
+				runOnceFlag = false;
+				final Intent intentToChara = new Intent();
+				System.out.println("CharacteristicsActivity.majorFinished-->"
+						+ CharacteristicsActivity.majorFinished);
+				if (CharacteristicsActivity.majorFinished) {
+					intentToChara.setClass(ServicesActivity.this,
+							CharacteristicsMinorActivity.class);
+				} else {
+					intentToChara.setClass(ServicesActivity.this,
+							CharacteristicsActivity.class);
 				}
 
-				try {
-					TimeOutTask.cancel();
-					TimeOutTask = null;
-					timer.cancel();
-					timer.purge();
-					timer = null;
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if (ReadService > 0) {
+
+					intentToChara.putExtra("servidx", ReadService);
+					System.out.println("servidxservidx=>" + 2);
+					if (dialog != null && dialog.isShowing()) {
+						dialog.dismiss();
+					}
+
+					try {
+						TimeOutTask.cancel();
+						TimeOutTask = null;
+						timer.cancel();
+						timer.purge();
+						timer = null;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					startActivity(intentToChara);
+
+					ServicesActivity.this.finish();
 				}
 
-				startActivity(intentToChara);
-
-				ServicesActivity.this.finish();
 			}
 
 		}
@@ -366,7 +372,7 @@ public class ServicesActivity extends Activity {
 
 				int num = SharePrefsUtils.BleServiceRunOnceFlag(context);
 				// if (num == 1) {
-			
+
 				new autoConnection().start();
 				// SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
 				// }

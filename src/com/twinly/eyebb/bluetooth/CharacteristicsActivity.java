@@ -211,7 +211,7 @@ public class CharacteristicsActivity extends Activity {
 					intentTime++;
 					System.out.println("MajorTime==>" + intentTime);
 					if (intentTime == 5) {
-						intentTime = 0;
+						intentTime = 6;
 						if (BluetoothLeService.writeMajorSuccess) {
 
 							Intent intent = new Intent(
