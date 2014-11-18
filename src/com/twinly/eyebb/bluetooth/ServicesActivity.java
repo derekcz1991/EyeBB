@@ -93,7 +93,7 @@ public class ServicesActivity extends Activity {
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
 		if (CharacteristicsActivity.majorFinished) {
-			//CharacteristicsActivity.instance.finish();
+			// CharacteristicsActivity.instance.finish();
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
 					getString(R.string.toast_read_service));
@@ -487,6 +487,9 @@ public class ServicesActivity extends Activity {
 			// Constans.exit_ask(this);
 			if (Constants.mBluetoothLeService != null) {
 				Constants.mBluetoothLeService.disconnect();
+			}
+			if (dialog.isShowing() && dialog != null) {
+				dialog.dismiss();
 			}
 			mConnected = false;
 			ServicesActivity.this.finish();

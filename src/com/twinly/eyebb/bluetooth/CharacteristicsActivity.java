@@ -190,21 +190,7 @@ public class CharacteristicsActivity extends Activity {
 		private void modify1008() {
 			// TODO Auto-generated method stub
 			// String data = "0033";
-			try {
-				String data = SharePrefsUtils
-						.signUpDeviceMajor(CharacteristicsActivity.this);
-				BluetoothGattCharacteristic characteristic = charas
-						.get(charaidxMajor);
-
-				characteristic.setValue(BLEUtils.HexString2Bytes(data));
-
-				Constants.mBluetoothLeService
-						.wirteCharacteristic(characteristic);
-				System.out.println("---->finish1008");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
 
 			TimeOutTask = new TimerTask() {
 				public void run() {
@@ -254,6 +240,22 @@ public class CharacteristicsActivity extends Activity {
 
 			timer.schedule(TimeOutTask, 0, 1000);
 
+			
+			try {
+				String data = SharePrefsUtils
+						.signUpDeviceMajor(CharacteristicsActivity.this);
+				BluetoothGattCharacteristic characteristic = charas
+						.get(charaidxMajor);
+
+				characteristic.setValue(BLEUtils.HexString2Bytes(data));
+
+				Constants.mBluetoothLeService
+						.wirteCharacteristic(characteristic);
+				System.out.println("---->finish1008");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	};

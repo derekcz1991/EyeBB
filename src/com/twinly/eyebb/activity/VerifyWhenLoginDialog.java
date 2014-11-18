@@ -127,6 +127,7 @@ public class VerifyWhenLoginDialog extends Activity {
 							SettingsActivity.class);
 					SettingsActivity.instance.finish();
 					MyKidsListActivity.instance.finish();
+					KidProfileActivity.instance.finish();
 					CheckBeaconActivity.instance.finish();
 					startActivity(intent);
 					finish();

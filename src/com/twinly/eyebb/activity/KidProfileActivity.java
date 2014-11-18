@@ -41,6 +41,7 @@ public class KidProfileActivity extends Activity {
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_PHOTO = 2;
 	private static final int PICK_FROM_FILE = 3;
+	public static KidProfileActivity instance = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class KidProfileActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 		registerForContextMenu(findViewById(R.id.avatarItem));
 
+		instance = this;
 		child = DBChildren.getChildById(this,
 				getIntent().getLongExtra("child_id", 0));
 

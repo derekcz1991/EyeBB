@@ -24,6 +24,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class MyKidsListActivity extends Activity {
 	private ListView listView1;
@@ -87,6 +88,8 @@ public class MyKidsListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(MyKidsListActivity.this,
 						KidProfileActivity.class);
+				SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
+						childWithoutDevice.get(position).getChildId() + "");
 				intent.putExtra("child_id", childWithoutDevice.get(position)
 						.getChildId());
 				startActivity(intent);
