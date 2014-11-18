@@ -11,14 +11,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -112,11 +110,18 @@ public class VerifyWhenLoginDialog extends Activity {
 
 					// DBChildren.deleteTable(VerifyWhenLoginDialog.this);
 					// /restartApplication();
-					DBChildren.addDeviceOfChild(VerifyWhenLoginDialog.this,
+					DBChildren
+							.updateMacAddressByChildId(
+									VerifyWhenLoginDialog.this,
+									Long.parseLong(SharePrefsUtils
+											.signUpChildId(VerifyWhenLoginDialog.this)),
+									SharePrefsUtils
+											.isMacAddress(VerifyWhenLoginDialog.this));
+					/*DBChildren.addDeviceOfChild(VerifyWhenLoginDialog.this,
 							SharePrefsUtils
 									.signUpChildId(VerifyWhenLoginDialog.this),
 							SharePrefsUtils
-									.isMacAddress(VerifyWhenLoginDialog.this));
+									.isMacAddress(VerifyWhenLoginDialog.this));*/
 
 					Intent intent = new Intent(VerifyWhenLoginDialog.this,
 							SettingsActivity.class);

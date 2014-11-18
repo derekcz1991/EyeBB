@@ -1,9 +1,6 @@
 package com.twinly.eyebb.activity;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
@@ -12,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,15 +23,18 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class KidProfileActivity extends Activity {
 	private Child child;
 	private ImageView avatar;
 	private TextView kidName;
+	private TextView binding;
 	private ImageLoader imageLoader;
 
 	private Uri mImageCaptureUri;
@@ -54,12 +55,22 @@ public class KidProfileActivity extends Activity {
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
+		binding = (TextView) findViewById(R.id.btn_binding);
 
 		kidName.setText(child.getName());
 		imageLoader = ImageLoader.getInstance();
-		imageLoader.displayImage(child.getIcon(), avatar,
-				CommonUtils.getDisplayImageOptions(), null);
+		if (ImageUtils.isLocalImage(child.getIcon())) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child.getIcon()));
+		} else {
+			imageLoader.displayImage(child.getIcon(), avatar,
+					CommonUtils.getDisplayImageOptions(), null);
+		}
 
+		if (CommonUtils.isNull(child.getMacAddress())) {
+			binding.setText(getString(R.string.btn_binding));
+		} else {
+			binding.setText(getString(R.string.btn_unbind));
+		}
 		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
 				+ "temp.jpg"));
 	}
@@ -97,6 +108,21 @@ public class KidProfileActivity extends Activity {
 		this.openContextMenu(view);
 	}
 
+	public void onBindClicked(View view) {
+		Intent intent = new Intent();
+		intent.putExtra("child_id", child.getChildId());
+
+		if (CommonUtils.isNull(child.getMacAddress())) {
+			intent.setClass(this, CheckBeaconActivity.class);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_CHECK_BEACON_ACTIVITY);
+		} else {
+			intent.setClass(this, UnbindDeviceDialog.class);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
+		}
+	}
+
 	private void onCameraClicked() {
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT,
@@ -111,12 +137,8 @@ public class KidProfileActivity extends Activity {
 	}
 
 	private void onGalleryClicked() {
-		// Intent intent = new Intent();
 		Intent intent = new Intent(Intent.ACTION_PICK,
 				android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-		//intent.setType("image/*");
-		//intent.setAction(Intent.ACTION_GET_CONTENT);
 
 		startActivityForResult(
 				Intent.createChooser(intent, "Complete action using"),
@@ -156,27 +178,20 @@ public class KidProfileActivity extends Activity {
 		}
 	}
 
-	private void saveAvatar(Bitmap avatar) {
-		File file = new File(Constants.EYEBB_FOLDER + "avatar"
-				+ child.getChildId() + ".jpg");
-		try {
-			FileOutputStream out = new FileOutputStream(file);
-			avatar.compress(Bitmap.CompressFormat.JPEG, 90, out);
-			try {
-				out.flush();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+	private void saveAvatar(Bitmap bitmap) {
+		String path = Constants.EYEBB_FOLDER + "avatar" + child.getChildId()
+				+ ".jpg";
+		if (ImageUtils.saveBitmap(bitmap, path)) {
+			child.setIcon(path);
+			DBChildren.updateIconByChildId(this, child.getChildId(), path);
+			avatar.setImageBitmap(BitmapFactory.decodeFile(path));
 		}
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode != RESULT_OK)
-			return;
+		/*if (resultCode != RESULT_OK)
+			return;*/
 		switch (requestCode) {
 		case PICK_FROM_CAMERA:
 			doCrop();
@@ -190,6 +205,11 @@ public class KidProfileActivity extends Activity {
 			if (extras != null) {
 				Bitmap photo = extras.getParcelable("data");
 				saveAvatar(photo);
+			}
+			break;
+		case ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY:
+			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
+				finish();
 			}
 			break;
 		}

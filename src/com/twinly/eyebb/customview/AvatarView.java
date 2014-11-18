@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.ChildDialog;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class AvatarView {
 	private Context context;
@@ -42,14 +43,16 @@ public class AvatarView {
 				R.layout.item_avatar, viewGroup, false);
 		avatar = (CircleImageView) avatarViewItem.findViewById(R.id.avatar);
 		if (isOnline == false) {
-			avatar.setAlpha(0.3f);
+			avatar.setAlpha(0.4f);
 		}
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
-			imageLoader.displayImage(child.getIcon(), avatar,
-					CommonUtils.getDisplayImageOptions(), null);
-		} else {
-			avatar.setImageDrawable(context.getResources().getDrawable(
-					R.drawable.hugh));
+			if (ImageUtils.isLocalImage(child.getIcon())) {
+				avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child
+						.getIcon()));
+			} else {
+				imageLoader.displayImage(child.getIcon(), avatar,
+						CommonUtils.getDisplayImageOptions(), null);
+			}
 		}
 
 		avatar.setOnClickListener(new OnClickListener() {

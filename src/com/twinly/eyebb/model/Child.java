@@ -102,4 +102,11 @@ public class Child implements Serializable {
 		return serialVersionUID;
 	}
 
+	@Override
+	public String toString() {
+		return "Child [childId=" + childId + ", name=" + name + ", icon="
+				+ icon + ", phone=" + phone + ", macAddress=" + macAddress
+				+ "]";
+	}
+
 }

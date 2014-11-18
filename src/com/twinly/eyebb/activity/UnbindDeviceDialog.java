@@ -5,27 +5,26 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class UnbindDeviceDialog extends Activity {
 
 	private LinearLayout btnConfirm;
 	private LinearLayout btnCancel;
+	private long childId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +32,14 @@ public class UnbindDeviceDialog extends Activity {
 
 		setContentView(R.layout.dialog_unbind_device);
 
+		childId = getIntent().getLongExtra("child_id", 0);
+
 		btnConfirm = (LinearLayout) findViewById(R.id.btn_confirm);
 		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// keyboard
 				new Thread(postUnbindChildBeaconToServerRunnable).start();
 			}
 		});
@@ -49,7 +48,6 @@ public class UnbindDeviceDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});
@@ -59,20 +57,14 @@ public class UnbindDeviceDialog extends Activity {
 		@Override
 		public void run() {
 			postUnbindChildBeaconToServer();
-
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postUnbindChildBeaconToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 
-		map.put("childId",
-				SharePrefsUtils.signUpChildId(UnbindDeviceDialog.this));
+		map.put("childId", String.valueOf(childId));
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(UnbindDeviceDialog.this,
 					HttpConstants.UNBIND_CHILD_BEACON, map);
 			System.out.println("retStrpost======>" + retStr);
@@ -88,33 +80,37 @@ public class UnbindDeviceDialog extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.UNBIND_FAIL;
 					handler.sendMessage(msg);
+
+					setResult(ActivityConstants.RESULT_UNBIND_CANCEL);
 					finish();
 
 				} else if (retStr.equals("Y")) {
-					// Intent data = new Intent(UnbindDeviceDialog.this,
-					// LancherActivity.class);
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.UNBIND_SUCCESS;
 					handler.sendMessage(msg);
-					DBChildren.deleteDeviceOfChild(UnbindDeviceDialog.this,
+					DBChildren.updateMacAddressByChildId(
+							UnbindDeviceDialog.this, childId, "");
+
+					System.out.println("=====>>>>");
+					setResult(ActivityConstants.RESULT_UNBIND_SUCCESS);
+					finish();
+					/*DBChildren.deleteDeviceOfChild(UnbindDeviceDialog.this,
 							SharePrefsUtils
-									.signUpChildId(UnbindDeviceDialog.this));
+									.signUpChildId(UnbindDeviceDialog.this));*/
 					//restartApplication();
-					Intent intent = new Intent(UnbindDeviceDialog.this,
+					/*Intent intent = new Intent(UnbindDeviceDialog.this,
 							SettingsActivity.class);
-					
+
 					startActivity(intent);
-					
+
 					SettingsActivity.instance.finish();
 					MyKidsListActivity.instance.finish();
-					finish();
+					finish();*/
 				}
 			}
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
 
 	}
@@ -151,10 +147,4 @@ public class UnbindDeviceDialog extends Activity {
 		}
 	};
 
-	private void restartApplication() {
-		Intent intent = new Intent(this, LancherActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-				| Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
-	}
 }

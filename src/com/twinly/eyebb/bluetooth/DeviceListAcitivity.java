@@ -465,7 +465,7 @@ public class DeviceListAcitivity extends Activity {
 				editor.putString("minor", minor);
 				editor.commit();
 
-				DBChildren.updateMacAddress(this, childIDfromDeviceList,
+				DBChildren.updateMacAddressByChildId(this, childIDfromDeviceList,
 						MACaddress4submit);
 				dialog.dismiss();
 

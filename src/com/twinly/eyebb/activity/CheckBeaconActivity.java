@@ -105,6 +105,8 @@ public class CheckBeaconActivity extends Activity {
 	Timer timer = null;
 	TimerTask task = null;
 
+	private long childId;
+
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,6 +116,8 @@ public class CheckBeaconActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 
 		setContentView(R.layout.ble_peripheral);
+		childId = getIntent().getLongExtra("child_id", 0);
+
 		BaseApp.getInstance().addActivity(this);
 		Constants.gattServiceData.clear();
 		Constants.gattServiceObject.clear();
@@ -412,9 +416,9 @@ public class CheckBeaconActivity extends Activity {
 								Map.Entry<String, Device> entry = it.next();
 								map.put("image", R.drawable.ble_icon);
 
-//								map.put("text", "UUID:"
-//										+ entry.getValue().getUuid() + "\n強度:"
-								map.put("text","強度:"
+								//								map.put("text", "UUID:"
+								//										+ entry.getValue().getUuid() + "\n強度:"
+								map.put("text", "強度:"
 										+ entry.getValue().getRssi());
 								map.put("title", "Mac:"
 										+ entry.getValue().getAddress());
@@ -454,7 +458,7 @@ public class CheckBeaconActivity extends Activity {
 				scanLeDevice();
 			}
 			isWhileLoop = false;
-			
+
 			try {
 				timer.cancel();
 				timer.purge();
@@ -465,7 +469,7 @@ public class CheckBeaconActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			finish();
 			return true;
 		}
@@ -489,12 +493,9 @@ public class CheckBeaconActivity extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("childId",
-				SharePrefsUtils.signUpChildId(CheckBeaconActivity.this));
+		map.put("childId", String.valueOf(childId));
 		map.put("macAddress", MACaddress4submit);
-		System.out.println("CheckBeacon=>"
-				+ SharePrefsUtils.signUpChildId(CheckBeaconActivity.this) + " "
-				+ MACaddress4submit);
+		System.out.println("CheckBeacon=>" + childId + " " + MACaddress4submit);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
@@ -732,6 +733,5 @@ public class CheckBeaconActivity extends Activity {
 			myList.setAdapter(listItemAdapter);
 		}
 	}
-
 
 }

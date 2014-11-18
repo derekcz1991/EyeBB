@@ -85,11 +85,12 @@
         android:layout_height="wrap_content"
         android:background="@drawable/list_item_selector"
         android:clickable="true"
-        android:onClick="onPhoneClicked"
+        android:onClick="onBindClicked"
         android:paddingBottom="5dp"
         android:paddingTop="5dp" >
 
         <TextView
+            android:id="@+id/btn_binding"
             style="@style/DarkGreyText_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

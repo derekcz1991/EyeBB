@@ -36,7 +36,7 @@ public class DBChildren {
 		ContentValues values = new ContentValues();
 		values.put("child_id", child.getChildId());
 		values.put("name", child.getName());
-		values.put("icon", child.getIcon());
+		//values.put("icon", child.getIcon());
 		values.put("phone", child.getPhone());
 		values.put("mac_address", child.getMacAddress());
 		int result = db.update("children", values, "child_id=?",
@@ -92,11 +92,21 @@ public class DBChildren {
 		return child;
 	}
 
-	public static void updateMacAddress(Context context, long childId,
+	public static void updateMacAddressByChildId(Context context, long childId,
 			String macAddress) {
 		SQLiteDatabase db = getInstance(context);
 		ContentValues values = new ContentValues();
 		values.put("mac_address", macAddress);
+		db.update("children", values, "child_id=?",
+				new String[] { String.valueOf(childId) });
+		db.close();
+	}
+
+	public static void updateIconByChildId(Context context, long childId,
+			String icon) {
+		SQLiteDatabase db = getInstance(context);
+		ContentValues values = new ContentValues();
+		values.put("icon", icon);
 		db.update("children", values, "child_id=?",
 				new String[] { String.valueOf(childId) });
 		db.close();
@@ -119,7 +129,7 @@ public class DBChildren {
 		db.close();
 	}
 
-	public static void deleteDeviceOfChild(Context context, String childId) {
+	/*public static void deleteDeviceOfChild(Context context, String childId) {
 		SQLiteDatabase db = getInstance(context);
 		db.execSQL("UPDATE children SET mac_address = ? WHERE child_id = ?",
 				new String[] { "", childId });
@@ -132,5 +142,5 @@ public class DBChildren {
 		db.execSQL("UPDATE children SET mac_address = ? WHERE child_id = ?",
 				new String[] { mac_address, childId });
 		db.close();
-	}
+	}*/
 }

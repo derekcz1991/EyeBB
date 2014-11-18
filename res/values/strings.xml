@@ -127,7 +127,7 @@
     <string name="text_device_already_binded">Error! This EYEBB has already binded. Please change others.</string>
     <string name="text_feed_back_successful">Successful! Thank you.</string>
     <string name="text_search_guest_null">Sorry,this guest is not exist.</string>
-    <string name="text_unbind_device">This child has already got the eyebb device. Do you want to re-bind it?</string>
+    <string name="text_unbind_device">Do you want to unbind the device?</string>
     <string name="text_unbind_success">Eyebb unbind successfully!</string>
     <string name="text_unbind_fail">Oops! Eyebb unbind Unsuccessfully!</string>
     <string name="text_no_data">No data, no bind child</string>
@@ -152,6 +152,7 @@
     <string name="btn_add_new_guest">Add guest</string>
     <string name="btn_search_new_guest">Serach guest</string>
     <string name="btn_binding">Binding</string>
+    <string name="btn_unbind">Unbind</string>
     <string name="btn_search_child">Search child</string>
     <string name="btn_logout">Logout</string>
     <string name="btn_continue">Continue</string>

@@ -132,7 +132,7 @@
     <string name="text_device_already_binded">錯誤!此寶寶安設備已經被綁定過,請更換.</string>
     <string name="text_feed_back_successful">提交成功,謝謝!</string>
     <string name="text_search_guest_null">ohh,此用戶不存在!</string>
-    <string name="text_unbind_device">已檢測到孩子綁定寶寶安,您需要重新綁定嗎?</string>
+    <string name="text_unbind_device">確定解除綁定设备嗎?</string>
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
     <string name="text_no_data">未綁定小童</string>
@@ -165,6 +165,7 @@
     <string name="btn_cancel">取消</string>
     <string name="btn_verify">確認</string>
     <string name="btn_binding">綁定</string>
+    <string name="btn_unbind">解除綁定</string>
     <string name="btn_skip">略过</string>
     <string name="btn_next_step">下一步</string>
     <string name="btn_search_child">查找孩子</string>

@@ -30,6 +30,7 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class ChildDialog extends Activity {
 
@@ -74,8 +75,12 @@ public class ChildDialog extends Activity {
 		}
 
 		imageLoader = ImageLoader.getInstance();
-		imageLoader.displayImage(icon, avatar,
-				CommonUtils.getDisplayImageOptions(), animateFirstListener);
+		if (ImageUtils.isLocalImage(icon)) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(icon));
+		} else {
+			imageLoader.displayImage(icon, avatar,
+					CommonUtils.getDisplayImageOptions(), animateFirstListener);
+		}
 
 		phoneBtn.setOnClickListener(new OnClickListener() {
 
@@ -103,10 +108,10 @@ public class ChildDialog extends Activity {
 						if (CommonUtils.isFastDoubleClick()) {
 							return;
 						} else {
-//							Intent intent = new Intent(ChildDialog.this,
-//									BeepDialog.class);
+							//							Intent intent = new Intent(ChildDialog.this,
+							//									BeepDialog.class);
 							new Thread(postToServerRunnable).start();
-//							startActivity(intent);
+							//							startActivity(intent);
 						}
 					}
 				});

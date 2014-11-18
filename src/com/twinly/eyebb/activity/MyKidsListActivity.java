@@ -19,6 +19,7 @@ import android.widget.ListView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -44,50 +45,7 @@ public class MyKidsListActivity extends Activity {
 		listView1 = (ListView) findViewById(R.id.listView1);
 		listView2 = (ListView) findViewById(R.id.listView2);
 
-		new AsyncTask<Void, Void, String>() {
-
-			@Override
-			protected String doInBackground(Void... params) {
-
-				return HttpRequestUtils.get(HttpConstants.GET_MASTER_CHILDREN,
-						null);
-			}
-
-			@Override
-			protected void onPostExecute(String result) {
-				childWithDevice = new ArrayList<Child>();
-				childWithoutDevice = new ArrayList<Child>();
-
-				System.out.println("master children = " + result);
-				try {
-					JSONObject json = new JSONObject(result);
-					JSONArray childJSONList = json
-							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-					for (int i = 0; i < childJSONList.length(); i++) {
-						JSONObject object = (JSONObject) childJSONList.get(i);
-						Child child = new Child(
-								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
-								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-						if (CommonUtils
-								.isNull(object
-										.getString(HttpConstants.JSON_KEY_CHILD_BEACON))) {
-							childWithDevice.add(child);
-						} else {
-							childWithoutDevice.add(child);
-						}
-					}
-				} catch (JSONException e) {
-					System.out.println(HttpConstants.GET_MASTER_CHILDREN
-							+ e.getMessage());
-				}
-				listView1.setAdapter(new KidsListViewSimpleAdapter(
-						MyKidsListActivity.this, childWithDevice, false));
-				listView2.setAdapter(new KidsListViewSimpleAdapter(
-						MyKidsListActivity.this, childWithoutDevice, false));
-			}
-
-		}.execute();
+		new GetMyKidsTask().execute();
 
 		listView1.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -152,11 +110,63 @@ public class MyKidsListActivity extends Activity {
 			finish();
 			return true;
 		} else if (item.getItemId() == 0) {
-			// Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(MyKidsListActivity.this,
 					ChildInformationMatchingActivity.class);
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private class GetMyKidsTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+
+			return HttpRequestUtils
+					.get(HttpConstants.GET_MASTER_CHILDREN, null);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			childWithDevice = new ArrayList<Child>();
+			childWithoutDevice = new ArrayList<Child>();
+
+			System.out.println("master children = " + result);
+			try {
+				JSONObject json = new JSONObject(result);
+				JSONArray childJSONList = json
+						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+				for (int i = 0; i < childJSONList.length(); i++) {
+					JSONObject object = (JSONObject) childJSONList.get(i);
+					Child child = new Child(
+							object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+							object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+							object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+					if (CommonUtils.isNull(object
+							.getString(HttpConstants.JSON_KEY_CHILD_BEACON))) {
+						childWithoutDevice.add(child);
+					} else {
+						childWithDevice.add(child);
+					}
+				}
+			} catch (JSONException e) {
+				System.out.println(HttpConstants.GET_MASTER_CHILDREN
+						+ e.getMessage());
+			}
+			listView1.setAdapter(new KidsListViewSimpleAdapter(
+					MyKidsListActivity.this, childWithDevice, false));
+			listView2.setAdapter(new KidsListViewSimpleAdapter(
+					MyKidsListActivity.this, childWithoutDevice, false));
+		}
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
+				new GetMyKidsTask().execute();
+			}
+		}
 	}
 }
