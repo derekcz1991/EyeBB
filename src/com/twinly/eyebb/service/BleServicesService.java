@@ -326,16 +326,17 @@ public class BleServicesService extends Service {
 				// status_text.setText(mDeviceName + ": Discovered");
 				int connect_ble_service = SharePrefsUtils
 						.isConnectBleService(BleServicesService.this);
-
-				if (connect_ble_service == 1) {
-					displayGattServices(Constants.mBluetoothLeService
-							.getSupportedGattServices());
-					connect_ble_service++;
-					// SharePrefsUtils.setConnectBleService(BleServicesService.this,
-					// connect_ble_service);
-					System.out
-							.println("BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED");
-				}
+				displayGattServices(Constants.mBluetoothLeService
+						.getSupportedGattServices());
+				//
+				// if (connect_ble_service == 1) {
+				//
+				// connect_ble_service++;
+				// SharePrefsUtils.setConnectBleService(BleServicesService.this,
+				// connect_ble_service);
+				System.out
+						.println("BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED");
+				// }
 
 			}
 			/*
