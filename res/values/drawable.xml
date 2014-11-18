@@ -34,4 +34,7 @@
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
 
+    <color name="preference_item_normal">#FFFFFFFF</color>
+ 	<color name="preference_item_pressed">#fff2f2f2</color>
+ 	<color name="divider">#FFe3e3e3</color>
 </resources>

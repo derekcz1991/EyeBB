@@ -19,7 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
+import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.adapter.KidsListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
@@ -28,7 +28,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class ChangeKidsActivity extends Activity {
 	private ListView listView;
-	private ChangeKidsListViewAdapter adapter;
+	private KidsListViewSimpleAdapter adapter;
 	private boolean isSortByName;
 	private ArrayList<Child> list;
 	private ArrayList<Child> searchList;
@@ -46,7 +46,7 @@ public class ChangeKidsActivity extends Activity {
 		list = DBChildren.getChildrenList(this);
 		searchList = new ArrayList<Child>();
 
-		adapter = new ChangeKidsListViewAdapter(this, list, isSortByName);
+		adapter = new KidsListViewSimpleAdapter(this, list, isSortByName);
 		listView.setAdapter(adapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -68,7 +68,7 @@ public class ChangeKidsActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				isSortByName = !isSortByName;
-				adapter = new ChangeKidsListViewAdapter(
+				adapter = new KidsListViewSimpleAdapter(
 						ChangeKidsActivity.this, DBChildren
 								.getChildrenList(ChangeKidsActivity.this),
 						isSortByName);
@@ -103,7 +103,7 @@ public class ChangeKidsActivity extends Activity {
 			public boolean onMenuItemActionCollapse(MenuItem item) {
 				etSearch.clearFocus();
 				CommonUtils.hideSoftKeyboard(etSearch, ChangeKidsActivity.this);
-				adapter = new ChangeKidsListViewAdapter(
+				adapter = new KidsListViewSimpleAdapter(
 						ChangeKidsActivity.this, list, isSortByName);
 				listView.setAdapter(adapter);
 				return true;
@@ -141,11 +141,11 @@ public class ChangeKidsActivity extends Activity {
 					searchList.add(list.get(i));
 				}
 			}
-			adapter = new ChangeKidsListViewAdapter(ChangeKidsActivity.this,
+			adapter = new KidsListViewSimpleAdapter(ChangeKidsActivity.this,
 					searchList, isSortByName);
 			listView.setAdapter(adapter);
 		} else {
-			adapter = new ChangeKidsListViewAdapter(ChangeKidsActivity.this,
+			adapter = new KidsListViewSimpleAdapter(ChangeKidsActivity.this,
 					list, isSortByName);
 			listView.setAdapter(adapter);
 		}

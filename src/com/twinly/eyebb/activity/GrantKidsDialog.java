@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
+import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.adapter.GrantKidsListViewAdapter;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;

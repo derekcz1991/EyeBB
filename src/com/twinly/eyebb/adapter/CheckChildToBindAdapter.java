@@ -7,7 +7,7 @@ import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter.ViewHolder;
+import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter.ViewHolder;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;

@@ -23,6 +23,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_CHILD_NAME = "name";
 	public static final String JSON_KEY_CHILD_ICON = "icon";
 	public static final String JSON_KEY_CHILD_MAC_ADDRESS = "macAddress";
+	public static final String JSON_KEY_CHILD_BEACON = "beacon";
 
 	public static final String JSON_KEY_LOCATION_ALL = "allLocations";
 	public static final String JSON_KEY_LOCATION_TIME = "locTime";
@@ -92,6 +93,7 @@ public class HttpConstants {
 	public static final String GET_NOTICES = "reportService/api/notices";
 	public static final String UPDATE_PASSWORD = "accSetting/api/updatePassword";
 	public static final String RESET_PASSWORD = "regService/api/resetPassword";
+	public static final String GET_MASTER_CHILDREN = "masterService/api/msaterChildren";
 
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";

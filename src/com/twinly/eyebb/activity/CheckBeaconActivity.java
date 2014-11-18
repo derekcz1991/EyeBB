@@ -38,7 +38,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.ChangeKidsListViewAdapter;
+import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.bluetooth.BaseApp;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.DeviceListAcitivity;

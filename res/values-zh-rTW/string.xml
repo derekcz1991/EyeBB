@@ -140,17 +140,19 @@
     <string name="text_select_child">請選擇孩子.</string>
     <string name="text_grant_success">授權成功!</string>
     <string name="text_update_password">修改密碼</string>
-      <string name="text_old_password">原密碼</string>
-     <string name="text_new_password">新密碼</string>
-     <string name="text_repeat_new_password">重複新密碼</string>
-           <string name="text_two_password_different">两次输入的密码不一致!</string>
-               <string name="text_update_password_successful">修改密碼成功,謝謝!</string>
-                <string name="text_tips">溫馨提示</string>  
-                <string name="text_old_password_incorrect">原始密碼不正確.</string>
-               <string name="text_user_do_not_exist">此用戶不存在.</string>
-                 <string name="text_authorized_to_others">已授權的親友:</string>
-                        <string name="text_authorization_from_others">被哪些親友授權:</string>
-             
+    <string name="text_old_password">原密碼</string>
+    <string name="text_new_password">新密碼</string>
+    <string name="text_repeat_new_password">重複新密碼</string>
+    <string name="text_two_password_different">两次输入的密码不一致!</string>
+    <string name="text_update_password_successful">修改密碼成功,謝謝!</string>
+    <string name="text_tips">溫馨提示</string>
+    <string name="text_old_password_incorrect">原始密碼不正確.</string>
+    <string name="text_user_do_not_exist">此用戶不存在.</string>
+    <string name="text_authorized_to_others">已授權的親友:</string>
+    <string name="text_authorization_from_others">被哪些親友授權:</string>
+    <string name="text_avatar">头像</string>
+    <string name="text_kindergarten">幼稚園</string>
+    
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
     <string name="btn_logout">登出</string>
@@ -171,6 +173,9 @@
     <string name="btn_search">搜索</string>
     <string name="btn_search_mac">搜索Mac地址</string>
     <string name="btn_add">添加</string>
+    <string name="btn_my_child">我的孩子</string>
+    <string name="btn_take_photo">影相</string>
+    <string name="btn_choose_photo">從相冊選擇</string>
     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>
@@ -181,5 +186,6 @@
     <string name="toast_write_major">正在完成第一步(1/2)&#8230;</string>
     <string name="toast_write_minor">正在完成第二步(2/2)&#8230;</string>
     <string name="toast_read_service">讀取設備服務中&#8230;</string>
- <string name="toast_repeat_read_service">重新讀取設備服務次數:</string>
+    <string name="toast_repeat_read_service">重新讀取設備服務次數:</string>
+
 </resources>

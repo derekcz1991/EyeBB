@@ -106,7 +106,7 @@ public class UnbindDeviceDialog extends Activity {
 					startActivity(intent);
 					
 					SettingsActivity.instance.finish();
-					LoginAuthKidsActivity.instance.finish();
+					MyKidsListActivity.instance.finish();
 					finish();
 				}
 			}

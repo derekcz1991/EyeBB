@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.bluetooth.BluetoothGattService;
+import android.os.Environment;
 
 import com.eyebb.R;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
@@ -46,7 +47,7 @@ public class Constants {
 	public static int DELAY = 0;
 	public static final int PERIOD = 5000;
 	public static final int BINDING_PERIOD = 40000;
-	
+
 	public static final String FINISH_BIND = "FINISH_BIND";
 	// private static final int SCANTIME = 5000;
 	// private static final int POSTDELAYTIME = 4500;
@@ -85,4 +86,7 @@ public class Constants {
 	public static final int PASSWORD_RESET_SUCCESS = 10012;
 	public static final int ACCOUNT_NOT_EXIST = 10013;
 	public static final int FINISH_WRITE_MAJOR_CHARA = 10014;
+
+	public static final String EYEBB_FOLDER = Environment
+			.getExternalStorageDirectory() + "/eyebb/";
 }

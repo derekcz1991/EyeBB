@@ -29,7 +29,6 @@ import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SystemUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -61,7 +60,6 @@ public class MainActivity extends FragmentActivity implements
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 		// checkBluetooth();
-		SystemUtils.initImageLoader(getApplicationContext());
 
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

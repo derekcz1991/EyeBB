@@ -1,5 +1,6 @@
 package com.twinly.eyebb.activity;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -33,12 +34,12 @@ public class LancherActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lancher);
 
-		logo = (ImageView) findViewById(R.id.icon);
-		checkLogo();
 		SystemUtils.initImageLoader(getApplicationContext());
 		//when login clear the guardian id
 		SharePrefsUtils.setSignUpGuardianId(LancherActivity.this, "");
+		checkLogo();
 		setLanguage();
+		mkdir();
 		new HttpRequestUtils();
 
 		if (SharePrefsUtils.isLogin(this)) {
@@ -52,6 +53,7 @@ public class LancherActivity extends Activity {
 	}
 
 	private void checkLogo() {
+		logo = (ImageView) findViewById(R.id.icon);
 		switch (SharePrefsUtils.getLanguage(this)) {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
@@ -79,6 +81,13 @@ public class LancherActivity extends Activity {
 			config.locale = Locale.ENGLISH;
 			resources.updateConfiguration(config, dm);
 			break;
+		}
+	}
+
+	private void mkdir() {
+		File floder = new File(Constants.EYEBB_FOLDER);
+		if (floder.exists() == false) {
+			floder.mkdirs();
 		}
 	}
 

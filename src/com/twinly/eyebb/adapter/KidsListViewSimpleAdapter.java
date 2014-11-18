@@ -18,7 +18,7 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 
-public class ChangeKidsListViewAdapter extends BaseAdapter {
+public class KidsListViewSimpleAdapter extends BaseAdapter {
 	private Context context;
 	private List<Child> data;
 	private LayoutInflater inflater;
@@ -29,7 +29,7 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 		public TextView name;
 	}
 
-	public ChangeKidsListViewAdapter(Context context, List<Child> data,
+	public KidsListViewSimpleAdapter(Context context, List<Child> data,
 			boolean isSortByName) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
@@ -52,7 +52,7 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 	public int getCount() {
 
 		return data.size();
-	
+
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class ChangeKidsListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_change_kid,
+			convertView = inflater.inflate(R.layout.list_item_kid_simple,
 					parent, false);
 			viewHolder = new ViewHolder();
 			viewHolder.avatar = (CircleImageView) convertView
