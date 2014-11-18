@@ -31,6 +31,7 @@ public class SettingsActivity extends Activity {
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
+	private LinearLayout batteryLifeBtn;
 	
 
 	private boolean isAutoUpdate;
@@ -53,6 +54,7 @@ public class SettingsActivity extends Activity {
 		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
+		batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
 		
 		setupView();
 
@@ -175,6 +177,15 @@ public class SettingsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		batteryLifeBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 	}
 
@@ -215,9 +226,9 @@ public class SettingsActivity extends Activity {
 
 		// device item
 		if (SharePrefsUtils.getUserType(this).equals("P")) {
-			findViewById(R.id.deviceItem).setVisibility(View.VISIBLE);
+			findViewById(R.id.device_item).setVisibility(View.VISIBLE);
 		} else {
-			findViewById(R.id.deviceItem).setVisibility(View.GONE);
+			findViewById(R.id.device_item).setVisibility(View.GONE);
 		}
 	}
 

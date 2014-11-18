@@ -176,7 +176,7 @@
                 <!-- device -->
 
                 <LinearLayout
-                    android:id="@+id/deviceItem"
+                	android:id="@+id/device_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
@@ -217,7 +217,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_marginTop="1dp"
-                        android:background="@drawable/settings_column_bottom"
+                        android:background="@drawable/settings_column_center"
                         android:gravity="center_vertical" >
 
                         <TextView
@@ -226,6 +226,25 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:text="@string/text_authorization" />
+                    </LinearLayout>
+                    
+                    
+                      <!-- battery life -->
+
+                    <LinearLayout
+                        android:id="@+id/battery_life_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@drawable/settings_column_bottom"
+                        android:gravity="center_vertical" >
+
+                        <TextView
+                            style="@style/DarkGreyText_18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="@string/text_battery_life" />
                     </LinearLayout>
                 </LinearLayout>
                 <!-- language -->

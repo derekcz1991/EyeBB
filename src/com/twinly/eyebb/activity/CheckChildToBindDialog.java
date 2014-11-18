@@ -150,7 +150,7 @@ public class CheckChildToBindDialog extends Activity {
 		System.out
 				.println("info=>"
 						+ childIdToPost
-						+ " "
+						+ "  +guardianid==>"
 						+ SharePrefsUtils
 								.signUpGuardianId(CheckChildToBindDialog.this));
 

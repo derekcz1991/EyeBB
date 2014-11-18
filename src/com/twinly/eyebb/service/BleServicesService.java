@@ -324,8 +324,8 @@ public class BleServicesService extends Service {
 				// Show all the supported services and characteristics on the
 				// user interface.
 				// status_text.setText(mDeviceName + ": Discovered");
-				int connect_ble_service = SharePrefsUtils
-						.isConnectBleService(BleServicesService.this);
+//				int connect_ble_service = SharePrefsUtils
+//						.isConnectBleService(BleServicesService.this);
 				displayGattServices(Constants.mBluetoothLeService
 						.getSupportedGattServices());
 				//
@@ -418,28 +418,6 @@ public class BleServicesService extends Service {
 			}
 		}
 
-		// for (BluetoothGattService gattService : gattServices) {
-		// HashMap<String, String> currentServiceData = new HashMap<String,
-		// String>();
-		// uuid = gattService.getUuid().toString();
-		// uuid = uuid.substring(4, 8);
-		// boolean exist = false;
-		// for (HashMap<String, String> sItem : Constants.gattServiceData) {
-		// if (sItem.get(LIST_UUID).equals(uuid)) {
-		// exist = true;
-		// break;
-		// }
-		// }
-		// if (exist) {
-		// continue;
-		// }
-		// name = SampleGattAttributes.lookup(uuid, "Unknow Service");
-		// currentServiceData.put(LIST_NAME, name);
-		// currentServiceData.put(LIST_UUID, uuid);
-		// Constants.gattServiceData.add(currentServiceData);
-		// Constants.gattServiceObject.add(gattService);
-		// addItem(name, uuid);
-		// }
 
 	}
 
