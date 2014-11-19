@@ -55,7 +55,8 @@ public class MyKidsListActivity extends Activity {
 						KidProfileActivity.class);
 				intent.putExtra("child_id", childWithDevice.get(position)
 						.getChildId());
-				startActivity(intent);
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
 				/*if (childWithDevice.get(position).getMacAddress().length() > 0) {
 					Intent data = new Intent(MyKidsListActivity.this,
 							UnbindDeviceDialog.class);
@@ -124,7 +125,6 @@ public class MyKidsListActivity extends Activity {
 
 		@Override
 		protected String doInBackground(Void... params) {
-
 			return HttpRequestUtils
 					.get(HttpConstants.GET_MASTER_CHILDREN, null);
 		}

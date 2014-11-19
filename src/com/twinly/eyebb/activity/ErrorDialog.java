@@ -18,13 +18,11 @@ public class ErrorDialog extends Activity {
 
 		setContentView(R.layout.dialog_error);
 
-		
 		btnVerify = (TextView) findViewById(R.id.btn_verify);
 		btnVerify.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(ErrorDialog.this,
 						CheckBeaconActivity.class);
 				startActivity(intent);

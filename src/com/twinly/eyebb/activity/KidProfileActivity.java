@@ -212,6 +212,7 @@ public class KidProfileActivity extends Activity {
 			break;
 		case ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY:
 			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
+				setResult(ActivityConstants.RESULT_UNBIND_SUCCESS);
 				finish();
 			}
 			break;

@@ -79,7 +79,12 @@ public class ServicesActivity extends Activity {
 	private TimerTask TimeOutTask = null;
 	private int intentTime = 0;
 
+
 	public static ServicesActivity instance;
+
+
+	private long childId;
+	
 
 	@SuppressLint({ "NewApi", "ShowToast" })
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,9 @@ public class ServicesActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_services);
+		
+		childId = getIntent().getLongExtra("child_id", 0);
+		
 		BaseApp.getInstance().addActivity(this);
 		instance = this;
 		// setTitle(getString(R.string.toast_loading));
