@@ -166,6 +166,7 @@ public class BluetoothLeService extends Service {
 					BleDeviceConstants.mBluetoothLeService = null;
 				}
 
+				//use for timeout
 				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
 
 				isSuccessfulWrite = true;
@@ -307,7 +308,7 @@ public class BluetoothLeService extends Service {
 					.println("BluetoothAdapter not initialized or unspecified address.");
 			return false;
 		}
-		
+
 		MacronAdd = address;
 		// Previously connected device. Try to reconnect. (��ǰ���ӵ��豸��
 		// ������������)
@@ -325,14 +326,14 @@ public class BluetoothLeService extends Service {
 		// }
 		final BluetoothDevice device = mBluetoothAdapter
 				.getRemoteDevice(address);
-		
+
 		if (mBluetoothDeviceAddress != null && mBluetoothGatt != null
 				&& address.equals(mBluetoothDeviceAddress)) {
 			Log.d(TAG,
 					"Trying to use an existing mBluetoothGatt for connection.");
 			System.out
 					.println("Trying to use an existing mBluetoothGatt for connection.");
-			//mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
+			// mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
 			if (mBluetoothGatt.connect()) {
 				mConnectionState = STATE_CONNECTING;
 				return true;
@@ -341,10 +342,17 @@ public class BluetoothLeService extends Service {
 			}
 		}
 
-	
 		if (device == null) {
 			Log.w(TAG, "Device not found.  Unable to connect.");
 			System.out.println("Device not found.  Unable to connect.");
+			SharePrefsUtils.setdeviceBattery(BluetoothLeService.this,
+					getResources().getString(R.string.text_no_device_nearby));
+
+			// UPDATE BATTERY VIEW
+			Intent broadcast = new Intent();
+			broadcast
+					.setAction(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY);
+			sendBroadcast(broadcast);
 			return false;
 		}
 		// We want to directly connect to the device, so we are setting the

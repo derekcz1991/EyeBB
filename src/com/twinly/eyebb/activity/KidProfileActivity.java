@@ -5,8 +5,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +35,7 @@ import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class KidProfileActivity extends Activity {
 	private Child child;
@@ -49,6 +53,7 @@ public class KidProfileActivity extends Activity {
 
 	private TextView deviceAddress;
 	private TextView deviceBattery;
+	public static Intent checkBatteryService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +74,39 @@ public class KidProfileActivity extends Activity {
 		deviceBattery = (TextView) findViewById(R.id.device_battery);
 		deviceItem = (RelativeLayout) findViewById(R.id.device_item);
 
+		if (SharePrefsUtils.deviceBattery(KidProfileActivity.this).length() > 0) {
+			deviceBattery.setText(SharePrefsUtils
+					.deviceBattery(KidProfileActivity.this) + "%");
+		}
+		registerReceiver(new UpdateDb(), new IntentFilter(
+				BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY));
+
 		if (child.getMacAddress().length() > 0) {
 			deviceItem.setVisibility(View.VISIBLE);
 			deviceAddress.setText(child.getMacAddress());
 			deviceItem.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent checkBatteryService = new Intent();
-					checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+
+					deviceBattery.setText(getResources().getString(
+							R.string.toast_loading));
+
+					checkBatteryService = new Intent();
+					checkBatteryService.putExtra(
+							BleServicesService.EXTRAS_DEVICE_NAME,
 							BleDeviceConstants.DB_NAME);
-					checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+					checkBatteryService.putExtra(
+							BleServicesService.EXTRAS_DEVICE_ADDRESS,
 							child.getMacAddress());
+					checkBatteryService
+							.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
+					checkBatteryService
+							.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM,
+									"battery");
 					startService(checkBatteryService);
-					
+
 				}
 			});
 		} else {
@@ -104,11 +127,19 @@ public class KidProfileActivity extends Activity {
 		} else {
 			binding.setText(getString(R.string.btn_unbind));
 		}
-		mImageCaptureUri = Uri.fromFile(new File(BleDeviceConstants.EYEBB_FOLDER
-				+ "temp.jpg"));
+		mImageCaptureUri = Uri.fromFile(new File(
+				BleDeviceConstants.EYEBB_FOLDER + "temp.jpg"));
 	}
-	
 
+	private class UpdateDb extends BroadcastReceiver {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY)) {
+				deviceBattery.setText(SharePrefsUtils
+						.deviceBattery(KidProfileActivity.this) + "%");
+			}
+		}
+	};
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -214,8 +245,8 @@ public class KidProfileActivity extends Activity {
 	}
 
 	private void saveAvatar(Bitmap bitmap) {
-		String path = BleDeviceConstants.EYEBB_FOLDER + "avatar" + child.getChildId()
-				+ ".jpg";
+		String path = BleDeviceConstants.EYEBB_FOLDER + "avatar"
+				+ child.getChildId() + ".jpg";
 		if (ImageUtils.saveBitmap(bitmap, path)) {
 			child.setIcon(path);
 			DBChildren.updateIconByChildId(this, child.getChildId(), path);

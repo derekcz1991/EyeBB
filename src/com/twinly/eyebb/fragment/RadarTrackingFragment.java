@@ -229,7 +229,7 @@ public class RadarTrackingFragment extends Fragment implements
 		
 		UpdateDb updateDb = new UpdateDb();
 		getActivity().registerReceiver(updateDb,
-				new IntentFilter(BleDeviceConstants.FINISH_BIND));
+				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
@@ -1621,10 +1621,8 @@ public class RadarTrackingFragment extends Fragment implements
 	private class UpdateDb extends BroadcastReceiver{
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (action.equals(BleDeviceConstants.FINISH_BIND)) {
+			if (action.equals(BleDeviceConstants.BROADCAST_FINISH_BIND)) {
 				ChildData = DBChildren.getChildrenList(getActivity());
-				System.out
-						.println("ChildData = DBChildren.getChildrenList(getActivity())");
 			}
 		}
 	};
@@ -1891,6 +1889,7 @@ public class RadarTrackingFragment extends Fragment implements
 							+ BeepTempChildData.get(position).getMacAddress());
 			beepIntent
 					.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
+			beepIntent.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM, "radar");
 			// if (scan_flag) {
 			// scanLeDevice(false);
 			// }

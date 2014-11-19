@@ -74,6 +74,8 @@ public class BleServicesService extends Service {
 	private boolean mConnected = false;
 	private int ReadService = 1;
 
+	private String serviceComeFrom;
+
 	// SharedPreferences SandVpreferences;
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -105,10 +107,14 @@ public class BleServicesService extends Service {
 				if (intent == null) {
 					stopSelf();
 				}
+
 				mDeviceName = "";
 				mDeviceAddress = "";
 
 				try {
+					serviceComeFrom = intent
+							.getStringExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM);
+					System.out.println("serviceComeFrom===>" + serviceComeFrom);
 					mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
 					mDeviceAddress = intent
 							.getStringExtra(EXTRAS_DEVICE_ADDRESS);
@@ -324,8 +330,8 @@ public class BleServicesService extends Service {
 				// Show all the supported services and characteristics on the
 				// user interface.
 				// status_text.setText(mDeviceName + ": Discovered");
-//				int connect_ble_service = SharePrefsUtils
-//						.isConnectBleService(BleServicesService.this);
+				// int connect_ble_service = SharePrefsUtils
+				// .isConnectBleService(BleServicesService.this);
 				displayGattServices(BleDeviceConstants.mBluetoothLeService
 						.getSupportedGattServices());
 				//
@@ -410,14 +416,13 @@ public class BleServicesService extends Service {
 
 				intentToChara
 						.setAction("com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES");
-
+				intentToChara.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM, serviceComeFrom);
 				startService(intentToChara);
 				// Constants.mBluetoothLeService = null;
 
 				break;
 			}
 		}
-
 
 	}
 

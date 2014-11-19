@@ -434,6 +434,15 @@ public class SharePrefsUtils {
 
 		setString(context, ActivityConstants.SHARE_PREFS_CHILDID, value);
 	}
+	
+	public static String deviceBattery(Context context) {
+		return getString(context, ActivityConstants.SHARE_PREFS_DEVICE_BATTERY);
+	}
+
+	public static void setdeviceBattery(Context context, String value) {
+
+		setString(context, ActivityConstants.SHARE_PREFS_DEVICE_BATTERY, value);
+	}
 
 	/**
 	 * @return Application's {@code SharedPreferences}.

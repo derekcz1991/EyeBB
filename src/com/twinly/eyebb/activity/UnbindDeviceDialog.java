@@ -94,7 +94,7 @@ public class UnbindDeviceDialog extends Activity {
 
 					//UPDATE RADAR VIEW
 					Intent broadcast = new Intent();
-					broadcast.setAction(BleDeviceConstants.FINISH_BIND);
+					broadcast.setAction(BleDeviceConstants.BROADCAST_FINISH_BIND);
 					sendBroadcast(broadcast);
 					
 					System.out.println("=====>>>>");

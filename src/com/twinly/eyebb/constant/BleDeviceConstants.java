@@ -26,6 +26,7 @@ public class BleDeviceConstants {
 	public static final String BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
 	public static final String APPLICATION_UUID = "00001000-0000-1000-8000-00805f9b34fb";
 	public static final String BEEP_CHAR_UUID = "1001";
+	public static final String BEEP_CHAR_BATTERY = "1004";
 	public static final String BEEP_CHAR_MAJOR = "1008";
 	public static final String BEEP_CHAR_MINOR = "1009";
 	public final static int START_PROGRASSS_BAR = 1;
@@ -49,7 +50,9 @@ public class BleDeviceConstants {
 	public static final int PERIOD = 5000;
 	public static final int BINDING_PERIOD = 40000;
 
-	public static final String FINISH_BIND = "FINISH_BIND";
+	//broadcast
+	public static final String BROADCAST_FINISH_BIND = "FINISH_BIND";
+	public static final String BROADCAST_GET_DEVICE_BATTERY = "battery_broadcast";
 	// private static final int SCANTIME = 5000;
 	// private static final int POSTDELAYTIME = 4500;
 
@@ -87,6 +90,8 @@ public class BleDeviceConstants {
 	public static final int PASSWORD_RESET_SUCCESS = 10012;
 	public static final int ACCOUNT_NOT_EXIST = 10013;
 	public static final int FINISH_WRITE_MAJOR_CHARA = 10014;
+	
+	public static final String BLE_SERVICE_COME_FROM = "device_come_from";
 
 	public static final String EYEBB_FOLDER = Environment
 			.getExternalStorageDirectory() + "/eyebb/";

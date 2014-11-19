@@ -7,12 +7,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.eyebb.R;
+import com.twinly.eyebb.activity.KidProfileActivity;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
 import com.twinly.eyebb.bluetooth.SampleGattAttributes;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.utils.BLEUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -40,7 +42,7 @@ public class BleCharacteristicsService extends Service {
 	ListView myList; // ListView控件
 
 	TextView status_text;
-
+	private String serviceComeFrom;
 	int servidx, charaidx;
 
 	private boolean loopToFindChars = true;
@@ -80,7 +82,8 @@ public class BleCharacteristicsService extends Service {
 	@Override
 	public int onStartCommand(final Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-
+		serviceComeFrom = intent
+				.getStringExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM);
 		System.out.println("char onStartCommand");
 		new Thread() {
 			public void run() {
@@ -97,7 +100,8 @@ public class BleCharacteristicsService extends Service {
 
 					listItem = new ArrayList<HashMap<String, Object>>();
 
-					gattService = BleDeviceConstants.gattServiceObject.get(servidx);
+					gattService = BleDeviceConstants.gattServiceObject
+							.get(servidx);
 
 					Thread disconverThread = new Thread() {
 						@SuppressLint("NewApi")
@@ -133,25 +137,50 @@ public class BleCharacteristicsService extends Service {
 								addItem(name, uuid);
 								// System.out.println("gattCharacteristic=>" +
 								// gattCharacteristics.get(i).toString());
-								if (uuid.equals(BleDeviceConstants.BEEP_CHAR_UUID)) {
-									final BluetoothGattCharacteristic characteristic = gattCharacteristics
-											.get(i);
-									final int charaProp = characteristic
-											.getProperties();
-									if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-										// uuid =
-										// characteristic.getUuid().toString();
-										System.out.println(" charas uuid ==>"
-												+ uuid + "  " + i);
-										// uuid = uuid.substring(4, 8);
-										// uuid = uuid;
-										charaidx = i;
-										BleDeviceConstants.mBluetoothLeService
-												.readCharacteristic(characteristic);
+								if (serviceComeFrom.equals("radar")) {
+									if (uuid.equals(BleDeviceConstants.BEEP_CHAR_UUID)) {
+										final BluetoothGattCharacteristic characteristic = gattCharacteristics
+												.get(i);
+										final int charaProp = characteristic
+												.getProperties();
+										if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+											// uuid =
+											// characteristic.getUuid().toString();
+											System.out
+													.println(" charas uuid ==>"
+															+ uuid + "  " + i);
+											// uuid = uuid.substring(4, 8);
+											// uuid = uuid;
+											charaidx = i;
+											BleDeviceConstants.mBluetoothLeService
+													.readCharacteristic(characteristic);
 
-										break;
+											break;
+										}
+									}
+								} else if (serviceComeFrom.equals("battery")) {
+									if (uuid.equals(BleDeviceConstants.BEEP_CHAR_BATTERY)) {
+										final BluetoothGattCharacteristic characteristic = gattCharacteristics
+												.get(i);
+										final int charaProp = characteristic
+												.getProperties();
+										if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+											// uuid =
+											// characteristic.getUuid().toString();
+											System.out
+													.println(" charas uuid ==>"
+															+ uuid + "  " + i);
+											// uuid = uuid.substring(4, 8);
+											// uuid = uuid;
+											charaidx = i;
+											BleDeviceConstants.mBluetoothLeService
+													.readCharacteristic(characteristic);
+
+											break;
+										}
 									}
 								}
+
 							}
 
 						}
@@ -218,7 +247,21 @@ public class BleCharacteristicsService extends Service {
 				} else if (uuid.equals("1004")) {
 					System.out.println("this is battary life!!!!!!!!" + data
 							+ "=>16/ " + Integer.parseInt(data, 16));
+					SharePrefsUtils.setdeviceBattery(context,
+							Integer.parseInt(data, 16) + "");
+					// UPDATE BATTERY VIEW
+					Intent broadcast = new Intent();
+					broadcast
+							.setAction(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY);
+					sendBroadcast(broadcast);
 
+					stopService(BleServicesService.intentToChara);
+					stopService(KidProfileActivity.checkBatteryService);
+
+					if (BleDeviceConstants.mBluetoothLeService != null) {
+						BleDeviceConstants.mBluetoothLeService.disconnect();
+						BleDeviceConstants.mBluetoothLeService = null;
+					}
 				} else if (uuid.equals("1006")) {
 					// modify1006(data);
 
@@ -245,7 +288,8 @@ public class BleCharacteristicsService extends Service {
 							+ charas.get(charaidx).toString());
 			characteristic.setValue(BLEUtils.HexString2Bytes(data));
 
-			BleDeviceConstants.mBluetoothLeService.wirteCharacteristic(characteristic);
+			BleDeviceConstants.mBluetoothLeService
+					.wirteCharacteristic(characteristic);
 			System.out
 					.println("Constants.mBluetoothLeService.wirteCharacteristic(characteristic);");
 		}
@@ -284,23 +328,22 @@ public class BleCharacteristicsService extends Service {
 		listItem.add(map);
 		// listItemAdapter.notifyDataSetChanged();
 	}
-	
-	
-//	@SuppressLint("HandlerLeak")
-//	Handler handler = new Handler() {
-//
-//		public void handleMessage(Message msg) {
-//			switch (msg.what) {
-//
-//			case FINISH_ACTIVITY:
-//				keepTim++;
-//				if (keepTim == 3) {
-//					new Thread(finishConnection).start();
-//				}
-//
-//				break;
-//			}
-//		}
-//	};
+
+	// @SuppressLint("HandlerLeak")
+	// Handler handler = new Handler() {
+	//
+	// public void handleMessage(Message msg) {
+	// switch (msg.what) {
+	//
+	// case FINISH_ACTIVITY:
+	// keepTim++;
+	// if (keepTim == 3) {
+	// new Thread(finishConnection).start();
+	// }
+	//
+	// break;
+	// }
+	// }
+	// };
 
 }

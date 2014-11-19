@@ -121,7 +121,7 @@ public class VerifyWhenLoginDialog extends Activity {
 					CheckBeaconActivity.instance.finish();
 					//UPDATE RADAR VIEW
 					Intent broadcast = new Intent();
-					broadcast.setAction(BleDeviceConstants.FINISH_BIND);
+					broadcast.setAction(BleDeviceConstants.BROADCAST_FINISH_BIND);
 					sendBroadcast(broadcast);
 					
 					startActivity(intent);

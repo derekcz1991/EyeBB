@@ -147,6 +147,7 @@
     <string name="text_avatar">Avatar</string>
     <string name="text_kindergarten">Kindergarten</string>
       <string name="text_battery_life">Battery life of eyebb</string>
+        <string name="text_no_device_nearby">No device nearby</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

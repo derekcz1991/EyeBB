@@ -47,6 +47,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_BINDING_DEVICE = "binding_device_open";
 	public static final String SHARE_PREFS_BLE_SERVICE_INDEX = "ble_service_index";
 	public static final String SHARE_PREFS_GRANT_CHILD_ID = "grant_child_id";
+	public static final String SHARE_PREFS_DEVICE_BATTERY = "device_battery";
 
 	public static final String SHARE_PREFS_ITEM_LAST_UPDATE_TIME = "last_update_time";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";

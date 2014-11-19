@@ -153,6 +153,7 @@
     <string name="text_avatar">头像</string>
     <string name="text_kindergarten">幼稚園</string>
     <string name="text_battery_life">eyebb電量</string>
+     <string name="text_no_device_nearby">找尋不到設備</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
