@@ -29,9 +29,6 @@
             android:layout_centerHorizontal="true"
             android:calendarViewShown="false"
             android:spinnersShown="true" />
-
-   
-        
     </RelativeLayout>
 
     <Button

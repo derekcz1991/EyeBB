@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Map.Entry;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,7 +17,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,27 +26,21 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.MenuItem.OnActionExpandListener;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.bluetooth.BaseApp;
-import com.twinly.eyebb.bluetooth.BluetoothLeService;
-import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
 import com.twinly.eyebb.bluetooth.ServicesActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -490,8 +483,6 @@ public class CheckBeaconActivity extends Activity {
 
 	@SuppressLint("ShowToast")
 	private void postCheckBeaconToServer(long childIDfromDeviceList) {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("childId", String.valueOf(childId));
 		map.put("macAddress", MACaddress4submit);
@@ -537,6 +528,7 @@ public class CheckBeaconActivity extends Activity {
 					Intent intent = new Intent(CheckBeaconActivity.this,
 							ServicesActivity.class);
 
+					intent.putExtra("child_id", childId);
 					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_NAME,
 							deviceName4submit);
 					intent.putExtra(ServicesActivity.EXTRAS_DEVICE_ADDRESS,

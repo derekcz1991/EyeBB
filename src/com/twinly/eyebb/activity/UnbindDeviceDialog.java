@@ -94,18 +94,6 @@ public class UnbindDeviceDialog extends Activity {
 					System.out.println("=====>>>>");
 					setResult(ActivityConstants.RESULT_UNBIND_SUCCESS);
 					finish();
-					/*DBChildren.deleteDeviceOfChild(UnbindDeviceDialog.this,
-							SharePrefsUtils
-									.signUpChildId(UnbindDeviceDialog.this));*/
-					//restartApplication();
-					/*Intent intent = new Intent(UnbindDeviceDialog.this,
-							SettingsActivity.class);
-
-					startActivity(intent);
-
-					SettingsActivity.instance.finish();
-					MyKidsListActivity.instance.finish();
-					finish();*/
 				}
 			}
 
@@ -118,32 +106,23 @@ public class UnbindDeviceDialog extends Activity {
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-
 			case Constants.CONNECT_ERROR:
 				Toast.makeText(UnbindDeviceDialog.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
-
 				break;
 
 			case Constants.UNBIND_SUCCESS:
 				Toast.makeText(UnbindDeviceDialog.this,
 						R.string.text_unbind_success, Toast.LENGTH_LONG).show();
-
 				break;
 
 			case Constants.UNBIND_FAIL:
-
 				Toast.makeText(UnbindDeviceDialog.this,
 						R.string.text_unbind_fail, Toast.LENGTH_LONG).show();
-
-				// parseJson(getData).clear();
 				break;
-
 			}
-
 		}
 	};
 

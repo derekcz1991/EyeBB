@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,10 +25,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -38,10 +34,8 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.activity.ErrorDialog;
-import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.service.BleCharacteristicsService;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -82,12 +76,17 @@ public class ServicesActivity extends Activity {
 	private TimerTask TimeOutTask = null;
 	private int intentTime = 0;
 
+	private long childId;
+	
 	@SuppressLint({ "NewApi", "ShowToast" })
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_services);
+		
+		childId = getIntent().getLongExtra("child_id", 0);
+		
 		BaseApp.getInstance().addActivity(this);
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);

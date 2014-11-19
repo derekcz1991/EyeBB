@@ -16,12 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -30,7 +25,6 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.activity.ErrorDialog;
-import com.twinly.eyebb.activity.VerifyDialog;
 import com.twinly.eyebb.activity.VerifyWhenLoginDialog;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.LoadingDialog;
@@ -261,7 +255,6 @@ public class CharacteristicsMinorActivity extends Activity {
 						VerifyWhenLoginDialog.class);
 				startActivity(intent);
 
-			
 				finish();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
