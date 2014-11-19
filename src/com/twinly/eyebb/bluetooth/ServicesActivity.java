@@ -14,10 +14,12 @@ import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,10 +28,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -38,10 +37,8 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.activity.ErrorDialog;
-import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.service.BleCharacteristicsService;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -82,6 +79,8 @@ public class ServicesActivity extends Activity {
 	private TimerTask TimeOutTask = null;
 	private int intentTime = 0;
 
+	public static ServicesActivity instance;
+
 	@SuppressLint({ "NewApi", "ShowToast" })
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,6 +88,7 @@ public class ServicesActivity extends Activity {
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_services);
 		BaseApp.getInstance().addActivity(this);
+		instance = this;
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
@@ -97,12 +97,30 @@ public class ServicesActivity extends Activity {
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
 					getString(R.string.toast_read_service));
+			dialog.setOnCancelListener(new OnCancelListener() {
+
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					// TODO Auto-generated method stub
+					ServicesActivity.this.finish();
+
+				}
+			});
 			dialog.show();
 
 		} else {
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
 					getString(R.string.toast_read_service));
+			dialog.setOnCancelListener(new OnCancelListener() {
+
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					// TODO Auto-generated method stub
+					ServicesActivity.this.finish();
+
+				}
+			});
 			dialog.show();
 		}
 
@@ -135,8 +153,12 @@ public class ServicesActivity extends Activity {
 					handler.sendMessage(msg);
 
 					// Constants.mBluetoothLeService.connect(mDeviceAddress);
-					registerReceiver(mGattUpdateReceiver,
-							makeGattUpdateIntentFilter());
+					registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+					if (Constants.mBluetoothLeService != null) {
+						final boolean result = Constants.mBluetoothLeService
+								.connect(mDeviceAddress);
+						System.out.println("Connect request result=" + result);
+					}
 					// status_text.setText(mDeviceName + ": Connecting...");
 					System.out.println(": Connecting..." + mDeviceAddress + " "
 							+ repeat_read_times);
@@ -373,7 +395,7 @@ public class ServicesActivity extends Activity {
 				int num = SharePrefsUtils.BleServiceRunOnceFlag(context);
 				// if (num == 1) {
 
-				new autoConnection().start();
+				
 				// SharePrefsUtils.setBleServiceRunOnceFlag(context, 2);
 				// }
 
@@ -425,6 +447,7 @@ public class ServicesActivity extends Activity {
 					.equals(Constants.APPLICATION_UUID)) {
 
 				ReadService = i;
+				new autoConnection().start();
 				break;
 			}
 		}
@@ -483,13 +506,25 @@ public class ServicesActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+		System.out.println("keyCode=>" + keyCode);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			// Constans.exit_ask(this);
+			System.out.println("onKeyDown<----------");
 			if (Constants.mBluetoothLeService != null) {
 				Constants.mBluetoothLeService.disconnect();
 			}
-			if (dialog.isShowing() && dialog != null) {
-				dialog.dismiss();
+			try {
+				if (dialog.isShowing()) {
+					dialog.dismiss();
+				}
+				TimeOutTask.cancel();
+				TimeOutTask = null;
+				timer.cancel();
+				timer.purge();
+				timer = null;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			mConnected = false;
 			ServicesActivity.this.finish();
@@ -506,4 +541,5 @@ public class ServicesActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 }

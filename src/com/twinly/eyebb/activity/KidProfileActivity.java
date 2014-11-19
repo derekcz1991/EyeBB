@@ -192,8 +192,9 @@ public class KidProfileActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		/*if (resultCode != RESULT_OK)
-			return;*/
+		/*
+		 * if (resultCode != RESULT_OK) return;
+		 */
 		switch (requestCode) {
 		case PICK_FROM_CAMERA:
 			doCrop();

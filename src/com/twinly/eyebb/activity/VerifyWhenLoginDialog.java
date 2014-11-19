@@ -124,7 +124,7 @@ public class VerifyWhenLoginDialog extends Activity {
 									.isMacAddress(VerifyWhenLoginDialog.this));*/
 
 					Intent intent = new Intent(VerifyWhenLoginDialog.this,
-							SettingsActivity.class);
+							MyKidsListActivity.class);
 					SettingsActivity.instance.finish();
 					MyKidsListActivity.instance.finish();
 					KidProfileActivity.instance.finish();

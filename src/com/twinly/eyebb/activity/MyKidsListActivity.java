@@ -169,6 +169,7 @@ public class MyKidsListActivity extends Activity {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
 				new GetMyKidsTask().execute();
+				System.out.println("TASK START--<");
 			}
 		}
 	}

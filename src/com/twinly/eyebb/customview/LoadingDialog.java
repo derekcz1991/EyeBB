@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
+import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
+import com.twinly.eyebb.bluetooth.ServicesActivity;
 
 public class LoadingDialog {
 	/**
@@ -23,7 +25,7 @@ public class LoadingDialog {
 	private static View v;
 	private static Dialog loadingDialog;
 	private static TextView content;
-
+	
 	public static Dialog createLoadingDialog(Context context, String msg) {
 
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -52,14 +54,14 @@ public class LoadingDialog {
 		loadingDialog.setContentView(v, new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
 				LinearLayout.LayoutParams.MATCH_PARENT));// 设置布局
+	
 		return loadingDialog;
 
 	}
 
 	public static void createLoadingDialogCanCancelForMsg(String beepAlli) {
-
 		content.setText(beepAlli + "");
-
 	}
-
+	
+	
 }
