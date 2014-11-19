@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SettingsActivity extends Activity {
@@ -31,7 +31,7 @@ public class SettingsActivity extends Activity {
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
-	private LinearLayout batteryLifeBtn;
+	//private LinearLayout batteryLifeBtn;
 	
 
 	private boolean isAutoUpdate;
@@ -54,7 +54,7 @@ public class SettingsActivity extends Activity {
 		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
-		batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
+		//batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
 		
 		setupView();
 
@@ -73,7 +73,7 @@ public class SettingsActivity extends Activity {
 				chineseSelected
 						.setBackgroundResource(R.drawable.ic_selected_off);
 
-				setAppLanguage(Constants.LOCALE_EN);
+				setAppLanguage(BleDeviceConstants.LOCALE_EN);
 			}
 		});
 
@@ -85,7 +85,7 @@ public class SettingsActivity extends Activity {
 						.setBackgroundResource(R.drawable.ic_selected_off);
 				chineseSelected.setBackgroundResource(R.drawable.ic_selected);
 
-				setAppLanguage(Constants.LOCALE_HK);
+				setAppLanguage(BleDeviceConstants.LOCALE_HK);
 			}
 		});
 
@@ -178,17 +178,17 @@ public class SettingsActivity extends Activity {
 			}
 		});
 		
-		batteryLifeBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-				Intent intent = new Intent(SettingsActivity.this,
-						BatteryLifeActivity.class);
-				startActivity(intent);
-			}
-		});
+//		batteryLifeBtn.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				
+//				Intent intent = new Intent(SettingsActivity.this,
+//						BatteryLifeActivity.class);
+//				startActivity(intent);
+//			}
+//		});
 
 	}
 
@@ -215,9 +215,9 @@ public class SettingsActivity extends Activity {
 
 		// language
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case Constants.LOCALE_TW:
-		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
+		case BleDeviceConstants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_HK:
+		case BleDeviceConstants.LOCALE_CN:
 			englishSelected.setBackgroundResource(R.drawable.ic_selected_off);
 			chineseSelected.setBackgroundResource(R.drawable.ic_selected);
 			break;
@@ -243,9 +243,9 @@ public class SettingsActivity extends Activity {
 		DisplayMetrics dm = resources.getDisplayMetrics();
 
 		switch (language) {
-		case Constants.LOCALE_TW:
-		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
+		case BleDeviceConstants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_HK:
+		case BleDeviceConstants.LOCALE_CN:
 			config.locale = Locale.TRADITIONAL_CHINESE;
 			resources.updateConfiguration(config, dm);
 			break;

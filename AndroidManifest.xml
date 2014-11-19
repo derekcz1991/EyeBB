@@ -379,11 +379,11 @@
                 <category android:name="com.eyebb" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
+     <!--    <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
             <intent-filter>
                 <action android:name="FINISH_BIND" />
             </intent-filter>
-        </receiver>
+        </receiver> -->
         <!--
              <receiver
             android:name="com.twinly.eyebb.fragment.RadarTrackingFragment"

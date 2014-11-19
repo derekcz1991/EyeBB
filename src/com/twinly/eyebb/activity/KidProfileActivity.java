@@ -17,16 +17,19 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 
@@ -36,12 +39,16 @@ public class KidProfileActivity extends Activity {
 	private TextView kidName;
 	private TextView binding;
 	private ImageLoader imageLoader;
+	private RelativeLayout deviceItem;
 
 	private Uri mImageCaptureUri;
 	private static final int PICK_FROM_CAMERA = 1;
 	private static final int CROP_PHOTO = 2;
 	private static final int PICK_FROM_FILE = 3;
 	public static KidProfileActivity instance = null;
+
+	private TextView deviceAddress;
+	private TextView deviceBattery;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,30 @@ public class KidProfileActivity extends Activity {
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
 		binding = (TextView) findViewById(R.id.btn_binding);
+		deviceAddress = (TextView) findViewById(R.id.device_address);
+		deviceBattery = (TextView) findViewById(R.id.device_battery);
+		deviceItem = (RelativeLayout) findViewById(R.id.device_item);
+
+		if (child.getMacAddress().length() > 0) {
+			deviceItem.setVisibility(View.VISIBLE);
+			deviceAddress.setText(child.getMacAddress());
+			deviceItem.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent checkBatteryService = new Intent();
+					checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+							BleDeviceConstants.DB_NAME);
+					checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+							child.getMacAddress());
+					startService(checkBatteryService);
+					
+				}
+			});
+		} else {
+			deviceItem.setVisibility(View.GONE);
+		}
 
 		kidName.setText(child.getName());
 		imageLoader = ImageLoader.getInstance();
@@ -73,9 +104,11 @@ public class KidProfileActivity extends Activity {
 		} else {
 			binding.setText(getString(R.string.btn_unbind));
 		}
-		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
+		mImageCaptureUri = Uri.fromFile(new File(BleDeviceConstants.EYEBB_FOLDER
 				+ "temp.jpg"));
 	}
+	
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -181,7 +214,7 @@ public class KidProfileActivity extends Activity {
 	}
 
 	private void saveAvatar(Bitmap bitmap) {
-		String path = Constants.EYEBB_FOLDER + "avatar" + child.getChildId()
+		String path = BleDeviceConstants.EYEBB_FOLDER + "avatar" + child.getChildId()
 				+ ".jpg";
 		if (ImageUtils.saveBitmap(bitmap, path)) {
 			child.setIcon(path);

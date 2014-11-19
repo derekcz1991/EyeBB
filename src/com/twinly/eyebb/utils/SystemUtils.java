@@ -9,7 +9,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 
 public class SystemUtils {
 
@@ -20,15 +20,15 @@ public class SystemUtils {
 		System.out.println("--->>" + config.locale);
 		if (config.locale.toString().equals("zh_TW")
 				|| config.locale.toString().equals("zh")) {
-			return Constants.LOCALE_TW;
+			return BleDeviceConstants.LOCALE_TW;
 		} else if (config.locale.toString().equals("zh_HK")
 				|| config.locale.toString().equals("zh")) {
-			return Constants.LOCALE_HK;
+			return BleDeviceConstants.LOCALE_HK;
 		} else if (config.locale.toString().equals("zh_CN")
 				|| config.locale.toString().equals("zh")) {
-			return Constants.LOCALE_CN;
+			return BleDeviceConstants.LOCALE_CN;
 		} else {
-			return Constants.LOCALE_EN;
+			return BleDeviceConstants.LOCALE_EN;
 		}
 	}
 

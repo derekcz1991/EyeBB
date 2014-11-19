@@ -40,7 +40,7 @@ import java.util.UUID;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.activity.CheckBeaconActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.service.BleServicesService;
@@ -100,9 +100,9 @@ public class BluetoothLeService extends Service {
 				// mConnectionState = STATE_DISCONNECTED;
 				// Log.i(TAG, "Disconnected from GATT server.");
 				// broadcastUpdate(intentAction);
-				Constants.mBluetoothLeService.connect(MacronAdd);
+				BleDeviceConstants.mBluetoothLeService.connect(MacronAdd);
 			} else {
-				Constants.mBluetoothLeService.connect(MacronAdd);
+				BleDeviceConstants.mBluetoothLeService.connect(MacronAdd);
 			}
 		}
 
@@ -161,9 +161,9 @@ public class BluetoothLeService extends Service {
 				System.out.println("--------write success----- status:"
 						+ status);
 				System.out.println("====> ending");
-				if (Constants.mBluetoothLeService != null) {
-					Constants.mBluetoothLeService.disconnect();
-					Constants.mBluetoothLeService = null;
+				if (BleDeviceConstants.mBluetoothLeService != null) {
+					BleDeviceConstants.mBluetoothLeService.disconnect();
+					BleDeviceConstants.mBluetoothLeService = null;
 				}
 
 				SharePrefsUtils.setfinishBeep(BluetoothLeService.this, false);
@@ -175,7 +175,7 @@ public class BluetoothLeService extends Service {
 
 				// device status
 				SharePrefsUtils.setDeviceConnectStatus(BluetoothLeService.this,
-						Constants.DEVICE_CONNECT_STATUS_SUCCESS);
+						BleDeviceConstants.DEVICE_CONNECT_STATUS_SUCCESS);
 			}
 
 			if (isDeviceBinding) {

@@ -30,7 +30,7 @@ import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.adapter.GrantKidsListViewAdapter;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
@@ -92,7 +92,7 @@ public class GrantKidsDialog extends Activity {
 					new Thread(postGrantToServerRunnable).start();
 				} else {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.NO_SELECT_CHILDREN;
+					msg.what = BleDeviceConstants.NO_SELECT_CHILDREN;
 					handler.sendMessage(msg);
 					// finish();
 				}
@@ -148,17 +148,17 @@ public class GrantKidsDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("true")) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.GRANT_SUCCESS;
+					msg.what = BleDeviceConstants.GRANT_SUCCESS;
 					handler.sendMessage(msg);
 
 				} else if (retStr.equals("false")) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.CONNECT_ERROR;
+					msg.what = BleDeviceConstants.CONNECT_ERROR;
 					handler.sendMessage(msg);
 				}
 			}
@@ -178,13 +178,13 @@ public class GrantKidsDialog extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(GrantKidsDialog.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
-			case Constants.GRANT_SUCCESS:
+			case BleDeviceConstants.GRANT_SUCCESS:
 				Toast.makeText(GrantKidsDialog.this,
 						R.string.text_grant_success, Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(GrantKidsDialog.this,
@@ -194,7 +194,7 @@ public class GrantKidsDialog extends Activity {
 				finish();
 				break;
 
-			case Constants.NO_SELECT_CHILDREN:
+			case BleDeviceConstants.NO_SELECT_CHILDREN:
 				Toast.makeText(GrantKidsDialog.this,
 						R.string.text_select_child, Toast.LENGTH_LONG).show();
 

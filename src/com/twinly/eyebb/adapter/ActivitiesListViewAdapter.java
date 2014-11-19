@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.ActivityInfo;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -73,11 +73,11 @@ public class ActivitiesListViewAdapter extends BaseAdapter {
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		ActivityInfo activityInfo = list.get(position);
 		switch (SharePrefsUtils.getLanguage(context)) {
-		case Constants.LOCALE_CN:
+		case BleDeviceConstants.LOCALE_CN:
 			viewHolder.title.setText(activityInfo.getTitleSc());
 			break;
-		case Constants.LOCALE_HK:
-		case Constants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_HK:
+		case BleDeviceConstants.LOCALE_TW:
 			viewHolder.title.setText(activityInfo.getTitleTc());
 			break;
 		default:

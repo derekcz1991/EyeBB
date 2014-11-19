@@ -59,7 +59,7 @@ import com.twinly.eyebb.adapter.GridViewScanAdapter;
 import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
@@ -226,8 +226,10 @@ public class RadarTrackingFragment extends Fragment implements
 		initView(v);
 
 		ChildData = DBChildren.getChildrenList(getActivity());
-//		getActivity().registerReceiver(updateDb,
-//				new IntentFilter(Constants.FINISH_BIND));
+		
+		UpdateDb updateDb = new UpdateDb();
+		getActivity().registerReceiver(updateDb,
+				new IntentFilter(BleDeviceConstants.FINISH_BIND));
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
@@ -243,7 +245,7 @@ public class RadarTrackingFragment extends Fragment implements
 					} else {
 						Intent intent = new Intent(getActivity(),
 								BeepAllForRadarDialog.class);
-						intent.putExtra(Constants.BEEP_ALL_DEVICE,
+						intent.putExtra(BleDeviceConstants.BEEP_ALL_DEVICE,
 								(Serializable) BeepAllTempChildData);
 
 						SharePrefsUtils.setStartBeepDialog(getActivity(), true);
@@ -528,7 +530,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 		try {
 
-			Thread.sleep(Constants.SCAN_INRERVAL_TIME);
+			Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
 
 			mBluetoothAdapter.stopLeScan(mLeScanCallback);
 
@@ -575,7 +577,8 @@ public class RadarTrackingFragment extends Fragment implements
 			System.out.println("isWhileLoop = true;");
 			isWhileLoop = true;
 			if (scan_flag) {
-				autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
+				autoScanHandler.postDelayed(autoScan,
+						BleDeviceConstants.POSTDELAYTIME);
 			} else {
 				new Thread(autoScan).start();
 			}
@@ -649,7 +652,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 			if (timer != null && task != null)
 				// System.out.println("bbbbbbbbbbbbbb");
-				timer.schedule(task, Constants.DELAY, Constants.PERIOD);
+				timer.schedule(task, BleDeviceConstants.DELAY,
+						BleDeviceConstants.PERIOD);
 
 		}
 
@@ -666,14 +670,15 @@ public class RadarTrackingFragment extends Fragment implements
 
 		// device status
 		SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-				Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+				BleDeviceConstants.DEVICE_CONNECT_STATUS_DEFAULT);
 
 		// bluetooth
 
 		if (scan_flag) {
 			// System.out
 			// .println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
-			autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
+			autoScanHandler.postDelayed(autoScan,
+					BleDeviceConstants.POSTDELAYTIME);
 		} else {
 			new Thread(autoScan).start();
 		}
@@ -1455,16 +1460,16 @@ public class RadarTrackingFragment extends Fragment implements
 				BeepCheckTimeOutTask.cancel();
 
 				switch (SharePrefsUtils.DeviceConnectStatus(getActivity())) {
-				case Constants.DEVICE_CONNECT_STATUS_SUCCESS:
+				case BleDeviceConstants.DEVICE_CONNECT_STATUS_SUCCESS:
 					// device status
 					SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-							Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+							BleDeviceConstants.DEVICE_CONNECT_STATUS_DEFAULT);
 					break;
 
 				default:
 					// device status
 					SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-							Constants.DEVICE_CONNECT_STATUS_ERROR);
+							BleDeviceConstants.DEVICE_CONNECT_STATUS_ERROR);
 					break;
 				}
 				break;
@@ -1477,11 +1482,13 @@ public class RadarTrackingFragment extends Fragment implements
 								new IntentFilter(
 										BluetoothAdapter.ACTION_STATE_CHANGED));
 
-				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == Constants.DEVICE_CONNECT_STATUS_ERROR) {
+				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == BleDeviceConstants.DEVICE_CONNECT_STATUS_ERROR) {
 
 					if (deviceStatusError == 1) {
-						SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-								Constants.DEVICE_CONNECT_STATUS_DEFAULT);
+						SharePrefsUtils
+								.setDeviceConnectStatus(
+										getActivity(),
+										BleDeviceConstants.DEVICE_CONNECT_STATUS_DEFAULT);
 						deviceStatusError = 0;
 					}
 					deviceStatusError++;
@@ -1608,22 +1615,17 @@ public class RadarTrackingFragment extends Fragment implements
 
 			}
 
-			if (intent.getAction().equals(Constants.FINISH_BIND)) {
+		}
+	};
+	 
+	private class UpdateDb extends BroadcastReceiver{
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals(BleDeviceConstants.FINISH_BIND)) {
 				ChildData = DBChildren.getChildrenList(getActivity());
 				System.out
 						.println("ChildData = DBChildren.getChildrenList(getActivity())");
 			}
-
-		}
-	};
-
-	BroadcastReceiver updateDb = new BroadcastReceiver() {
-		public void onReceive(Context context, Intent intent) {
-
-			ChildData = DBChildren.getChildrenList(getActivity());
-			System.out
-					.println("ChildData = DBChildren.getChildrenList(getActivity())");
-
 		}
 	};
 
@@ -1705,9 +1707,10 @@ public class RadarTrackingFragment extends Fragment implements
 					// Constants.OURDEVICEUUID)) {
 
 					if (bytesToHex(scanRecord, 9, 16).equals(
-							Constants.DEVICE_UUID_VERSON_1)
-							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
-									.equals(Constants.DEVICE_UUID_VERSON_2)) {
+							BleDeviceConstants.DEVICE_UUID_VERSON_1)
+							|| bytesToHex(scanRecord, 9, 16)
+									.substring(8, 32)
+									.equals(BleDeviceConstants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
@@ -1880,7 +1883,7 @@ public class RadarTrackingFragment extends Fragment implements
 			beepIntent = new Intent();
 
 			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-					"Macaron");
+					BleDeviceConstants.DB_NAME);
 			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
 					BeepTempChildData.get(position).getMacAddress());
 			System.out
@@ -1896,7 +1899,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 			// device status
 			SharePrefsUtils.setDeviceConnectStatus(getActivity(),
-					Constants.DEVICE_CONNECT_STATUS_LOADING);
+					BleDeviceConstants.DEVICE_CONNECT_STATUS_LOADING);
 
 			SharePrefsUtils.setKeepDeviceConnectStatus(getActivity(),
 					BeepTempChildData.get(position).getName());
@@ -1918,7 +1921,7 @@ public class RadarTrackingFragment extends Fragment implements
 			// + openAntiData2.get(i).getMacAddress());
 			if (device.getAddress()
 					.equals(openAntiData2.get(i).getMacAddress())) {
-				if (rssi < Constants.BEEP_RSSI) {
+				if (rssi < BleDeviceConstants.BEEP_RSSI) {
 
 					// beepAllTime++;
 

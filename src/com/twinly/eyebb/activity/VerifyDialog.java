@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -85,7 +85,7 @@ public class VerifyDialog extends Activity {
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 
 			} else {
@@ -153,7 +153,7 @@ public class VerifyDialog extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(VerifyDialog.this, R.string.text_network_error,
 						Toast.LENGTH_LONG).show();
 

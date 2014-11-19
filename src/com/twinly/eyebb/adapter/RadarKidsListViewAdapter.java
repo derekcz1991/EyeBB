@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -223,27 +223,27 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 				.DeviceConnectStatus(RadarKidsListViewAdapter.this.context);
 
 		switch (deviceStatus) {
-		case Constants.DEVICE_CONNECT_STATUS_LOADING:
+		case BleDeviceConstants.DEVICE_CONNECT_STATUS_LOADING:
 			viewHolder.DeviceConnectStatus.setText(context.getResources()
 					.getString(R.string.text_connect_device_status_loading));
 			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
 					.getColor(R.color.dark_grey));
 			break;
 
-		case Constants.DEVICE_CONNECT_STATUS_ERROR:
+		case BleDeviceConstants.DEVICE_CONNECT_STATUS_ERROR:
 			viewHolder.DeviceConnectStatus.setText(context.getResources()
 					.getString(R.string.text_connect_device_status_error));
 			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
 					.getColor(R.color.red));
 			break;
 
-		case Constants.DEVICE_CONNECT_STATUS_SUCCESS:
+		case BleDeviceConstants.DEVICE_CONNECT_STATUS_SUCCESS:
 			viewHolder.DeviceConnectStatus.setText(context.getResources()
 					.getString(R.string.text_connect_device_status_success));
 			viewHolder.DeviceConnectStatus.setTextColor(context.getResources()
 					.getColor(R.color.sky_blue));
 			break;
-		case Constants.DEVICE_CONNECT_STATUS_DEFAULT:
+		case BleDeviceConstants.DEVICE_CONNECT_STATUS_DEFAULT:
 			viewHolder.DeviceConnectStatus.setText("");
 
 			break;

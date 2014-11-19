@@ -24,7 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.eyebb.R;
 import com.twinly.eyebb.activity.KindergartenListActivity.GetKindergartenList;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -139,13 +139,13 @@ public class MatchingDeviceActivity extends Activity {
 						int locale = SystemUtils
 								.getLocale(MatchingDeviceActivity.this);
 						switch (locale) {
-						case Constants.LOCALE_CN:
+						case BleDeviceConstants.LOCALE_CN:
 							map.put("displayName", map.get("nameSc"));
 							break;
-						case Constants.LOCALE_TW:
+						case BleDeviceConstants.LOCALE_TW:
 							map.put("displayName", map.get("nameTc"));
 							break;
-						case Constants.LOCALE_HK:
+						case BleDeviceConstants.LOCALE_HK:
 							map.put("displayName", map.get("nameTc"));
 							break;
 						default:

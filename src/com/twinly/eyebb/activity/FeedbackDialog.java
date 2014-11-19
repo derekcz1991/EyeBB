@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -138,7 +138,7 @@ public class FeedbackDialog extends Activity {
 					new Thread(postFeedBackToServerRunnable).start();
 				} else {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.NULL_FEEDBAKC_CONTENT;
+					msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
 					handler.sendMessage(msg);
 				}
 
@@ -185,7 +185,7 @@ public class FeedbackDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("true")) {
@@ -196,7 +196,7 @@ public class FeedbackDialog extends Activity {
 					finish();
 				} else if (retStr.equals("false")) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.CONNECT_ERROR;
+					msg.what = BleDeviceConstants.CONNECT_ERROR;
 					handler.sendMessage(msg);
 				}
 			}
@@ -218,7 +218,7 @@ public class FeedbackDialog extends Activity {
 			Toast toast = null;
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_network_error, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
@@ -231,7 +231,7 @@ public class FeedbackDialog extends Activity {
 				toast.show();
 				break;
 
-			case Constants.NULL_FEEDBAKC_CONTENT:
+			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);

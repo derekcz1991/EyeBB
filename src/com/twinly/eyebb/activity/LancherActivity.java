@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -55,9 +55,9 @@ public class LancherActivity extends Activity {
 	private void checkLogo() {
 		logo = (ImageView) findViewById(R.id.icon);
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case Constants.LOCALE_TW:
-		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
+		case BleDeviceConstants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_HK:
+		case BleDeviceConstants.LOCALE_CN:
 			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
 			break;
 		default:
@@ -71,9 +71,9 @@ public class LancherActivity extends Activity {
 		Configuration config = resources.getConfiguration();
 		DisplayMetrics dm = resources.getDisplayMetrics();
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case Constants.LOCALE_TW:
-		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
+		case BleDeviceConstants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_HK:
+		case BleDeviceConstants.LOCALE_CN:
 			config.locale = Locale.TRADITIONAL_CHINESE;
 			resources.updateConfiguration(config, dm);
 			break;
@@ -85,7 +85,7 @@ public class LancherActivity extends Activity {
 	}
 
 	private void mkdir() {
-		File floder = new File(Constants.EYEBB_FOLDER);
+		File floder = new File(BleDeviceConstants.EYEBB_FOLDER);
 		if (floder.exists() == false) {
 			floder.mkdirs();
 		}

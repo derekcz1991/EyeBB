@@ -217,7 +217,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_marginTop="1dp"
-                        android:background="@drawable/settings_column_center"
+                        android:background="@drawable/settings_column_bottom"
                         android:gravity="center_vertical" >
 
                         <TextView
@@ -231,7 +231,7 @@
                     
                       <!-- battery life -->
 
-                    <LinearLayout
+                    <!-- <LinearLayout
                         android:id="@+id/battery_life_btn"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
@@ -245,7 +245,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:text="@string/text_battery_life" />
-                    </LinearLayout>
+                    </LinearLayout> -->
                 </LinearLayout>
                 <!-- language -->
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 
 public class SharePrefsUtils {
 
@@ -72,13 +72,13 @@ public class SharePrefsUtils {
 	public static String getKindergartenName(Context context) {
 		int locale = SharePrefsUtils.getLanguage(context);
 		switch (locale) {
-		case Constants.LOCALE_CN:
+		case BleDeviceConstants.LOCALE_CN:
 			return getString(context,
 					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC);
-		case Constants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_TW:
 			return getString(context,
 					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
-		case Constants.LOCALE_HK:
+		case BleDeviceConstants.LOCALE_HK:
 			return getString(context,
 					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
 		default:

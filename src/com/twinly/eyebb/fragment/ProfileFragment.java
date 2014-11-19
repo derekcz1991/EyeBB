@@ -63,6 +63,9 @@ public class ProfileFragment extends Fragment {
 			}
 		});
 
+		/**
+		 * FORMAT nickname(username)
+		 */
 		((TextView) v.findViewById(R.id.username)).setText(SharePrefsUtils
 				.getLoginAccount(getActivity()));
 

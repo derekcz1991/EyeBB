@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -78,23 +78,23 @@ public class UpdatePasswordActivity extends Activity {
 							postUpdatePasswordToServer();
 						} else {
 							Message msg = handler.obtainMessage();
-							msg.what = Constants.TWO_DIFFERENT_PASSWORD_SUCCESS;
+							msg.what = BleDeviceConstants.TWO_DIFFERENT_PASSWORD_SUCCESS;
 							handler.sendMessage(msg);
 						}
 					else {
 						Message msg = handler.obtainMessage();
-						msg.what = Constants.PASSWORD_FORMAT_ERROR;
+						msg.what = BleDeviceConstants.PASSWORD_FORMAT_ERROR;
 						handler.sendMessage(msg);
 					}
 				} else {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.PASSWORD_FORMAT_ERROR;
+					msg.what = BleDeviceConstants.PASSWORD_FORMAT_ERROR;
 					handler.sendMessage(msg);
 				}
 
 			} else {
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.NULL_FEEDBAKC_CONTENT;
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
 				handler.sendMessage(msg);
 			}
 
@@ -123,18 +123,18 @@ public class UpdatePasswordActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.UPDATE_PASSWORD_SUCCESS;
+					msg.what = BleDeviceConstants.UPDATE_PASSWORD_SUCCESS;
 					handler.sendMessage(msg);
 
 					finish();
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.OLD_PASSWORD_ERROR;
+					msg.what = BleDeviceConstants.OLD_PASSWORD_ERROR;
 					handler.sendMessage(msg);
 				}
 			}
@@ -155,13 +155,13 @@ public class UpdatePasswordActivity extends Activity {
 			Toast toast = null;
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_network_error, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
-			case Constants.UPDATE_PASSWORD_SUCCESS:
+			case BleDeviceConstants.UPDATE_PASSWORD_SUCCESS:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_update_password_successful,
 						Toast.LENGTH_LONG);
@@ -169,14 +169,14 @@ public class UpdatePasswordActivity extends Activity {
 				toast.show();
 				break;
 
-			case Constants.NULL_FEEDBAKC_CONTENT:
+			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case Constants.TWO_DIFFERENT_PASSWORD_SUCCESS:
+			case BleDeviceConstants.TWO_DIFFERENT_PASSWORD_SUCCESS:
 				toast = Toast
 						.makeText(getApplicationContext(),
 								R.string.text_two_password_different,
@@ -185,14 +185,14 @@ public class UpdatePasswordActivity extends Activity {
 				toast.show();
 				break;
 
-			case Constants.OLD_PASSWORD_ERROR:
+			case BleDeviceConstants.OLD_PASSWORD_ERROR:
 				Intent intent = new Intent(UpdatePasswordActivity.this,
 						OldPasswordIncorrectDialog.class);
 				startActivity(intent);
 
 				break;
 
-			case Constants.PASSWORD_FORMAT_ERROR:
+			case BleDeviceConstants.PASSWORD_FORMAT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_error_password, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);

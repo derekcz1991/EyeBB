@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Location;
@@ -175,7 +175,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 				for (int i = 0; i < childrenIds.size(); i++) {
 					if (System.currentTimeMillis()
 							- childrenMap.get(childrenIds.get(i))
-									.getLastAppearTime() > Constants.validTimeDuration) {
+									.getLastAppearTime() > BleDeviceConstants.validTimeDuration) {
 						childrenIds.remove(i);
 						i--;
 					}
@@ -186,7 +186,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 				AvatarView avatarView;
 				if (System.currentTimeMillis()
 						- childrenMap.get(childrenIds.get(i))
-								.getLastAppearTime() < Constants.validTimeDuration) {
+								.getLastAppearTime() < BleDeviceConstants.validTimeDuration) {
 					avatarView = new AvatarView(context,
 							childrenMap.get(childrenIds.get(i)),
 							viewHolder.avatarContainer, true);

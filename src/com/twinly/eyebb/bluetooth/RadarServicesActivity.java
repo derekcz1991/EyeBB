@@ -38,7 +38,7 @@ import com.eyebb.R;
 
 import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.activity.KidsListActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -108,8 +108,8 @@ public class RadarServicesActivity extends Activity {
 		mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 		System.out.println("mDeviceName:" + mDeviceName + " mDeviceAddress:"
 				+ mDeviceAddress);
-		Constants.gattServiceData.clear();
-		Constants.gattServiceObject.clear();
+		BleDeviceConstants.gattServiceData.clear();
+		BleDeviceConstants.gattServiceObject.clear();
 
 		status_text = (TextView) findViewById(R.id.services_status);
 
@@ -153,8 +153,8 @@ public class RadarServicesActivity extends Activity {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			if (Constants.mBluetoothLeService != null) {
-				Constants.mBluetoothLeService.disconnect();
+			if (BleDeviceConstants.mBluetoothLeService != null) {
+				BleDeviceConstants.mBluetoothLeService.disconnect();
 			}
 			mConnected = false;
 			RadarServicesActivity.this.finish();
@@ -222,22 +222,22 @@ public class RadarServicesActivity extends Activity {
 		public void onServiceConnected(ComponentName componentName,
 				IBinder service) {
 			System.out.println("mServiceConnectionmServiceConnection");
-			Constants.mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
+			BleDeviceConstants.mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
 					.getService();
-			if (!Constants.mBluetoothLeService.initialize()) {
+			if (!BleDeviceConstants.mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				finish();
 			}
 			// Automatically connects to the device upon successful start-up
 			// initialization.
-			Constants.mBluetoothLeService.connect(mDeviceAddress);
+			BleDeviceConstants.mBluetoothLeService.connect(mDeviceAddress);
 			// status_text.setText(mDeviceName + ": Connecting...");
 			System.out.println(": Connecting...");
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
-			Constants.mBluetoothLeService = null;
+			BleDeviceConstants.mBluetoothLeService = null;
 		}
 	};
 
@@ -255,7 +255,7 @@ public class RadarServicesActivity extends Activity {
 			System.out.println("action = " + action);
 			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				mConnected = true;
-				Constants.mBluetoothLeService.discoverServices();
+				BleDeviceConstants.mBluetoothLeService.discoverServices();
 				status_text.setText(mDeviceName + ": Discovering services...");
 			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
 					.equals(action)) {
@@ -267,7 +267,7 @@ public class RadarServicesActivity extends Activity {
 				// Show all the supported services and characteristics on the
 				// user interface.
 				status_text.setText(mDeviceName + ": Discovered");
-				displayGattServices(Constants.mBluetoothLeService
+				displayGattServices(BleDeviceConstants.mBluetoothLeService
 						.getSupportedGattServices());
 
 				//int num = MajorAndMinorPreferences.getInt("runNumRadar", 1);
@@ -322,7 +322,7 @@ public class RadarServicesActivity extends Activity {
 			uuid = gattService.getUuid().toString();
 			uuid = uuid.substring(4, 8);
 			boolean exist = false;
-			for (HashMap<String, String> sItem : Constants.gattServiceData) {
+			for (HashMap<String, String> sItem : BleDeviceConstants.gattServiceData) {
 				if (sItem.get(LIST_UUID).equals(uuid)) {
 					exist = true;
 					break;
@@ -334,8 +334,8 @@ public class RadarServicesActivity extends Activity {
 			name = SampleGattAttributes.lookup(uuid, "Unknow Service");
 			currentServiceData.put(LIST_NAME, name);
 			currentServiceData.put(LIST_UUID, uuid);
-			Constants.gattServiceData.add(currentServiceData);
-			Constants.gattServiceObject.add(gattService);
+			BleDeviceConstants.gattServiceData.add(currentServiceData);
+			BleDeviceConstants.gattServiceObject.add(gattService);
 			addItem(name, uuid);
 		}
 
@@ -346,8 +346,8 @@ public class RadarServicesActivity extends Activity {
 		super.onResume();
 
 		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-		if (Constants.mBluetoothLeService != null) {
-			final boolean result = Constants.mBluetoothLeService
+		if (BleDeviceConstants.mBluetoothLeService != null) {
+			final boolean result = BleDeviceConstants.mBluetoothLeService
 					.connect(mDeviceAddress);
 			System.out.println("Connect request result=" + result);
 		}
@@ -364,7 +364,7 @@ public class RadarServicesActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(mServiceConnection);
-		Constants.mBluetoothLeService = null;
+		BleDeviceConstants.mBluetoothLeService = null;
 	}
 
 	private static IntentFilter makeGattUpdateIntentFilter() {
@@ -382,8 +382,8 @@ public class RadarServicesActivity extends Activity {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			// Constans.exit_ask(this);
-			if (Constants.mBluetoothLeService != null) {
-				Constants.mBluetoothLeService.disconnect();
+			if (BleDeviceConstants.mBluetoothLeService != null) {
+				BleDeviceConstants.mBluetoothLeService.disconnect();
 			}
 			mConnected = false;
 			RadarServicesActivity.this.finish();

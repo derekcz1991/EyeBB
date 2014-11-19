@@ -23,7 +23,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Parameter;
@@ -171,7 +171,7 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 		public void run() {
 			// HANDLER
 			Message msg = handler.obtainMessage();
-			msg.what = Constants.START_PROGRASSS_BAR;
+			msg.what = BleDeviceConstants.START_PROGRASSS_BAR;
 			handler.sendMessage(msg);
 			postToServer(childIDfromDeviceList);
 	
@@ -182,14 +182,14 @@ public class VerifyBirthdayFromDeviceListActivity extends Activity {
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case Constants.START_PROGRASSS_BAR:
+			case BleDeviceConstants.START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialog(
 						VerifyBirthdayFromDeviceListActivity.this,
 						getString(R.string.toast_loading));
 				dialog.show();
 				break;
 
-			case Constants.STOP_PROGRASSS_BAR:
+			case BleDeviceConstants.STOP_PROGRASSS_BAR:
 				dialog.dismiss();
 				break;
 			}

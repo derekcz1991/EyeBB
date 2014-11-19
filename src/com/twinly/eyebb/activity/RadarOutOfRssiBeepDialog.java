@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -68,8 +68,8 @@ public class RadarOutOfRssiBeepDialog extends Activity {
 		antiHeadImg = (ImageView) findViewById(R.id.anti_head_img);
 		hintForUser = (TextView) findViewById(R.id.hint_for_user);
 
-		if (SharePrefsUtils.getLanguage(RadarOutOfRssiBeepDialog.this) == Constants.LOCALE_HK
-				|| SharePrefsUtils.getLanguage(RadarOutOfRssiBeepDialog.this) == Constants.LOCALE_TW) {
+		if (SharePrefsUtils.getLanguage(RadarOutOfRssiBeepDialog.this) == BleDeviceConstants.LOCALE_HK
+				|| SharePrefsUtils.getLanguage(RadarOutOfRssiBeepDialog.this) == BleDeviceConstants.LOCALE_TW) {
 			SpannableStringBuilder builder = new SpannableStringBuilder(
 					hintForUser.getText().toString());
 

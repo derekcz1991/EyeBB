@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.google.android.gms.internal.hr;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -169,7 +169,7 @@ public class CheckChildToBindDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_true)) {
@@ -221,7 +221,7 @@ public class CheckChildToBindDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_false)) {
@@ -261,7 +261,7 @@ public class CheckChildToBindDialog extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 

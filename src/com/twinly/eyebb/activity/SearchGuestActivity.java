@@ -28,7 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Guest;
@@ -140,17 +140,17 @@ public class SearchGuestActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.length() > 2) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.SUCCESS_SEARCH;
+					msg.what = BleDeviceConstants.SUCCESS_SEARCH;
 					handler.sendMessage(msg);
 
 				} else if (retStr.equals("[]")) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.SEARCH_GUEST_NULL;
+					msg.what = BleDeviceConstants.SEARCH_GUEST_NULL;
 					handler.sendMessage(msg);
 				}
 			}
@@ -219,13 +219,13 @@ public class SearchGuestActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(SearchGuestActivity.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
-			case Constants.SUCCESS_SEARCH:
+			case BleDeviceConstants.SUCCESS_SEARCH:
 				// Toast.makeText(SearchGuestActivity.this,
 				// R.string.text_feed_back_successful, Toast.LENGTH_LONG)
 				// .show();
@@ -250,7 +250,7 @@ public class SearchGuestActivity extends Activity {
 				});
 				break;
 
-			case Constants.SEARCH_GUEST_NULL:
+			case BleDeviceConstants.SEARCH_GUEST_NULL:
 				Toast.makeText(SearchGuestActivity.this,
 						R.string.text_search_guest_null, Toast.LENGTH_LONG)
 						.show();

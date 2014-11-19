@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.service.BleServicesService;
@@ -62,14 +62,14 @@ public class BeepAllForRadarDialog extends Activity {
 				// TODO Auto-generated method stub
 
 				BeepAllTempChildData = (ArrayList<Child>) intent
-						.getSerializableExtra(Constants.BEEP_ALL_DEVICE);
+						.getSerializableExtra(BleDeviceConstants.BEEP_ALL_DEVICE);
 
 				BeepAllTempChildDataSize = BeepAllTempChildData.size();
 				//notifyTxt.setText(getString(R.string.text_connect_device));
 				if (BeepAllTempChildDataSize > 0) {
 
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.START_PROGRASSS_BAR;
+					msg.what = BleDeviceConstants.START_PROGRASSS_BAR;
 					handler.sendMessage(msg);
 					// 開始循環
 					BeepAllFlag = true;
@@ -127,7 +127,7 @@ public class BeepAllForRadarDialog extends Activity {
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case Constants.START_PROGRASSS_BAR:
+			case BleDeviceConstants.START_PROGRASSS_BAR:
 				dialog = LoadingDialog.createLoadingDialogCanCancel(
 						BeepAllForRadarDialog.this,
 						getString(R.string.toast_loading) + "\n" + BeepAlli
@@ -150,7 +150,7 @@ public class BeepAllForRadarDialog extends Activity {
 
 				break;
 
-			case Constants.STOP_PROGRASSS_BAR:
+			case BleDeviceConstants.STOP_PROGRASSS_BAR:
 				BeepAllFlag = false;
 				btnBeepAll.interrupt();
 				btnBeepAll = null;

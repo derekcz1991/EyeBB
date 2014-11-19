@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBActivityInfo;
@@ -129,7 +129,7 @@ public class LoginActivity extends Activity {
 
 			} else {
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.NULL_FEEDBAKC_CONTENT;
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
 				handler.sendMessage(msg);
 			}
 
@@ -156,18 +156,18 @@ public class LoginActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.PASSWORD_RESET_SUCCESS;
+					msg.what = BleDeviceConstants.PASSWORD_RESET_SUCCESS;
 					handler.sendMessage(msg);
 
 					
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
-					msg.what = Constants.ACCOUNT_NOT_EXIST;
+					msg.what = BleDeviceConstants.ACCOUNT_NOT_EXIST;
 					handler.sendMessage(msg);
 				}
 			}
@@ -188,13 +188,13 @@ public class LoginActivity extends Activity {
 			Toast toast = null;
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_network_error, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
-			case Constants.PASSWORD_RESET_SUCCESS:
+			case BleDeviceConstants.PASSWORD_RESET_SUCCESS:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_feed_back_successful,
 						Toast.LENGTH_LONG);
@@ -202,14 +202,14 @@ public class LoginActivity extends Activity {
 				toast.show();
 				break;
 
-			case Constants.NULL_FEEDBAKC_CONTENT:
+			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case Constants.ACCOUNT_NOT_EXIST:
+			case BleDeviceConstants.ACCOUNT_NOT_EXIST:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_user_do_not_exist, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);

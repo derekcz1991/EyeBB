@@ -10,7 +10,7 @@ import com.eyebb.R;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
 import com.twinly.eyebb.bluetooth.SampleGattAttributes;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.utils.BLEUtils;
 
@@ -97,7 +97,7 @@ public class BleCharacteristicsService extends Service {
 
 					listItem = new ArrayList<HashMap<String, Object>>();
 
-					gattService = Constants.gattServiceObject.get(servidx);
+					gattService = BleDeviceConstants.gattServiceObject.get(servidx);
 
 					Thread disconverThread = new Thread() {
 						@SuppressLint("NewApi")
@@ -133,7 +133,7 @@ public class BleCharacteristicsService extends Service {
 								addItem(name, uuid);
 								// System.out.println("gattCharacteristic=>" +
 								// gattCharacteristics.get(i).toString());
-								if (uuid.equals(Constants.BEEP_CHAR_UUID)) {
+								if (uuid.equals(BleDeviceConstants.BEEP_CHAR_UUID)) {
 									final BluetoothGattCharacteristic characteristic = gattCharacteristics
 											.get(i);
 									final int charaProp = characteristic
@@ -146,7 +146,7 @@ public class BleCharacteristicsService extends Service {
 										// uuid = uuid.substring(4, 8);
 										// uuid = uuid;
 										charaidx = i;
-										Constants.mBluetoothLeService
+										BleDeviceConstants.mBluetoothLeService
 												.readCharacteristic(characteristic);
 
 										break;
@@ -245,7 +245,7 @@ public class BleCharacteristicsService extends Service {
 							+ charas.get(charaidx).toString());
 			characteristic.setValue(BLEUtils.HexString2Bytes(data));
 
-			Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
+			BleDeviceConstants.mBluetoothLeService.wirteCharacteristic(characteristic);
 			System.out
 					.println("Constants.mBluetoothLeService.wirteCharacteristic(characteristic);");
 		}

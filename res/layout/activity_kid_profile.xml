@@ -41,6 +41,7 @@
         android:layout_height="1px"
         android:background="@color/divider" >
     </LinearLayout>
+    <!-- kid name -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -67,6 +68,52 @@
             android:padding="8dp" />
     </RelativeLayout>
 
+    <!-- device address -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/device_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_selector"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:padding="8dp" >
+
+            <TextView
+                style="@style/DarkGreyText_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_battery_life" />
+
+            <TextView
+                android:id="@+id/device_address"
+                style="@style/DarkGreyText_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/device_battery"
+            style="@style/LightGreyText_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="8dp" />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1px"
@@ -76,7 +123,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@color/divider" >
     </LinearLayout>
 

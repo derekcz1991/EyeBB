@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -30,10 +30,7 @@ public class VerifyWhenLoginDialog extends Activity {
 
 		setContentView(R.layout.dialog_verify);
 
-		// Intent broadcast = new Intent();
-		// broadcast.setAction(Constants.FINISH_BIND);
-		// broadcast.putExtra("msg", true);
-		// sendBroadcast(broadcast);
+	
 
 		btnVerify = (TextView) findViewById(R.id.btn_verify);
 		btnVerify.setOnClickListener(new OnClickListener() {
@@ -101,15 +98,13 @@ public class VerifyWhenLoginDialog extends Activity {
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 
 			} else {
 				// successful
 				if (retStr.equals("true")) {
 
-					// DBChildren.deleteTable(VerifyWhenLoginDialog.this);
-					// /restartApplication();
 					DBChildren
 							.updateMacAddressByChildId(
 									VerifyWhenLoginDialog.this,
@@ -117,11 +112,6 @@ public class VerifyWhenLoginDialog extends Activity {
 											.signUpChildId(VerifyWhenLoginDialog.this)),
 									SharePrefsUtils
 											.isMacAddress(VerifyWhenLoginDialog.this));
-					/*DBChildren.addDeviceOfChild(VerifyWhenLoginDialog.this,
-							SharePrefsUtils
-									.signUpChildId(VerifyWhenLoginDialog.this),
-							SharePrefsUtils
-									.isMacAddress(VerifyWhenLoginDialog.this));*/
 
 					Intent intent = new Intent(VerifyWhenLoginDialog.this,
 							MyKidsListActivity.class);
@@ -129,6 +119,11 @@ public class VerifyWhenLoginDialog extends Activity {
 					MyKidsListActivity.instance.finish();
 					KidProfileActivity.instance.finish();
 					CheckBeaconActivity.instance.finish();
+					//UPDATE RADAR VIEW
+					Intent broadcast = new Intent();
+					broadcast.setAction(BleDeviceConstants.FINISH_BIND);
+					sendBroadcast(broadcast);
+					
 					startActivity(intent);
 					finish();
 				} else {
@@ -177,7 +172,7 @@ public class VerifyWhenLoginDialog extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(VerifyWhenLoginDialog.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 

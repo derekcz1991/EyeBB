@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.bluetooth.CharacteristicsActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Guest;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -111,7 +111,7 @@ public class AuthorizeKidsActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.length() > 0) {
@@ -183,19 +183,19 @@ public class AuthorizeKidsActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(AuthorizeKidsActivity.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
-			case Constants.UNBIND_SUCCESS:
+			case BleDeviceConstants.UNBIND_SUCCESS:
 				Toast.makeText(AuthorizeKidsActivity.this,
 						R.string.text_unbind_success, Toast.LENGTH_LONG).show();
 
 				break;
 
-			case Constants.UNBIND_FAIL:
+			case BleDeviceConstants.UNBIND_FAIL:
 
 				Toast.makeText(AuthorizeKidsActivity.this,
 						R.string.text_unbind_fail, Toast.LENGTH_LONG).show();

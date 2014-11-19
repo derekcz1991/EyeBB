@@ -26,7 +26,7 @@ import com.eyebb.R;
 import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.activity.VerifyWhenLoginDialog;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -132,7 +132,7 @@ public class CharacteristicsMinorActivity extends Activity {
 		// charaidx = 0;
 		// Constans.mBluetoothLeService.readCharacteristic(characteristic);
 
-		gattService2 = Constants.gattServiceObject.get(servidx);
+		gattService2 = BleDeviceConstants.gattServiceObject.get(servidx);
 
 		registerReceiver(mGattUpdateReceiver2, new IntentFilter(
 				BluetoothLeService.ACTION_DATA_AVAILABLE));
@@ -167,7 +167,7 @@ public class CharacteristicsMinorActivity extends Activity {
 					gattCharacteristicGroupData2.add(currentCharaData);
 					addItem(name2, uuid2);
 
-					if (uuid2.equals(Constants.BEEP_CHAR_MINOR)) {
+					if (uuid2.equals(BleDeviceConstants.BEEP_CHAR_MINOR)) {
 						final BluetoothGattCharacteristic characteristic2 = gattCharacteristics
 								.get(i);
 						final int charaProp = characteristic2.getProperties();
@@ -179,8 +179,8 @@ public class CharacteristicsMinorActivity extends Activity {
 							// uuid = uuid.substring(4, 8);
 							// uuid = uuid;
 							charaidxMinor = i;
-							if (Constants.mBluetoothLeService != null)
-								Constants.mBluetoothLeService
+							if (BleDeviceConstants.mBluetoothLeService != null)
+								BleDeviceConstants.mBluetoothLeService
 										.readCharacteristic(characteristic2);
 
 							break;
@@ -235,7 +235,7 @@ public class CharacteristicsMinorActivity extends Activity {
 
 				characteristic2.setValue(BLEUtils.HexString2Bytes(data2));
 
-				Constants.mBluetoothLeService
+				BleDeviceConstants.mBluetoothLeService
 						.wirteCharacteristic(characteristic2);
 				System.out.println("---->finish1009");
 

@@ -39,7 +39,7 @@ import android.widget.Toast;
 import com.eyebb.R;
 import com.twinly.eyebb.bluetooth.BaseApp;
 import com.twinly.eyebb.bluetooth.ServicesActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -112,8 +112,8 @@ public class CheckBeaconActivity extends Activity {
 		childId = getIntent().getLongExtra("child_id", 0);
 
 		BaseApp.getInstance().addActivity(this);
-		Constants.gattServiceData.clear();
-		Constants.gattServiceObject.clear();
+		BleDeviceConstants.gattServiceData.clear();
+		BleDeviceConstants.gattServiceObject.clear();
 		instance = this;
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
@@ -142,7 +142,7 @@ public class CheckBeaconActivity extends Activity {
 
 		if (timer != null && task != null)
 			// System.out.println("bbbbbbbbbbbbbb");
-			timer.schedule(task, Constants.DELAY, Constants.BINDING_PERIOD);
+			timer.schedule(task, BleDeviceConstants.DELAY, BleDeviceConstants.BINDING_PERIOD);
 
 		myList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -293,7 +293,7 @@ public class CheckBeaconActivity extends Activity {
 
 		try {
 
-			Thread.sleep(Constants.SCAN_INRERVAL_TIME);
+			Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
 
 			mBluetoothAdapter.stopLeScan(mLeScanCallback);
 
@@ -357,7 +357,7 @@ public class CheckBeaconActivity extends Activity {
 						.show();
 				break;
 
-			case Constants.CONNECT_ERROR:
+			case BleDeviceConstants.CONNECT_ERROR:
 				Toast.makeText(CheckBeaconActivity.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
@@ -396,9 +396,9 @@ public class CheckBeaconActivity extends Activity {
 					newDevice.setRssi(rssi);
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
 					if (bytesToHex(scanRecord, 9, 16).equals(
-							Constants.DEVICE_UUID_VERSON_1)
+							BleDeviceConstants.DEVICE_UUID_VERSON_1)
 							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
-									.equals(Constants.DEVICE_UUID_VERSON_2)) {
+									.equals(BleDeviceConstants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();
@@ -496,7 +496,7 @@ public class CheckBeaconActivity extends Activity {
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
 				System.out.println("connect error");
 				Message msg = handler.obtainMessage();
-				msg.what = Constants.CONNECT_ERROR;
+				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 
 			} else {

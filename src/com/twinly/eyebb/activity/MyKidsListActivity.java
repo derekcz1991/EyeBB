@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -57,27 +58,25 @@ public class MyKidsListActivity extends Activity {
 						.getChildId());
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
-				/*if (childWithDevice.get(position).getMacAddress().length() > 0) {
-					Intent data = new Intent(MyKidsListActivity.this,
-							UnbindDeviceDialog.class);
-
-					SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
-							childWithDevice.get(position).getChildId() + "");
-
-					startActivity(data);
-
-				} else {
-					Intent data = new Intent(MyKidsListActivity.this,
-							CheckBeaconActivity.class);
-					SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
-							childWithDevice.get(position).getChildId() + "");
-					// bundle.putSerializable("child",
-					// adapter.getItem(position));
-					// data.putExtras(bundle);
-					// setResult(ActivityConstants.RESULT_RESULT_OK, data);
-					startActivity(data);
-					//finish();
-				}*/
+				/*
+				 * if (childWithDevice.get(position).getMacAddress().length() >
+				 * 0) { Intent data = new Intent(MyKidsListActivity.this,
+				 * UnbindDeviceDialog.class);
+				 * 
+				 * SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
+				 * childWithDevice.get(position).getChildId() + "");
+				 * 
+				 * startActivity(data);
+				 * 
+				 * } else { Intent data = new Intent(MyKidsListActivity.this,
+				 * CheckBeaconActivity.class);
+				 * SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
+				 * childWithDevice.get(position).getChildId() + ""); //
+				 * bundle.putSerializable("child", //
+				 * adapter.getItem(position)); // data.putExtras(bundle); //
+				 * setResult(ActivityConstants.RESULT_RESULT_OK, data);
+				 * startActivity(data); //finish(); }
+				 */
 
 			}
 		});
@@ -131,35 +130,45 @@ public class MyKidsListActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			childWithDevice = new ArrayList<Child>();
-			childWithoutDevice = new ArrayList<Child>();
+			if (result.equals("")
+					|| result
+							.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
+				Toast.makeText(MyKidsListActivity.this,
+						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
-			System.out.println("master children = " + result);
-			try {
-				JSONObject json = new JSONObject(result);
-				JSONArray childJSONList = json
-						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-				for (int i = 0; i < childJSONList.length(); i++) {
-					JSONObject object = (JSONObject) childJSONList.get(i);
-					Child child = new Child(
-							object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
-							object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-							object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-					if (CommonUtils.isNull(object
-							.getString(HttpConstants.JSON_KEY_CHILD_BEACON))) {
-						childWithoutDevice.add(child);
-					} else {
-						childWithDevice.add(child);
+			} else {
+				childWithDevice = new ArrayList<Child>();
+				childWithoutDevice = new ArrayList<Child>();
+
+				System.out.println("master children = " + result);
+				try {
+					JSONObject json = new JSONObject(result);
+					JSONArray childJSONList = json
+							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
+					for (int i = 0; i < childJSONList.length(); i++) {
+						JSONObject object = (JSONObject) childJSONList.get(i);
+						Child child = new Child(
+								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+						if (CommonUtils
+								.isNull(object
+										.getString(HttpConstants.JSON_KEY_CHILD_BEACON))) {
+							childWithoutDevice.add(child);
+						} else {
+							childWithDevice.add(child);
+						}
 					}
+				} catch (JSONException e) {
+					System.out.println(HttpConstants.GET_MASTER_CHILDREN
+							+ e.getMessage());
 				}
-			} catch (JSONException e) {
-				System.out.println(HttpConstants.GET_MASTER_CHILDREN
-						+ e.getMessage());
+				listView1.setAdapter(new KidsListViewSimpleAdapter(
+						MyKidsListActivity.this, childWithDevice, false));
+				listView2.setAdapter(new KidsListViewSimpleAdapter(
+						MyKidsListActivity.this, childWithoutDevice, false));
 			}
-			listView1.setAdapter(new KidsListViewSimpleAdapter(
-					MyKidsListActivity.this, childWithDevice, false));
-			listView2.setAdapter(new KidsListViewSimpleAdapter(
-					MyKidsListActivity.this, childWithoutDevice, false));
+
 		}
 
 	}

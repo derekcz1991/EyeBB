@@ -9,8 +9,9 @@ import android.os.Environment;
 import com.eyebb.R;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 
-public class Constants {
+public class BleDeviceConstants {
 	public static final String DB_NAME = "eyebb.db";
+	public static final String DEVICE_NAME = "Macaron";
 	public static final int DB_VERSION = 1;
 
 	public static final int LOCALE_EN = 0;

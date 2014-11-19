@@ -12,7 +12,7 @@ import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;
 import com.twinly.eyebb.bluetooth.SampleGattAttributes;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity.autoConnection;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -122,14 +122,14 @@ public class BleServicesService extends Service {
 
 				registerReceiver(mGattUpdateReceiver,
 						makeGattUpdateIntentFilter());
-				if (Constants.mBluetoothLeService != null) {
-					final boolean result = Constants.mBluetoothLeService
+				if (BleDeviceConstants.mBluetoothLeService != null) {
+					final boolean result = BleDeviceConstants.mBluetoothLeService
 							.connect(mDeviceAddress);
 					System.out.println("Connect request result=" + result);
 				}
 
-				Constants.gattServiceData.clear();
-				Constants.gattServiceObject.clear();
+				BleDeviceConstants.gattServiceData.clear();
+				BleDeviceConstants.gattServiceObject.clear();
 
 				// status_text = (TextView) findViewById(R.id.services_status);
 
@@ -172,13 +172,13 @@ public class BleServicesService extends Service {
 		System.out.println("Service onDestroy");
 		super.onDestroy();
 		try {
-			if (Constants.mBluetoothLeService != null) {
-				Constants.mBluetoothLeService.disconnect();
+			if (BleDeviceConstants.mBluetoothLeService != null) {
+				BleDeviceConstants.mBluetoothLeService.disconnect();
 			}
 			unregisterReceiver(mGattUpdateReceiver);
 			unbindService(mServiceConnection);
 			mConnected = false;
-			Constants.mBluetoothLeService = null;
+			BleDeviceConstants.mBluetoothLeService = null;
 			// if (Constants.mBluetoothLeService != null) {
 			// Constants.mBluetoothLeService.disconnect();
 			// }
@@ -202,8 +202,8 @@ public class BleServicesService extends Service {
 			// // TODO Auto-generated catch block
 			// e.printStackTrace();
 			// }
-			if (Constants.mBluetoothLeService != null) {
-				Constants.mBluetoothLeService.disconnect();
+			if (BleDeviceConstants.mBluetoothLeService != null) {
+				BleDeviceConstants.mBluetoothLeService.disconnect();
 			}
 			mConnected = false;
 			// RadarServicesActivity.this.finish();
@@ -258,23 +258,23 @@ public class BleServicesService extends Service {
 		public void onServiceConnected(ComponentName componentName,
 				IBinder service) {
 			// System.out.println("mServiceConnectionmServiceConnection");
-			Constants.mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
+			BleDeviceConstants.mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
 					.getService();
-			if (!Constants.mBluetoothLeService.initialize()) {
+			if (!BleDeviceConstants.mBluetoothLeService.initialize()) {
 				Log.e(TAG, "Unable to initialize Bluetooth");
 				// BleServicesService.this.finish();
 				stopSelf();
 			}
 			// Automatically connects to the device upon successful start-up
 			// initialization.
-			Constants.mBluetoothLeService.connect(mDeviceAddress);
+			BleDeviceConstants.mBluetoothLeService.connect(mDeviceAddress);
 			// status_text.setText(mDeviceAddress + ": Connecting...");
 			System.out.println(": Connecting..." + mDeviceAddress);
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
-			Constants.mBluetoothLeService = null;
+			BleDeviceConstants.mBluetoothLeService = null;
 		}
 	};
 
@@ -292,7 +292,7 @@ public class BleServicesService extends Service {
 			System.out.println("action = " + action);
 			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 				mConnected = true;
-				Constants.mBluetoothLeService.discoverServices();
+				BleDeviceConstants.mBluetoothLeService.discoverServices();
 				// status_text.setText(mDeviceName +
 				// ": Discovering services...");
 				System.out.println("(BluetoothLeService.ACTION_GATT_CONNECTED");
@@ -326,7 +326,7 @@ public class BleServicesService extends Service {
 				// status_text.setText(mDeviceName + ": Discovered");
 //				int connect_ble_service = SharePrefsUtils
 //						.isConnectBleService(BleServicesService.this);
-				displayGattServices(Constants.mBluetoothLeService
+				displayGattServices(BleDeviceConstants.mBluetoothLeService
 						.getSupportedGattServices());
 				//
 				// if (connect_ble_service == 1) {
@@ -393,14 +393,14 @@ public class BleServicesService extends Service {
 			// name = SampleGattAttributes.lookup(uuid, "Unknow Service");
 			currentServiceData.put(LIST_NAME, name);
 			currentServiceData.put(LIST_UUID, uuid);
-			Constants.gattServiceData.add(currentServiceData);
-			Constants.gattServiceObject.add(gattServices.get(i));
+			BleDeviceConstants.gattServiceData.add(currentServiceData);
+			BleDeviceConstants.gattServiceObject.add(gattServices.get(i));
 			// S addItem(name, uuid);
 			// System.out.println("gattServices.get(i).getUuid()==>"
 			// + gattServices.get(i).getUuid());
 
 			if (gattServices.get(i).getUuid().toString()
-					.equals(Constants.APPLICATION_UUID)) {
+					.equals(BleDeviceConstants.APPLICATION_UUID)) {
 
 				intentToChara.putExtra(
 						BleCharacteristicsService.EXTRAS_SERVICE_NAME, i);

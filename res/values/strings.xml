@@ -106,7 +106,7 @@
     <string name="text_radar_model_on">Radar model ON</string>
     <string name="text_radar_model_off">Radar model OFF</string>
     <string name="text_authorization">Authorization</string>
-    <string name="text_device">Eyebb Device</string>
+    <string name="text_device">Eyebb device</string>
     <string name="text_more">More</string>
     <string name="text_feed_back">Feedback</string>
     <string name="text_feed_back_content">Love it? Hate it? Would you like to suggest a new feature or report a bug? We would love to hear from you:</string>

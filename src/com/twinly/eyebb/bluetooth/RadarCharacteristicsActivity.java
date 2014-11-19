@@ -32,7 +32,7 @@ import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
 import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
 import com.twinly.eyebb.activity.VerifyDialog;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 
@@ -110,17 +110,17 @@ public class RadarCharacteristicsActivity extends Activity {
 					uuid = characteristic.getUuid().toString();
 					uuid = uuid.substring(4, 8);
 					charaidx = arg2;
-					Constants.mBluetoothLeService
+					BleDeviceConstants.mBluetoothLeService
 							.readCharacteristic(characteristic);
 				}
 			}
 		});
 
-		gattService = Constants.gattServiceObject.get(servidx);
+		gattService = BleDeviceConstants.gattServiceObject.get(servidx);
 
 		Thread disconverThread = new Thread() {
 			public void run() {
-				status_text.setText(Constants.gattServiceData.get(servidx).get(
+				status_text.setText(BleDeviceConstants.gattServiceData.get(servidx).get(
 						"NAME")
 						+ ": Discovering Characteristics...");
 				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
@@ -151,7 +151,7 @@ public class RadarCharacteristicsActivity extends Activity {
 					addItem(name, uuid);
 
 				}
-				status_text.setText(Constants.gattServiceData.get(servidx).get(
+				status_text.setText(BleDeviceConstants.gattServiceData.get(servidx).get(
 						"NAME")
 						+ ": Discovered");
 
@@ -179,7 +179,7 @@ public class RadarCharacteristicsActivity extends Activity {
 			uuid = characteristic.getUuid().toString();
 			uuid = uuid.substring(4, 8);
 			charaidx = 0;
-			Constants.mBluetoothLeService.readCharacteristic(characteristic);
+			BleDeviceConstants.mBluetoothLeService.readCharacteristic(characteristic);
 		}
 	}
 
@@ -250,7 +250,7 @@ public class RadarCharacteristicsActivity extends Activity {
 
 		BluetoothGattCharacteristic characteristic = charas.get(charaidx);
 		characteristic.setValue(BLEUtils.HexString2Bytes(data));
-		Constants.mBluetoothLeService.wirteCharacteristic(characteristic);
+		BleDeviceConstants.mBluetoothLeService.wirteCharacteristic(characteristic);
 		timer = new Timer(true);
 		timer.schedule(task, 1000, 1000); // 延时1000ms后执行，1000ms执行一次
 

@@ -12,7 +12,7 @@ import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.MatchingVerificationActivity;
 import com.twinly.eyebb.activity.VerifyBirthdayFromDeviceListActivity;
 import com.twinly.eyebb.activity.VerifyDialog;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
@@ -107,8 +107,8 @@ public class DeviceListAcitivity extends Activity {
 
 		setContentView(R.layout.ble_peripheral);
 		BaseApp.getInstance().addActivity(this);
-		Constants.gattServiceData.clear();
-		Constants.gattServiceObject.clear();
+		BleDeviceConstants.gattServiceData.clear();
+		BleDeviceConstants.gattServiceObject.clear();
 
 		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
 				MODE_PRIVATE);
@@ -363,9 +363,9 @@ public class DeviceListAcitivity extends Activity {
 					newDevice.setName(device.getName());
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
 					if (bytesToHex(scanRecord, 9, 16).equals(
-							Constants.DEVICE_UUID_VERSON_1)
+							BleDeviceConstants.DEVICE_UUID_VERSON_1)
 							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
-									.equals(Constants.DEVICE_UUID_VERSON_2)) {
+									.equals(BleDeviceConstants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
 									.entrySet().iterator();

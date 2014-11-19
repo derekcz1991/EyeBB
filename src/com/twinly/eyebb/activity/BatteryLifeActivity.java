@@ -2,7 +2,7 @@ package com.twinly.eyebb.activity;
 
 import com.eyebb.R;
 import com.twinly.eyebb.bluetooth.ServicesActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 
 import android.app.Activity;
 import android.os.Bundle;

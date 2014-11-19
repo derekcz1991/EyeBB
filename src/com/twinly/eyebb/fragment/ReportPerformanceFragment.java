@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBPerformance;
@@ -84,7 +84,7 @@ public class ReportPerformanceFragment extends Fragment implements
 							.next();
 					PerformanceListItem item = new PerformanceListItem("",
 							entry.getKey(), -1,
-							Constants.progressBarStyleSet[index],
+							BleDeviceConstants.progressBarStyleSet[index],
 							entry.getValue(), entry.getValue(), 1440);
 					list.add(item);
 					index++;
@@ -92,7 +92,7 @@ public class ReportPerformanceFragment extends Fragment implements
 			} else {
 				PerformanceListItem item = new PerformanceListItem("",
 						getString(R.string.text_no_record), -1,
-						Constants.progressBarStyleSet[0], 0, 0, 0);
+						BleDeviceConstants.progressBarStyleSet[0], 0, 0, 0);
 				list.add(item);
 			}
 
@@ -108,7 +108,7 @@ public class ReportPerformanceFragment extends Fragment implements
 							.next();
 					PerformanceListItem item = new PerformanceListItem("",
 							entry.getKey(), -1,
-							Constants.progressBarStyleSet[index],
+							BleDeviceConstants.progressBarStyleSet[index],
 							entry.getValue(), entry.getValue(), 1440);
 					list.add(item);
 					index++;
@@ -116,7 +116,7 @@ public class ReportPerformanceFragment extends Fragment implements
 			} else {
 				PerformanceListItem item = new PerformanceListItem("",
 						getString(R.string.text_no_record), -1,
-						Constants.progressBarStyleSet[0], 0, 0, 0);
+						BleDeviceConstants.progressBarStyleSet[0], 0, 0, 0);
 				list.add(item);
 			}
 			
@@ -132,7 +132,7 @@ public class ReportPerformanceFragment extends Fragment implements
 							.next();
 					PerformanceListItem item = new PerformanceListItem("",
 							entry.getKey(), -1,
-							Constants.progressBarStyleSet[index],
+							BleDeviceConstants.progressBarStyleSet[index],
 							entry.getValue(), entry.getValue(), 1440);
 					list.add(item);
 					index++;
@@ -140,7 +140,7 @@ public class ReportPerformanceFragment extends Fragment implements
 			} else {
 				PerformanceListItem item = new PerformanceListItem("",
 						getString(R.string.text_no_record), -1,
-						Constants.progressBarStyleSet[0], 0, 0, 0);
+						BleDeviceConstants.progressBarStyleSet[0], 0, 0, 0);
 				list.add(item);
 			}
 			updateAdapter();

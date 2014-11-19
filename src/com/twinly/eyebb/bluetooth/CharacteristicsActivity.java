@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.CheckBeaconActivity;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -103,7 +103,7 @@ public class CharacteristicsActivity extends Activity {
 		// charaidx = 0;
 		// Constans.mBluetoothLeService.readCharacteristic(characteristic);
 
-		gattService = Constants.gattServiceObject.get(servidx);
+		gattService = BleDeviceConstants.gattServiceObject.get(servidx);
 		// gattService2 = Constants.gattServiceObject.get(servidx);
 		registerReceiver(mGattUpdateReceiver, new IntentFilter(
 				BluetoothLeService.ACTION_DATA_AVAILABLE));
@@ -138,7 +138,7 @@ public class CharacteristicsActivity extends Activity {
 					addItem(name, uuid);
 					// System.out.println("gattCharacteristic=>" +
 					// gattCharacteristics.get(i).toString());
-					if (uuid.equals(Constants.BEEP_CHAR_MAJOR)) {
+					if (uuid.equals(BleDeviceConstants.BEEP_CHAR_MAJOR)) {
 						final BluetoothGattCharacteristic characteristic = gattCharacteristics
 								.get(i);
 						final int charaProp = characteristic.getProperties();
@@ -150,7 +150,7 @@ public class CharacteristicsActivity extends Activity {
 							// uuid = uuid.substring(4, 8);
 							// uuid = uuid;
 							charaidxMajor = i;
-							Constants.mBluetoothLeService
+							BleDeviceConstants.mBluetoothLeService
 									.readCharacteristic(characteristic);
 
 							majorFlag = true;
@@ -228,7 +228,7 @@ public class CharacteristicsActivity extends Activity {
 							CharacteristicsActivity.majorFinished = true;
 
 							Message msg = handler.obtainMessage();
-							msg.what = Constants.FINISH_WRITE_MAJOR_CHARA;
+							msg.what = BleDeviceConstants.FINISH_WRITE_MAJOR_CHARA;
 							handler.sendMessage(msg);
 							startActivity(intent);
 							// CharacteristicsActivity.this.finish();
@@ -249,7 +249,7 @@ public class CharacteristicsActivity extends Activity {
 
 				characteristic.setValue(BLEUtils.HexString2Bytes(data));
 
-				Constants.mBluetoothLeService
+				BleDeviceConstants.mBluetoothLeService
 						.wirteCharacteristic(characteristic);
 				System.out.println("---->finish1008");
 			} catch (Exception e) {
@@ -265,7 +265,7 @@ public class CharacteristicsActivity extends Activity {
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case Constants.FINISH_WRITE_MAJOR_CHARA:
+			case BleDeviceConstants.FINISH_WRITE_MAJOR_CHARA:
 
 				// unregisterReceiver(mGattUpdateReceiver);
 				finish();
