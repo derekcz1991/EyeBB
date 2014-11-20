@@ -1,10 +1,13 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 
@@ -27,6 +31,11 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private ArrayList<Child> Antidata;
+	public static long checkAntidata;
+	private int autiDelayTimeFlag = 0;
+	private int antiChildMissId = 0;
+	private static Timer autidelayTimer;
+	private static TimerTask autidelayTask;
 
 	// private RadarKidsListViewAdapterCallback callback;
 	//
@@ -63,6 +72,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 				.showImageForEmptyUri(R.drawable.ic_empty)
 				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
+
 	}
 
 	@Override
@@ -133,6 +143,19 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 		return convertView;
 	}
 
+	public static void stopTimer() {
+		if (autidelayTimer != null) {
+			autidelayTimer.cancel();
+			autidelayTimer.purge();
+			autidelayTimer = null;
+		}
+
+		if (autidelayTask != null) {
+			autidelayTask.cancel();
+			autidelayTask = null;
+		}
+	}
+
 	private void setUpView(ViewHolder viewHolder, final int position) {
 		if (data.size() > position) {
 			// System.out.println("POITION MISS = >" + position);
@@ -146,7 +169,7 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 			}
 
 			if (Antidata != null) {
-				System.out.println("Antidata.size()=>" + Antidata.size());
+				// System.out.println("Antidata.size()=>" + Antidata.size());
 				for (int i = 0; i < Antidata.size(); i++) {
 					if (Antidata.get(i).getChildId() == child.getChildId()) {
 						viewHolder.avatar.setBorderColor(context.getResources()
@@ -155,14 +178,37 @@ public class MissRadarKidsListViewAdapter extends BaseAdapter {
 						viewHolder.ChildStatus.setText(context.getResources()
 								.getString(R.string.text_anti_lost_mode_miss));
 
-						Intent beepForAntiIntent = new Intent();
+						checkAntidata = Antidata.get(i).getChildId();
+						stopTimer();
+						antiChildMissId = i;
+						autidelayTimer = new Timer();
+						autidelayTask = new TimerTask() {
 
-						beepForAntiIntent.setClass(context,
-								RadarOutOfRssiBeepDialog.class);
-						beepForAntiIntent.putExtra("child_information",
-								Antidata.get(i));
+							public void run() {
+								System.out.println("autiDelayTimeFlag====>"
+										+ autiDelayTimeFlag);
+								autiDelayTimeFlag++;
+								if (autiDelayTimeFlag == 5) {
+									autiDelayTimeFlag = 6;
+									Intent beepForAntiIntent = new Intent();
 
-						context.startActivity(beepForAntiIntent);
+									beepForAntiIntent.setClass(context,
+											RadarOutOfRssiBeepDialog.class);
+									beepForAntiIntent.putExtra(
+											"child_information",
+											Antidata.get(antiChildMissId));
+
+									context.startActivity(beepForAntiIntent);
+
+									stopTimer();
+								}
+							}
+
+						};
+						autiDelayTimeFlag = 0;
+
+						autidelayTimer.schedule(autidelayTask, 0, 1000);
+
 						break;
 					}
 				}

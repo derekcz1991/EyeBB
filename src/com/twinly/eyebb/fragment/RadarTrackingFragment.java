@@ -80,7 +80,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private BluetoothAdapter mBluetoothAdapter;
 	private final static int BLE_VERSION = 18;
-	private static final int REQUEST_ENABLE_BT = 1;
+
 
 	// bluetooth
 	private boolean scan_flag = false;
@@ -518,13 +518,13 @@ public class RadarTrackingFragment extends Fragment implements
 	public void scanLeDevice() {
 
 		// Stops scanning after a pre-defined scan period.
-		try {
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+//
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
 
@@ -611,11 +611,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 	public void btnConfirmConnect() {
 		isConfirmRadarBtn = true;
-		// confirmRadarBtn.setBackground(getResources().getDrawable(
-		// R.drawable.ic_selected));
-
-		// checkIsBluetoothOpen 判斷藍芽是否打開 如果沒打開則返回到初始界面
-		// while (btnConfirmConnectFlagForBluetooth) {
 
 		try {
 			checkIsBluetoothOpen = checkIsBluetooth();
@@ -692,14 +687,11 @@ public class RadarTrackingFragment extends Fragment implements
 		isConfirmRadarBtn = false;
 		// 还原为没有点击
 		confirmRadarBtn.setChecked(false);
-		// confirmRadarBtn.setBackground(getResources().getDrawable(
-		// R.drawable.ic_selected_off));
-		// timer control
+	
 		buttonCancel = true;
 		// 清除time task
 		stopTimer();
-		// 删除 radar上的头像
-		// removeInitImageHead();
+
 
 		// listview消失
 		ChildlistView.setVisibility(View.GONE);
@@ -710,17 +702,13 @@ public class RadarTrackingFragment extends Fragment implements
 		connectDeviceLayout.setAlpha((float) 0.3);
 
 		scan_flag = false;
-		// autoScanHandler.removeCallbacks(autoScan);
-		// mHandler.removeCallbacks(scanLeDeviceRunable);
-		// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
 		// 關閉循環掃描
 		isWhileLoop = false;
 		// 清除動畫
 		radar_rotate.clearAnimation();
 
 		// 清除頭像 清除數據 清除數量
-		// removeImageHead(ScanedChildDataHeadNum);
-		// removeMissImageHead(MissChildDataHeadNum);
 
 		clearAlltheDate();
 		missingChildNumTxt.setText(MissChildData.size() + "");
@@ -1410,7 +1398,7 @@ public class RadarTrackingFragment extends Fragment implements
 			if (!mBluetoothAdapter.isEnabled()) {
 				Intent enableBtIntent = new Intent(
 						BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+				startActivityForResult(enableBtIntent,  BleDeviceConstants.REQUEST_ENABLE_BT);
 			}
 		}
 	}
@@ -1943,14 +1931,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 					beepAllTime = 0;
 
-					// if (RadarOutOfRssiBeepDialog.isStart) {
-					// if (RadarOutOfRssiBeepDialog.instance != null) {
-					// RadarOutOfRssiBeepDialog.instance.finish();
-					//
-					// RadarOutOfRssiBeepDialog.isStart = false;
-					// }
-					//
-					// }
 
 				}
 			}

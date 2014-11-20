@@ -13,7 +13,8 @@ public class BleDeviceConstants {
 	public static final String DB_NAME = "eyebb.db";
 	public static final String DEVICE_NAME = "Macaron";
 	public static final int DB_VERSION = 1;
-
+	public static final int REQUEST_ENABLE_BT = 1;
+	
 	public static final int LOCALE_EN = 0;
 	public static final int LOCALE_CN = 1;
 	public static final int LOCALE_HK = 2;
@@ -32,7 +33,7 @@ public class BleDeviceConstants {
 	public final static int START_PROGRASSS_BAR = 1;
 	public final static int STOP_PROGRASSS_BAR = 2;
 	public static final int BEEP_RSSI = -90;
-	public static final int SCAN_INRERVAL_TIME = 1000;
+	public static final int SCAN_INRERVAL_TIME = 2000;
 	public static final int SCANTIME = Integer.MAX_VALUE;
 
 	public static final int POSTDELAYTIME = Integer.MAX_VALUE - 500;
@@ -49,7 +50,7 @@ public class BleDeviceConstants {
 	public static int DELAY = 0;
 	public static final int PERIOD = 5000;
 	public static final int BINDING_PERIOD = 40000;
-
+	public static final int BATTERY_DELAY_LOADING = 3000;
 	//broadcast
 	public static final String BROADCAST_FINISH_BIND = "FINISH_BIND";
 	public static final String BROADCAST_GET_DEVICE_BATTERY = "battery_broadcast";

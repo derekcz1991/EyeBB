@@ -29,7 +29,6 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private RadarKidsListViewAdapterCallback callback;
-	
 
 	public interface RadarKidsListViewAdapterCallback {
 		public void onStartToBeepClicked(int position);
@@ -149,8 +148,18 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 				e.printStackTrace();
 			}
 
+			// timeout
 			if (Antidata != null) {
-				System.out.println("Antidata.size()=>" + Antidata.size());
+				for (int i = 0; i < Antidata.size(); i++) {
+					if (Antidata.get(i).getChildId() == MissRadarKidsListViewAdapter.checkAntidata) {
+						MissRadarKidsListViewAdapter.stopTimer();
+						break;
+					}
+				}
+			}
+
+			if (Antidata != null) {
+				// System.out.println("Antidata.size()=>" + Antidata.size());
 				for (int i = 0; i < Antidata.size(); i++) {
 					if (Antidata.get(i).getChildId() == child.getChildId()) {
 						viewHolder.avatar.setBorderColor(context.getResources()
@@ -158,8 +167,8 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 						viewHolder.ChildStatus.setVisibility(View.VISIBLE);
 						viewHolder.ChildStatus.setText(context.getResources()
 								.getString(R.string.text_anti_lost_mode));
-						viewHolder.ChildStatus.setTextColor(context.getResources()
-								.getColor(R.color.red));
+						viewHolder.ChildStatus.setTextColor(context
+								.getResources().getColor(R.color.red));
 						break;
 					}
 				}

@@ -3,7 +3,10 @@ package com.twinly.eyebb.activity;
 import java.io.File;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -15,6 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -44,17 +48,20 @@ public class KidProfileActivity extends Activity {
 	private TextView binding;
 	private ImageLoader imageLoader;
 	private RelativeLayout deviceItem;
-
+	private BluetoothAdapter mBluetoothAdapter;
 	private Uri mImageCaptureUri;
-	private static final int PICK_FROM_CAMERA = 1;
-	private static final int CROP_PHOTO = 2;
-	private static final int PICK_FROM_FILE = 3;
+	private static final int PICK_FROM_CAMERA = 100;
+	private static final int CROP_PHOTO = 200;
+	private static final int PICK_FROM_FILE = 300;
 	public static KidProfileActivity instance = null;
 
 	private TextView deviceAddress;
 	private TextView deviceBattery;
 	public static Intent checkBatteryService;
 
+	Handler readBatteryHandler = new Handler();
+
+	@SuppressLint({ "NewApi", "InlinedApi" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,6 +73,9 @@ public class KidProfileActivity extends Activity {
 		instance = this;
 		child = DBChildren.getChildById(this,
 				getIntent().getLongExtra("child_id", 0));
+
+		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
@@ -89,24 +99,16 @@ public class KidProfileActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					if (!mBluetoothAdapter.isEnabled()) {
 
-					deviceBattery.setText(getResources().getString(
-							R.string.toast_loading));
+						openBluetooth();
+						// return;
+					} else {
+						readBattery();
+					}
 
-					checkBatteryService = new Intent();
-					checkBatteryService.putExtra(
-							BleServicesService.EXTRAS_DEVICE_NAME,
-							BleDeviceConstants.DB_NAME);
-					checkBatteryService.putExtra(
-							BleServicesService.EXTRAS_DEVICE_ADDRESS,
-							child.getMacAddress());
-					checkBatteryService
-							.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
-					checkBatteryService
-							.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM,
-									"battery");
-					startService(checkBatteryService);
-
+					registerReceiver(bluetoothState, new IntentFilter(
+							BluetoothAdapter.ACTION_STATE_CHANGED));
 				}
 			});
 		} else {
@@ -130,6 +132,58 @@ public class KidProfileActivity extends Activity {
 		mImageCaptureUri = Uri.fromFile(new File(
 				BleDeviceConstants.EYEBB_FOLDER + "temp.jpg"));
 	}
+
+	Runnable readBatteryRunable = new Runnable() {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			readBattery();
+		}
+	};
+
+	private void readBattery() {
+		deviceBattery.setText(getResources().getString(R.string.toast_loading));
+
+		checkBatteryService = new Intent();
+		checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+				BleDeviceConstants.DB_NAME);
+		checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+				child.getMacAddress());
+		checkBatteryService
+				.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
+		checkBatteryService.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM,
+				"battery");
+		startService(checkBatteryService);
+	}
+
+	BroadcastReceiver bluetoothState = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String stateExtra = BluetoothAdapter.EXTRA_STATE;
+			int state = intent.getIntExtra(stateExtra, -1);
+			switch (state) {
+			case BluetoothAdapter.STATE_TURNING_ON:
+				System.out.println("STATE_TURNING_ON");
+
+				break;
+			case BluetoothAdapter.STATE_ON:
+				System.out.println("STATE_ON");
+				readBatteryHandler.postDelayed(readBatteryRunable,
+						BleDeviceConstants.BATTERY_DELAY_LOADING);
+				break;
+			case BluetoothAdapter.STATE_TURNING_OFF:
+				System.out.println("STATE_TURNING_OFF");
+
+				break;
+			case BluetoothAdapter.STATE_OFF:
+				System.out.println("STATE_OFF");
+
+				break;
+
+			}
+
+		}
+	};
 
 	private class UpdateDb extends BroadcastReceiver {
 		public void onReceive(Context context, Intent intent) {
@@ -261,6 +315,18 @@ public class KidProfileActivity extends Activity {
 		}
 	}
 
+	private void openBluetooth() {
+		// 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
+		if (!mBluetoothAdapter.isEnabled()) {
+			if (!mBluetoothAdapter.isEnabled()) {
+				Intent enableBtIntent = new Intent(
+						BluetoothAdapter.ACTION_REQUEST_ENABLE);
+				startActivityForResult(enableBtIntent,
+						BleDeviceConstants.REQUEST_ENABLE_BT);
+			}
+		}
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		/*
@@ -291,9 +357,17 @@ public class KidProfileActivity extends Activity {
 	}
 
 	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		registerReceiver(new UpdateDb(), new IntentFilter(
+				BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY));
+		super.onResume();
+	}
+
+	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		//unregisterReceiver(new UpdateDb());
+		// unregisterReceiver(new UpdateDb());
 		super.onDestroy();
 	}
 }
