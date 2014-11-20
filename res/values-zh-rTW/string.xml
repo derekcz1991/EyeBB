@@ -154,6 +154,8 @@
     <string name="text_kindergarten">幼稚園</string>
      <string name="text_battery_life">eyebb電量</string>
     <string name="text_no_device_nearby">找尋不到設備</string>
+     <string name="text_wrong_login_for_binding">錯誤,只有父母賬號才可以進行綁定.</string>
+     <string name="text_master_of_the_child_exist_already">此孩子已經擁有監護人.</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -166,9 +168,9 @@
     <string name="btn_share">分享</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_verify">確認</string>
-    <string name="btn_binding">綁定</string>
+    <string name="btn_binding">我要綁定</string>
     <string name="btn_unbind">解除綁定</string>
-    <string name="btn_skip">略过</string>
+    <string name="btn_skip">下次再說</string>
     <string name="btn_next_step">下一步</string>
     <string name="btn_search_child">查找孩子</string>
     <string name="btn_add_new_guest">增加副監管人</string>

@@ -148,7 +148,9 @@
     <string name="text_kindergarten">Kindergarten</string>
       <string name="text_battery_life">Battery life of eyebb</string>
         <string name="text_no_device_nearby">No device nearby</string>
-    
+        <string name="text_wrong_login_for_binding">Wrong login, only parents account can register binding.</string>
+        <string name="text_master_of_the_child_exist_already">Master of the child already exists.</string>
+        
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
     <string name="btn_add_new_guest">Add guest</string>

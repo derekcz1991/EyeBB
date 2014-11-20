@@ -77,7 +77,7 @@ public class UnbindDeviceDialog extends Activity {
 				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-				if (retStr.equals("N")) {
+				if (retStr.equals("NC")) {
 					Message msg = handler.obtainMessage();
 					msg.what = BleDeviceConstants.UNBIND_FAIL;
 					handler.sendMessage(msg);

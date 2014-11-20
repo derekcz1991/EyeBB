@@ -91,6 +91,10 @@ public class BleDeviceConstants {
 	public static final int PASSWORD_RESET_SUCCESS = 10012;
 	public static final int ACCOUNT_NOT_EXIST = 10013;
 	public static final int FINISH_WRITE_MAJOR_CHARA = 10014;
+	public static final int CHILD_EXIST = 10015;
+	public static final int ALREADY_RELATIONSHIP = 10016;
+	public static final int WRONG_LOGIN = 10017;
+	public static final int MASTER_OF_CHILD_ALREAD_EXIST = 10018;
 	
 	public static final String BLE_SERVICE_COME_FROM = "device_come_from";
 

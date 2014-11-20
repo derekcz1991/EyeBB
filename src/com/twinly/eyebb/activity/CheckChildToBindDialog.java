@@ -45,9 +45,6 @@ public class CheckChildToBindDialog extends Activity {
 	private String childIdToPost;
 	private ArrayList<Child> child_data;
 
-	public static final int CHILD_EXIST = 2;
-	public static final int ALREADY_RELATIONSHIP = 3;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,7 +65,7 @@ public class CheckChildToBindDialog extends Activity {
 				childIdToPost = parseJson(getData).get(position).getChildId()
 						+ "";
 
-				new Thread(postRelationToServerRunnable).start();
+				new Thread(postCheckChildIsBindToServerRunnable).start();
 
 				// Intent data = new Intent(CheckChildToBindDialog.this,
 				// CheckBeaconActivity.class);
@@ -134,16 +131,16 @@ public class CheckChildToBindDialog extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	Runnable postRelationToServerRunnable = new Runnable() {
+	Runnable postCheckChildIsBindToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
-			postRelationToServer();
+			postCheckChildIsBindToServer();
 
 		}
 	};
 
 	@SuppressLint("ShowToast")
-	private void postRelationToServer() {
+	private void postCheckChildIsBindToServer() {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
@@ -172,59 +169,8 @@ public class CheckChildToBindDialog extends Activity {
 				msg.what = BleDeviceConstants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-				if (retStr.equals(HttpConstants.SERVER_RETURN_true)) {
+				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
 
-					new Thread(postCheckIfChildHasBeaconToServerRunnable)
-							.start();
-
-				} else if (retStr.equals(HttpConstants.SERVER_RETURN_false)) {
-
-					Message msg = handler.obtainMessage();
-					msg.what = ALREADY_RELATIONSHIP;
-					handler.sendMessage(msg);
-				}
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-
-	}
-
-	Runnable postCheckIfChildHasBeaconToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			postRelationToServer();
-
-		}
-	};
-
-	@SuppressLint("ShowToast")
-	private void postCheckIfChildHasBeaconToServer() {
-		// TODO Auto-generated method stub
-
-		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>" + childIdToPost);
-
-		map.put("childId", childIdToPost);
-
-		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(
-					CheckChildToBindDialog.this,
-					HttpConstants.CHECK_IF_CHILD_HAS_BEACON, map);
-			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-
-				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
-				handler.sendMessage(msg);
-			} else {
-				if (retStr.equals(HttpConstants.SERVER_RETURN_false)) {
 					Intent data = new Intent(CheckChildToBindDialog.this,
 							CheckBeaconActivity.class);
 
@@ -234,15 +180,22 @@ public class CheckChildToBindDialog extends Activity {
 					startActivity(data);
 					finish();
 
-				} else if (retStr.equals(HttpConstants.SERVER_RETURN_true)) {
-					Intent data = new Intent(CheckChildToBindDialog.this,
-							UnbindDeviceDialog.class);
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 
-					SharePrefsUtils.setSignUpChildId(
-							CheckChildToBindDialog.this, childIdToPost);
+					Message msg = handler.obtainMessage();
+					msg.what = BleDeviceConstants.MASTER_OF_CHILD_ALREAD_EXIST;
+					handler.sendMessage(msg);
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_WG)) {
 
-					startActivity(data);
+					Message msg = handler.obtainMessage();
+					msg.what = BleDeviceConstants.WRONG_LOGIN;
+					handler.sendMessage(msg);
+				} else if (retStr.substring(0, 1).equals(
+						HttpConstants.SERVER_RETURN_E)) {
 
+					Message msg = handler.obtainMessage();
+					msg.what = BleDeviceConstants.ALREADY_RELATIONSHIP;
+					handler.sendMessage(msg);
 				}
 			}
 
@@ -267,10 +220,26 @@ public class CheckChildToBindDialog extends Activity {
 
 				break;
 
-			case ALREADY_RELATIONSHIP:
+			case BleDeviceConstants.ALREADY_RELATIONSHIP:
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_already_relationship, Toast.LENGTH_LONG)
 						.show();
+				adapter.notifyDataSetChanged();
+				// parseJson(getData).clear();
+				break;
+
+			case BleDeviceConstants.WRONG_LOGIN:
+				Toast.makeText(CheckChildToBindDialog.this,
+						R.string.text_wrong_login_for_binding,
+						Toast.LENGTH_LONG).show();
+				adapter.notifyDataSetChanged();
+				// parseJson(getData).clear();
+				break;
+
+			case BleDeviceConstants.MASTER_OF_CHILD_ALREAD_EXIST:
+				Toast.makeText(CheckChildToBindDialog.this,
+						R.string.text_master_of_the_child_exist_already,
+						Toast.LENGTH_LONG).show();
 				adapter.notifyDataSetChanged();
 				// parseJson(getData).clear();
 				break;

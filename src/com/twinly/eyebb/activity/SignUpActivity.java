@@ -31,8 +31,9 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SignUpActivity extends Activity {
-	private Button btnContinue;
-	private Button btnSkip;
+	// private Button btnContinue;
+	// private Button btnSkip;
+	private Button btnSignup;
 
 	private EditText ed_username;
 	private EditText ed_email;
@@ -85,8 +86,9 @@ public class SignUpActivity extends Activity {
 		tv_nickname = (TextView) findViewById(R.id.ic_signup_nickname);
 		// tv_phone = (TextView) findViewById(R.id.ic_signup_phone);
 
-		btnContinue = (Button) findViewById(R.id.btn_signup_continue);
-		btnSkip = (Button) findViewById(R.id.btn_signup_skip);
+		// btnContinue = (Button) findViewById(R.id.btn_signup_continue);
+		// btnSkip = (Button) findViewById(R.id.btn_signup_skip);
+		btnSignup = (Button) findViewById(R.id.btn_signup);
 
 		ed_username.setOnFocusChangeListener(new OnFocusChangeListener() {
 
@@ -141,21 +143,188 @@ public class SignUpActivity extends Activity {
 			}
 		});
 
-		btnContinue.setOnClickListener(new OnClickListener() {
+		// btnContinue.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// // Regex for username password username
+		// username = ed_username.getText().toString();
+		// email = ed_email.getText().toString();
+		// password = ed_password.getText().toString();
+		// nickname = ed_nickname.getText().toString();
+		// phone = ed_username.getText().toString();
+		// regType = "P";
+		//
+		// System.out.println("username + email + password" + username
+		// + " " + email + " " + password);
+		// if (username != null && username.length() > 0) {
+		// if (nickname != null && nickname.length() > 0) {
+		//
+		// if (isPassword(password)) {
+		// // editor.putString("usrname", username);
+		// // editor.putString("email", email);
+		// // editor.putString("password", password);
+		// // editor.commit();
+		// if (isEmail(email) || phone.length() > 0) {
+		// if (phone != null || phone.length() > 0) {
+		// SharePrefsUtils.setSignUpEmail(
+		// SignUpActivity.this, email);
+		// SharePrefsUtils.setSignUpNickname(
+		// SignUpActivity.this, nickname);
+		// SharePrefsUtils.setSignUpPassword(
+		// SignUpActivity.this, password);
+		// SharePrefsUtils.setSignUpPhoneNumber(
+		// SignUpActivity.this, phone);
+		// SharePrefsUtils.setSignUpUsername(
+		// SignUpActivity.this, username);
+		//
+		// if (usernameFlag) {
+		// new Thread(
+		// postRegParentsCheckToServerRunnable)
+		// .start();
+		//
+		// } else {
+		// new Thread(
+		// postAccNameCheckToServerRunnable)
+		// .start();
+		// }
+		//
+		// }
+		// } else {
+		//
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_fill_email_or_phone,
+		// Toast.LENGTH_LONG).show();
+		// tv_email.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_radar_missed));
+		// // tv_phone.setBackground(getResources()
+		// // .getDrawable(R.drawable.ic_radar_missed));
+		//
+		// }
+		// } else {
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_error_password,
+		// Toast.LENGTH_LONG).show();
+		// tv_password.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_radar_missed));
+		// }
+		//
+		// } else {
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_error_nickname, Toast.LENGTH_LONG)
+		// .show();
+		// tv_nickname.setBackground(getResources().getDrawable(
+		// R.drawable.ic_radar_missed));
+		// }
+		// } else {
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_error_username, Toast.LENGTH_LONG)
+		// .show();
+		// tv_username.setBackground(getResources().getDrawable(
+		// R.drawable.ic_radar_missed));
+		// }
+		//
+		// }
+		// });
+		//
+		// btnSkip.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		// username = ed_username.getText().toString();
+		// email = ed_email.getText().toString();
+		// password = ed_password.getText().toString();
+		// nickname = ed_nickname.getText().toString();
+		// phone = ed_username.getText().toString();
+		// regType = "G";
+		//
+		// System.out.println("username + email + password" + username
+		// + " " + email + " " + password);
+		//
+		// if (username != null && username.length() > 0) {
+		//
+		// if (nickname != null && nickname.length() > 0) {
+		//
+		// if (isPassword(password)) {
+		// // editor.putString("usrname", username);
+		// // editor.putString("email", email);
+		// // editor.putString("password", password);
+		// // editor.commit();
+		// if (isEmail(email) || phone.length() > 0) {
+		// if (phone != null || phone.length() > 0) {
+		// SharePrefsUtils.setSignUpEmail(
+		// SignUpActivity.this, email);
+		// SharePrefsUtils.setSignUpNickname(
+		// SignUpActivity.this, nickname);
+		// SharePrefsUtils.setSignUpPassword(
+		// SignUpActivity.this, password);
+		// SharePrefsUtils.setSignUpPhoneNumber(
+		// SignUpActivity.this, phone);
+		// SharePrefsUtils.setSignUpUsername(
+		// SignUpActivity.this, username);
+		//
+		// if (usernameFlag) {
+		// new Thread(
+		// postRegParentsCheckToServerRunnable)
+		// .start();
+		//
+		// } else {
+		// new Thread(
+		// postAccNameCheckToServerRunnable)
+		// .start();
+		// }
+		// }
+		// } else {
+		//
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_fill_email_or_phone,
+		// Toast.LENGTH_LONG).show();
+		// tv_email.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_radar_missed));
+		// // tv_phone.setBackground(getResources()
+		// // .getDrawable(R.drawable.ic_radar_missed));
+		//
+		// }
+		// } else {
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_error_password,
+		// Toast.LENGTH_LONG).show();
+		// tv_password.setBackground(getResources()
+		// .getDrawable(R.drawable.ic_radar_missed));
+		// }
+		//
+		// } else {
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_error_nickname, Toast.LENGTH_LONG)
+		// .show();
+		// tv_nickname.setBackground(getResources().getDrawable(
+		// R.drawable.ic_radar_missed));
+		// }
+		//
+		// } else {
+		// Toast.makeText(SignUpActivity.this,
+		// R.string.text_error_username, Toast.LENGTH_LONG)
+		// .show();
+		// tv_username.setBackground(getResources().getDrawable(
+		// R.drawable.ic_radar_missed));
+		// }
+		// }
+		// });
+
+		btnSignup.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				// Regex for username password username
 				username = ed_username.getText().toString();
 				email = ed_email.getText().toString();
 				password = ed_password.getText().toString();
 				nickname = ed_nickname.getText().toString();
 				phone = ed_username.getText().toString();
-				regType = "P";
 
-				System.out.println("username + email + password" + username
-						+ " " + email + " " + password);
 				if (username != null && username.length() > 0) {
+
 					if (nickname != null && nickname.length() > 0) {
 
 						if (isPassword(password)) {
@@ -186,92 +355,6 @@ public class SignUpActivity extends Activity {
 												postAccNameCheckToServerRunnable)
 												.start();
 									}
-
-								}
-							} else {
-
-								Toast.makeText(SignUpActivity.this,
-										R.string.text_fill_email_or_phone,
-										Toast.LENGTH_LONG).show();
-								tv_email.setBackground(getResources()
-										.getDrawable(R.drawable.ic_radar_missed));
-								// tv_phone.setBackground(getResources()
-								// .getDrawable(R.drawable.ic_radar_missed));
-
-							}
-						} else {
-							Toast.makeText(SignUpActivity.this,
-									R.string.text_error_password,
-									Toast.LENGTH_LONG).show();
-							tv_password.setBackground(getResources()
-									.getDrawable(R.drawable.ic_radar_missed));
-						}
-
-					} else {
-						Toast.makeText(SignUpActivity.this,
-								R.string.text_error_nickname, Toast.LENGTH_LONG)
-								.show();
-						tv_nickname.setBackground(getResources().getDrawable(
-								R.drawable.ic_radar_missed));
-					}
-				} else {
-					Toast.makeText(SignUpActivity.this,
-							R.string.text_error_username, Toast.LENGTH_LONG)
-							.show();
-					tv_username.setBackground(getResources().getDrawable(
-							R.drawable.ic_radar_missed));
-				}
-
-			}
-		});
-
-		btnSkip.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				username = ed_username.getText().toString();
-				email = ed_email.getText().toString();
-				password = ed_password.getText().toString();
-				nickname = ed_nickname.getText().toString();
-				phone = ed_username.getText().toString();
-				regType = "G";
-
-				System.out.println("username + email + password" + username
-						+ " " + email + " " + password);
-
-				if (username != null && username.length() > 0) {
-
-					if (nickname != null && nickname.length() > 0) {
-
-						if (isPassword(password)) {
-							// editor.putString("usrname", username);
-							// editor.putString("email", email);
-							// editor.putString("password", password);
-							// editor.commit();
-							if (isEmail(email) || phone.length() > 0) {
-								if (phone != null || phone.length() > 0) {
-									SharePrefsUtils.setSignUpEmail(
-											SignUpActivity.this, email);
-									SharePrefsUtils.setSignUpNickname(
-											SignUpActivity.this, nickname);
-									SharePrefsUtils.setSignUpPassword(
-											SignUpActivity.this, password);
-									SharePrefsUtils.setSignUpPhoneNumber(
-											SignUpActivity.this, phone);
-									SharePrefsUtils.setSignUpUsername(
-											SignUpActivity.this, username);
-
-									if (usernameFlag) {
-										new Thread(
-												postRegParentsCheckToServerRunnable)
-												.start();
-
-									} else {
-										new Thread(
-												postAccNameCheckToServerRunnable)
-												.start();
-									}
 								}
 							} else {
 
@@ -309,7 +392,6 @@ public class SignUpActivity extends Activity {
 				}
 			}
 		});
-
 	}
 
 	Runnable postAccNameCheckToServerRunnable = new Runnable() {
@@ -378,8 +460,8 @@ public class SignUpActivity extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("username=>" + username + " " + nickname + " "
-				+ password + " " + email + " " + phone + " " + regType);
+		System.out.println("username=>" + nickname + " " + password + " "
+				+ email + " " + phone);
 
 		hashPassword = CommonUtils.getSHAHashValue(password);
 		map.put("accName", username);
@@ -387,13 +469,13 @@ public class SignUpActivity extends Activity {
 		map.put("password", hashPassword);
 		map.put("email", email);
 		map.put("phoneNum", phone);
-		map.put("regType", regType);
+		// map.put("regType", regType);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.post(HttpConstants.REG_PARENTS,
 					map);
-			System.out.println("retStrpost======>" + retStr);
+			System.out.println("signUp======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
@@ -403,48 +485,41 @@ public class SignUpActivity extends Activity {
 				handler.sendMessage(msg);
 			} else {
 
-				if (!retStr.equals("false") && retStr.length() > 0) {
+				if (!retStr.equals(HttpConstants.SERVER_RETURN_F)
+						&& retStr.length() > 0 && retStr.length() < 20) {
 					Message msg = handler.obtainMessage();
 					msg.what = REG_SUCCESSFULLY;
 					handler.sendMessage(msg);
 					regSuccessFlag = true;
 
-					if (regType.equals("P")) {
-						// binding
-						Intent intent = new Intent(SignUpActivity.this,
-								ChildInformationMatchingActivity.class);
-						// intent.putExtra("guardianId", retStr);
-						SharePrefsUtils.setSignUpGuardianId(
-								SignUpActivity.this, retStr);
-						startActivity(intent);
+					// username
+					SharePrefsUtils.setSignUpUsername(SignUpActivity.this,
+							username);
+					// password
+					SharePrefsUtils.setSignUpPassword(SignUpActivity.this,
+							hashPassword);
+					// guardianId
+					SharePrefsUtils.setSignUpGuardianId(SignUpActivity.this,
+							retStr);
 
-						SharePrefsUtils.setSignUpUsername(SignUpActivity.this,
-								username);
-						SharePrefsUtils.setSignUpPassword(SignUpActivity.this,
-								hashPassword);
+					Intent intent = new Intent(SignUpActivity.this,
+							SignUpAskToBindDialog.class);
+					intent.putExtra("username", username);
+					intent.putExtra("hashPassword", hashPassword);
+					intent.putExtra("guardianId", retStr);
+					startActivity(intent);
 
-					} else if (regType.equals("G")) {
-						// login
-						Intent intent = new Intent(SignUpActivity.this,
-								LancherActivity.class);
-
-						// use to login
-						SharePrefsUtils.setLogin(SignUpActivity.this, true);
-						SharePrefsUtils.setLoginAccount(SignUpActivity.this,
-								username);
-						SharePrefsUtils.setPassowrd(SignUpActivity.this,
-								hashPassword);
-						// intent.putExtra("username", username);
-						// intent.putExtra("password", password);
-						startActivity(intent);
-					}
-
-				} else if (retStr.equals("false")) {
+				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
 					msg.what = CHECK_ACC_FALSE;
 					handler.sendMessage(msg);
 					regSuccessFlag = false;
 
+				} else {
+					Message msg = handler.obtainMessage();
+					msg.what = CONNECT_ERROR;
+					handler.sendMessage(msg);
+					regSuccessFlag = false;
 				}
 
 			}

@@ -108,5 +108,7 @@ public class HttpConstants {
 	public static final String SERVER_RETURN_Y = "Y";
 	public static final String SERVER_RETURN_T = "T";
 	public static final String SERVER_RETURN_F = "F";
+	public static final String SERVER_RETURN_E = "E";
+	public static final String SERVER_RETURN_WG = "WG";
 
 }
