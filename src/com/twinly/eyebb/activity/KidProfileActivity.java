@@ -240,9 +240,9 @@ public class KidProfileActivity extends Activity {
 		intent.putExtra("child_id", child.getChildId());
 
 		if (CommonUtils.isNull(child.getMacAddress())) {
-			intent.setClass(this, CheckBeaconActivity.class);
+			intent.setClass(this, BeaconListActivity.class);
 			startActivityForResult(intent,
-					ActivityConstants.REQUEST_GO_TO_CHECK_BEACON_ACTIVITY);
+					ActivityConstants.REQUEST_GO_TO_BEACON_LIST_ACTIVITY);
 		} else {
 			intent.setClass(this, UnbindDeviceDialog.class);
 			startActivityForResult(intent,
@@ -350,6 +350,12 @@ public class KidProfileActivity extends Activity {
 		case ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY:
 			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
 				setResult(ActivityConstants.RESULT_UNBIND_SUCCESS);
+				finish();
+			}
+			break;
+		case ActivityConstants.REQUEST_GO_TO_BEACON_LIST_ACTIVITY:
+			if (resultCode == ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS) {
+				setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS);
 				finish();
 			}
 			break;

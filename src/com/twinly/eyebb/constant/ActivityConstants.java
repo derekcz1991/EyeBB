@@ -61,7 +61,8 @@ public class ActivityConstants {
 	public static final int REQUEST_GO_TO_BIRTHDAY_ACTIVITY = 106;
 	public static final int REQUEST_GO_TO_KID_PROFILE_ACTIVITY = 107;
 	public static final int REQUEST_GO_TO_UNBIND_ACTIVITY = 108;
-	public static final int REQUEST_GO_TO_CHECK_BEACON_ACTIVITY = 109;
+	public static final int REQUEST_GO_TO_BEACON_LIST_ACTIVITY = 109;
+	public static final int REQUEST_GO_TO_BIND_CHILD_MACARON_DIALOG = 110;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;
@@ -70,6 +71,8 @@ public class ActivityConstants {
 	public static final int RESULT_RESULT_BIRTHDAY_OK = 204;
 	public static final int RESULT_UNBIND_SUCCESS = 205;
 	public static final int RESULT_UNBIND_CANCEL = 206;
+	public static final int RESULT_WRITE_MAJOR_MINOR_SUCCESS = 207;
+	public static final int RESULT_WRITE_MAJOR_MINOR_FAIL = 208;
 
 	public static final int FRAGMENT_REPORT_ACTIVITY = 1;
 	public static final int FRAGMENT_PROFILE = 2;

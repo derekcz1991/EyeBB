@@ -14,9 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
@@ -25,7 +25,6 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class MyKidsListActivity extends Activity {
 	private ListView listView1;
@@ -58,25 +57,6 @@ public class MyKidsListActivity extends Activity {
 						.getChildId());
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
-				/*
-				 * if (childWithDevice.get(position).getMacAddress().length() >
-				 * 0) { Intent data = new Intent(MyKidsListActivity.this,
-				 * UnbindDeviceDialog.class);
-				 * 
-				 * SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
-				 * childWithDevice.get(position).getChildId() + "");
-				 * 
-				 * startActivity(data);
-				 * 
-				 * } else { Intent data = new Intent(MyKidsListActivity.this,
-				 * CheckBeaconActivity.class);
-				 * SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
-				 * childWithDevice.get(position).getChildId() + ""); //
-				 * bundle.putSerializable("child", //
-				 * adapter.getItem(position)); // data.putExtras(bundle); //
-				 * setResult(ActivityConstants.RESULT_RESULT_OK, data);
-				 * startActivity(data); //finish(); }
-				 */
 
 			}
 		});
@@ -88,12 +68,10 @@ public class MyKidsListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(MyKidsListActivity.this,
 						KidProfileActivity.class);
-				SharePrefsUtils.setSignUpChildId(MyKidsListActivity.this,
-						childWithoutDevice.get(position).getChildId() + "");
 				intent.putExtra("child_id", childWithoutDevice.get(position)
 						.getChildId());
-				startActivity(intent);
-
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
 			}
 		});
 
@@ -176,9 +154,12 @@ public class MyKidsListActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY) {
+			System.out.println("========>>>>>>>" + resultCode);
 			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
 				new GetMyKidsTask().execute();
-				System.out.println("TASK START--<");
+			} else if (resultCode == ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS) {
+				System.out.println("========>>>>>>>");
+				new GetMyKidsTask().execute();
 			}
 		}
 	}

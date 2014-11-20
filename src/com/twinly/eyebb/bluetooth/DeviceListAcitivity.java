@@ -120,8 +120,9 @@ public class DeviceListAcitivity extends Activity {
 
 		listItemAdapter = new SimpleAdapter(this, listItem,
 				R.layout.ble_listview,
-				new String[] { "image", "title", "text" }, new int[] {
-						R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
+				new String[] { "image", "title", "text" },
+				new int[] { R.id.device_icon, R.id.device_name,
+						R.id.device_address });
 		myList = (ListView) findViewById(R.id.listView_peripheral);
 		myList.setAdapter(listItemAdapter);
 
@@ -364,7 +365,8 @@ public class DeviceListAcitivity extends Activity {
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
 					if (bytesToHex(scanRecord, 9, 16).equals(
 							BleDeviceConstants.DEVICE_UUID_VERSON_1)
-							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
+							|| bytesToHex(scanRecord, 9, 16)
+									.substring(8, 32)
 									.equals(BleDeviceConstants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
@@ -450,8 +452,7 @@ public class DeviceListAcitivity extends Activity {
 			if (retStr.equals("retStr.equals => "
 					+ HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
-				System.out
-						.println("connect error");
+				System.out.println("connect error");
 
 				dialog.dismiss();
 
@@ -465,8 +466,8 @@ public class DeviceListAcitivity extends Activity {
 				editor.putString("minor", minor);
 				editor.commit();
 
-				DBChildren.updateMacAddressByChildId(this, childIDfromDeviceList,
-						MACaddress4submit);
+				DBChildren.updateMacAddressByChildId(this,
+						childIDfromDeviceList, MACaddress4submit);
 				dialog.dismiss();
 
 			}

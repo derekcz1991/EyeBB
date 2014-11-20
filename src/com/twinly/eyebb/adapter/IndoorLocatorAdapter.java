@@ -28,7 +28,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private boolean isSort;
 
-	public final class ViewHolder {
+	private final class ViewHolder {
 		public TextView kindergartenName;
 		public LinearLayout contentLayout;
 		public TextView icon;

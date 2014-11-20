@@ -122,8 +122,9 @@ public class CheckBeaconActivity extends Activity {
 
 		listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this, listItem,
 				R.layout.ble_listview,
-				new String[] { "image", "search", "text" }, new int[] {
-						R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
+				new String[] { "image", "search", "text" },
+				new int[] { R.id.device_icon, R.id.device_name,
+						R.id.device_address });
 		myList = (ListView) findViewById(R.id.listView_peripheral);
 		myList.setAdapter(listItemAdapter);
 
@@ -142,7 +143,8 @@ public class CheckBeaconActivity extends Activity {
 
 		if (timer != null && task != null)
 			// System.out.println("bbbbbbbbbbbbbb");
-			timer.schedule(task, BleDeviceConstants.DELAY, BleDeviceConstants.BINDING_PERIOD);
+			timer.schedule(task, BleDeviceConstants.DELAY,
+					BleDeviceConstants.BINDING_PERIOD);
 
 		myList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -397,7 +399,8 @@ public class CheckBeaconActivity extends Activity {
 					newDevice.setUuid(bytesToHex(scanRecord, 9, 16));
 					if (bytesToHex(scanRecord, 9, 16).equals(
 							BleDeviceConstants.DEVICE_UUID_VERSON_1)
-							|| bytesToHex(scanRecord, 9, 16).substring(8, 32)
+							|| bytesToHex(scanRecord, 9, 16)
+									.substring(8, 32)
 									.equals(BleDeviceConstants.DEVICE_UUID_VERSON_2)) {
 						if (deviceMap.put(device.getAddress(), newDevice) != null) {
 							Iterator<Entry<String, Device>> it = deviceMap
@@ -714,14 +717,14 @@ public class CheckBeaconActivity extends Activity {
 
 			listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this,
 					searchList, R.layout.ble_listview, new String[] { "image",
-							"search", "text" }, new int[] { R.id.ItemImage,
-							R.id.ItemTitle, R.id.ItemText });
+							"search", "text" }, new int[] { R.id.device_icon,
+							R.id.device_name, R.id.device_address });
 			myList.setAdapter(listItemAdapter);
 		} else {
 			listItemAdapter = new SimpleAdapter(CheckBeaconActivity.this,
 					listItem, R.layout.ble_listview, new String[] { "image",
-							"search", "text" }, new int[] { R.id.ItemImage,
-							R.id.ItemTitle, R.id.ItemText });
+							"search", "text" }, new int[] { R.id.device_icon,
+							R.id.device_name, R.id.device_address });
 			myList.setAdapter(listItemAdapter);
 		}
 	}

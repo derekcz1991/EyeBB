@@ -4,8 +4,8 @@
     android:versionName="1.01" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="18"
+        android:targetSdkVersion="20" />
 
     <!-- use for bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -20,9 +20,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
-	<uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <!-- phone call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -372,6 +372,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.BeaconListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.BindChildMacaronDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
 
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
@@ -384,11 +394,13 @@
                 <category android:name="com.eyebb" />
             </intent-filter>
         </receiver>
-     <!--    <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
+        <!--
+        <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
             <intent-filter>
                 <action android:name="FINISH_BIND" />
             </intent-filter>
-        </receiver> -->
+        </receiver>
+        -->
         <!--
              <receiver
             android:name="com.twinly.eyebb.fragment.RadarTrackingFragment"
@@ -408,6 +420,9 @@
                 </action>
             </intent-filter>
         </service>
+        <service
+            android:name="com.twinly.eyebb.service.BluetoothLeService"
+            android:enabled="true" />
         <service
             android:name="com.twinly.eyebb.service.BleCharacteristicsService"
             android:enabled="true" >

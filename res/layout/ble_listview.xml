@@ -8,7 +8,7 @@
     android:paddingRight="8dp" >
 
     <ImageView
-        android:id="@+id/ItemImage"
+        android:id="@+id/device_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -23,7 +23,7 @@
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/ItemTitle"
+            android:id="@+id/device_name"
             style="@style/DarkGreyText_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:layout_marginTop="5dp" />
 
         <TextView
-            android:id="@+id/ItemText"
+            android:id="@+id/device_address"
             style="@style/DarkGreyText_12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

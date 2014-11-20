@@ -65,8 +65,9 @@ public class PeripheralActivity extends Activity {
 
 		listItemAdapter = new SimpleAdapter(this, listItem,
 				R.layout.ble_listview,
-				new String[] { "image", "title", "text" }, new int[] {
-						R.id.ItemImage, R.id.ItemTitle, R.id.ItemText });
+				new String[] { "image", "title", "text" },
+				new int[] { R.id.device_icon, R.id.device_name,
+						R.id.device_address });
 		myList = (ListView) findViewById(R.id.listView);
 		myList.setAdapter(listItemAdapter);
 
