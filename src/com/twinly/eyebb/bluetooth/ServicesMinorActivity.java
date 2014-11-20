@@ -178,7 +178,7 @@ public class ServicesMinorActivity extends Activity {
 		public void run() {
 			final Intent intentToChara = new Intent();
 			intentToChara.setClass(ServicesMinorActivity.this,
-					CharacteristicsActivity.class);
+					CharacteristicsMajorActivity.class);
 			if (ReadService > 0) {
 				intentToChara.putExtra("servidx", ReadService);
 				System.out.println("servidxservidx=>" + 2);

@@ -135,8 +135,15 @@ public class KidProfileActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY)) {
-				deviceBattery.setText(SharePrefsUtils
-						.deviceBattery(KidProfileActivity.this) + "%");
+				if (SharePrefsUtils.deviceBattery(KidProfileActivity.this)
+						.equals("")) {
+					deviceBattery.setText(getResources().getString(
+							R.string.text_no_device_nearby));
+				} else {
+					deviceBattery.setText(SharePrefsUtils
+							.deviceBattery(KidProfileActivity.this) + "%");
+				}
+
 			}
 		}
 	};
@@ -281,5 +288,12 @@ public class KidProfileActivity extends Activity {
 			}
 			break;
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		//unregisterReceiver(new UpdateDb());
+		super.onDestroy();
 	}
 }

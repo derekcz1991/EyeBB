@@ -313,7 +313,7 @@
             android:theme="@android:style/Theme.Translucent" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.bluetooth.CharacteristicsActivity"
+            android:name="com.twinly.eyebb.bluetooth.CharacteristicsMajorActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent" >
         </activity>

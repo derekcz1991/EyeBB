@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
-import com.twinly.eyebb.bluetooth.CharacteristicsActivity;
+import com.twinly.eyebb.bluetooth.CharacteristicsMajorActivity;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Guest;

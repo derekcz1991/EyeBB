@@ -348,11 +348,7 @@ public class BluetoothLeService extends Service {
 			SharePrefsUtils.setdeviceBattery(BluetoothLeService.this,
 					getResources().getString(R.string.text_no_device_nearby));
 
-			// UPDATE BATTERY VIEW
-			Intent broadcast = new Intent();
-			broadcast
-					.setAction(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY);
-			sendBroadcast(broadcast);
+			
 			return false;
 		}
 		// We want to directly connect to the device, so we are setting the

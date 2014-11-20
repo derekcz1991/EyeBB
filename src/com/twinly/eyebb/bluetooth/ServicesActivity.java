@@ -100,7 +100,7 @@ public class ServicesActivity extends Activity {
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
-		if (CharacteristicsActivity.majorFinished) {
+		if (CharacteristicsMajorActivity.majorFinished) {
 			// CharacteristicsActivity.instance.finish();
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
@@ -292,13 +292,13 @@ public class ServicesActivity extends Activity {
 				runOnceFlag = false;
 				final Intent intentToChara = new Intent();
 				System.out.println("CharacteristicsActivity.majorFinished-->"
-						+ CharacteristicsActivity.majorFinished);
-				if (CharacteristicsActivity.majorFinished) {
+						+ CharacteristicsMajorActivity.majorFinished);
+				if (CharacteristicsMajorActivity.majorFinished) {
 					intentToChara.setClass(ServicesActivity.this,
 							CharacteristicsMinorActivity.class);
 				} else {
 					intentToChara.setClass(ServicesActivity.this,
-							CharacteristicsActivity.class);
+							CharacteristicsMajorActivity.class);
 				}
 
 				if (ReadService > 0) {

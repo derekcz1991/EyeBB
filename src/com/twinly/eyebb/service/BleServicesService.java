@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
+import com.twinly.eyebb.bluetooth.CharacteristicsMajorActivity;
 import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;
 import com.twinly.eyebb.bluetooth.SampleGattAttributes;
+import com.twinly.eyebb.bluetooth.ServicesActivity;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity.autoConnection;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
@@ -53,7 +56,7 @@ public class BleServicesService extends Service {
 
 	TextView status_text;
 	// 做計時器 自動關閉activity 放置阻塞主線程
-	private Timer timer;
+	
 	// 控制時間
 	private int keepTim = 0;
 	private Dialog dialog;
@@ -65,7 +68,11 @@ public class BleServicesService extends Service {
 	private SharedPreferences.Editor editor;
 	private String major;
 	private String minor;
-
+	
+    private int batteryIntentTime = 0;
+    private TimerTask TimeOutTask = null;
+    Timer timer = new Timer();
+    
 	// private ArrayList<ArrayList<BluetoothGattCharacteristic>>
 	// mGattCharacteristics = new
 	// ArrayList<ArrayList<BluetoothGattCharacteristic>>();
@@ -114,6 +121,26 @@ public class BleServicesService extends Service {
 				try {
 					serviceComeFrom = intent
 							.getStringExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM);
+					
+					if(serviceComeFrom.equals("battery")){
+						   TimeOutTask = new TimerTask() {
+				                public void run() {
+				                    batteryIntentTime++;
+				                    System.out.println("batteryIntentTime==>" + batteryIntentTime);
+				                    if (batteryIntentTime == 20) {
+				                    	batteryIntentTime = 21;
+				                    	// UPDATE BATTERY VIEW
+				            			Intent broadcast = new Intent();
+				            			broadcast
+				            					.setAction(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY);
+				            			SharePrefsUtils.setdeviceBattery(BleServicesService.this, "");
+				            			sendBroadcast(broadcast);
+				                    }
+				                }
+				            };
+
+				            timer.schedule(TimeOutTask, 0, 1000);
+					}
 					System.out.println("serviceComeFrom===>" + serviceComeFrom);
 					mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
 					mDeviceAddress = intent
@@ -419,7 +446,17 @@ public class BleServicesService extends Service {
 				intentToChara.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM, serviceComeFrom);
 				startService(intentToChara);
 				// Constants.mBluetoothLeService = null;
+				  try {
+			            TimeOutTask.cancel();
+			            TimeOutTask = null;
 
+			            timer.cancel();
+			            timer.purge();
+
+			        } catch (Exception e) {
+			            // TODO Auto-generated catch block
+			            e.printStackTrace();
+			        }
 				break;
 			}
 		}
