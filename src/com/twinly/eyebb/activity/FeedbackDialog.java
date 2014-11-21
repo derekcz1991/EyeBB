@@ -108,9 +108,9 @@ public class FeedbackDialog extends Activity {
 				// TODO Auto-generated method stub
 				radioButtonId = checkedId;
 				switch (checkedId) {
-				case R.id.radio_bug:
-					type = "B";
-					break;
+				// case R.id.radio_bug:
+				// type = "B";
+				// break;
 
 				case R.id.radio_idea:
 					type = "I";
@@ -212,7 +212,6 @@ public class FeedbackDialog extends Activity {
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-	
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			Toast toast = null;

@@ -7,10 +7,10 @@ public class HttpConstants {
 	 * 158.182.246.221 == srv.eyebb.com (Testing)
 	 * 158.182.246.223 (Production)
 	 */
-	public static final String SERVER_URL = "http://srv.eyebb.com:8089/";
+	//public static final String SERVER_URL = "http://srv.eyebb.com:8089/";
 	// public static final String SERVER_URL = "http://158.182.246.221:8089/";
 	// public static final String SERVER_URL = "http://158.182.246.224:8080/";
-	//public static final String SERVER_URL = "http://158.182.246.223:8080/";
+	public static final String SERVER_URL = "http://158.182.246.223:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
