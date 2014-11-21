@@ -102,7 +102,7 @@ public class BeepDialog extends Activity {
 		aManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
 		mPlayer = new MediaPlayer();
-		mPlayer = MediaPlayer.create(BeepDialog.this, R.raw.beep);
+		mPlayer = MediaPlayer.create(BeepDialog.this, R.raw.antibeep);
 		mPlayer.setLooping(true);
 		mPlayer.start();
 	}

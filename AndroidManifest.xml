@@ -23,6 +23,12 @@
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!-- CAMERA -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <!-- phone call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -154,7 +160,7 @@
             android:name="com.twinly.eyebb.activity.SignUpAskToBindDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
-        </activity>    
+        </activity>
         <activity
             android:name="com.twinly.eyebb.activity.UnbindDeviceDialog"
             android:screenOrientation="portrait"
@@ -266,6 +272,16 @@
             android:name="com.twinly.eyebb.activity.NotificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.example.qr_codescan.MipcaActivityCapture"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.qrcode.QrCodeMainActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.AboutActivity"

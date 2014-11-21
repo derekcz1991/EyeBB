@@ -176,6 +176,7 @@
     <string name="btn_take_photo">Take Photo</string>
     <string name="btn_choose_photo">Choose Photo</string>
     
+    
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_loading">Loading&#8230;</string>

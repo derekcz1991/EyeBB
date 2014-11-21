@@ -20,8 +20,8 @@
     <color name="progressbar_red">#FFFE5266</color>
     <color name="progressbar_pink">#FFFF9AE6</color>
     <color name="progressbar_purple">#FFBE9CFF</color>
-
     <color name="spb_default_color">#33b5e5</color>
+
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>
@@ -33,8 +33,8 @@
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
-
     <color name="preference_item_normal">#FFFFFFFF</color>
- 	<color name="preference_item_pressed">#fff2f2f2</color>
- 	<color name="divider">#FFe3e3e3</color>
+    <color name="preference_item_pressed">#fff2f2f2</color>
+    <color name="divider">#FFe3e3e3</color>
+    
 </resources>
