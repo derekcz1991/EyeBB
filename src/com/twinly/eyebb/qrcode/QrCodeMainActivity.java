@@ -51,6 +51,7 @@ public class QrCodeMainActivity extends Activity {
 				Bundle bundle = data.getExtras();
 				mTextView.setText(bundle.getString("result"));
 				System.out.println("qrcode------->" + bundle.getString("result"));
+				// no need
 				//mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
 			}
 			break;
