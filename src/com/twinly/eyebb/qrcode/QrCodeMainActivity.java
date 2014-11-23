@@ -17,7 +17,7 @@ import com.eyebb.R;
 public class QrCodeMainActivity extends Activity {
 	private final static int SCANNIN_GREQUEST_CODE = 1;
 	private TextView mTextView ;
-	private ImageView mImageView;
+	//private ImageView mImageView;
 	
 
 	@Override
@@ -26,7 +26,7 @@ public class QrCodeMainActivity extends Activity {
 		setContentView(R.layout.activity_qrcode_main);
 		
 		mTextView = (TextView) findViewById(R.id.result); 
-		mImageView = (ImageView) findViewById(R.id.qrcode_bitmap);
+		//mImageView = (ImageView) findViewById(R.id.qrcode_bitmap);
 		
 		Button mButton = (Button) findViewById(R.id.button1);
 		mButton.setOnClickListener(new OnClickListener() {
@@ -50,7 +50,8 @@ public class QrCodeMainActivity extends Activity {
 			if(resultCode == RESULT_OK){
 				Bundle bundle = data.getExtras();
 				mTextView.setText(bundle.getString("result"));
-				mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
+				System.out.println("qrcode------->" + bundle.getString("result"));
+				//mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
 			}
 			break;
 		}
