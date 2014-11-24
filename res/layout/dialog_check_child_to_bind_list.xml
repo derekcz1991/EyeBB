@@ -6,7 +6,6 @@
     android:background="@color/activity_background_white"
     android:orientation="vertical" >
 
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

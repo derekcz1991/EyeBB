@@ -17,12 +17,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
-import com.twinly.eyebb.activity.KindergartenListActivity.GetKindergartenList;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;

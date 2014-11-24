@@ -7,10 +7,10 @@ public class HttpConstants {
 	 * 158.182.246.221 == srv.eyebb.com (Testing)
 	 * 158.182.246.223 (Production)
 	 */
-	//public static final String SERVER_URL = "http://srv.eyebb.com:8089/";
-	// public static final String SERVER_URL = "http://158.182.246.221:8089/";
+	public static final String SERVER_URL = "http://srv.eyebb.com:8089/";
+	//public static final String SERVER_URL = "http://158.182.246.221:8089/";
 	// public static final String SERVER_URL = "http://158.182.246.224:8080/";
-	public static final String SERVER_URL = "http://158.182.246.223:8080/";
+	//public static final String SERVER_URL = "http://158.182.246.223:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
@@ -98,7 +98,7 @@ public class HttpConstants {
 	public static final String UPDATE_PASSWORD = "accSetting/api/updatePassword";
 	public static final String RESET_PASSWORD = "regService/api/resetPassword";
 	public static final String GET_MASTER_CHILDREN = "masterService/api/masterChildren";
-	
+
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
 	public static final String SERVER_RETURN_false = "false";
@@ -110,5 +110,6 @@ public class HttpConstants {
 	public static final String SERVER_RETURN_F = "F";
 	public static final String SERVER_RETURN_E = "E";
 	public static final String SERVER_RETURN_WG = "WG";
+	public static final String SERVER_RETURN_NC = "NC";
 
 }

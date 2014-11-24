@@ -90,4 +90,20 @@ public class BLEUtils {
 		return ret;
 	}
 
+	public static String checkMajorMinor(String value) {
+		switch (value.length()) {
+		case 1:
+			value = "000" + value;
+			break;
+
+		case 2:
+			value = "00" + value;
+			break;
+		case 3:
+			value = "0" + value;
+			break;
+
+		}
+		return value;
+	}
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
 
 public class SharePrefsUtils {
 
@@ -69,7 +68,7 @@ public class SharePrefsUtils {
 				value);
 	}*/
 
-	public static String getKindergartenName(Context context) {
+	/*public static String getKindergartenName(Context context) {
 		int locale = SharePrefsUtils.getLanguage(context);
 		switch (locale) {
 		case BleDeviceConstants.LOCALE_CN:
@@ -101,7 +100,7 @@ public class SharePrefsUtils {
 	public static void setKindergartenNameEn(Context context, String value) {
 		setString(context,
 				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN, value);
-	}
+	}*/
 
 	public static boolean isUpdateIndoorLocator(Context context) {
 		return getBoolean(context,

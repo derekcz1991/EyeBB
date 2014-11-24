@@ -23,9 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -40,7 +39,7 @@ public class SignUpActivity extends Activity {
 	private EditText ed_password;
 	private EditText ed_nickname;
 	// private EditText ed_phone;
-	private String username;
+	private String userName;
 	private String email;
 	private String password;
 	private String nickname;
@@ -95,8 +94,8 @@ public class SignUpActivity extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (ed_username.hasFocus() == false) {
-					username = ed_username.getText().toString();
-					if (isUsername(username)) {
+					userName = ed_username.getText().toString();
+					if (isUsername(userName)) {
 						new Thread(postAccNameCheckToServerRunnable).start();
 
 					} else {
@@ -317,13 +316,13 @@ public class SignUpActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				username = ed_username.getText().toString();
+				userName = ed_username.getText().toString();
 				email = ed_email.getText().toString();
 				password = ed_password.getText().toString();
 				nickname = ed_nickname.getText().toString();
 				phone = ed_username.getText().toString();
 
-				if (username != null && username.length() > 0) {
+				if (userName != null && userName.length() > 0) {
 
 					if (nickname != null && nickname.length() > 0) {
 
@@ -343,7 +342,7 @@ public class SignUpActivity extends Activity {
 									SharePrefsUtils.setSignUpPhoneNumber(
 											SignUpActivity.this, phone);
 									SharePrefsUtils.setSignUpUsername(
-											SignUpActivity.this, username);
+											SignUpActivity.this, userName);
 
 									if (usernameFlag) {
 										new Thread(
@@ -407,8 +406,8 @@ public class SignUpActivity extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("username=>" + username);
-		map.put("accName", username);
+		System.out.println("username=>" + userName);
+		map.put("accName", userName);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
@@ -464,7 +463,7 @@ public class SignUpActivity extends Activity {
 				+ email + " " + phone);
 
 		hashPassword = CommonUtils.getSHAHashValue(password);
-		map.put("accName", username);
+		map.put("accName", userName);
 		map.put("name", nickname);
 		map.put("password", hashPassword);
 		map.put("email", email);
@@ -494,7 +493,7 @@ public class SignUpActivity extends Activity {
 
 					// username
 					SharePrefsUtils.setSignUpUsername(SignUpActivity.this,
-							username);
+							userName);
 					// password
 					SharePrefsUtils.setSignUpPassword(SignUpActivity.this,
 							hashPassword);
@@ -504,9 +503,10 @@ public class SignUpActivity extends Activity {
 
 					Intent intent = new Intent(SignUpActivity.this,
 							SignUpAskToBindDialog.class);
-					intent.putExtra("username", username);
-					intent.putExtra("hashPassword", hashPassword);
-					intent.putExtra("guardianId", retStr);
+					intent.putExtra(ActivityConstants.EXTRA_USER_NAME, userName);
+					intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
+							hashPassword);
+					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, retStr);
 					startActivity(intent);
 
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {

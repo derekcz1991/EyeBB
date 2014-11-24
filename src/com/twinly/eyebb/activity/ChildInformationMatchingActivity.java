@@ -3,21 +3,12 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eyebb.R;
-import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
-import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.HttpRequestUtils;
+
 public class ChildInformationMatchingActivity extends Activity {
 	private EditText userName;
 	private LinearLayout childBirthdayLayout;
@@ -37,9 +34,6 @@ public class ChildInformationMatchingActivity extends Activity {
 	private Button binding;
 
 	private int kindergartenId = -1;
-	private String kindergartenNameEn;
-	private String kindergartenNameSc;
-	private String kindergartenNameTc;
 	private String childName;
 	private String birthday;
 
@@ -63,7 +57,6 @@ public class ChildInformationMatchingActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
-		
 
 		initView();
 	}
@@ -151,9 +144,6 @@ public class ChildInformationMatchingActivity extends Activity {
 				}
 
 				if (kindergartenFlag && birthdayFlag && childNameFlag) {
-//					Intent intent = new Intent(
-//							ChildInformationMatchingActivity.this,
-//							CheckBeaconActivity.class);
 					new Thread(postRegParentsCheckToServerRunnable).start();
 					// startActivity(intent);
 				}
@@ -178,9 +168,6 @@ public class ChildInformationMatchingActivity extends Activity {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
 				kindergarten.setText(data.getStringExtra("displayName"));
 				kindergartenId = data.getIntExtra("kindergartenId", -1);
-				kindergartenNameEn = data.getStringExtra("nameEn");
-				kindergartenNameTc = data.getStringExtra("nameTc");
-				kindergartenNameSc = data.getStringExtra("nameSc");
 			}
 		}
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_BIRTHDAY_ACTIVITY) {
@@ -195,24 +182,19 @@ public class ChildInformationMatchingActivity extends Activity {
 		@Override
 		public void run() {
 			postChildInformationToServer();
-
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postChildInformationToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("username=>" + childName + " " + birthday + " "
 				+ kindergartenId);
 
 		map.put("childName", childName);
 		map.put("dateOfBirth", birthday);
-		map.put("kId", kindergartenId + "");
+		map.put("kId", String.valueOf(kindergartenId));
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(
 					ChildInformationMatchingActivity.this,
 					HttpConstants.CHILD_CHECKING, map);
@@ -233,7 +215,12 @@ public class ChildInformationMatchingActivity extends Activity {
 					Intent intent = new Intent(
 							ChildInformationMatchingActivity.this,
 							CheckChildToBindDialog.class);
-					intent.putExtra("child_data", retStr);
+					intent.putExtra(
+							ActivityConstants.EXTRA_GUARDIAN_ID,
+							getIntent().getStringExtra(
+									ActivityConstants.EXTRA_GUARDIAN_ID));
+					intent.putExtra(CheckChildToBindDialog.EXTRA_CHILDREN_LIST,
+							retStr);
 					startActivity(intent);
 				}
 			}
@@ -259,8 +246,7 @@ public class ChildInformationMatchingActivity extends Activity {
 
 			case CONNECT_ERROR:
 				Toast.makeText(ChildInformationMatchingActivity.this,
-						R.string.text_network_error, Toast.LENGTH_LONG)
-						.show();
+						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 

@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,10 +54,6 @@ public class LoginActivity extends Activity {
 	private Dialog loginDialog;
 
 	private String userAccout;
-
-	private String kindergartenNameEn;
-	private String kindergartenNameSc;
-	private String kindergartenNameTc;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +159,6 @@ public class LoginActivity extends Activity {
 					msg.what = BleDeviceConstants.PASSWORD_RESET_SUCCESS;
 					handler.sendMessage(msg);
 
-					
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
 					msg.what = BleDeviceConstants.ACCOUNT_NOT_EXIST;
@@ -196,8 +190,7 @@ public class LoginActivity extends Activity {
 				break;
 			case BleDeviceConstants.PASSWORD_RESET_SUCCESS:
 				toast = Toast.makeText(getApplicationContext(),
-						R.string.text_feed_back_successful,
-						Toast.LENGTH_LONG);
+						R.string.text_feed_back_successful, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
@@ -338,12 +331,6 @@ public class LoginActivity extends Activity {
 				SharePrefsUtils.setLoginAccount(LoginActivity.this,
 						loginAccount.getText().toString());
 				SharePrefsUtils.setPassowrd(LoginActivity.this, hashPassword);
-				SharePrefsUtils.setKindergartenNameEn(LoginActivity.this,
-						kindergartenNameEn);
-				SharePrefsUtils.setKindergartenNameSc(LoginActivity.this,
-						kindergartenNameSc);
-				SharePrefsUtils.setKindergartenNameTc(LoginActivity.this,
-						kindergartenNameTc);
 
 				setResult(ActivityConstants.RESULT_RESULT_OK);
 				finish();

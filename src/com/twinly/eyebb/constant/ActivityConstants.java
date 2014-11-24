@@ -13,9 +13,6 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_USER_TYPE = "user_type";
 	public static final String SHARE_PREFS_ITEM_USER_PHONE = "user_phone";
 	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_ID = "kindergarten_id";
-	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC = "kindergarten_name_tc";
-	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC = "kindergarten_name_sc";
-	public static final String SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN = "kindergarten_name_en";
 	public static final String SHARE_PREFS_ITEM_UPDATE_INDOOR_LOCATOR_FLAG = "update_indoor_locator_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG = "update_report_performance_flag";
 	public static final String SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG = "update_report_activities_flag";
@@ -76,4 +73,8 @@ public class ActivityConstants {
 
 	public static final int FRAGMENT_REPORT_ACTIVITY = 1;
 	public static final int FRAGMENT_PROFILE = 2;
+
+	public static final String EXTRA_USER_NAME = "USER_NAME";
+	public static final String EXTRA_HASH_PASSWORD = "HASH_PASSWORD";
+	public static final String EXTRA_GUARDIAN_ID = "GUARDIAN_ID";
 }

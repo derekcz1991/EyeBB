@@ -47,15 +47,12 @@ public class KindergartenListActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) { 
+					int position, long id) {
 				Intent data = new Intent();
 				Map<String, String> map = mapList.get(position);
 
 				data.putExtra("kindergartenId",
 						Integer.parseInt(map.get("kindergartenId")));
-				data.putExtra("nameEn", map.get("nameEn"));
-				data.putExtra("nameTc", map.get("nameTc"));
-				data.putExtra("nameSc", map.get("nameSc"));
 				data.putExtra("displayName", map.get("displayName"));
 				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
@@ -70,7 +67,7 @@ public class KindergartenListActivity extends Activity {
 			finish();
 			return true;
 		}
-		return super.onOptionsItemSelected(item);    
+		return super.onOptionsItemSelected(item);
 	}
 
 	class GetKindergartenList extends AsyncTask<Void, Void, String> {
@@ -108,28 +105,26 @@ public class KindergartenListActivity extends Activity {
 						JSONObject object = (JSONObject) list.get(i);
 
 						Map<String, String> map = new HashMap<String, String>();
-						map.put("kindergartenId",
-								object.getString(HttpConstants.JSON_KEY_AREAS_id));
-						map.put("nameEn",
-								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_EN));
-						map.put("nameTc",
-								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
-						map.put("nameSc",
-								object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_SC));
+						map.put("kindergartenId", object
+								.getString(HttpConstants.JSON_KEY_AREAS_id));
 						int locale = SystemUtils
 								.getLocale(KindergartenListActivity.this);
 						switch (locale) {
 						case BleDeviceConstants.LOCALE_CN:
-							map.put("displayName", map.get("nameSc"));
+							map.put("displayName",
+									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_SC));
 							break;
 						case BleDeviceConstants.LOCALE_TW:
-							map.put("displayName", map.get("nameTc"));
+							map.put("displayName",
+									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
 							break;
 						case BleDeviceConstants.LOCALE_HK:
-							map.put("displayName", map.get("nameTc"));
+							map.put("displayName",
+									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
 							break;
 						default:
-							map.put("displayName", map.get("nameEn"));
+							map.put("displayName",
+									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_EN));
 							break;
 						}
 						mapList.add(map);

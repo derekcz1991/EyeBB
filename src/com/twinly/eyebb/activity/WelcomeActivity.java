@@ -28,13 +28,8 @@ public class WelcomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-//				Intent intent = new Intent(WelcomeActivity.this,
-//						ChooseUsrRoleActivity.class);
-//				startActivityForResult(intent,
-//						ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
-				
 				Intent intent = new Intent(WelcomeActivity.this,
-						SignUpActivity.class);
+						BindingChildMacaronActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
 			}

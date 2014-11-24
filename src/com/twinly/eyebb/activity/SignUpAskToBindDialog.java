@@ -8,13 +8,14 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SignUpAskToBindDialog extends Activity {
 	private LinearLayout btn_skip;
 	private LinearLayout btn_bind;
 
-	private String username;
+	private String userName;
 	private String hashPassword;
 	private String guardianId;
 
@@ -28,9 +29,10 @@ public class SignUpAskToBindDialog extends Activity {
 		btn_bind = (LinearLayout) findViewById(R.id.btn_confirm);
 
 		Intent intent = getIntent();
-		username = intent.getStringExtra("username");
-		hashPassword = intent.getStringExtra("hashPassword");
-		guardianId = intent.getStringExtra("guardianId");
+		userName = intent.getStringExtra(ActivityConstants.EXTRA_USER_NAME);
+		hashPassword = intent
+				.getStringExtra(ActivityConstants.EXTRA_HASH_PASSWORD);
+		guardianId = intent.getStringExtra(ActivityConstants.EXTRA_GUARDIAN_ID);
 
 		btn_skip.setOnClickListener(new OnClickListener() {
 
@@ -39,16 +41,13 @@ public class SignUpAskToBindDialog extends Activity {
 
 				Intent intent = new Intent(SignUpAskToBindDialog.this,
 						LancherActivity.class);
-
 				// use to login
 				SharePrefsUtils.setLogin(SignUpAskToBindDialog.this, true);
 				SharePrefsUtils.setLoginAccount(SignUpAskToBindDialog.this,
-						username);
+						userName);
 				SharePrefsUtils.setPassowrd(SignUpAskToBindDialog.this,
 						hashPassword);
-
 				startActivity(intent);
-				
 				finish();
 			}
 		});
@@ -57,12 +56,13 @@ public class SignUpAskToBindDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SignUpAskToBindDialog.this,
 						ChildInformationMatchingActivity.class);
-
+				intent.putExtra(ActivityConstants.EXTRA_USER_NAME, userName);
+				intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
+						hashPassword);
+				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);
 				startActivity(intent);
-				
 				finish();
 
 			}
