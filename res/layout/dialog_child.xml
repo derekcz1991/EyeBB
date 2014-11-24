@@ -75,11 +75,12 @@
                     android:id="@+id/maindialog_beep_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/btn_bg_red"  
+                    android:background="@drawable/btn_bg_red"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingLeft="5dp"
-                    android:paddingRight="8dp" >
+                    android:paddingRight="8dp"
+                    android:visibility="invisible" >
 
                     <TextView
                         android:layout_width="wrap_content"

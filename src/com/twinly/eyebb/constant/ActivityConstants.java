@@ -31,16 +31,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS = "keep_device_status_connect";
 	public static final String SHARE_PREFS_CHILID_BIRTHDAY = "child_birthday";
 	public static final String SHARE_PREFS_BEEP_ALL_DEVICE = "all_device";
-	//public static final String SHARE_PREFS_SIGN_UP_USERNAME = "sign_username";
-	//public static final String SHARE_PREFS_SIGN_UP_PASSWORD = "sign_password";
-	//public static final String SHARE_PREFS_SIGN_UP_EMAIL = "sign_email";
-	//public static final String SHARE_PREFS_SIGN_UP_NICKNAME = "sign_nickname";
-	//public static final String SHARE_PREFS_SIGN_UP_PHONE_NUMBER = "sign_phone_number";
 	public static final String SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG = "ble_service_run_once";
-	//public static final String SHARE_PREFS_DEVICE_MAJOR = "device_major";
-	//public static final String SHARE_PREFS_DEVICE_MINOR = "device_minor";
-	//public static final String SHARE_PREFS_GUARDIANID = "guardianId";
-	//public static final String SHARE_PREFS_CHILDID = "childID";
 	public static final String SHARE_PREFS_BINDING_DEVICE = "binding_device_open";
 	public static final String SHARE_PREFS_BLE_SERVICE_INDEX = "ble_service_index";
 	public static final String SHARE_PREFS_GRANT_CHILD_ID = "grant_child_id";
