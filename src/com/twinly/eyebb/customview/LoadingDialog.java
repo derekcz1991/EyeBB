@@ -3,15 +3,12 @@ package com.twinly.eyebb.customview;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
-import com.twinly.eyebb.bluetooth.ServicesActivity;
 
 public class LoadingDialog {
 	/**

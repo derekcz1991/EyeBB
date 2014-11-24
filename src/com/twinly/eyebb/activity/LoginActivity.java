@@ -64,9 +64,6 @@ public class LoginActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		// when login clear the guardian id
-		SharePrefsUtils.setSignUpGuardianId(LoginActivity.this, "");
-
 		loginAccount = (EditText) findViewById(R.id.login_account);
 		loginAccount.setText(SharePrefsUtils
 				.getLoginAccount(LoginActivity.this));

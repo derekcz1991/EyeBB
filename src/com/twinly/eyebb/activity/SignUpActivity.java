@@ -77,16 +77,12 @@ public class SignUpActivity extends Activity {
 		ed_email = (EditText) findViewById(R.id.ed_email);
 		ed_password = (EditText) findViewById(R.id.ed_password);
 		ed_nickname = (EditText) findViewById(R.id.ed_nickname);
-		// ed_phone = (EditText) findViewById(R.id.ed_phone_number);
 
 		tv_username = (TextView) findViewById(R.id.ic_signup_phone);
 		tv_email = (TextView) findViewById(R.id.ic_signup_email);
 		tv_password = (TextView) findViewById(R.id.ic_signup_pw);
 		tv_nickname = (TextView) findViewById(R.id.ic_signup_nickname);
-		// tv_phone = (TextView) findViewById(R.id.ic_signup_phone);
 
-		// btnContinue = (Button) findViewById(R.id.btn_signup_continue);
-		// btnSkip = (Button) findViewById(R.id.btn_signup_skip);
 		btnSignup = (Button) findViewById(R.id.btn_signup);
 
 		ed_username.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -116,20 +112,17 @@ public class SignUpActivity extends Activity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
 				temp = s;
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 				editStart = ed_username.getSelectionStart();
 				editEnd = ed_username.getSelectionEnd();
 				if (temp.length() > 8) {
@@ -141,175 +134,6 @@ public class SignUpActivity extends Activity {
 
 			}
 		});
-
-		// btnContinue.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// // Regex for username password username
-		// username = ed_username.getText().toString();
-		// email = ed_email.getText().toString();
-		// password = ed_password.getText().toString();
-		// nickname = ed_nickname.getText().toString();
-		// phone = ed_username.getText().toString();
-		// regType = "P";
-		//
-		// System.out.println("username + email + password" + username
-		// + " " + email + " " + password);
-		// if (username != null && username.length() > 0) {
-		// if (nickname != null && nickname.length() > 0) {
-		//
-		// if (isPassword(password)) {
-		// // editor.putString("usrname", username);
-		// // editor.putString("email", email);
-		// // editor.putString("password", password);
-		// // editor.commit();
-		// if (isEmail(email) || phone.length() > 0) {
-		// if (phone != null || phone.length() > 0) {
-		// SharePrefsUtils.setSignUpEmail(
-		// SignUpActivity.this, email);
-		// SharePrefsUtils.setSignUpNickname(
-		// SignUpActivity.this, nickname);
-		// SharePrefsUtils.setSignUpPassword(
-		// SignUpActivity.this, password);
-		// SharePrefsUtils.setSignUpPhoneNumber(
-		// SignUpActivity.this, phone);
-		// SharePrefsUtils.setSignUpUsername(
-		// SignUpActivity.this, username);
-		//
-		// if (usernameFlag) {
-		// new Thread(
-		// postRegParentsCheckToServerRunnable)
-		// .start();
-		//
-		// } else {
-		// new Thread(
-		// postAccNameCheckToServerRunnable)
-		// .start();
-		// }
-		//
-		// }
-		// } else {
-		//
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_fill_email_or_phone,
-		// Toast.LENGTH_LONG).show();
-		// tv_email.setBackground(getResources()
-		// .getDrawable(R.drawable.ic_radar_missed));
-		// // tv_phone.setBackground(getResources()
-		// // .getDrawable(R.drawable.ic_radar_missed));
-		//
-		// }
-		// } else {
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_error_password,
-		// Toast.LENGTH_LONG).show();
-		// tv_password.setBackground(getResources()
-		// .getDrawable(R.drawable.ic_radar_missed));
-		// }
-		//
-		// } else {
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_error_nickname, Toast.LENGTH_LONG)
-		// .show();
-		// tv_nickname.setBackground(getResources().getDrawable(
-		// R.drawable.ic_radar_missed));
-		// }
-		// } else {
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_error_username, Toast.LENGTH_LONG)
-		// .show();
-		// tv_username.setBackground(getResources().getDrawable(
-		// R.drawable.ic_radar_missed));
-		// }
-		//
-		// }
-		// });
-		//
-		// btnSkip.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		// username = ed_username.getText().toString();
-		// email = ed_email.getText().toString();
-		// password = ed_password.getText().toString();
-		// nickname = ed_nickname.getText().toString();
-		// phone = ed_username.getText().toString();
-		// regType = "G";
-		//
-		// System.out.println("username + email + password" + username
-		// + " " + email + " " + password);
-		//
-		// if (username != null && username.length() > 0) {
-		//
-		// if (nickname != null && nickname.length() > 0) {
-		//
-		// if (isPassword(password)) {
-		// // editor.putString("usrname", username);
-		// // editor.putString("email", email);
-		// // editor.putString("password", password);
-		// // editor.commit();
-		// if (isEmail(email) || phone.length() > 0) {
-		// if (phone != null || phone.length() > 0) {
-		// SharePrefsUtils.setSignUpEmail(
-		// SignUpActivity.this, email);
-		// SharePrefsUtils.setSignUpNickname(
-		// SignUpActivity.this, nickname);
-		// SharePrefsUtils.setSignUpPassword(
-		// SignUpActivity.this, password);
-		// SharePrefsUtils.setSignUpPhoneNumber(
-		// SignUpActivity.this, phone);
-		// SharePrefsUtils.setSignUpUsername(
-		// SignUpActivity.this, username);
-		//
-		// if (usernameFlag) {
-		// new Thread(
-		// postRegParentsCheckToServerRunnable)
-		// .start();
-		//
-		// } else {
-		// new Thread(
-		// postAccNameCheckToServerRunnable)
-		// .start();
-		// }
-		// }
-		// } else {
-		//
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_fill_email_or_phone,
-		// Toast.LENGTH_LONG).show();
-		// tv_email.setBackground(getResources()
-		// .getDrawable(R.drawable.ic_radar_missed));
-		// // tv_phone.setBackground(getResources()
-		// // .getDrawable(R.drawable.ic_radar_missed));
-		//
-		// }
-		// } else {
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_error_password,
-		// Toast.LENGTH_LONG).show();
-		// tv_password.setBackground(getResources()
-		// .getDrawable(R.drawable.ic_radar_missed));
-		// }
-		//
-		// } else {
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_error_nickname, Toast.LENGTH_LONG)
-		// .show();
-		// tv_nickname.setBackground(getResources().getDrawable(
-		// R.drawable.ic_radar_missed));
-		// }
-		//
-		// } else {
-		// Toast.makeText(SignUpActivity.this,
-		// R.string.text_error_username, Toast.LENGTH_LONG)
-		// .show();
-		// tv_username.setBackground(getResources().getDrawable(
-		// R.drawable.ic_radar_missed));
-		// }
-		// }
-		// });
 
 		btnSignup.setOnClickListener(new OnClickListener() {
 
@@ -333,22 +157,10 @@ public class SignUpActivity extends Activity {
 							// editor.commit();
 							if (isEmail(email) || phone.length() > 0) {
 								if (phone != null || phone.length() > 0) {
-									SharePrefsUtils.setSignUpEmail(
-											SignUpActivity.this, email);
-									SharePrefsUtils.setSignUpNickname(
-											SignUpActivity.this, nickname);
-									SharePrefsUtils.setSignUpPassword(
-											SignUpActivity.this, password);
-									SharePrefsUtils.setSignUpPhoneNumber(
-											SignUpActivity.this, phone);
-									SharePrefsUtils.setSignUpUsername(
-											SignUpActivity.this, userName);
-
 									if (usernameFlag) {
 										new Thread(
 												postRegParentsCheckToServerRunnable)
 												.start();
-
 									} else {
 										new Thread(
 												postAccNameCheckToServerRunnable)
@@ -397,7 +209,6 @@ public class SignUpActivity extends Activity {
 		@Override
 		public void run() {
 			postCheckAccToServer();
-
 		}
 	};
 
@@ -405,9 +216,7 @@ public class SignUpActivity extends Activity {
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("username=>" + userName);
 		map.put("accName", userName);
-
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.post(HttpConstants.ACC_NAME_CHECK,
 					map);
 			System.out.println("retStrpost======>" + retStr);
@@ -419,7 +228,6 @@ public class SignUpActivity extends Activity {
 				msg.what = CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-
 				if (retStr.equals("true")) {
 					Message msg = handler.obtainMessage();
 					msg.what = CHECK_ACC_SUCCESS;
@@ -430,24 +238,17 @@ public class SignUpActivity extends Activity {
 					msg.what = CHECK_ACC_FALSE;
 					handler.sendMessage(msg);
 					usernameFlag = false;
-
 				}
-
 			}
-
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
-
 	}
 
 	Runnable postRegParentsCheckToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
 			postRegParentsToServer();
-
 		}
 	};
 
@@ -484,16 +285,6 @@ public class SignUpActivity extends Activity {
 					msg.what = REG_SUCCESSFULLY;
 					handler.sendMessage(msg);
 					regSuccessFlag = true;
-
-					// username
-					SharePrefsUtils.setSignUpUsername(SignUpActivity.this,
-							userName);
-					// password
-					SharePrefsUtils.setSignUpPassword(SignUpActivity.this,
-							hashPassword);
-					// guardianId
-					SharePrefsUtils.setSignUpGuardianId(SignUpActivity.this,
-							retStr);
 
 					SharePrefsUtils.setLogin(SignUpActivity.this, true);
 					SharePrefsUtils.setLoginAccount(SignUpActivity.this,

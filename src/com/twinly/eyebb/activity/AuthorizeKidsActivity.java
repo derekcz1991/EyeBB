@@ -16,10 +16,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
-import com.twinly.eyebb.bluetooth.CharacteristicsMajorActivity;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Guest;

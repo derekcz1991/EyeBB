@@ -29,7 +29,6 @@ import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class CheckChildToBindDialog extends Activity {
 	private final static int SCANNIN_GREQUEST_CODE = 1;
@@ -124,9 +123,6 @@ public class CheckChildToBindDialog extends Activity {
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
-					SharePrefsUtils.setSignUpChildId(
-							CheckChildToBindDialog.this,
-							String.valueOf(childIdToPost));
 					Intent intent = new Intent(CheckChildToBindDialog.this,
 							MipcaActivityCapture.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

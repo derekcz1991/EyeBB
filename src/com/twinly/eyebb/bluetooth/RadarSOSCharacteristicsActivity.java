@@ -30,10 +30,7 @@ import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.activity.BeepDialog;
-import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
-import com.twinly.eyebb.activity.VerifyDialog;
 import com.twinly.eyebb.constant.BleDeviceConstants;
-import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.BLEUtils;
 
 public class RadarSOSCharacteristicsActivity extends Activity {

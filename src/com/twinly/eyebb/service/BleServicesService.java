@@ -6,20 +6,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.eyebb.R;
-import com.twinly.eyebb.activity.BeepAllForRadarDialog;
-import com.twinly.eyebb.bluetooth.BluetoothLeService;
-import com.twinly.eyebb.bluetooth.CharacteristicsMajorActivity;
-import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
-import com.twinly.eyebb.bluetooth.RadarServicesActivity;
-import com.twinly.eyebb.bluetooth.SampleGattAttributes;
-import com.twinly.eyebb.bluetooth.ServicesActivity;
-import com.twinly.eyebb.bluetooth.RadarServicesActivity.autoConnection;
-import com.twinly.eyebb.constant.BleDeviceConstants;
-import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.model.Device;
-import com.twinly.eyebb.utils.SharePrefsUtils;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.Service;
@@ -38,7 +24,14 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.eyebb.R;
+import com.twinly.eyebb.activity.BeepAllForRadarDialog;
+import com.twinly.eyebb.bluetooth.BluetoothLeService;
+import com.twinly.eyebb.bluetooth.RadarServicesActivity;
+import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class BleServicesService extends Service {
 	private final static String TAG = RadarServicesActivity.class

@@ -1,9 +1,7 @@
 package com.twinly.eyebb.activity;
 
-import java.lang.reflect.Field;
 import java.util.Calendar;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +23,7 @@ public class ChildBirthdayDialog extends Activity {
 	private int year;
 	private int monthOfYear;
 	private int dayOfMonth;
-	private static String dateOfBirth;
+	private String dateOfBirth;
 
 	private LinearLayout btnConfirm;
 	private LinearLayout btnCancel;
@@ -94,11 +92,6 @@ public class ChildBirthdayDialog extends Activity {
 				new OnDateChangedListener() {
 					public void onDateChanged(DatePicker view, int year,
 							int monthOfYear, int dayOfMonth) {
-						// Toast.makeText(
-						// MatchingVerificationActivity.this,
-						// "当前日期为" + year + "年" + monthOfYear + "月"
-						// + dayOfMonth + "日", Toast.LENGTH_SHORT)
-						// .show();
 
 						monthOfYear = monthOfYear + 1;
 						dateOfBirth = dayOfMonth + "/" + monthOfYear + "/"

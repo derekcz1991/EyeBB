@@ -75,7 +75,6 @@ public class BindingChildMacaronActivity extends Activity {
 	// for ble scan
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final long SCAN_PERIOD = 15000;
-	private boolean mScanning;
 	private BluetoothAdapter mBluetoothAdapter;
 	private boolean deviceScanned;
 
@@ -239,6 +238,11 @@ public class BindingChildMacaronActivity extends Activity {
 		}
 	}
 
+	/**
+	 * To get major & minor from server by child_id and mac address
+	 * @author derek
+	 *
+	 */
 	private class GetMajorMinorTask extends AsyncTask<Void, Void, String> {
 		@Override
 		protected String doInBackground(Void... params) {
@@ -285,7 +289,6 @@ public class BindingChildMacaronActivity extends Activity {
 			mHandler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					mScanning = false;
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
 					if (deviceScanned == false) {
 						bindStep = BIND_STEP_SCAN_FAIL;
@@ -294,14 +297,13 @@ public class BindingChildMacaronActivity extends Activity {
 					}
 				}
 			}, SCAN_PERIOD);
-			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		} else {
-			mScanning = false;
 			mBluetoothAdapter.stopLeScan(mLeScanCallback);
 		}
 	}
 
+	// callback function when scan ble device 
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
 		@Override
@@ -321,6 +323,9 @@ public class BindingChildMacaronActivity extends Activity {
 		}
 	};
 
+	/**
+	 * Connect to target device
+	 */
 	private void connectDevice() {
 		// Code to manage Service lifecycle.
 		if (deviceValid && deviceScanned) {
@@ -361,7 +366,11 @@ public class BindingChildMacaronActivity extends Activity {
 		}
 	}
 
-	public void writeToMacaron(List<BluetoothGattService> gattServices) {
+	/**
+	 * To write the major & minor to connected device
+	 * @param gattServices
+	 */
+	private void writeToMacaron(List<BluetoothGattService> gattServices) {
 		BluetoothGattCharacteristic majorGattCharacteristic = null;
 		BluetoothGattCharacteristic minorGattCharacteristic = null;
 
@@ -447,6 +456,11 @@ public class BindingChildMacaronActivity extends Activity {
 		return intentFilter;
 	}
 
+	/**
+	 * To upload the data to server when bind target device succeed
+	 * @author derek
+	 *
+	 */
 	private class PostToServerTask extends AsyncTask<Void, Void, String> {
 
 		@Override

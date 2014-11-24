@@ -16,6 +16,9 @@
 
 package com.twinly.eyebb.bluetooth;
 
+import java.util.List;
+import java.util.UUID;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -29,19 +32,12 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.List;
-import java.util.UUID;
-
 import com.eyebb.R;
-import com.twinly.eyebb.activity.BeepAllForRadarDialog;
-import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.constant.BleDeviceConstants;
-import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.SharePrefsUtils;

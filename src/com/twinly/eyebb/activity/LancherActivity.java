@@ -35,8 +35,6 @@ public class LancherActivity extends Activity {
 		setContentView(R.layout.activity_lancher);
 
 		SystemUtils.initImageLoader(getApplicationContext());
-		//when login clear the guardian id
-		SharePrefsUtils.setSignUpGuardianId(LancherActivity.this, "");
 		checkLogo();
 		setLanguage();
 		mkdir();

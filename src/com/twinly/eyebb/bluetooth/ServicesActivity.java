@@ -14,9 +14,6 @@ import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -35,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.activity.CheckBeaconActivity;
 import com.twinly.eyebb.activity.ErrorDialog;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
@@ -100,7 +96,7 @@ public class ServicesActivity extends Activity {
 		// setTitle(getString(R.string.toast_loading));
 		// getActionBar().setDisplayHomeAsUpEnabled(true);
 		// getActionBar().setIcon(android.R.color.transparent);
-		if (CharacteristicsMajorActivity.majorFinished) {
+		/*if (CharacteristicsMajorActivity.majorFinished) {
 			// CharacteristicsActivity.instance.finish();
 			dialog = LoadingDialog.createLoadingDialogCanCancel(
 					ServicesActivity.this,
@@ -130,7 +126,7 @@ public class ServicesActivity extends Activity {
 				}
 			});
 			dialog.show();
-		}
+		}*/
 
 		TimeOutTask = new TimerTask() {
 			public void run() {
@@ -191,7 +187,6 @@ public class ServicesActivity extends Activity {
 						Intent intentError = new Intent(ServicesActivity.this,
 								ErrorDialog.class);
 						startActivity(intentError);
-						CheckBeaconActivity.instance.finish();
 						finish();
 					}
 					// timer = null;
@@ -203,8 +198,6 @@ public class ServicesActivity extends Activity {
 		timer.schedule(TimeOutTask, 0, 1000);
 		// major = MajorAndMinorPreferences.getString("major", "-1");
 		// minor = MajorAndMinorPreferences.getString("minor", "-1");
-		major = SharePrefsUtils.signUpDeviceMajor(ServicesActivity.this);
-		minor = SharePrefsUtils.signUpDeviceMinor(ServicesActivity.this);
 
 		final Intent intent = getIntent();
 		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -291,7 +284,7 @@ public class ServicesActivity extends Activity {
 			if (runOnceFlag) {
 				runOnceFlag = false;
 				final Intent intentToChara = new Intent();
-				System.out.println("CharacteristicsActivity.majorFinished-->"
+				/*System.out.println("CharacteristicsActivity.majorFinished-->"
 						+ CharacteristicsMajorActivity.majorFinished);
 				if (CharacteristicsMajorActivity.majorFinished) {
 					intentToChara.setClass(ServicesActivity.this,
@@ -299,7 +292,7 @@ public class ServicesActivity extends Activity {
 				} else {
 					intentToChara.setClass(ServicesActivity.this,
 							CharacteristicsMajorActivity.class);
-				}
+				}*/
 
 				if (ReadService > 0) {
 
