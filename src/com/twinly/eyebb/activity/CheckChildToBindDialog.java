@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.qr_codescan.MipcaActivityCapture;
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -31,14 +32,15 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class CheckChildToBindDialog extends Activity {
+	private final static int SCANNIN_GREQUEST_CODE = 1;
 	public static String EXTRA_CHILDREN_LIST = "CHILDREN_LIST";
 
 	private ListView listView;
 	private CheckChildToBindAdapter adapter;
 	private String childrenListJSON;
-	private String childIdToPost;
 	private ArrayList<Child> childList;
-	private String guardianId;
+	private long childIdToPost;
+	private long guardianId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,8 @@ public class CheckChildToBindDialog extends Activity {
 		Intent intent = getIntent();
 
 		childrenListJSON = intent.getStringExtra(EXTRA_CHILDREN_LIST);
-		guardianId = intent.getStringExtra(ActivityConstants.EXTRA_GUARDIAN_ID);
+		guardianId = intent
+				.getLongExtra(ActivityConstants.EXTRA_GUARDIAN_ID, 0);
 
 		listView = (ListView) findViewById(R.id.listView);
 		parseJson(childrenListJSON);
@@ -57,7 +60,7 @@ public class CheckChildToBindDialog extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				childIdToPost = childList.get(position).getChildId() + "";
+				childIdToPost = childList.get(position).getChildId();
 				new Thread(postCheckChildIsBindToServerRunnable).start();
 			}
 		});
@@ -104,8 +107,8 @@ public class CheckChildToBindDialog extends Activity {
 		System.out.println("childId = " + childIdToPost + " guardianId = "
 				+ guardianId);
 
-		map.put("childId", childIdToPost);
-		map.put("guardianId", guardianId);
+		map.put("childId", String.valueOf(childIdToPost));
+		map.put("guardianId", String.valueOf(guardianId));
 
 		try {
 			String retStr = HttpRequestUtils.postTo(
@@ -121,12 +124,13 @@ public class CheckChildToBindDialog extends Activity {
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
-					Intent data = new Intent(CheckChildToBindDialog.this,
-							CheckBeaconActivity.class);
 					SharePrefsUtils.setSignUpChildId(
-							CheckChildToBindDialog.this, childIdToPost);
-					startActivity(data);
-					finish();
+							CheckChildToBindDialog.this,
+							String.valueOf(childIdToPost));
+					Intent intent = new Intent(CheckChildToBindDialog.this,
+							MipcaActivityCapture.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
 					msg.what = BleDeviceConstants.MASTER_OF_CHILD_ALREAD_EXIST;
@@ -178,4 +182,27 @@ public class CheckChildToBindDialog extends Activity {
 		}
 	};
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case SCANNIN_GREQUEST_CODE:
+			if (resultCode == RESULT_OK) {
+				Bundle bundle = data.getExtras();
+				System.out.println("qrcode------->"
+						+ bundle.getString("result"));
+				//TODO check the mac address
+				String macAddress = bundle.getString("result");
+				Intent intent = new Intent();
+				intent.setClass(this, BindingChildMacaronActivity.class);
+				intent.putExtra(ActivityConstants.EXTRA_FROM,
+						ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND);
+				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childIdToPost);
+				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);
+				startActivity(intent);
+			}
+			break;
+		}
+	}
 }

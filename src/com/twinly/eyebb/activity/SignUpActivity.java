@@ -401,10 +401,7 @@ public class SignUpActivity extends Activity {
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postCheckAccToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("username=>" + userName);
 		map.put("accName", userName);
@@ -454,10 +451,7 @@ public class SignUpActivity extends Activity {
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postRegParentsToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("username=>" + nickname + " " + password + " "
 				+ email + " " + phone);
@@ -501,13 +495,22 @@ public class SignUpActivity extends Activity {
 					SharePrefsUtils.setSignUpGuardianId(SignUpActivity.this,
 							retStr);
 
+					SharePrefsUtils.setLogin(SignUpActivity.this, true);
+					SharePrefsUtils.setLoginAccount(SignUpActivity.this,
+							userName);
+					SharePrefsUtils.setPassowrd(SignUpActivity.this,
+							hashPassword);
+
 					Intent intent = new Intent(SignUpActivity.this,
 							SignUpAskToBindDialog.class);
 					intent.putExtra(ActivityConstants.EXTRA_USER_NAME, userName);
 					intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
 							hashPassword);
-					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, retStr);
-					startActivity(intent);
+					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID,
+							Long.parseLong(retStr));
+					startActivityForResult(
+							intent,
+							ActivityConstants.REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG);
 
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
@@ -603,4 +606,16 @@ public class SignUpActivity extends Activity {
 		System.out.println(m.matches() + "---");
 		return m.matches();
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case ActivityConstants.REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG:
+			setResult(ActivityConstants.RESULT_RESULT_OK);
+			finish();
+			break;
+		}
+	}
+
 }

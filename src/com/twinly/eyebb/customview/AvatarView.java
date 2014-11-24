@@ -21,7 +21,7 @@ public class AvatarView {
 	private CircleImageView avatar;
 	private ViewGroup avatarViewItem;
 	private boolean isOnline;
-	private ImageLoader imageLoader = ImageLoader.getInstance();
+	private ImageLoader imageLoader;
 
 	public AvatarView(Context context, Child child, ViewGroup viewGroup,
 			boolean isOnline) {

@@ -92,6 +92,19 @@ public class DBChildren {
 		return child;
 	}
 
+	public static String getChildIconById(Context context, long childId) {
+		String icon = "";
+		SQLiteDatabase db = getInstance(context);
+		Cursor cursor = db.rawQuery("select * from children where child_id = "
+				+ childId, null);
+		if (cursor.moveToFirst()) {
+			icon = cursor.getString(cursor.getColumnIndex("icon"));
+		}
+		cursor.close();
+		db.close();
+		return icon;
+	}
+
 	public static void updateMacAddressByChildId(Context context, long childId,
 			String macAddress) {
 		SQLiteDatabase db = getInstance(context);

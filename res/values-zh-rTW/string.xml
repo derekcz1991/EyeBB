@@ -152,10 +152,17 @@
     <string name="text_authorization_from_others">被哪些親友授權:</string>
     <string name="text_avatar">头像</string>
     <string name="text_kindergarten">幼稚園</string>
-     <string name="text_battery_life">eyebb電量</string>
+    <string name="text_battery_life">eyebb電量</string>
     <string name="text_no_device_nearby">找尋不到設備</string>
-     <string name="text_wrong_login_for_binding">錯誤,只有父母賬號才可以進行綁定.</string>
-     <string name="text_master_of_the_child_exist_already">此孩子已經擁有監護人.</string>
+    <string name="text_wrong_login_for_binding">錯誤,只有父母賬號才可以進行綁定.</string>
+    <string name="text_master_of_the_child_exist_already">此孩子已經擁有監護人.</string>
+    <string name="text_scanning">扫描设备中</string>
+    <string name="text_scan_no_device">扫描不到设备</string>
+    <string name="text_update_device_data">更新设备信息</string>
+    <string name="text_connect_device_failed">连接设备失败</string>
+    <string name="text_update_server_data">更新云端数据</string>
+    <string name="text_update_server_data_fail">更新云端数据失败</string>
+	<string name="text_bind_success">设备绑定成功</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -181,6 +188,10 @@
     <string name="btn_my_child">我的孩子</string>
     <string name="btn_take_photo">影相</string>
     <string name="btn_choose_photo">從相冊選擇</string>
+    <string name="btn_rescan">重新扫描</string>
+    <string name="btn_re_connect">重新连接</string>
+    <string name="btn_re_update">重新更新</string>
+    <string name="btn_finish">完成</string>
     
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

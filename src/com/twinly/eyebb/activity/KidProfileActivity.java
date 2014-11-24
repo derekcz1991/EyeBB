@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qr_codescan.MipcaActivityCapture;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -42,6 +43,8 @@ import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class KidProfileActivity extends Activity {
+	private final static int SCANNIN_GREQUEST_CODE = 500;
+
 	private Child child;
 	private ImageView avatar;
 	private TextView kidName;
@@ -236,14 +239,13 @@ public class KidProfileActivity extends Activity {
 	}
 
 	public void onBindClicked(View view) {
-		Intent intent = new Intent();
-		intent.putExtra("child_id", child.getChildId());
-
 		if (CommonUtils.isNull(child.getMacAddress())) {
-			intent.setClass(this, BeaconListActivity.class);
-			startActivityForResult(intent,
-					ActivityConstants.REQUEST_GO_TO_BEACON_LIST_ACTIVITY);
+			Intent intent = new Intent(this, MipcaActivityCapture.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
 		} else {
+			Intent intent = new Intent();
+			intent.putExtra("child_id", child.getChildId());
 			intent.setClass(this, UnbindDeviceDialog.class);
 			startActivityForResult(intent,
 					ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
@@ -353,12 +355,31 @@ public class KidProfileActivity extends Activity {
 				finish();
 			}
 			break;
-		case ActivityConstants.REQUEST_GO_TO_BEACON_LIST_ACTIVITY:
+		case ActivityConstants.REQUEST_GO_TO_BIND_CHILD_MACARON_ACTIVITY:
 			if (resultCode == ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS) {
 				setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS);
 				finish();
 			}
 			break;
+		case SCANNIN_GREQUEST_CODE:
+			if (resultCode == RESULT_OK) {
+				Bundle bundle = data.getExtras();
+				System.out.println("qrcode------->"
+						+ bundle.getString("result"));
+				//TODO check the mac address
+				String macAddress = bundle.getString("result");
+				Intent intent = new Intent();
+				intent.setClass(this, BindingChildMacaronActivity.class);
+				intent.putExtra(ActivityConstants.EXTRA_FROM,
+						ActivityConstants.ACTIVITY_KID_PROFILE);
+				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, -1);
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+						child.getChildId());
+				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);
+				startActivityForResult(
+						intent,
+						ActivityConstants.REQUEST_GO_TO_BIND_CHILD_MACARON_ACTIVITY);
+			}
 		}
 	}
 

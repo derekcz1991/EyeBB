@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
-import com.twinly.eyebb.qrcode.QrCodeMainActivity;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class WelcomeActivity extends Activity {
@@ -29,7 +28,7 @@ public class WelcomeActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(WelcomeActivity.this,
-						BindingChildMacaronActivity.class);
+						SignUpActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
 			}
@@ -39,13 +38,10 @@ public class WelcomeActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-//				Intent intent = new Intent(WelcomeActivity.this,
-//						LoginActivity.class);
-				 Intent intent = new Intent(WelcomeActivity.this,
-				 QrCodeMainActivity.class);
-				startActivity(intent);
-				// startActivityForResult(intent,
-				// ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
+				Intent intent = new Intent(WelcomeActivity.this,
+						LoginActivity.class);
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
 			}
 		});
 

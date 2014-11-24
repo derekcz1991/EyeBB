@@ -15,9 +15,7 @@ public class SignUpAskToBindDialog extends Activity {
 	private LinearLayout btn_skip;
 	private LinearLayout btn_bind;
 
-	private String userName;
-	private String hashPassword;
-	private String guardianId;
+	private long guardianId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,24 +27,16 @@ public class SignUpAskToBindDialog extends Activity {
 		btn_bind = (LinearLayout) findViewById(R.id.btn_confirm);
 
 		Intent intent = getIntent();
-		userName = intent.getStringExtra(ActivityConstants.EXTRA_USER_NAME);
-		hashPassword = intent
-				.getStringExtra(ActivityConstants.EXTRA_HASH_PASSWORD);
-		guardianId = intent.getStringExtra(ActivityConstants.EXTRA_GUARDIAN_ID);
+		guardianId = intent
+				.getLongExtra(ActivityConstants.EXTRA_GUARDIAN_ID, 0);
 
 		btn_skip.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-
 				Intent intent = new Intent(SignUpAskToBindDialog.this,
 						LancherActivity.class);
-				// use to login
-				SharePrefsUtils.setLogin(SignUpAskToBindDialog.this, true);
-				SharePrefsUtils.setLoginAccount(SignUpAskToBindDialog.this,
-						userName);
-				SharePrefsUtils.setPassowrd(SignUpAskToBindDialog.this,
-						hashPassword);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				finish();
 			}
@@ -58,11 +48,10 @@ public class SignUpAskToBindDialog extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(SignUpAskToBindDialog.this,
 						ChildInformationMatchingActivity.class);
-				intent.putExtra(ActivityConstants.EXTRA_USER_NAME, userName);
-				intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
-						hashPassword);
 				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);
-				startActivity(intent);
+				startActivityForResult(
+						intent,
+						ActivityConstants.REQUEST_GO_TO_CHILD_INFO_MATCHING_ACTIVITY);
 				finish();
 
 			}

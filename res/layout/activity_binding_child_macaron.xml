@@ -17,8 +17,8 @@
 
         <com.twinly.eyebb.customview.CircleImageView
             android:id="@+id/avatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/icon_avatar_dark"
             app:border_color="@color/white"
@@ -104,6 +104,17 @@
         android:id="@+id/message"
         style="@style/DarkGreyText_20"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/text_scanning" />
+
+    <Button
+        android:id="@+id/btn_event"
+        style="@style/WhiteText_18"
+        android:layout_width="180dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_bg_red"
+        android:text="@string/btn_cancel" />
 
 </LinearLayout>

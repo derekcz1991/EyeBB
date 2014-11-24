@@ -91,7 +91,6 @@ public class ChildInformationMatchingActivity extends Activity {
 				if (CommonUtils.isFastDoubleClick()) {
 					return;
 				} else {
-					// TODO Auto-generated method stub
 					Intent intent = new Intent(
 							ChildInformationMatchingActivity.this,
 							ChildBirthdayDialog.class);
@@ -217,8 +216,8 @@ public class ChildInformationMatchingActivity extends Activity {
 							CheckChildToBindDialog.class);
 					intent.putExtra(
 							ActivityConstants.EXTRA_GUARDIAN_ID,
-							getIntent().getStringExtra(
-									ActivityConstants.EXTRA_GUARDIAN_ID));
+							getIntent().getLongExtra(
+									ActivityConstants.EXTRA_GUARDIAN_ID, 0));
 					intent.putExtra(CheckChildToBindDialog.EXTRA_CHILDREN_LIST,
 							retStr);
 					startActivity(intent);
@@ -239,25 +238,18 @@ public class ChildInformationMatchingActivity extends Activity {
 		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-
 			case CHILD_EXIST:
-
 				break;
-
 			case CONNECT_ERROR:
 				Toast.makeText(ChildInformationMatchingActivity.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
-
 				break;
-
 			case CHILD_NOT_EXIST:
 				Toast.makeText(ChildInformationMatchingActivity.this,
 						R.string.text_child_not_exist, Toast.LENGTH_LONG)
 						.show();
 				break;
-
 			}
-
 		}
 	};
 

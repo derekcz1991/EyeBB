@@ -23,15 +23,20 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.service.BluetoothLeService;
 import com.twinly.eyebb.utils.BLEUtils;
+import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class BindingChildMacaronActivity extends Activity {
@@ -41,20 +46,31 @@ public class BindingChildMacaronActivity extends Activity {
 
 	private final static String TAG = BindingChildMacaronActivity.class
 			.getSimpleName();
+	private final static int BIND_STEP_SCANNING = 0;
+	private final static int BIND_STEP_SCAN_FAIL = 1;
+	private final static int BIND_STEP_CONNECTING = 2;
+	private final static int BIND_STEP_CONNECT_FAIL = 3;
+	private final static int BIND_STEP_UPLOADING = 4;
+	private final static int BIND_STEP_UPLOAD_FAIL = 5;
+	private final static int BIND_STEP_BIND_FINISH = 6;
 
 	private CircleImageView avatar;
 	private TextView[] tvAnimation;
 	private TextView tvMessage;
 	private TextView iconBeacon;
+	private Button btnEvent;
 	private Handler mHandler;
 	private int index;
+	private ImageLoader imageLoader;
 
-	private String mDeviceAddress = "44:A6:E5:00:04:F5";
+	private int from;
+	private String mDeviceAddress;
 	private long childId;
 	private long guardianId;
 	private String major;
 	private String minor;
 	private boolean deviceValid; // this device is not bind
+	private int bindStep;
 
 	// for ble scan
 	private static final int REQUEST_ENABLE_BT = 1;
@@ -66,9 +82,30 @@ public class BindingChildMacaronActivity extends Activity {
 	// for ble connect
 	private BluetoothLeService mBluetoothLeService;
 	private ServiceConnection mServiceConnection;
-	private BroadcastReceiver mGattUpdateReceiver;
 
 	// Handles various events fired by the Service.
+	private BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			final String action = intent.getAction();
+			System.out.println("mGattUpdateReceiver ==>> " + action);
+			if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+				System.out.println("连接成功");
+			} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+					.equals(action)) {
+				bindStep = BIND_STEP_CONNECT_FAIL;
+				tvMessage.setText(R.string.text_connect_device_failed);
+				btnEvent.setText(R.string.btn_re_connect);
+
+			} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
+					.equals(action)) {
+				System.out.println("mGattUpdateReceiver ==>> writeToMacaron");
+				writeToMacaron(mBluetoothLeService.getSupportedGattServices());
+			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+			}
+		}
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,9 +113,17 @@ public class BindingChildMacaronActivity extends Activity {
 
 		checkBLE();
 
+		from = getIntent().getIntExtra(ActivityConstants.EXTRA_FROM, -1);
+		mDeviceAddress = getIntent().getStringExtra(
+				ActivityConstants.EXTRA_MAC_ADDRESS);
+		guardianId = getIntent().getLongExtra(
+				ActivityConstants.EXTRA_GUARDIAN_ID, -1L);
+		childId = getIntent().getLongExtra(ActivityConstants.EXTRA_CHILD_ID, 0);
+
 		avatar = (CircleImageView) findViewById(R.id.avatar);
 		tvMessage = (TextView) findViewById(R.id.message);
 		iconBeacon = (TextView) findViewById(R.id.beacon);
+		btnEvent = (Button) findViewById(R.id.btn_event);
 
 		tvAnimation = new TextView[6];
 		tvAnimation[0] = (TextView) findViewById(R.id.animation_0);
@@ -89,14 +134,51 @@ public class BindingChildMacaronActivity extends Activity {
 		tvAnimation[5] = (TextView) findViewById(R.id.animation_5);
 
 		iconBeacon.setAlpha(0.3f);
-		tvMessage.setText("搜索macaron...");
 
-		childId = getIntent().getLongExtra("child_id", 0);
-		childId = 3;
+		imageLoader = ImageLoader.getInstance();
+		imageLoader.displayImage(DBChildren.getChildIconById(this, childId),
+				avatar, CommonUtils.getDisplayImageOptions(), null);
 
 		mHandler = new Handler();
 		mHandler.postDelayed(new UpdateAnimation(), 500);
 		new GetMajorMinorTask().execute();
+
+		btnEvent.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				switch (bindStep) {
+				case BIND_STEP_SCANNING:
+				case BIND_STEP_CONNECTING:
+					finish();
+					break;
+				case BIND_STEP_SCAN_FAIL:
+					scanLeDevice(true);
+					break;
+				case BIND_STEP_CONNECT_FAIL:
+					connectDevice();
+					break;
+				case BIND_STEP_UPLOAD_FAIL:
+					new PostToServerTask().execute();
+					break;
+				case BIND_STEP_BIND_FINISH:
+					switch (from) {
+					case ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND:
+						Intent intent = new Intent(
+								BindingChildMacaronActivity.this,
+								LancherActivity.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+						break;
+					case ActivityConstants.ACTIVITY_KID_PROFILE:
+						setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS);
+						break;
+					}
+					finish();
+					break;
+				}
+			}
+		});
 	}
 
 	@Override
@@ -114,6 +196,7 @@ public class BindingChildMacaronActivity extends Activity {
 		}
 
 		scanLeDevice(true);
+		registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 	}
 
 	@Override
@@ -195,14 +278,22 @@ public class BindingChildMacaronActivity extends Activity {
 
 	private void scanLeDevice(final boolean enable) {
 		if (enable) {
+			bindStep = BIND_STEP_SCANNING;
+			tvMessage.setText(R.string.text_scanning);
+			btnEvent.setText(R.string.btn_cancel);
+
 			mHandler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
 					mScanning = false;
 					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					if (deviceScanned == false) {
+						bindStep = BIND_STEP_SCAN_FAIL;
+						tvMessage.setText(R.string.text_scan_no_device);
+						btnEvent.setText(R.string.btn_rescan);
+					}
 				}
 			}, SCAN_PERIOD);
-
 			mScanning = true;
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 		} else {
@@ -221,13 +312,10 @@ public class BindingChildMacaronActivity extends Activity {
 				public void run() {
 					if (device.getAddress().equals(mDeviceAddress)) {
 						scanLeDevice(false);
-						iconBeacon.setAlpha(1);
-						tvMessage.setText("连接设备...");
-
 						deviceScanned = true;
+						iconBeacon.setAlpha(1);
 						connectDevice();
 					}
-
 				}
 			});
 		}
@@ -236,6 +324,10 @@ public class BindingChildMacaronActivity extends Activity {
 	private void connectDevice() {
 		// Code to manage Service lifecycle.
 		if (deviceValid && deviceScanned) {
+			bindStep = BIND_STEP_CONNECTING;
+			tvMessage.setText(R.string.text_update_device_data);
+			btnEvent.setText(R.string.btn_cancel);
+
 			mServiceConnection = new ServiceConnection() {
 
 				@Override
@@ -261,30 +353,6 @@ public class BindingChildMacaronActivity extends Activity {
 					BindingChildMacaronActivity.this, BluetoothLeService.class);
 			bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-			mGattUpdateReceiver = new BroadcastReceiver() {
-				@Override
-				public void onReceive(Context context, Intent intent) {
-					final String action = intent.getAction();
-					System.out.println("mGattUpdateReceiver ==>> " + action);
-					if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-						tvMessage.setText("连接成功");
-					} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-							.equals(action)) {
-					} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
-							.equals(action)) {
-						// Show all the supported services and characteristics on the user interface.
-						System.out
-								.println("mGattUpdateReceiver ==>> writeToMacaron");
-						tvMessage.setText("写入设备");
-						writeToMacaron(mBluetoothLeService
-								.getSupportedGattServices());
-					} else if (BluetoothLeService.ACTION_DATA_AVAILABLE
-							.equals(action)) {
-					}
-				}
-			};
-
-			registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
 			if (mBluetoothLeService != null) {
 				final boolean result = mBluetoothLeService
 						.connect(mDeviceAddress);
@@ -323,10 +391,9 @@ public class BindingChildMacaronActivity extends Activity {
 			if (mBluetoothLeService
 					.writeCharacteristic(majorGattCharacteristic)) {
 			} else {
-				Toast.makeText(this, "write major fail", Toast.LENGTH_SHORT)
-						.show();
-				setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_FAIL);
-				finish();
+				bindStep = BIND_STEP_CONNECT_FAIL;
+				tvMessage.setText(R.string.text_connect_device_failed);
+				btnEvent.setText(R.string.btn_re_connect);
 			}
 		}
 		try {
@@ -341,15 +408,13 @@ public class BindingChildMacaronActivity extends Activity {
 			if (mBluetoothLeService
 					.writeCharacteristic(minorGattCharacteristic)) {
 			} else {
-				Toast.makeText(this, "write minor fail", Toast.LENGTH_SHORT)
-						.show();
-				setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_FAIL);
-				finish();
+				bindStep = BIND_STEP_CONNECT_FAIL;
+				tvMessage.setText(R.string.text_connect_device_failed);
+				btnEvent.setText(R.string.btn_re_connect);
 			}
 		}
-		tvMessage.setText("写入成功，同步到服务器");
 
-		//postToServer();
+		new PostToServerTask().execute();
 	}
 
 	private class UpdateAnimation implements Runnable {
@@ -385,13 +450,21 @@ public class BindingChildMacaronActivity extends Activity {
 	private class PostToServerTask extends AsyncTask<Void, Void, String> {
 
 		@Override
+		protected void onPreExecute() {
+			bindStep = BIND_STEP_UPLOADING;
+			tvMessage.setText(R.string.text_update_server_data);
+			btnEvent.setEnabled(false);
+		}
+
+		@Override
 		protected String doInBackground(Void... params) {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(childId));
 			map.put("macAddress", mDeviceAddress);
 			map.put("major", major);
 			map.put("minor", minor);
-			map.put("guardianId", "");
+			map.put("guardianId",
+					guardianId == -1 ? "" : String.valueOf(guardianId));
 			return HttpRequestUtils.post(HttpConstants.DEVICE_TO_CHILD, map);
 		}
 
@@ -400,17 +473,28 @@ public class BindingChildMacaronActivity extends Activity {
 			System.out.println(HttpConstants.DEVICE_TO_CHILD + " = " + result);
 			if (result.length() > 0) {
 				if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
+					bindStep = BIND_STEP_UPLOAD_FAIL;
+					tvMessage.setText(R.string.text_update_server_data_fail);
 					return;
 				}
 				if (result.equals("T")) {
-					Toast.makeText(BindingChildMacaronActivity.this,
-							"write success", Toast.LENGTH_SHORT).show();
-					setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS);
+					bindStep = BIND_STEP_BIND_FINISH;
+					tvMessage.setText(R.string.text_bind_success);
+					btnEvent.setText(R.string.btn_finish);
+					btnEvent.setEnabled(true);
+					DBChildren.updateMacAddressByChildId(
+							BindingChildMacaronActivity.this, childId,
+							mDeviceAddress);
 				} else {
+					bindStep = BIND_STEP_UPLOAD_FAIL;
+					tvMessage.setText(R.string.text_update_server_data_fail);
 					setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_FAIL);
 				}
+			} else {
+				bindStep = BIND_STEP_UPLOAD_FAIL;
+				tvMessage.setText(R.string.text_update_server_data_fail);
 			}
-			finish();
+
 		}
 	}
 
@@ -421,13 +505,8 @@ public class BindingChildMacaronActivity extends Activity {
 				&& resultCode == Activity.RESULT_CANCELED) {
 			finish();
 			return;
-		} else if (requestCode == ActivityConstants.REQUEST_GO_TO_BIND_CHILD_MACARON_DIALOG) {
-			if (resultCode == ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS) {
-				setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS);
-				finish();
-				return;
-			}
 		}
 
 	}
+
 }

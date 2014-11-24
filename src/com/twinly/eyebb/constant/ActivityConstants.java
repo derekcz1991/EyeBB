@@ -60,6 +60,10 @@ public class ActivityConstants {
 	public static final int REQUEST_GO_TO_UNBIND_ACTIVITY = 108;
 	public static final int REQUEST_GO_TO_BEACON_LIST_ACTIVITY = 109;
 	public static final int REQUEST_GO_TO_BIND_CHILD_MACARON_DIALOG = 110;
+	public static final int REQUEST_GO_TO_BIND_CHILD_MACARON_ACTIVITY = 111;
+	public static final int REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG = 112;
+	public static final int REQUEST_GO_TO_CHILD_INFO_MATCHING_ACTIVITY = 113;
+	public static final int REQUEST_GO_TO_CHECK_CHILD_TO_BIND_DIALOG = 114;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;
@@ -73,8 +77,13 @@ public class ActivityConstants {
 
 	public static final int FRAGMENT_REPORT_ACTIVITY = 1;
 	public static final int FRAGMENT_PROFILE = 2;
+	public static final int ACTIVITY_CHECK_CHILD_TO_BIND = 3;
+	public static final int ACTIVITY_KID_PROFILE = 4;
 
+	public static final String EXTRA_FROM = "FROM";
 	public static final String EXTRA_USER_NAME = "USER_NAME";
 	public static final String EXTRA_HASH_PASSWORD = "HASH_PASSWORD";
 	public static final String EXTRA_GUARDIAN_ID = "GUARDIAN_ID";
+	public static final String EXTRA_MAC_ADDRESS = "MAC_ADDRESS";
+	public static final String EXTRA_CHILD_ID = "CHILD_ID";
 }
