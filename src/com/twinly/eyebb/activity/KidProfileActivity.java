@@ -372,7 +372,7 @@ public class KidProfileActivity extends Activity {
 				intent.setClass(this, BindingChildMacaronActivity.class);
 				intent.putExtra(ActivityConstants.EXTRA_FROM,
 						ActivityConstants.ACTIVITY_KID_PROFILE);
-				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, -1);
+				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, -1L);
 				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
 						child.getChildId());
 				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);

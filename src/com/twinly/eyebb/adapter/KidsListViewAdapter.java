@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.bluetooth.DeviceListAcitivity;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -157,12 +156,6 @@ public class KidsListViewAdapter extends BaseAdapter {
 								+ child.getChildId() + " MACADDRESS:"
 								+ child.getMacAddress());
 					} else {
-						Intent intent = new Intent(context,
-								DeviceListAcitivity.class);
-						intent.putExtra("childID", child.getChildId());
-						System.out.println("child.getChildId()=>"
-								+ child.getChildId());
-						context.startActivity(intent);
 					}
 
 				}

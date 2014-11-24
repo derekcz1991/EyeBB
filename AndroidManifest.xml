@@ -113,16 +113,6 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.VerifyBirthdayFromDeviceListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.BatteryLifeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.ChildInformationMatchingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -149,11 +139,6 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.FeedBackActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.VerifyWhenLoginDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
@@ -225,37 +210,12 @@
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.ErrorDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.BeepDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.ConnectDeviceDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.BusEnterDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.BusLeaveDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.BusSchoolDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
@@ -310,21 +270,6 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.MatchingVerificationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.MatchingDeviceActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.VerifyDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.RadarShowAllScanImageDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
@@ -333,26 +278,6 @@
             android:name="com.twinly.eyebb.activity.RadarShowAllMissImageDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.ServicesActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.CharacteristicsMajorActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.ServicesMinorActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.CharacteristicsMinorActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.bluetooth.RadarServicesActivity"
@@ -379,16 +304,6 @@
             android:name="com.twinly.eyebb.bluetooth.BluetoothLeService"
             android:enabled="true" />
 
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.DeviceListAcitivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.CheckBeaconActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
         <activity
             android:name="com.twinly.eyebb.activity.KidProfileActivity"
             android:screenOrientation="portrait"

@@ -58,6 +58,7 @@ public class BindingChildMacaronActivity extends Activity {
 	private TextView[] tvAnimation;
 	private TextView tvMessage;
 	private TextView iconBeacon;
+	private TextView tvAddress;
 	private Button btnEvent;
 	private Handler mHandler;
 	private int index;
@@ -123,6 +124,9 @@ public class BindingChildMacaronActivity extends Activity {
 		tvMessage = (TextView) findViewById(R.id.message);
 		iconBeacon = (TextView) findViewById(R.id.beacon);
 		btnEvent = (Button) findViewById(R.id.btn_event);
+		tvAddress = (TextView) findViewById(R.id.tv_address);
+		
+		tvAddress.setText(mDeviceAddress);
 
 		tvAnimation = new TextView[6];
 		tvAnimation[0] = (TextView) findViewById(R.id.animation_0);
@@ -266,7 +270,8 @@ public class BindingChildMacaronActivity extends Activity {
 				if (result.equals(HttpConstants.SERVER_RETURN_USED)) {
 					Toast.makeText(BindingChildMacaronActivity.this,
 							R.string.text_device_already_binded,
-							Toast.LENGTH_SHORT).show();
+							Toast.LENGTH_LONG).show();
+					return;
 				} else {
 					major = result.substring(0, result.indexOf(":"));
 					minor = result.substring(result.indexOf(":") + 1,

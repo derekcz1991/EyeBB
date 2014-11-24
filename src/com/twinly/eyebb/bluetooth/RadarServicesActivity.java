@@ -25,19 +25,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-
-import com.twinly.eyebb.activity.ErrorDialog;
-import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.SharePrefsUtils;

@@ -12,17 +12,22 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp" >
+        android:orientation="vertical" >
 
         <com.twinly.eyebb.customview.CircleImageView
             android:id="@+id/avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginRight="16dp"
             android:src="@drawable/icon_avatar_dark"
             app:border_color="@color/white"
             app:border_width="2dp" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            style="@style/DarkGreyText_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
     <LinearLayout
