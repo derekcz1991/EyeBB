@@ -37,7 +37,7 @@ public class MyKidsListActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle(getString(R.string.btn_my_child));
+		setTitle(getString(R.string.btn_children_list));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 

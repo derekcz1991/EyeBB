@@ -318,11 +318,11 @@ public class LoginActivity extends Activity {
 
 				JSONObject json = new JSONObject(result);
 				SharePrefsUtils.setUserType(LoginActivity.this,
-						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
+						json.getString(HttpConstants.JSON_KEY_GUARDIN_TYPE));
 				SharePrefsUtils.setUserName(LoginActivity.this,
-						json.getString(HttpConstants.JSON_KEY_USER_NAME));
+						json.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
 				SharePrefsUtils.setUserPhone(LoginActivity.this,
-						json.getString(HttpConstants.JSON_KEY_USER_PHONE));
+						json.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
 
 				SharePrefsUtils.setLogin(LoginActivity.this, true);
 				SharePrefsUtils.setLoginAccount(LoginActivity.this,

@@ -63,10 +63,18 @@ public class HttpConstants {
 	public static final String JSON_CHECK_CHILD_CHILD_NAME = "name";
 	public static final String JSON_CHECK_CHILD_CHILD_ICON = "icon";
 
-	public static final String JSON_KEY_USER_ID = "guardianId";
-	public static final String JSON_KEY_USER_NAME = "name";
-	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
-	public static final String JSON_KEY_USER_TYPE = "type";
+	public static final String JSON_KEY_GUARDIN_ID = "guardianId";
+	public static final String JSON_KEY_GUARDIN_NAME = "name";
+	public static final String JSON_KEY_GUARDIN_PHONE = "phoneNumber";
+	public static final String JSON_KEY_GUARDIN_TYPE = "type";
+	public static final String JSON_KEY_GUESTS= "guests";
+	public static final String JSON_KEY_CHILDREN_QUOTA= "childrenQuota";
+	public static final String JSON_KEY_MASTERS= "masters";
+	public static final String JSON_KEY_GUARDIN= "guardian";
+	public static final String JSON_KEY_CHILD= "child";
+	public static final String JSON_KEY_WITH_ACCESS= "withAccess";
+	public static final String JSON_KEY_TOTAL_QUOTA= "totalQuota";
+	public static final String JSON_KEY_QUOTA_LEFT= "quotaLeft";
 
 	public static final String JSON_KEY_NOTICES = "notices";
 	public static final String JSON_KEY_NOTICES_TITLE = "title";
@@ -92,6 +100,7 @@ public class HttpConstants {
 	public static final String UNBIND_CHILD_BEACON = "masterService/api/unbindChildBeacon";
 	public static final String AUTH_FIND_GUESTS = "masterService/api/searchMasterGuests";
 	public static final String GRANT_GUESTS = "masterService/api/grantGuestAccess";
+	public static final String GUEST_CHILDREN = "masterService/api/guestChildren";
 	public static final String LOGIN_INFO = "reportService/api/loginInfo";
 	public static final String GET_REPORTS = "reportService/api/stat";
 	public static final String GET_NOTICES = "reportService/api/notices";

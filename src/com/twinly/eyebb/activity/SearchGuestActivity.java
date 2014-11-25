@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,10 +29,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
+import com.twinly.eyebb.adapter.SearchGuestListViewAdapter;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.model.Guest;
+import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class SearchGuestActivity extends Activity {
@@ -39,9 +42,9 @@ public class SearchGuestActivity extends Activity {
 	private TextView btnSearchNewGuest;
 	private String guestName;
 
-	private GuestListViewAdapter adapter;
+	private SearchGuestListViewAdapter adapter;
 	private ListView listView;
-	private ArrayList<Guest> guest_data;
+	private ArrayList<User> guest_data;
 	private String retStr;
 	private String guestId;
 
@@ -59,7 +62,7 @@ public class SearchGuestActivity extends Activity {
 		listView = (ListView) findViewById(R.id.listView);
 		edGuestname = (EditText) findViewById(R.id.ed_guestname);
 		btnSearchNewGuest = (TextView) findViewById(R.id.btn_search_new_guest);
-		guest_data = new ArrayList<Guest>();
+		guest_data = new ArrayList<User>();
 
 		instance = this;
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
@@ -90,7 +93,7 @@ public class SearchGuestActivity extends Activity {
 		}
 	};
 
-	private ArrayList<Guest> parseJson(String getData) {
+	private ArrayList<User> parseJson(String getData) {
 		// TODO Auto-generated method stub
 		// System.out.println("getData=>" + getData);
 
@@ -102,14 +105,15 @@ public class SearchGuestActivity extends Activity {
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject temp = (JSONObject) arr.get(i);
 
-				Guest guest = new Guest();
+				User guest = new User();
 				System.out.println("--->"
-						+ temp.getString(HttpConstants.JSON_KEY_USER_NAME));
+						+ temp.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
 				guest.setGuardianId(Long.parseLong(temp
-						.getString(HttpConstants.JSON_KEY_USER_ID)) + "");
-				guest.setName(temp.getString(HttpConstants.JSON_KEY_USER_NAME));
+						.getString(HttpConstants.JSON_KEY_GUARDIN_ID)) + "");
+				guest.setName(temp
+						.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
 				guest.setPhoneNumber(temp
-						.getString(HttpConstants.JSON_KEY_USER_PHONE));
+						.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
 				guest_data.add(guest);
 
 				// adapter.notifyDataSetChanged();
@@ -230,8 +234,8 @@ public class SearchGuestActivity extends Activity {
 				// R.string.text_feed_back_successful, Toast.LENGTH_LONG)
 				// .show();
 
-				adapter = new GuestListViewAdapter(SearchGuestActivity.this,
-						parseJson(retStr));
+				adapter = new SearchGuestListViewAdapter(
+						SearchGuestActivity.this, parseJson(retStr));
 
 				System.out.println("parseJson(retStr)-->"
 						+ parseJson(retStr).size());
@@ -241,11 +245,15 @@ public class SearchGuestActivity extends Activity {
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long arg3) {
 						Intent intent = new Intent(SearchGuestActivity.this,
-								GrantKidsDialog.class);
+								GrantKidsActivity.class);
 						intent.putExtra("guestId",
 								parseJson(retStr).get(position).getGuardianId());
-						startActivity(intent);
-						finish();
+						intent.putExtra("guestName",
+								parseJson(retStr).get(position).getName());
+						startActivityForResult(
+								intent,
+								ActivityConstants.REQUEST_GO_TO_GRANT_KIDS_ACTIVITY);
+
 					}
 				});
 				break;
@@ -282,4 +290,15 @@ public class SearchGuestActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_GRANT_KIDS_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+				setResult(ActivityConstants.RESULT_RESULT_OK);
+				finish();
+			}
+		}
+	}
 }

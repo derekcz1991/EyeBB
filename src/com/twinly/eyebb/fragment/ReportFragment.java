@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.twinly.eyebb.activity.ChangeKidsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
@@ -55,17 +57,19 @@ public class ReportFragment extends Fragment implements
 	public interface CallbackInterface {
 		/**
 		 * Update the progressBar value when pull the listView
-		 * @param value current progress
+		 * 
+		 * @param value
+		 *            current progress
 		 */
 		public void updateProgressBarForReport(int value);
 
 		/**
-		 * Cancel update the progressBar when release the listView  
+		 * Cancel update the progressBar when release the listView
 		 */
 		public void cancelProgressBar();
 
 		/**
-		 * Reset the progressBar when finishing to update listView  
+		 * Reset the progressBar when finishing to update listView
 		 */
 		public void resetProgressBar();
 	}
@@ -79,6 +83,7 @@ public class ReportFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report, container, false);
 		imageLoader = ImageLoader.getInstance();
+		imageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
 		setUpView(v);
 		setUpListener(v);
 		return v;
@@ -219,11 +224,12 @@ public class ReportFragment extends Fragment implements
 	}
 
 	/**
-	 * when switch tab to Report, reload the performance to show the progressbar animation.
+	 * when switch tab to Report, reload the performance to show the progressbar
+	 * animation.
 	 */
 	public void refreshPerformanceFragment() {
 		if (performanceFragment != null) {
-			//performanceFragment.updateAdapter();
+			// performanceFragment.updateAdapter();
 		}
 	}
 
@@ -238,7 +244,7 @@ public class ReportFragment extends Fragment implements
 	}
 
 	/**
-	 * Get newest the data from server and update the view 
+	 * Get newest the data from server and update the view
 	 */
 	public void updateView() {
 		if (child != null) {
@@ -301,6 +307,7 @@ public class ReportFragment extends Fragment implements
 
 	/**
 	 * Update the performance fragment
+	 * 
 	 * @param json
 	 * @throws JSONException
 	 */
@@ -322,6 +329,7 @@ public class ReportFragment extends Fragment implements
 
 	/**
 	 * Update the activity fragment
+	 * 
 	 * @param json
 	 * @throws JSONException
 	 */
@@ -381,7 +389,7 @@ public class ReportFragment extends Fragment implements
 						CommonUtils.getDisplayImageOptions(), null);
 				SharePrefsUtils.setReportChildId(getActivity(),
 						child.getChildId());
-				//reInitView();
+				// reInitView();
 				updateView();
 			}
 		}

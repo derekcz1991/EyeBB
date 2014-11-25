@@ -31,8 +31,7 @@ public class SettingsActivity extends Activity {
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
-	//private LinearLayout batteryLifeBtn;
-	
+	// private LinearLayout batteryLifeBtn;
 
 	private boolean isAutoUpdate;
 	private TextView refreshTimeNumber;
@@ -54,8 +53,8 @@ public class SettingsActivity extends Activity {
 		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
-		//batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
-		
+		// batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
+
 		setupView();
 
 		tittlebarBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -166,9 +165,9 @@ public class SettingsActivity extends Activity {
 
 			}
 		});
-		
+
 		updatePswBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -177,24 +176,26 @@ public class SettingsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		
-//		batteryLifeBtn.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				
-//				Intent intent = new Intent(SettingsActivity.this,
-//						BatteryLifeActivity.class);
-//				startActivity(intent);
-//			}
-//		});
+
+		// batteryLifeBtn.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Auto-generated method stub
+		//
+		// Intent intent = new Intent(SettingsActivity.this,
+		// BatteryLifeActivity.class);
+		// startActivity(intent);
+		// }
+		// });
 
 	}
 
 	private void setupView() {
 		// auto refresh time
-		refreshTimeNumber.setText(SharePrefsUtils.refreshTime(this));
+		refreshTimeNumber
+				.setText(SharePrefsUtils.refreshTime(this) == null ? SharePrefsUtils
+						.refreshTime(this) : "5");
 
 		// sound
 		if (SharePrefsUtils.isSoundOn(this)) {

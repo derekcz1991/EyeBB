@@ -55,6 +55,8 @@ public class ActivityConstants {
 	public static final int REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG = 112;
 	public static final int REQUEST_GO_TO_CHILD_INFO_MATCHING_ACTIVITY = 113;
 	public static final int REQUEST_GO_TO_CHECK_CHILD_TO_BIND_DIALOG = 114;
+	public static final int REQUEST_GO_TO_GRANT_KIDS_ACTIVITY = 115;
+	public static final int REQUEST_GO_TO_SEARCH_GUEST_ACTIVITY = 116;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;

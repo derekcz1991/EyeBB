@@ -16,8 +16,21 @@ public class Child implements Serializable {
 
 	private String macAddress;
 	private boolean isMissing;
+
 	private String locationName; // dynamic changing
 	private long lastAppearTime; // dynamic changing
+
+	private boolean withAccess;
+	private String totalQuota;
+	private String quotaLeft;
+
+	public String getQuotaLeft() {
+		return quotaLeft;
+	}
+
+	public void setQuotaLeft(String quotaLeft) {
+		this.quotaLeft = quotaLeft;
+	}
 
 	public Child() {
 
@@ -100,6 +113,22 @@ public class Child implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public boolean isWithAccess() {
+		return withAccess;
+	}
+
+	public void setWithAccess(boolean withAccess) {
+		this.withAccess = withAccess;
+	}
+
+	public String getTotalQuota() {
+		return totalQuota;
+	}
+
+	public void setTotalQuota(String totalQuota) {
+		this.totalQuota = totalQuota;
 	}
 
 	@Override

@@ -77,7 +77,7 @@
                         style="@style/RedText_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_settings_notifications" />
+                        android:text="@string/text_settings_app_function" />
                 </LinearLayout>
                 <!-- update time -->
 
@@ -176,7 +176,7 @@
                 <!-- device -->
 
                 <LinearLayout
-                	android:id="@+id/device_item"
+                    android:id="@+id/device_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
@@ -207,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:text="@string/btn_my_child" />
+                            android:text="@string/btn_children_list" />
                     </LinearLayout>
 
                     <!-- auth -->
@@ -225,13 +225,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:text="@string/text_authorization" />
+                            android:text="@string/btn_auth_list" />
                     </LinearLayout>
-                    
-                    
-                      <!-- battery life -->
 
-                    <!-- <LinearLayout
+                    <!-- battery life -->
+
+
+                    <!--
+                    <LinearLayout
                         android:id="@+id/battery_life_btn"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
@@ -245,8 +246,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:text="@string/text_battery_life" />
-                    </LinearLayout> -->
+                    </LinearLayout>
+                    -->
                 </LinearLayout>
+
                 <!-- language -->
 
                 <LinearLayout
@@ -322,6 +325,60 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Account -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        style="@style/RedText_16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_setting_user_account" />
+                </LinearLayout>
+
+                <!-- update password -->
+
+                <LinearLayout
+                    android:id="@+id/update_psw_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/settings_column_top"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/update_password"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/text_update_password" />
+                </LinearLayout>
+                <!-- chinese -->
+
+
+                <!-- update nickname -->
+
+                <LinearLayout
+                    android:id="@+id/update_nickname_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/settings_column_bottom"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/update_nickname"
+                        style="@style/DarkGreyText_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="@string/text_setting_update_nickname" />
+                </LinearLayout>
+
                 <!-- others -->
 
                 <LinearLayout
@@ -352,25 +409,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:text="@string/text_about" />
-                </LinearLayout>
-
-                <!-- update password -->
-
-                <LinearLayout
-                    android:id="@+id/update_psw_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/settings_column_center"
-                    android:gravity="center_vertical" >
-
-                    <TextView
-                        android:id="@+id/update_password"
-                        style="@style/DarkGreyText_18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:text="@string/text_update_password" />
                 </LinearLayout>
 
                 <!-- Terms of Service -->

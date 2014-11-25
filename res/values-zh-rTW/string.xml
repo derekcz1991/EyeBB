@@ -39,7 +39,7 @@
     <string name="text_notifications">通告</string>
     <string name="text_mess_hall">餐廳</string>
     <string name="text_settings">設定</string>
-    <string name="text_settings_notifications">功能</string>
+    <string name="text_settings_app_function">寶寶安APP功能</string>
     <string name="text_enableSound">開啟聲音</string>
     <string name="text_enableVibration">開啟震動</string>
     <string name="text_AutomaticRefresh">開啟自動刷新</string>
@@ -110,7 +110,7 @@
     <string name="text_radar_model_on">雷達模式開</string>
     <string name="text_radar_model_off">雷達模式關</string>
     <string name="text_authorization">授權</string>
-    <string name="text_device">寶寶安</string>
+    <string name="text_device">寶寶安設備功能</string>
     <string name="text_nick_name">暱稱</string>
     <string name="text_feed_back">意見回饋</string>
     <string name="text_feed_back_content">請提出您寶貴的建議或者告訴我們您的不滿:</string>
@@ -163,6 +163,9 @@
     <string name="text_update_server_data">更新云端数据</string>
     <string name="text_update_server_data_fail">更新云端数据失败</string>
 	<string name="text_bind_success">设备绑定成功</string>
+	       <string name="text_setting_user_account">使用者賬戶</string>
+    <string name="text_setting_update_nickname">修改暱稱</string>
+      <string name="text_auth_to_user">授權給用戶: </string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -185,7 +188,8 @@
     <string name="btn_search">搜索</string>
     <string name="btn_search_mac">搜索Mac地址</string>
     <string name="btn_add">添加</string>
-    <string name="btn_my_child">我的孩子</string>
+    <string name="btn_children_list">孩子列表</string>
+      <string name="btn_auth_list">授權列表</string>
     <string name="btn_take_photo">影相</string>
     <string name="btn_choose_photo">從相冊選擇</string>
     <string name="btn_rescan">重新扫描</string>

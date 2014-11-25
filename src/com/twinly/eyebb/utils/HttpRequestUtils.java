@@ -202,8 +202,8 @@ public class HttpRequestUtils {
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
-			Toast.makeText(context, "error = " + e.getMessage(),
-					Toast.LENGTH_LONG).show();
+//			Toast.makeText(context, "error = " + e.getMessage(),
+//					Toast.LENGTH_LONG).show();
 			try {
 				Log.e(TAG, e.getMessage());
 			} catch (Exception e1) {

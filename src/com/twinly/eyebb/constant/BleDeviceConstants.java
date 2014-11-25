@@ -33,7 +33,7 @@ public class BleDeviceConstants {
 	public final static int START_PROGRASSS_BAR = 1;
 	public final static int STOP_PROGRASSS_BAR = 2;
 	public static final int BEEP_RSSI = -90;
-	public static final int SCAN_INRERVAL_TIME = 2000;
+	public static final int SCAN_INRERVAL_TIME = 5000;
 	public static final int SCANTIME = Integer.MAX_VALUE;
 
 	public static final int POSTDELAYTIME = Integer.MAX_VALUE - 500;
@@ -48,7 +48,7 @@ public class BleDeviceConstants {
 	public static final String BEEP_ALL_DEVICE = "beep_all_device";
 
 	public static int DELAY = 0;
-	public static final int PERIOD = 5000;
+	public static final int PERIOD = 10000;
 	public static final int BINDING_PERIOD = 40000;
 	public static final int BATTERY_DELAY_LOADING = 3000;
 	//broadcast

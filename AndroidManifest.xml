@@ -193,9 +193,9 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.GrantKidsDialog"
+            android:name="com.twinly.eyebb.activity.GrantKidsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
+            android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.ChildBirthdayDialog"

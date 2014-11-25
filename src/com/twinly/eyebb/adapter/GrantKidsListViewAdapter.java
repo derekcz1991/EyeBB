@@ -29,7 +29,7 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	public static ArrayList<String> grantkidId;
-
+	public static ArrayList<String> noAccessGrantkidId;
 	public final class ViewHolder {
 		public CircleImageView avatar;
 		public TextView name;
@@ -43,6 +43,7 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 		this.context = context;
 		this.data = data;
 		grantkidId = new ArrayList<String>();
+		noAccessGrantkidId = new ArrayList<String>();
 		if (isSortByName) {
 			Collections.sort(this.data, new Comparator<Child>() {
 
@@ -88,6 +89,7 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 					.findViewById(R.id.layout);
 			viewHolder.selected = (TextView) convertView
 					.findViewById(R.id.selected);
+
 			convertView.setTag(viewHolder);
 
 		} else {
@@ -100,48 +102,38 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		final Child child = data.get(position);
 
+		// init select
+		for (int i = 0; i < data.size(); i++) {
+			if (child.isWithAccess()) {
+				viewHolder.selected.setBackground(context.getResources()
+						.getDrawable(R.drawable.ic_selected));
+				grantkidId.add(child.getChildId() + "");
+			}else{
+				viewHolder.selected.setBackground(context.getResources()
+						.getDrawable(R.drawable.ic_selected_off));
+				noAccessGrantkidId.add(child.getChildId() + "");
+			}
+		}
+
 		viewHolder.layout.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-				if (grantkidId.size() == 0) {
+				// first click
+				if (child.isWithAccess()) {
+					viewHolder.selected.setBackground(context.getResources()
+							.getDrawable(R.drawable.ic_selected_off));
+					child.setWithAccess(false);
+					grantkidId.remove(position);
+					noAccessGrantkidId.add(child.getChildId() + "");
+				} else {
 					viewHolder.selected.setBackground(context.getResources()
 							.getDrawable(R.drawable.ic_selected));
 					grantkidId.add(child.getChildId() + "");
-					System.out.println("position  0---->" + child.getChildId());
-				} else {
-					for (int i = 0; i < grantkidId.size();) {
-						if (grantkidId.get(i).toString()
-								.equals(child.getChildId() + "")) {
-							viewHolder.selected.setBackground(context
-									.getResources().getDrawable(
-											R.drawable.ic_selected_off));
-							System.out.println("position reomve---->"
-									+ grantkidId.get(i).toString() + " "
-									+ child.getChildId());
-							grantkidId.remove(i);
-							break;
-
-						} else {
-
-							i++;
-							System.out.println("i--->" + i);
-							if (i == grantkidId.size()) {
-								viewHolder.selected.setBackground(context
-										.getResources().getDrawable(
-												R.drawable.ic_selected));
-								grantkidId.add(child.getChildId() + "");
-								System.out.println("position---->"
-										+ grantkidId.get(i).toString() + " "
-										+ child.getChildId());
-								break;
-							}
-							// break;
-
-						}
-					}
+					noAccessGrantkidId.remove(position);
+					child.setWithAccess(true);
 				}
 
 			}

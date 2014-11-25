@@ -38,7 +38,7 @@
     <string name="text_school_bus_tracking">School Bus Tracking</string>
     <string name="text_notifications">Notifications</string>
     <string name="text_settings">Settings</string>
-    <string name="text_settings_notifications">Notifications</string>
+    <string name="text_settings_app_function">Eyebb app function</string>
     <string name="text_enableSound">Enable Sound</string>
     <string name="text_refreshTime">Auto-Refresh Time (Second):</string>
     <string name="text_refreshDefaultTime">5</string>
@@ -106,7 +106,7 @@
     <string name="text_radar_model_on">Radar model ON</string>
     <string name="text_radar_model_off">Radar model OFF</string>
     <string name="text_authorization">Authorization</string>
-    <string name="text_device">Eyebb device</string>
+    <string name="text_device">Eyebb device function</string>
     <string name="text_more">More</string>
     <string name="text_feed_back">Feedback</string>
     <string name="text_feed_back_content">Love it? Hate it? Would you like to suggest a new feature or report a bug? We would love to hear from you:</string>
@@ -157,6 +157,9 @@
     <string name="text_update_server_data">Update server data</string>
     <string name="text_update_server_data_fail">Update server data fail</string>
     <string name="text_bind_success">Eyebb binding successfully</string>
+    <string name="text_setting_user_account">User account</string>
+    <string name="text_setting_update_nickname">Update nickname</string>
+     <string name="text_auth_to_user">Authorize to user: </string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -179,7 +182,8 @@
     <string name="btn_search">Search</string>
     <string name="btn_search_mac">Search mac addresss</string>
     <string name="btn_add">Add</string>
-    <string name="btn_my_child">My Child</string>
+    <string name="btn_children_list">Children list</string>
+      <string name="btn_auth_list">Authorization list</string>
     <string name="btn_take_photo">Take Photo</string>
     <string name="btn_choose_photo">Choose Photo</string>
     <string name="btn_rescan">re-scan</string>
