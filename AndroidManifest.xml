@@ -143,6 +143,11 @@
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.ForgetPasswordDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.OldPasswordIncorrectDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >

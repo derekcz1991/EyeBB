@@ -51,9 +51,11 @@
     <string name="text_TermsOfService">服務條款</string>
     <string name="text_privacyPolicy">隱私政策</string>
     <string name="text_forgetPassword">忘記密碼</string>
-    <string name="text_forgetPassword_details">請輸入您註冊的用戶名(電話)，以便獲取密碼.(注意:測試功能,密碼恢復為00000000,8個0)</string>
+    <string name="text_forgetPassword_details">請輸入您註冊的用戶名(電話)還有一個孩子的信息，以便獲取密碼.(注意:測試功能,密碼恢復為00000000,8個0)</string>
     <string name="text_forgetPassword_email">輸入電郵地址</string>
     <string name="text_forgetPassword_phone">輸入用戶名(電話)</string>
+        <string name="text_forgetPassword_child_name">輸入孩子姓名</string>
+    <string name="text_forgetPassword_child_birthday">選擇孩子生日</string>
     <string name="text_activityDetails">活動詳情</string>
     <string name="text_beeping">蜂鳴</string>
     <string name="text_sec">秒.</string>
@@ -166,6 +168,7 @@
 	       <string name="text_setting_user_account">使用者賬戶</string>
     <string name="text_setting_update_nickname">修改暱稱</string>
       <string name="text_auth_to_user">授權給用戶: </string>
+        <string name="text_account_user_do_not_have_this_child">失敗,這個用戶並不擁有這個孩子.</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

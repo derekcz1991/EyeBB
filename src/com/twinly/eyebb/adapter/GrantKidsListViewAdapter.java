@@ -137,13 +137,24 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 					viewHolder.selected.setBackground(context.getResources()
 							.getDrawable(R.drawable.ic_selected_off));
 					child.setWithAccess(false);
-					grantkidId.remove(position);
+					for (int i = 0; i < grantkidId.size(); i++) {
+						if (grantkidId.get(i).toString()
+								.equals(child.getChildId() + "")) {
+							grantkidId.remove(i);
+						}
+					}
+
 					noAccessGrantkidId.add(child.getChildId() + "");
 				} else {
 					viewHolder.selected.setBackground(context.getResources()
 							.getDrawable(R.drawable.ic_selected));
 					grantkidId.add(child.getChildId() + "");
-					noAccessGrantkidId.remove(position);
+					for (int i = 0; i < noAccessGrantkidId.size(); i++) {
+						if (noAccessGrantkidId.get(i).toString()
+								.equals(child.getChildId() + "")) {
+							noAccessGrantkidId.remove(i);
+						}
+					}
 					child.setWithAccess(true);
 				}
 

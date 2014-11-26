@@ -53,9 +53,11 @@
     <string name="text_update_password">Update Password</string>
     <string name="text_privacyPolicy">Privacy Policy</string>
     <string name="text_forgetPassword">Forget Password</string>
-    <string name="text_forgetPassword_details">Please enter your user name (phone number) to received details for your new password. (this is testing function. the new password is 00000000)</string>
+    <string name="text_forgetPassword_details">Please enter your user name (phone number) and child information to received details for your new password. (this is testing function. the new password is 00000000)</string>
     <string name="text_forgetPassword_email">Enter your email address</string>
     <string name="text_forgetPassword_phone">Enter your user name (phone number)</string>
+    <string name="text_forgetPassword_child_name">Enter your child name</string>
+    <string name="text_forgetPassword_child_birthday">Choose your child birthday</string>
     <string name="text_enter_refresh_time">Enter the refresh time</string>
     <string name="text_activityDetails">Activity Details</string>
     <string name="text_beeping">Beeping</string>
@@ -159,7 +161,8 @@
     <string name="text_bind_success">Eyebb binding successfully</string>
     <string name="text_setting_user_account">User account</string>
     <string name="text_setting_update_nickname">Update nickname</string>
-     <string name="text_auth_to_user">Authorize to user: </string>
+    <string name="text_auth_to_user">Authorize to user: </string>
+       <string name="text_account_user_do_not_have_this_child">Sorry! Account user does not have this child.</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -183,13 +186,14 @@
     <string name="btn_search_mac">Search mac addresss</string>
     <string name="btn_add">Add</string>
     <string name="btn_children_list">Children list</string>
-      <string name="btn_auth_list">Authorization list</string>
+    <string name="btn_auth_list">Authorization list</string>
     <string name="btn_take_photo">Take Photo</string>
     <string name="btn_choose_photo">Choose Photo</string>
     <string name="btn_rescan">re-scan</string>
     <string name="btn_re_connect">re-connect</string>
     <string name="btn_re_update">re-update</string>
     <string name="btn_finish">Finish</string>
+    
     
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

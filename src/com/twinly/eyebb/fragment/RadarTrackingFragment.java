@@ -81,7 +81,6 @@ public class RadarTrackingFragment extends Fragment implements
 	private BluetoothAdapter mBluetoothAdapter;
 	private final static int BLE_VERSION = 18;
 
-
 	// bluetooth
 	private boolean scan_flag = false;
 	// true 为第一次扫描
@@ -213,6 +212,8 @@ public class RadarTrackingFragment extends Fragment implements
 	ArrayList<Child> showAllScanImageData;
 	ArrayList<Child> showAllMissImageData;
 
+	private UpdateDb updateDb;
+
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -226,8 +227,7 @@ public class RadarTrackingFragment extends Fragment implements
 		initView(v);
 
 		ChildData = DBChildren.getChildrenList(getActivity());
-		
-		UpdateDb updateDb = new UpdateDb();
+		updateDb = new UpdateDb();
 		getActivity().registerReceiver(updateDb,
 				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
 
@@ -493,6 +493,7 @@ public class RadarTrackingFragment extends Fragment implements
 		try {
 			if (beepIntent != null)
 				getActivity().stopService(beepIntent);
+			getActivity().unregisterReceiver(updateDb);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -518,13 +519,13 @@ public class RadarTrackingFragment extends Fragment implements
 	public void scanLeDevice() {
 
 		// Stops scanning after a pre-defined scan period.
-//		try {
-//			mBluetoothAdapter.stopLeScan(mLeScanCallback);
-//
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		// try {
+		// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+		//
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
 
@@ -687,11 +688,10 @@ public class RadarTrackingFragment extends Fragment implements
 		isConfirmRadarBtn = false;
 		// 还原为没有点击
 		confirmRadarBtn.setChecked(false);
-	
+
 		buttonCancel = true;
 		// 清除time task
 		stopTimer();
-
 
 		// listview消失
 		ChildlistView.setVisibility(View.GONE);
@@ -1398,7 +1398,8 @@ public class RadarTrackingFragment extends Fragment implements
 			if (!mBluetoothAdapter.isEnabled()) {
 				Intent enableBtIntent = new Intent(
 						BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				startActivityForResult(enableBtIntent,  BleDeviceConstants.REQUEST_ENABLE_BT);
+				startActivityForResult(enableBtIntent,
+						BleDeviceConstants.REQUEST_ENABLE_BT);
 			}
 		}
 	}
@@ -1605,8 +1606,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 		}
 	};
-	 
-	private class UpdateDb extends BroadcastReceiver{
+
+	private class UpdateDb extends BroadcastReceiver {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals(BleDeviceConstants.BROADCAST_FINISH_BIND)) {
@@ -1877,7 +1878,8 @@ public class RadarTrackingFragment extends Fragment implements
 							+ BeepTempChildData.get(position).getMacAddress());
 			beepIntent
 					.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
-			beepIntent.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM, "radar");
+			beepIntent.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM,
+					"radar");
 			// if (scan_flag) {
 			// scanLeDevice(false);
 			// }
@@ -1930,7 +1932,6 @@ public class RadarTrackingFragment extends Fragment implements
 				} else {
 
 					beepAllTime = 0;
-
 
 				}
 			}

@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,16 +45,11 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 @SuppressLint("InflateParams")
 public class LoginActivity extends Activity {
 	private TextView forgetPasswordBtn;
-	private LayoutInflater inflater;
-	private TextView backBtn;
-	private AlertDialog passwordDialog;
-	private EditText edEmail;
+
 	private EditText loginAccount;
 	private EditText password;
 	private String hashPassword;
 	private Dialog loginDialog;
-
-	private String userAccout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,105 +67,22 @@ public class LoginActivity extends Activity {
 		password = (EditText) findViewById(R.id.password);
 
 		forgetPasswordBtn = (TextView) findViewById(R.id.forget_password_btn);
-		inflater = LayoutInflater.from(this);
+
 		forgetPasswordBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// build forget password dialog
-				AlertDialog.Builder forgetPassword = new AlertDialog.Builder(
-						LoginActivity.this);
-				View layout = inflater.inflate(R.layout.dialog_forget_password,
-						null);
+				Intent intent = new Intent(LoginActivity.this,
+						ForgetPasswordDialog.class);
+				startActivity(intent);
 
-				edEmail = (EditText) layout.findViewById(R.id.enter_mail);
-				edEmail.setFocusable(true);
-				edEmail.setFocusableInTouchMode(true);
-				edEmail.requestFocus();
-				openKeyBoard();
-
-				forgetPassword.setView(layout);
-
-				backBtn = (TextView) layout.findViewById(R.id.back_confirm);
-
-				backBtn.setOnClickListener(new android.view.View.OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						closeKeyBoard();
-						passwordDialog.dismiss();
-
-						new Thread(postResetPasswordToServerRunnable).start();
-					}
-				});
-
-				passwordDialog = forgetPassword.create();
-				passwordDialog.show();
 			}
 		});
 
 	}
 
-	Runnable postResetPasswordToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			userAccout = edEmail.getText().toString();
-
-			if (userAccout.length() > 0) {
-
-				postResetPasswordToServer();
-
-			} else {
-				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
-				handler.sendMessage(msg);
-			}
-
-		}
-
-	};
-
-	@SuppressLint("ShowToast")
-	private void postResetPasswordToServer() {
-		// TODO Auto-generated method stub
-
-		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>" + userAccout);
-
-		map.put("accName", userAccout);
-
-		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(LoginActivity.this,
-					HttpConstants.RESET_PASSWORD, map);
-			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-
-				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
-				handler.sendMessage(msg);
-			} else {
-				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
-					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.PASSWORD_RESET_SUCCESS;
-					handler.sendMessage(msg);
-
-				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
-					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.ACCOUNT_NOT_EXIST;
-					handler.sendMessage(msg);
-				}
-			}
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-		}
-
-	}
+	
 
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
@@ -206,6 +119,14 @@ public class LoginActivity extends Activity {
 				toast.show();
 
 				break;
+
+			case BleDeviceConstants.ACCOUNT_DO_NOT_HAS_THIS_CHILD:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_account_user_do_not_have_this_child,
+						Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
 			}
 
 		}
@@ -220,18 +141,9 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void openKeyBoard() {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(edEmail, InputMethodManager.RESULT_SHOWN);
-		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
-				InputMethodManager.HIDE_IMPLICIT_ONLY);
-	}
 
-	public void closeKeyBoard() {
-		InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-		imm.hideSoftInputFromWindow(edEmail.getWindowToken(), 0);
-	}
+
 
 	public void OnLoginClicked(View view) {
 
@@ -370,5 +282,6 @@ public class LoginActivity extends Activity {
 			}
 		}
 	}
+
 
 }

@@ -71,7 +71,7 @@ public class ChildBirthdayDialog extends Activity {
 			}
 		});
 
-		if (getBirthday != null) {
+		if (getBirthday != null && getBirthday.length() > 0) {
 			String[] sGetBirthday = getBirthday.split("/");
 			dayOfMonth = Integer.parseInt(sGetBirthday[0]);
 			monthOfYear = Integer.parseInt(sGetBirthday[1]) - 1;

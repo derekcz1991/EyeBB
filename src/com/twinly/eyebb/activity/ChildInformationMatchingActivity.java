@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -91,6 +93,14 @@ public class ChildInformationMatchingActivity extends Activity {
 				if (CommonUtils.isFastDoubleClick()) {
 					return;
 				} else {
+					/**
+					 * hide keyboard
+					 */
+
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(
+							childBirthdayLayout.getWindowToken(), 0);
+					
 					Intent intent = new Intent(
 							ChildInformationMatchingActivity.this,
 							ChildBirthdayDialog.class);
