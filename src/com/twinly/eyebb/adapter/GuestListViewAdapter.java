@@ -106,7 +106,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 				intent.putExtra("guestId", guest.getGuardianId());
 				intent.putExtra("guestName", guest.getName());
 				context.startActivity(intent);
-				((Activity) context).finish();
+				//((Activity) context).finish();
 			}
 		});
 

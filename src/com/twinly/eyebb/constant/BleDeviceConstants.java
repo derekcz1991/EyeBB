@@ -96,6 +96,8 @@ public class BleDeviceConstants {
 	public static final int WRONG_LOGIN = 10017;
 	public static final int MASTER_OF_CHILD_ALREAD_EXIST = 10018;
 	public static final int ACCOUNT_DO_NOT_HAS_THIS_CHILD = 10019;
+	public static final int UPDATE_NICKNAME_SUCCESS = 10020;
+	public static final int UPDATE_NICKNAME_FAIL_WRONG_PASSWORD = 10021;
 	
 	public static final String BLE_SERVICE_COME_FROM = "device_come_from";
 

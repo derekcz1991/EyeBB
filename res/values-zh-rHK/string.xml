@@ -147,6 +147,7 @@
     <string name="text_repeat_new_password">重複新密碼</string>
     <string name="text_two_password_different">两次输入的密码不一致!</string>
     <string name="text_update_password_successful">修改密碼成功,謝謝!</string>
+        <string name="text_update_nickname_successful">修改暱稱成功,謝謝!</string>
     <string name="text_tips">溫馨提示</string>
     <string name="text_old_password_incorrect">原始密碼不正確.</string>
     <string name="text_user_do_not_exist">此用戶不存在.</string>
@@ -169,6 +170,8 @@
     <string name="text_setting_update_nickname">修改暱稱</string>
     <string name="text_auth_to_user">授權給用戶: </string>
      <string name="text_account_user_do_not_have_this_child">失敗,這個用戶並不擁有這個孩子.</string>
+     <string name="text_update_nickname">修改暱稱</string>
+        <string name="text_new_nickname">新暱稱</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

@@ -31,6 +31,7 @@ public class SettingsActivity extends Activity {
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
+	private LinearLayout updateNicknameBtn;
 	// private LinearLayout batteryLifeBtn;
 
 	private boolean isAutoUpdate;
@@ -53,6 +54,7 @@ public class SettingsActivity extends Activity {
 		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
+		updateNicknameBtn = (LinearLayout) findViewById(R.id.update_nickname_btn);
 		// batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
 
 		setupView();
@@ -173,6 +175,17 @@ public class SettingsActivity extends Activity {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						UpdatePasswordActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		updateNicknameBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(SettingsActivity.this,
+						UpdateNicknameActivity.class);
 				startActivity(intent);
 			}
 		});

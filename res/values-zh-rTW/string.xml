@@ -169,6 +169,9 @@
     <string name="text_setting_update_nickname">修改暱稱</string>
       <string name="text_auth_to_user">授權給用戶: </string>
         <string name="text_account_user_do_not_have_this_child">失敗,這個用戶並不擁有這個孩子.</string>
+    <string name="text_update_nickname">修改暱稱</string>
+      <string name="text_new_nickname">新暱稱</string>
+       <string name="text_update_nickname_successful">修改暱稱成功,謝謝!</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

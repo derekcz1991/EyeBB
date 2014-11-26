@@ -122,6 +122,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+         <activity
+            android:name="com.twinly.eyebb.activity.UpdateNicknameActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
         <activity
             android:name="com.twinly.eyebb.activity.MyKidsListActivity"
             android:screenOrientation="portrait"

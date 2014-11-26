@@ -51,6 +51,7 @@
     <string name="text_about">About</string>
     <string name="text_TermsOfService">Terms of Service</string>
     <string name="text_update_password">Update Password</string>
+    <string name="text_update_nickname">Update Nickname</string>
     <string name="text_privacyPolicy">Privacy Policy</string>
     <string name="text_forgetPassword">Forget Password</string>
     <string name="text_forgetPassword_details">Please enter your user name (phone number) and child information to received details for your new password. (this is testing function. the new password is 00000000)</string>
@@ -137,10 +138,12 @@
     <string name="text_select_child">Sorry,Please select the children.</string>
     <string name="text_grant_success">Grant Successfully!</string>
     <string name="text_old_password">Old Password</string>
+    <string name="text_new_nickname">New Nickname</string>
     <string name="text_new_password">New Password</string>
     <string name="text_repeat_new_password">Repeat New Password</string>
     <string name="text_two_password_different">Sorry! The two new passwords do not match.</string>
-    <string name="text_update_password_successful">Successful! Thank you.</string>
+    <string name="text_update_password_successful">Updaate password successfully! Thank you.</string>
+    <string name="text_update_nickname_successful">Updaate nickname successfully! Thank you.</string>
     <string name="text_tips">Tips.</string>
     <string name="text_old_password_incorrect">The original password is not correct.</string>
     <string name="text_user_do_not_exist">Sorry. This user may not exist.</string>
