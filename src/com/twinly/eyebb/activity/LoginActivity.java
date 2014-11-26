@@ -94,7 +94,7 @@ public class LoginActivity extends Activity {
 				super.onPreExecute();
 				hashPassword = CommonUtils.getSHAHashValue(password.getText()
 						.toString());
-				//System.out.println("hashPassword = " + hashPassword);
+				// System.out.println("hashPassword = " + hashPassword);
 				loginDialog = LoadingDialog.createLoadingDialog(
 						LoginActivity.this, getString(R.string.toast_login));
 				loginDialog.show();
@@ -135,6 +135,10 @@ public class LoginActivity extends Activity {
 							hashPassword);
 
 					setResult(ActivityConstants.RESULT_RESULT_OK);
+
+					if (loginDialog.isShowing() && loginDialog != null) {
+						loginDialog.dismiss();
+					}
 					finish();
 				} catch (JSONException e) {
 					loginDialog.dismiss();

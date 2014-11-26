@@ -226,7 +226,10 @@ public class RadarTrackingFragment extends Fragment implements
 
 		initView(v);
 
-		ChildData = DBChildren.getChildrenList(getActivity());
+		if (DBChildren.getChildrenList(getActivity()) != null){
+			ChildData = DBChildren.getChildrenList(getActivity());
+		}
+			
 		updateDb = new UpdateDb();
 		getActivity().registerReceiver(updateDb,
 				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
