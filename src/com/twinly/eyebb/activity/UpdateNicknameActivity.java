@@ -92,13 +92,13 @@ public class UpdateNicknameActivity extends Activity {
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("info=>" + new_nickname + " " + password);
 
-		map.put("oldPassword", new_nickname);
-		map.put("newPassword", CommonUtils.getSHAHashValue(password));
+		map.put("password", CommonUtils.getSHAHashValue(password));
+		map.put("newNickname", new_nickname);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(
-					UpdateNicknameActivity.this, HttpConstants.UPDATE_PASSWORD,
+					UpdateNicknameActivity.this, HttpConstants.CHANGE_NICKNAME,
 					map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
