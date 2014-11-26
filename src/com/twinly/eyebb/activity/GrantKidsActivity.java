@@ -337,6 +337,7 @@ public class GrantKidsActivity extends Activity {
 		} else if (item.getItemId() == 0) {
 			grantChildId = "";
 			noAccessGrantChildId = "";
+			//System.out.println("SIZE==?"+GrantKidsListViewAdapter.grantkidId.size());
 			if (GrantKidsListViewAdapter.grantkidId.size() > 0) {
 				for (int i = 0; i < GrantKidsListViewAdapter.grantkidId.size(); i++) {
 					grantChildId += GrantKidsListViewAdapter.grantkidId.get(i)

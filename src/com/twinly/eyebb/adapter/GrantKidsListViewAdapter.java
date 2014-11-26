@@ -30,6 +30,7 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 	private ImageLoader imageLoader;
 	public static ArrayList<String> grantkidId;
 	public static ArrayList<String> noAccessGrantkidId;
+
 	public final class ViewHolder {
 		public CircleImageView avatar;
 		public TextView name;
@@ -55,6 +56,17 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 		}
 
 		imageLoader = ImageLoader.getInstance();
+
+		// init select
+		for (int i = 0; i < data.size(); i++) {
+			if (data.get(i).isWithAccess()) {
+				System.out.println(data.get(i).getChildId() + "");
+				grantkidId.add(data.get(i).getChildId() + "");
+			} else {
+				noAccessGrantkidId.add(data.get(i).getChildId() + "");
+			}
+		}
+
 	}
 
 	@Override
@@ -101,17 +113,16 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		final Child child = data.get(position);
-
 		// init select
 		for (int i = 0; i < data.size(); i++) {
 			if (child.isWithAccess()) {
 				viewHolder.selected.setBackground(context.getResources()
 						.getDrawable(R.drawable.ic_selected));
-				grantkidId.add(child.getChildId() + "");
-			}else{
+
+			} else {
 				viewHolder.selected.setBackground(context.getResources()
 						.getDrawable(R.drawable.ic_selected_off));
-				noAccessGrantkidId.add(child.getChildId() + "");
+
 			}
 		}
 
