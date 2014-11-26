@@ -9,9 +9,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,11 +17,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +38,6 @@ import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
-@SuppressLint("InflateParams")
 public class LoginActivity extends Activity {
 	private TextView forgetPasswordBtn;
 
@@ -81,8 +76,6 @@ public class LoginActivity extends Activity {
 		});
 
 	}
-
-	
 
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
@@ -160,7 +153,7 @@ public class LoginActivity extends Activity {
 				super.onPreExecute();
 				hashPassword = CommonUtils.getSHAHashValue(password.getText()
 						.toString());
-				System.out.println("hashPassword = " + hashPassword);
+				//System.out.println("hashPassword = " + hashPassword);
 				loginDialog = LoadingDialog.createLoadingDialog(
 						LoginActivity.this, getString(R.string.toast_login));
 				loginDialog.show();
@@ -271,6 +264,7 @@ public class LoginActivity extends Activity {
 					JSONObject parent = (JSONObject) parents.get(0);
 					child.setPhone(parent
 							.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+					child.setRelationWithUser(HttpConstants.JSON_KEY_PARENTS_TYPE);
 				}
 			}
 

@@ -2,37 +2,28 @@ package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ExpandableListView;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
+import com.twinly.eyebb.adapter.KidExpandableListviewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class MyKidsListActivity extends Activity {
-	private ListView listView1;
-	private ListView listView2;
-	private ArrayList<Child> childWithDevice;
-	private ArrayList<Child> childWithoutDevice;
-
-	public static MyKidsListActivity instance = null;
+	private ExpandableListView listView;
+	private ArrayList<ArrayList<Child>> childrenList;
+	private ArrayList<Child> allChildren;
+	private ArrayList<Child> childrenWithAddress;
+	private ArrayList<Child> childrenWithoutAddress;
+	private ArrayList<Child> chidrenGuest;
+	private ArrayList<String> groupList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +33,44 @@ public class MyKidsListActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 
 		setContentView(R.layout.activity_my_kids);
-		instance = this;
-		listView1 = (ListView) findViewById(R.id.listView1);
+
+		listView = (ExpandableListView) findViewById(R.id.expandableListView);
+
+		allChildren = DBChildren.getChildrenList(this);
+		childrenWithAddress = new ArrayList<Child>();
+		childrenWithoutAddress = new ArrayList<Child>();
+		chidrenGuest = new ArrayList<Child>();
+
+		Child child;
+		for (int i = 0; i < allChildren.size(); i++) {
+			child = allChildren.get(i);
+			System.out.println(child);
+			if (child.getRelationWithUser().equals("P")) {
+				if (CommonUtils.isNull(child.getMacAddress())) {
+					System.out.println(child);
+					System.out.println(allChildren.get(i));
+					childrenWithoutAddress.add(child);
+				} else {
+					childrenWithAddress.add(child);
+				}
+			} else {
+				chidrenGuest.add(child);
+			}
+		}
+
+		childrenList = new ArrayList<ArrayList<Child>>();
+		childrenList.add(childrenWithAddress);
+		childrenList.add(childrenWithoutAddress);
+		childrenList.add(chidrenGuest);
+
+		groupList = new ArrayList<String>();
+		groupList.add(getString(R.string.text_bind_child));
+		groupList.add(getString(R.string.text_unbind_child));
+		groupList.add(getString(R.string.text_granted_child));
+
+		listView.setAdapter(new KidExpandableListviewAdapter(this, groupList,
+				childrenList));
+		/*listView1 = (ListView) findViewById(R.id.listView1);
 		listView2 = (ListView) findViewById(R.id.listView2);
 
 		new GetMyKidsTask().execute();
@@ -53,8 +80,8 @@ public class MyKidsListActivity extends Activity {
 					int position, long arg3) {
 				Intent intent = new Intent(MyKidsListActivity.this,
 						KidProfileActivity.class);
-				intent.putExtra("child_id", childWithDevice.get(position)
-						.getChildId());
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+						childWithDevice.get(position).getChildId());
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
 
@@ -68,12 +95,12 @@ public class MyKidsListActivity extends Activity {
 					int position, long id) {
 				Intent intent = new Intent(MyKidsListActivity.this,
 						KidProfileActivity.class);
-				intent.putExtra("child_id", childWithoutDevice.get(position)
-						.getChildId());
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+						childWithoutDevice.get(position).getChildId());
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
 			}
-		});
+		});*/
 
 	}
 
@@ -98,68 +125,15 @@ public class MyKidsListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class GetMyKidsTask extends AsyncTask<Void, Void, String> {
-
-		@Override
-		protected String doInBackground(Void... params) {
-			return HttpRequestUtils
-					.get(HttpConstants.GET_MASTER_CHILDREN, null);
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			if (result.equals("")
-					|| result
-							.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
-				Toast.makeText(MyKidsListActivity.this,
-						R.string.text_network_error, Toast.LENGTH_LONG).show();
-
-			} else {
-				childWithDevice = new ArrayList<Child>();
-				childWithoutDevice = new ArrayList<Child>();
-
-				System.out.println("master children = " + result);
-				try {
-					JSONObject json = new JSONObject(result);
-					JSONArray childJSONList = json
-							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_LIST);
-					for (int i = 0; i < childJSONList.length(); i++) {
-						JSONObject object = (JSONObject) childJSONList.get(i);
-						Child child = new Child(
-								object.getInt(HttpConstants.JSON_KEY_CHILD_ID),
-								object.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-								object.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-						if (CommonUtils
-								.isNull(object
-										.getString(HttpConstants.JSON_KEY_CHILD_BEACON))) {
-							childWithoutDevice.add(child);
-						} else {
-							childWithDevice.add(child);
-						}
-					}
-				} catch (JSONException e) {
-					System.out.println(HttpConstants.GET_MASTER_CHILDREN
-							+ e.getMessage());
-				}
-				listView1.setAdapter(new KidsListViewSimpleAdapter(
-						MyKidsListActivity.this, childWithDevice, false));
-				listView2.setAdapter(new KidsListViewSimpleAdapter(
-						MyKidsListActivity.this, childWithoutDevice, false));
-			}
-
-		}
-
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY) {
 			System.out.println("========>>>>>>>" + resultCode);
 			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
-				new GetMyKidsTask().execute();
+				//new GetMyKidsTask().execute();
 			} else if (resultCode == ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS) {
 				System.out.println("========>>>>>>>");
-				new GetMyKidsTask().execute();
+				//new GetMyKidsTask().execute();
 			}
 		}
 	}

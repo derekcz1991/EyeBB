@@ -56,7 +56,6 @@ public class KidProfileActivity extends Activity {
 	private static final int PICK_FROM_CAMERA = 100;
 	private static final int CROP_PHOTO = 200;
 	private static final int PICK_FROM_FILE = 300;
-	public static KidProfileActivity instance = null;
 
 	private TextView deviceAddress;
 	private TextView deviceBattery;
@@ -73,9 +72,11 @@ public class KidProfileActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 		registerForContextMenu(findViewById(R.id.avatarItem));
 
-		instance = this;
-		child = DBChildren.getChildById(this,
-				getIntent().getLongExtra("child_id", 0));
+		child = DBChildren
+				.getChildById(
+						this,
+						getIntent().getLongExtra(
+								ActivityConstants.EXTRA_CHILD_ID, -1L));
 
 		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
@@ -245,7 +246,8 @@ public class KidProfileActivity extends Activity {
 			startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
 		} else {
 			Intent intent = new Intent();
-			intent.putExtra("child_id", child.getChildId());
+			intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+					child.getChildId());
 			intent.setClass(this, UnbindDeviceDialog.class);
 			startActivityForResult(intent,
 					ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
