@@ -68,7 +68,8 @@ public class BeaconListActivity extends Activity {
 		currentList = new ArrayList<Device>();
 
 		setContentView(R.layout.ble_peripheral);
-		childId = getIntent().getLongExtra("child_id", 0);
+		childId = getIntent().getLongExtra(ActivityConstants.EXTRA_CHILD_ID,
+				-1L);
 		listview = (ListView) findViewById(R.id.listView_peripheral);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		listview.setOnItemClickListener(new OnItemClickListener() {
@@ -230,7 +231,7 @@ public class BeaconListActivity extends Activity {
 
 					System.out.println("major = " + major + "  minor = "
 							+ minor);
-					intent.putExtra("child_id", childId);
+					intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childId);
 					intent.putExtra(WriteToBeaconDialog.EXTRAS_DEVICE_ADDRESS,
 							address);
 					intent.putExtra(WriteMajorMinorDialog.EXTRAS_DEVICE_MAJOR,

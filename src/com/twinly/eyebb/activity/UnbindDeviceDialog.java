@@ -33,7 +33,8 @@ public class UnbindDeviceDialog extends Activity {
 
 		setContentView(R.layout.dialog_unbind_device);
 
-		childId = getIntent().getLongExtra("child_id", 0);
+		childId = getIntent().getLongExtra(ActivityConstants.EXTRA_CHILD_ID,
+				-1L);
 
 		btnConfirm = (LinearLayout) findViewById(R.id.btn_confirm);
 		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
@@ -85,6 +86,8 @@ public class UnbindDeviceDialog extends Activity {
 					setResult(ActivityConstants.RESULT_UNBIND_CANCEL);
 					finish();
 
+				} else if (retStr.equals("WG")) {
+
 				} else if (retStr.equals("Y")) {
 					Message msg = handler.obtainMessage();
 					msg.what = BleDeviceConstants.UNBIND_SUCCESS;
@@ -94,9 +97,10 @@ public class UnbindDeviceDialog extends Activity {
 
 					//UPDATE RADAR VIEW
 					Intent broadcast = new Intent();
-					broadcast.setAction(BleDeviceConstants.BROADCAST_FINISH_BIND);
+					broadcast
+							.setAction(BleDeviceConstants.BROADCAST_FINISH_BIND);
 					sendBroadcast(broadcast);
-					
+
 					System.out.println("=====>>>>");
 					setResult(ActivityConstants.RESULT_UNBIND_SUCCESS);
 					finish();

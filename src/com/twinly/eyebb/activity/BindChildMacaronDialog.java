@@ -21,7 +21,7 @@ public class BindChildMacaronDialog extends WriteMajorMinorDialog {
 	@Override
 	public void onPreWriteGetData() {
 		super.onPreWriteGetData();
-		childId = intent.getLongExtra("child_id", -1);
+		childId = intent.getLongExtra(ActivityConstants.EXTRA_CHILD_ID, -1L);
 		major = intent.getStringExtra(EXTRAS_RECEIVER_MAJOR);
 		minor = intent.getStringExtra(EXTRAS_RECEIVER_MINOR);
 	}

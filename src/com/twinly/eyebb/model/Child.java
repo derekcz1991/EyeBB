@@ -13,9 +13,9 @@ public class Child implements Serializable {
 	private String name;
 	private String icon;
 	private String phone;
-
 	private String macAddress;
-	private boolean isMissing;
+
+	private String relationWithUser;
 
 	private String locationName; // dynamic changing
 	private long lastAppearTime; // dynamic changing
@@ -87,12 +87,12 @@ public class Child implements Serializable {
 		}
 	}
 
-	public boolean isMissing() {
-		return isMissing;
+	public String getRelationWithUser() {
+		return relationWithUser;
 	}
 
-	public void setMissing(boolean isMissing) {
-		this.isMissing = isMissing;
+	public void setRelationWithUser(String relationWithUser) {
+		this.relationWithUser = relationWithUser;
 	}
 
 	public String getLocationName() {
@@ -135,7 +135,7 @@ public class Child implements Serializable {
 	public String toString() {
 		return "Child [childId=" + childId + ", name=" + name + ", icon="
 				+ icon + ", phone=" + phone + ", macAddress=" + macAddress
-				+ "]";
+				+ ", relationWithUser=" + relationWithUser + "]";
 	}
 
 }

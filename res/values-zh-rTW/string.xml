@@ -165,10 +165,13 @@
     <string name="text_update_server_data">更新云端数据</string>
     <string name="text_update_server_data_fail">更新云端数据失败</string>
 	<string name="text_bind_success">设备绑定成功</string>
-	       <string name="text_setting_user_account">使用者賬戶</string>
+	<string name="text_setting_user_account">使用者賬戶</string>
     <string name="text_setting_update_nickname">修改暱稱</string>
-      <string name="text_auth_to_user">授權給用戶: </string>
-        <string name="text_account_user_do_not_have_this_child">失敗,這個用戶並不擁有這個孩子.</string>
+    <string name="text_auth_to_user">授權給用戶: </string>
+    <string name="text_account_user_do_not_have_this_child">失敗,這個用戶並不擁有這個孩子.</string>
+    <string name="text_bind_child">已绑定</string>
+    <string name="text_unbind_child">未绑定</string>
+    <string name="text_granted_child">授权的小孩</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

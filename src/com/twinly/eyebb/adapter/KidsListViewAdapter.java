@@ -31,7 +31,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
-	public final class ViewHolder {
+	private final class ViewHolder {
 		public CircleImageView avatar;
 		public TextView name;
 		public TextView locationName;
@@ -131,7 +131,6 @@ public class KidsListViewAdapter extends BaseAdapter {
 		viewHolder.name.setText(child.getName());
 		viewHolder.locationName.setText("@ " + child.getLocationName());
 		viewHolder.phone.setText(child.getPhone());
-		System.out.println(child.getMacAddress());
 		if (viewHolder.phone.getText().toString().trim().length() == 0) {
 			viewHolder.phoneBtn.setVisibility(View.GONE);
 		}

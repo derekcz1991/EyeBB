@@ -162,7 +162,10 @@
     <string name="text_setting_user_account">User account</string>
     <string name="text_setting_update_nickname">Update nickname</string>
     <string name="text_auth_to_user">Authorize to user: </string>
-       <string name="text_account_user_do_not_have_this_child">Sorry! Account user does not have this child.</string>
+    <string name="text_account_user_do_not_have_this_child">Sorry! Account user does not have this child.</string>
+    <string name="text_bind_child">已绑定</string>
+    <string name="text_unbind_child">未绑定</string>
+    <string name="text_granted_child">授权的小孩</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

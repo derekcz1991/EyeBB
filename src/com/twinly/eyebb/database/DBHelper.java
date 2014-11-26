@@ -37,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				.append("name text,")
 				.append("icon text,")
 				.append("phone text,")
+				.append("relation_with_user text,")
 				.append("mac_address text)");
 		db.execSQL(tableCreate.toString());
 
