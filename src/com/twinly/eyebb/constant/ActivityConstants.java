@@ -9,6 +9,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_LOGIN_ACCOUNT = "login_account";
 	public static final String SHARE_PREFS_ITEM_PASSWORD = "password";
 	public static final String SHARE_PREFS_ITEM_LANGUAGE = "language";
+	public static final String SHARE_PREFS_ITEM_USER_ID = "user_id";
 	public static final String SHARE_PREFS_ITEM_USER_NAME = "user_name";
 	public static final String SHARE_PREFS_ITEM_USER_TYPE = "user_type";
 	public static final String SHARE_PREFS_ITEM_USER_PHONE = "user_phone";
@@ -22,6 +23,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_START_BEEP = "isStartBeepDialog";
 	public static final String SHARE_PREFS_ITEM_RUN_NUM_RADAR = "runNumRadar";
 	public static final String SHARE_PREFS_ITEM_VIBRATE = "vibrate";
+	
 	public static final String SHARE_PREFS_INIT_HEAD = "init_head";
 	public static final String SHARE_PREFS_FINISH_BEEP = "finish_beep";
 	public static final String SHARE_PREFS_CONNECT_BLE_SERVICE = "connect_ble_service";

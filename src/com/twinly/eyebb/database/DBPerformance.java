@@ -68,7 +68,7 @@ public class DBPerformance {
 		return performance;
 	}
 
-	public static void deleteTable(Context context) {
+	public static void clear(Context context) {
 		SQLiteDatabase db = getInstance(context);
 		db.execSQL("delete from performance");
 		db.close();

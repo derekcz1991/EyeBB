@@ -14,7 +14,11 @@ public class HttpConstants {
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
-	// "allKindergartensInfo";
+	public static final String JSON_KEY_USER_ID = "guardianId";
+	public static final String JSON_KEY_USER_NAME = "name";
+	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
+	public static final String JSON_KEY_USER_TYPE = "type";
+
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
 	// public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
 	public static final String JSON_KEY_AREAS_id = "areaId";
@@ -22,21 +26,33 @@ public class HttpConstants {
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_SC = "nameSc";
 
-	public static final String JSON_KEY_CHILDREN_LIST = "childrenList";
+	public static final String JSON_KEY_CHILDREN_BY_AREA = "childrenByArea";
+	public static final String JSON_KEY_CHILDREN_BEAN = "childrenBean";
+	public static final String JSON_KEY_CHILD_REL = "childRel";
+	public static final String JSON_KEY_CHILD = "child";
 	public static final String JSON_KEY_CHILD_ID = "childId";
 	public static final String JSON_KEY_CHILD_NAME = "name";
 	public static final String JSON_KEY_CHILD_ICON = "icon";
+	public static final String JSON_KEY_CHILD_RELATION = "relation";
 	public static final String JSON_KEY_CHILD_MAC_ADDRESS = "macAddress";
-	public static final String JSON_KEY_CHILD_BEACON = "beacon";
-
+	public static final String JSON_KEY_CHILD_LAST_APPEAR_TIME = "lastAppearTime";
+	public static final String JSON_KEY_CHILD_LOC_ID = "locId";
+	
 	public static final String JSON_KEY_LOCATION_ALL = "allLocations";
-	public static final String JSON_KEY_LOCATION_TIME = "locTime";
-	public static final String JSON_KEY_LOCATION = "loc";
+	public static final String JSON_KEY_LOCATION_AREA = "area";
+	public static final String JSON_KEY_LOCATION_AREA_ID = "areaId";
+	public static final String JSON_KEY_LOCATION_AREA_NAME = "name";
+	public static final String JSON_KEY_LOCATION_AREA_NAME_TC = "nameTc";
+	public static final String JSON_KEY_LOCATION_AREA_NAME_SC = "nameSc";
+	public static final String JSON_KEY_LOCATION_AREA_ICON = "icon";
+	public static final String JSON_KEY_LOCATIONS = "locations";
 	public static final String JSON_KEY_LOCATION_ID = "locationId";
 	public static final String JSON_KEY_LOCATION_NAME = "locationName";
 	public static final String JSON_KEY_LOCATION_TYPE = "type";
-	public static final String JSON_KEY_LOCATION_LAST_APPEAR_TIME = "lastAppearTime";
-
+	public static final String JSON_KEY_LOCATION_ICON = "icon";
+	
+	public static final String JSON_KEY_LOCATION_TIME = "locTime";
+	
 	public static final String JSON_KEY_PARENTS = "parents";
 	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
 	public static final String JSON_KEY_PARENTS_TYPE = "type";
@@ -68,14 +84,13 @@ public class HttpConstants {
 	public static final String JSON_KEY_GUARDIN_NAME = "name";
 	public static final String JSON_KEY_GUARDIN_PHONE = "phoneNumber";
 	public static final String JSON_KEY_GUARDIN_TYPE = "type";
-	public static final String JSON_KEY_GUESTS= "guests";
-	public static final String JSON_KEY_CHILDREN_QUOTA= "childrenQuota";
-	public static final String JSON_KEY_MASTERS= "masters";
-	public static final String JSON_KEY_GUARDIN= "guardian";
-	public static final String JSON_KEY_CHILD= "child";
-	public static final String JSON_KEY_WITH_ACCESS= "withAccess";
-	public static final String JSON_KEY_TOTAL_QUOTA= "totalQuota";
-	public static final String JSON_KEY_QUOTA_LEFT= "quotaLeft";
+	public static final String JSON_KEY_GUESTS = "guests";
+	public static final String JSON_KEY_CHILDREN_QUOTA = "childrenQuota";
+	public static final String JSON_KEY_MASTERS = "masters";
+	public static final String JSON_KEY_GUARDIN = "guardian";
+	public static final String JSON_KEY_WITH_ACCESS = "withAccess";
+	public static final String JSON_KEY_TOTAL_QUOTA = "totalQuota";
+	public static final String JSON_KEY_QUOTA_LEFT = "quotaLeft";
 
 	public static final String JSON_KEY_NOTICES = "notices";
 	public static final String JSON_KEY_NOTICES_TITLE = "title";

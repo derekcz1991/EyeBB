@@ -58,6 +58,14 @@ public class SharePrefsUtils {
 		setString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_PHONE, value);
 	}
 
+	public static long getUserId(Context context) {
+		return getLong(context, ActivityConstants.SHARE_PREFS_ITEM_USER_ID);
+	}
+
+	public static void setUserId(Context context, long value) {
+		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_USER_ID, value);
+	}
+
 	/*public static int getKindergartenId(Context context) {
 		return getInt(context,
 				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);

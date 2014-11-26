@@ -25,8 +25,8 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class KidsListActivity extends Activity {
 	private ListView listView;
-	private List<Map.Entry<String, Child>> list;
-	private List<Map.Entry<String, Child>> searchList;
+	private List<Map.Entry<Long, Child>> list;
+	private List<Map.Entry<Long, Child>> searchList;
 	private KidsListViewAdapter adapter;
 	private boolean isSortByName;
 	private boolean isSortByLocator;
@@ -40,12 +40,12 @@ public class KidsListActivity extends Activity {
 
 		setContentView(R.layout.activity_kids_list);
 
-		searchList = new ArrayList<Map.Entry<String, Child>>();
+		searchList = new ArrayList<Map.Entry<Long, Child>>();
 		Bundle bundle = getIntent().getExtras();
 		SerializableChildrenMap serializableMap = (SerializableChildrenMap) bundle
 				.get("childrenMap");
 		if (serializableMap != null) {
-			list = new ArrayList<Map.Entry<String, Child>>(serializableMap
+			list = new ArrayList<Map.Entry<Long, Child>>(serializableMap
 					.getMap().entrySet());
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
 					isSortByLocator);

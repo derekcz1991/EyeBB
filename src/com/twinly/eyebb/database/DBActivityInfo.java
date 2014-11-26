@@ -69,7 +69,7 @@ public class DBActivityInfo {
 		db.close();
 	}
 
-	public static void deleteTable(Context context) {
+	public static void clear(Context context) {
 		SQLiteDatabase db = getInstance(context);
 		db.execSQL("delete from activity_infos");
 		db.close();

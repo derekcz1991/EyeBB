@@ -4,6 +4,7 @@ public class Location {
 	private long id;
 	private String name;
 	private String type;
+	private String icon;
 
 	public long getId() {
 		return id;
@@ -29,5 +30,12 @@ public class Location {
 		this.type = type;
 	}
 
-	
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
 }

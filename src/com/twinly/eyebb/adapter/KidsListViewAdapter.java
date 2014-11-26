@@ -27,7 +27,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class KidsListViewAdapter extends BaseAdapter {
 	private Context context;
-	private List<Map.Entry<String, Child>> list;
+	private List<Map.Entry<Long, Child>> list;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
@@ -41,18 +41,18 @@ public class KidsListViewAdapter extends BaseAdapter {
 	}
 
 	public KidsListViewAdapter(Context context,
-			List<Map.Entry<String, Child>> data, boolean isSortByName,
+			List<Map.Entry<Long, Child>> data, boolean isSortByName,
 			boolean isSortByLocator) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
-		this.list = new ArrayList<Map.Entry<String, Child>>();
+		this.list = new ArrayList<Map.Entry<Long, Child>>();
 		this.list.addAll(data);
 		if (isSortByName) {
-			Collections.sort(list, new Comparator<Map.Entry<String, Child>>() {
+			Collections.sort(list, new Comparator<Map.Entry<Long, Child>>() {
 
 				@Override
-				public int compare(Entry<String, Child> lhs,
-						Entry<String, Child> rhs) {
+				public int compare(Entry<Long, Child> lhs,
+						Entry<Long, Child> rhs) {
 					return lhs.getValue().getName().charAt(0)
 							- rhs.getValue().getName().charAt(0);
 				}
@@ -60,11 +60,11 @@ public class KidsListViewAdapter extends BaseAdapter {
 		}
 
 		if (isSortByLocator) {
-			Collections.sort(list, new Comparator<Map.Entry<String, Child>>() {
+			Collections.sort(list, new Comparator<Map.Entry<Long, Child>>() {
 
 				@Override
-				public int compare(Entry<String, Child> lhs,
-						Entry<String, Child> rhs) {
+				public int compare(Entry<Long, Child> lhs,
+						Entry<Long, Child> rhs) {
 					if (lhs.getValue().getLocationName().length() == 0) {
 						return 1;
 					} else if (rhs.getValue().getLocationName().length() == 0) {

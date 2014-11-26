@@ -57,7 +57,7 @@ public class DBNotifications {
 		return list;
 	}
 
-	public static void deleteTable(Context context) {
+	public static void clear(Context context) {
 		SQLiteDatabase db = getInstance(context);
 		db.execSQL("delete from notification");
 		db.close();

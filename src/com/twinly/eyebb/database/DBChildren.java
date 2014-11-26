@@ -140,7 +140,7 @@ public class DBChildren {
 		return child;
 	}
 
-	public static void deleteTable(Context context) {
+	public static void clear(Context context) {
 		SQLiteDatabase db = getInstance(context);
 		db.execSQL("delete from children");
 		db.close();

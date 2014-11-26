@@ -8,13 +8,13 @@ public class SerializableChildrenMap implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<String, Child> map;
+	private Map<Long, Child> map;
 
-	public Map<String, Child> getMap() {
+	public Map<Long, Child> getMap() {
 		return map;
 	}
 
-	public void setMap(Map<String, Child> childrenMap) {
+	public void setMap(Map<Long, Child> childrenMap) {
 		this.map = childrenMap;
 	}
 }

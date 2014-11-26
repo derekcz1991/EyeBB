@@ -139,7 +139,7 @@ public class ProfileFragment extends Fragment {
 				JSONObject json = new JSONObject(result);
 				JSONArray array = json
 						.getJSONArray(HttpConstants.JSON_KEY_NOTICES);
-				DBNotifications.deleteTable(getActivity());
+				DBNotifications.clear(getActivity());
 				for (int i = 0; i < array.length(); i++) {
 					JSONObject JSONNotice = array.getJSONObject(i);
 					Notifications notice = new Notifications();

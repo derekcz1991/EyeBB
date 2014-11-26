@@ -84,7 +84,7 @@ public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 		GroupHolder groupHolder = null;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.list_item_group_title,
-					parent);
+					parent, false);
 			groupHolder = new GroupHolder();
 			groupHolder.title = (TextView) convertView.findViewById(R.id.title);
 			convertView.setTag(groupHolder);
