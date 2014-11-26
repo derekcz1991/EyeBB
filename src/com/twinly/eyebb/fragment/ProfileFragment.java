@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
 		 * FORMAT nickname(username)
 		 */
 		((TextView) v.findViewById(R.id.username)).setText(SharePrefsUtils
-				.getLoginAccount(getActivity()));
+				.getUserName(getActivity()));
 
 		settingBtn = (TextView) v.findViewById(R.id.options_btn);
 		settingBtn.setOnClickListener(new OnClickListener() {

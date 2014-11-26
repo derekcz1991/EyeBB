@@ -342,6 +342,9 @@ public class AuthorizeKidsActivity extends Activity {
 				if (hasMasterFlag && hasGuestFlag) {
 					tvHint_auth_from.setVisibility(View.GONE);
 					tvHint_auth_to.setVisibility(View.GONE);
+				} else {
+					tvHint_auth_to.setVisibility(View.VISIBLE);
+					tvHint_auth_from.setVisibility(View.VISIBLE);
 				}
 
 				// content.setVisibility(View.VISIBLE);
@@ -368,11 +371,12 @@ public class AuthorizeKidsActivity extends Activity {
 			// Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(AuthorizeKidsActivity.this,
 					SearchGuestActivity.class);
-			startActivityForResult(intent,  ActivityConstants.REQUEST_GO_TO_SEARCH_GUEST_ACTIVITY);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_SEARCH_GUEST_ACTIVITY);
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
