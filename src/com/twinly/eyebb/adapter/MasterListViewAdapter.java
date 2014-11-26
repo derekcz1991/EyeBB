@@ -1,11 +1,8 @@
 package com.twinly.eyebb.adapter;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +12,7 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.User;
-import com.twinly.eyebb.utils.CommonUtils;
 
 public class MasterListViewAdapter extends BaseAdapter {
 	private Context context;

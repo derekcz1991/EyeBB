@@ -133,11 +133,6 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.ChooseUsrRoleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.UpdatePasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -241,11 +236,6 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.WebViewActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.NotificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

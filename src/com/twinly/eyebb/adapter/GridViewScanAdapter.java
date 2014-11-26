@@ -2,25 +2,19 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 
-import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.ViewHolder;
-import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+
+import com.eyebb.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.model.Child;
 
 public class GridViewScanAdapter extends BaseAdapter {
 	private Context context;

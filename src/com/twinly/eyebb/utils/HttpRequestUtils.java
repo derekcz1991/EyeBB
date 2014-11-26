@@ -24,10 +24,7 @@ import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.eyebb.R;
-import com.twinly.eyebb.activity.ChildInformationMatchingActivity;
 import com.twinly.eyebb.constant.HttpConstants;
 
 public class HttpRequestUtils {

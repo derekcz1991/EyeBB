@@ -1,16 +1,6 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import com.eyebb.R;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter.ViewHolder;
-import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.CommonUtils;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -19,6 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.eyebb.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.twinly.eyebb.customview.CircleImageView;
+import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class CheckChildToBindAdapter extends BaseAdapter {
 

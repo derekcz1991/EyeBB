@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SignUpAskToBindDialog extends Activity {
 	private LinearLayout btn_skip;

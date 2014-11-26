@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,10 +17,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +32,6 @@ import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-import com.twinly.eyebb.utils.JSONHelper;
 
 public class AuthorizeKidsActivity extends Activity {
 	private LinearLayoutForListView guest_listView;

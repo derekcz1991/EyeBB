@@ -1,11 +1,7 @@
 package com.twinly.eyebb.activity;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
@@ -18,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
@@ -32,14 +27,12 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
-@SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements
 		ReportFragment.CallbackInterface,
 		IndoorLocatorFragment.CallbackInterface {
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
-	private BluetoothAdapter mBluetoothAdapter;
 	private IndoorLocatorFragment indoorLocatorFragment;
 	private RadarTrackingFragment radarTrackingFragment;
 	private ReportFragment reportFragment;
@@ -59,7 +52,6 @@ public class MainActivity extends FragmentActivity implements
 
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
-		// checkBluetooth();
 
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -104,8 +96,6 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
 				indoorLocatorFragment);
-		//		mainLabel.findViewById(R.id.notification_number).setVisibility(
-		//				View.GONE);
 
 		// radar
 		radarTrackingFragment = new RadarTrackingFragment();
@@ -116,8 +106,6 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
 				radarTrackingFragment);
-		//		trackingLabel.findViewById(R.id.notification_number).setVisibility(
-		//				View.GONE);
 
 		// report
 		reportFragment = new ReportFragment();
@@ -129,8 +117,6 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
 				reportFragment);
-		//		reportLabel.findViewById(R.id.notification_number).setVisibility(
-		//				View.GONE);
 
 		// profile
 		profileFragment = new ProfileFragment();
@@ -141,9 +127,6 @@ public class MainActivity extends FragmentActivity implements
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
-		//		noticeNum = (TextView) profileLabel
-		//				.findViewById(R.id.notification_number);
-		//		noticeNum.setVisibility(View.VISIBLE);
 
 		mTabHost.setCurrentTab(0);
 		if (savedInstanceState != null) {
@@ -168,26 +151,6 @@ public class MainActivity extends FragmentActivity implements
 		progressBar.setVisibility(View.INVISIBLE);
 		progressBar.setProgress(0);
 		progressBar.setIndeterminate(false);
-	}
-
-	private void checkBluetooth() {
-		// TODO Auto-generated method stub
-		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
-		if (!getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_BLUETOOTH_LE)) {
-			Toast.makeText(this, R.string.text_ble_not_supported,
-					Toast.LENGTH_SHORT).show();
-		}
-
-		// 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
-		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-		mBluetoothAdapter = bluetoothManager.getAdapter();
-
-		// 检查设备上是否支持蓝牙
-		if (mBluetoothAdapter == null) {
-			Toast.makeText(this, R.string.text_error_bluetooth_not_supported,
-					Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	@Override

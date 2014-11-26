@@ -7,7 +7,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,23 +14,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-
 import com.twinly.eyebb.adapter.GrantKidsListViewAdapter;
-
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class GrantKidsActivity extends Activity {

@@ -2,7 +2,6 @@ package com.twinly.eyebb.adapter;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.activity.GrantKidsActivity;
-import com.twinly.eyebb.activity.SearchGuestActivity;
-import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.User;
 
