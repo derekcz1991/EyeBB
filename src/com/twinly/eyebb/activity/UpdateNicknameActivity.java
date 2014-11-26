@@ -24,6 +24,7 @@ import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class UpdateNicknameActivity extends Activity {
 
@@ -113,7 +114,8 @@ public class UpdateNicknameActivity extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = BleDeviceConstants.UPDATE_NICKNAME_SUCCESS;
 					handler.sendMessage(msg);
-
+					SharePrefsUtils.setUserName(UpdateNicknameActivity.this,
+							new_nickname);
 					finish();
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
