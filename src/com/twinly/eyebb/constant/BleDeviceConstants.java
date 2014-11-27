@@ -19,6 +19,10 @@ public class BleDeviceConstants {
 	public static final int LOCALE_CN = 1;
 	public static final int LOCALE_HK = 2;
 	public static final int LOCALE_TW = 3;
+	
+	public static final int RSSI_STRONG = -50;
+	public static final int RSSI_GOOD = -70;
+	public static final int RSSI_WEEK = -100;
 
 	// public static final String OURDEVICEUUID =
 	// "4D616361726F6E202020202020202020";

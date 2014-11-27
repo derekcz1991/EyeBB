@@ -175,6 +175,9 @@
     <string name="text_bind_child">已绑定</string>
     <string name="text_unbind_child">未绑定</string>
     <string name="text_granted_child">授权的小孩</string>
+         <string name="text_rssi_strong">信號強</string>
+     <string name="text_rssi_good">信號中</string>
+     <string name="text_rssi_weak">信號差</string>
 
     
     <string name="btn_sign_up">註冊</string>

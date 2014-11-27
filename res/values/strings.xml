@@ -169,6 +169,9 @@
     <string name="text_bind_child">Binding children</string>
     <string name="text_unbind_child">unBinding children</string>
     <string name="text_granted_child">Children has been granted</string>
+     <string name="text_rssi_strong">Strong Signal</string>
+     <string name="text_rssi_good">Good Signal</string>
+     <string name="text_rssi_weak">Weak Signal</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

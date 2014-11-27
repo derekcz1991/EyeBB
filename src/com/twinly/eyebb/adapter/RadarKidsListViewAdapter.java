@@ -3,6 +3,7 @@ package com.twinly.eyebb.adapter;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -29,6 +31,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 	private RadarKidsListViewAdapterCallback callback;
+	private ArrayList<Device> myDevice;
 
 	public interface RadarKidsListViewAdapterCallback {
 		public void onStartToBeepClicked(int position);
@@ -47,17 +50,18 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		public View beepBtn;
 		public TextView ChildStatus;
 		public TextView DeviceConnectStatus;
-
+		public TextView DeviceRssi;
 	}
 
 	public RadarKidsListViewAdapter(Context context, ArrayList<Child> data,
-			ArrayList<Child> openAntiData) {
+			ArrayList<Child> openAntiData, ArrayList<Device> myDevice) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
 		if (openAntiData != null)
 			this.Antidata = openAntiData;
 
+		this.myDevice = myDevice;
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
@@ -109,6 +113,8 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.avatar.setBorderColor(convertView.getResources()
 					.getColor(R.color.white));
 
+			viewHolder.DeviceRssi = (TextView) convertView
+					.findViewById(R.id.radar_list_kids_device_rssi);
 			viewHolder.beepBtn = convertView
 					.findViewById(R.id.radar_item_beep_btn);
 
@@ -121,6 +127,39 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 
 			viewHolder.DeviceConnectStatus = (TextView) convertView
 					.findViewById(R.id.device_connect_status);
+
+			for (int y = 0; y < myDevice.size(); y++) {
+				// System.out.println(i);
+				if (data.get(position).getMacAddress()
+						.equals(myDevice.get(y).getAddress())) {
+
+					if (myDevice.get(y).getRssi() > BleDeviceConstants.RSSI_STRONG) {
+						viewHolder.DeviceRssi.setText(context.getResources()
+								.getString(R.string.text_rssi_strong)
+								+ "("
+								+ myDevice.get(y).getRssi() + ")");
+						viewHolder.DeviceRssi.setTextColor(context
+								.getResources().getColor(R.color.sky_blue));
+					} else if (myDevice.get(y).getRssi() < BleDeviceConstants.RSSI_STRONG
+							&& myDevice.get(y).getRssi() > BleDeviceConstants.RSSI_GOOD) {
+						viewHolder.DeviceRssi.setText(context.getResources()
+								.getString(R.string.text_rssi_good)
+								+ "("
+								+ myDevice.get(y).getRssi() + ")");
+						viewHolder.DeviceRssi.setTextColor(context
+								.getResources().getColor(R.color.dark_grey));
+					} else if (myDevice.get(y).getRssi() < BleDeviceConstants.RSSI_GOOD) {
+						viewHolder.DeviceRssi.setText(context.getResources()
+								.getString(R.string.text_rssi_weak)
+								+ "("
+								+ myDevice.get(y).getRssi() + ")");
+						viewHolder.DeviceRssi.setTextColor(context
+								.getResources().getColor(R.color.red));
+					}
+					break;
+				}
+
+			}
 
 			convertView.setTag(viewHolder);
 		} else {

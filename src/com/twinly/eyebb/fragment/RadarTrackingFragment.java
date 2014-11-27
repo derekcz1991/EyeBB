@@ -87,9 +87,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private Handler mHandler;
 	private Handler autoScanHandler;
-	private final static int START_SCAN = 4;
-	private final static int STOP_SCAN = 5;
-	private final static int DELETE_SCAN = 6;
+
 	private final static int BEEPTIMEOUT = 7;
 	private final static int SCAN_CHILD_FOR_LIST = 8;
 
@@ -114,14 +112,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	private ImageLoader imageLoader;
 	private DisplayImageOptions options;
-	private int getScreenWidth;
-	private int DipGetScreenWidth;
-	private int initX;
-	private int initY;
-	private int addX;
-	private int addY;
-	private String missingChildNum;
-	private String unMissingChildNum;
+
 	private TextView missingChildNumTxt;
 	private TextView unMissingChildNumTxt;
 	private Boolean isClickConnection = false;
@@ -140,10 +131,12 @@ public class RadarTrackingFragment extends Fragment implements
 	private static ArrayList<Child> ScanedTempChildData;
 	private ArrayList<Child> BeepTempChildData;
 	private ArrayList<Child> BeepAllTempChildData;
+
+	private ArrayList<Device> myDevice;
 	// 檢測頭像是否有改變
 	private ArrayList<Child> openAntiData;
 	private boolean openAntiCurrentDataFlag;
-	private ArrayList<Child> missedHeadChildData;
+
 	// private Child child;
 	private ArrayList<Child> MissChildData;
 
@@ -158,8 +151,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private int beepAllTime = 0;
 	Timer timer = null;
 	TimerTask task = null;
-	private int MissChildDataHeadNum = 0;
-	private int ScanedChildDataHeadNum = 0;
+
 	Thread BLEScanThread;
 	// 控制timetask
 	private boolean buttonCancel = true;
@@ -173,21 +165,6 @@ public class RadarTrackingFragment extends Fragment implements
 	private boolean openAnti = false;
 
 	private int deviceStatusError = 0;
-
-	private boolean isLeScan;
-
-	// 頭像四方位定位
-	private int zeroMissX = 100;
-	private int zeroMissY = 10;
-
-	private int oneMissX = 10;
-	private int oneMissY = 100;
-
-	private int twoMissX = 10;
-	private int twoMissY = 100;
-
-	private int threeMissX = 100;
-	private int threeMissY = 10;
 
 	private CircleImageView scanImg1;
 	private CircleImageView scanImg2;
@@ -227,23 +204,17 @@ public class RadarTrackingFragment extends Fragment implements
 
 		initView(v);
 
-		if (DBChildren.getChildrenList(getActivity()) != null) {
-			ChildData = DBChildren.getChildrenList(getActivity());
-		}
-
-		for (int i = 0; i < ChildData.size(); i++) {
-			System.out.println("child_date-------->"
-					+ ChildData.get(i).getMacAddress());
-		}
+		// for (int i = 0; i < ChildData.size(); i++) {
+		// System.out.println("child_date-------->"
+		// + ChildData.get(i).getMacAddress());
+		// }
 
 		updateDb = new UpdateDb();
-		getActivity().registerReceiver(updateDb,
-				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
 
 		mHandler = new Handler();
 		autoScanHandler = new Handler();
 		listItem = new ArrayList<HashMap<String, Object>>();
-
+		myDevice = new ArrayList<Device>();
 		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -520,7 +491,7 @@ public class RadarTrackingFragment extends Fragment implements
 			if (isWhileLoop) {
 				// while (loopScanTimes < Integer.MAX_VALUE) {
 				scanLeDevice();
-				System.out.println("loopScanTimes--->" + loopScanTimes);
+				// System.out.println("loopScanTimes--->" + loopScanTimes);
 				// }
 
 			}
@@ -623,6 +594,12 @@ public class RadarTrackingFragment extends Fragment implements
 
 	public void btnConfirmConnect() {
 		isConfirmRadarBtn = true;
+
+		if (DBChildren.getChildrenList(getActivity()) != null) {
+			ChildData = DBChildren.getChildrenList(getActivity());
+		}
+		getActivity().registerReceiver(updateDb,
+				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
 
 		try {
 			checkIsBluetoothOpen = checkIsBluetooth();
@@ -769,11 +746,12 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
-	private void chageTheAllData(ArrayList<Child> scanedTempChildData,
-			ArrayList<Child> missChildData, ArrayList<Child> openAntiData2) {
+	private void changeTheAllData(ArrayList<Child> scanedTempChildData,
+			ArrayList<Child> missChildData, ArrayList<Child> openAntiData2,
+			ArrayList<Device> myDevice2) {
 
 		Childadapter = new RadarKidsListViewAdapter(getActivity(),
-				scanedTempChildData, openAntiData2);
+				scanedTempChildData, openAntiData2, myDevice2);
 		Childadapter.setCallback(RadarTrackingFragmentInstance);
 		ChildlistView.setAdapter(Childadapter);
 
@@ -1542,7 +1520,6 @@ public class RadarTrackingFragment extends Fragment implements
 				}
 				if (ScanedTempChildData != null) {
 					addImageHead(ScanedTempChildData, openAntiData);
-					ScanedChildDataHeadNum = ScanedTempChildData.size();
 
 				}
 
@@ -1567,7 +1544,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 				if (MissChildData != null) {
 					addMissImageHead(MissChildData, openAntiData);
-					MissChildDataHeadNum = MissChildData.size();
 
 					if (showAllMissImageData != null) {
 						showAllMissImageData.clear();
@@ -1578,8 +1554,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 				}
 
-				chageTheAllData(ScanedTempChildData, MissChildData,
-						openAntiData);
+				changeTheAllData(ScanedTempChildData, MissChildData,
+						openAntiData, myDevice);
 				// radar頭像
 
 				clearAlltheDate();
@@ -1656,18 +1632,26 @@ public class RadarTrackingFragment extends Fragment implements
 				it3.remove();
 			}
 		}
-		if (mLeDevices != null) {
-			Iterator<BluetoothDevice> it4 = mLeDevices.iterator();
-			for (; it4.hasNext();) {
-				it4.next();
-				it4.remove();
-			}
-		}
+//		if (mLeDevices != null) {
+//			Iterator<BluetoothDevice> it4 = mLeDevices.iterator();
+//			for (; it4.hasNext();) {
+//				it4.next();
+//				it4.remove();
+//			}
+//		}
 		if (ScanedChildData != null) {
 			Iterator<Child> it5 = ScanedChildData.iterator();
 			for (; it5.hasNext();) {
 				it5.next();
 				it5.remove();
+			}
+		}
+
+		if (myDevice != null) {
+			Iterator<Device> it6 = myDevice.iterator();
+			for (; it6.hasNext();) {
+				it6.next();
+				it6.remove();
 			}
 		}
 	}
@@ -1755,7 +1739,8 @@ public class RadarTrackingFragment extends Fragment implements
 										ScanedChildData.add(child);
 
 										listItem.add(map);
-										mLeDevices.add(device);
+										//mLeDevices.add(device);
+										myDevice.add(newDevice);
 
 										if (openAnti) {
 											// System.out.println("openAnti");
