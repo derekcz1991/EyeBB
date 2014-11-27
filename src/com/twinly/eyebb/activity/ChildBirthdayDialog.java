@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class ChildBirthdayDialog extends Activity {
 	private DatePicker childBirthdayDatePicker;
@@ -52,8 +51,6 @@ public class ChildBirthdayDialog extends Activity {
 				// TODO Auto-generated method stub
 
 				if (dateOfBirth != null && dateOfBirth.length() > 0) {
-					SharePrefsUtils.setRegisterChildBirthday(
-							ChildBirthdayDialog.this, dateOfBirth);
 					Intent data = new Intent();
 					data.putExtra("childBirthday", dateOfBirth);
 					setResult(ActivityConstants.RESULT_RESULT_BIRTHDAY_OK, data);

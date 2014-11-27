@@ -81,6 +81,7 @@ public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
+		System.out.println(groupPosition);
 		GroupHolder groupHolder = null;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.list_item_group_title,
@@ -98,6 +99,7 @@ public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
+		System.out.println(groupPosition + " " + childPosition);
 		ChildrenHolder childrenHolder = null;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.list_item_kid_simple,
@@ -117,8 +119,7 @@ public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	private void setUpGroupView(GroupHolder groupHolder, int groupPosition) {

@@ -69,6 +69,15 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/area_name"
+        style="@style/DarkGreyText_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menubar"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp" />
+
     <LinearLayout
         android:id="@+id/functionbar"
         android:layout_width="match_parent"
@@ -147,7 +156,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/functionbar"
-        android:layout_below="@id/menubar"
+        android:layout_below="@id/area_name"
         android:background="#FFf1f1e5"
         android:cacheColorHint="@color/transparent"
         android:divider="@null"
@@ -162,7 +171,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/functionbar"
         android:layout_below="@id/menubar"
-        android:focusable="false">
+        android:focusable="false" >
 
         <TextView
             android:id="@+id/hint"

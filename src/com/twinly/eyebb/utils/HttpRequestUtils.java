@@ -172,13 +172,6 @@ public class HttpRequestUtils {
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
 			System.out.println("error = " + e.getMessage());
-
-			try {
-				Log.e(TAG, e.getMessage());
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
 		}
 	}

@@ -1,5 +1,10 @@
 package com.twinly.eyebb.model;
 
+import android.content.Context;
+
+import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.utils.SharePrefsUtils;
+
 public class Area {
 	private Long areaId;
 	private String name;
@@ -45,6 +50,18 @@ public class Area {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	public String getDisplayName(Context context) {
+		switch (SharePrefsUtils.getLanguage(context)) {
+		case BleDeviceConstants.LOCALE_TW:
+		case BleDeviceConstants.LOCALE_HK:
+			return nameTc;
+		case BleDeviceConstants.LOCALE_CN:
+			return nameSc;
+		default:
+			return name; 
+		}
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public class ReportFragment extends Fragment implements
 	private void setUpView(View v) {
 		// set the current child
 		child = DBChildren.getChildById(getActivity(),
-				SharePrefsUtils.getReportChildId(getActivity()));
+				SharePrefsUtils.getReportChildId(getActivity(), -1L));
 
 		FragmentTransaction fragmentTransaction = getChildFragmentManager()
 				.beginTransaction();
@@ -248,6 +248,8 @@ public class ReportFragment extends Fragment implements
 	public void updateView() {
 		if (child != null) {
 			new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			callback.resetProgressBar();
 		}
 	}
 
@@ -344,8 +346,8 @@ public class ReportFragment extends Fragment implements
 			for (int i = 0; i < activityInfolist.length(); i++) {
 				JSONObject item = (JSONObject) activityInfolist.get(i);
 				ActivityInfo activityInfo = new ActivityInfo();
-				activityInfo.setChildId(SharePrefsUtils
-						.getReportChildId(getActivity()));
+				activityInfo.setChildId(SharePrefsUtils.getReportChildId(
+						getActivity(), -1L));
 				activityInfo
 						.setTitle(item
 								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_TITLE));

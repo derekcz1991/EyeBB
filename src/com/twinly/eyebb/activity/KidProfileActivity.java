@@ -3,7 +3,6 @@ package com.twinly.eyebb.activity;
 import java.io.File;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -63,7 +62,6 @@ public class KidProfileActivity extends Activity {
 
 	Handler readBatteryHandler = new Handler();
 
-	@SuppressLint({ "NewApi", "InlinedApi" })
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,15 +100,11 @@ public class KidProfileActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
 					if (!mBluetoothAdapter.isEnabled()) {
-
 						openBluetooth();
-						// return;
 					} else {
 						readBattery();
 					}
-
 					registerReceiver(bluetoothState, new IntentFilter(
 							BluetoothAdapter.ACTION_STATE_CHANGED));
 				}

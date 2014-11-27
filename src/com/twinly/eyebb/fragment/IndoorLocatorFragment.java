@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -41,22 +44,25 @@ public class IndoorLocatorFragment extends Fragment implements
 	private PullToRefreshListView listView;
 	private ProgressBar progressBar;
 	private TextView hint;
+	private TextView areaName;
 	private CallbackInterface callback;
 
 	private SerializableChildrenMap myMap;
 	private IndoorLocatorAdapter adapter;
-	private long currentAreaId;
+	private long currentAreaId = -1L;
 	private HashMap<Long, Area> areaMap; // <area_id, Area>
 	private HashMap<Long, Location> locationMap; // <location_id, Location>
 	private HashMap<Long, Child> childrenMap; // <child_id, Child>
 	private HashMap<Long, ArrayList<Long>> areaMapLocaion; // <area_id, [location_id, location_id]>
 	private HashMap<Long, ArrayList<Long>> locationMapChildren; // <location_id, [child_id, child_id]>
 	private HashMap<Long, HashMap<Long, ArrayList<Long>>> areaMapLocaionMapChildren;
+	private ArrayList<HashMap.Entry<Long, Area>> areaList;
 
 	private ToggleButton autoUpdateButton;
 	private boolean autoUpdateFlag;
 	private AutoUpdateTask autoUpdateTask;
 	private boolean isSort = false;
+	private boolean isFirstUpdate = true;
 
 	public interface CallbackInterface {
 		/**
@@ -92,6 +98,7 @@ public class IndoorLocatorFragment extends Fragment implements
 
 		progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
 		hint = (TextView) v.findViewById(R.id.hint);
+		areaName = (TextView) v.findViewById(R.id.area_name);
 		hint.setVisibility(View.INVISIBLE);
 		autoUpdateButton = (ToggleButton) v.findViewById(R.id.autoUpdateButton);
 
@@ -100,6 +107,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		return v;
 	}
 
+	@SuppressLint("UseSparseArrays")
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -197,6 +205,38 @@ public class IndoorLocatorFragment extends Fragment implements
 						}
 					}
 				});
+		areaName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				areaList = new ArrayList<HashMap.Entry<Long, Area>>(areaMap
+						.entrySet());
+				String[] choices = new String[areaList.size()];
+				for (int i = 0; i < areaList.size(); i++) {
+					choices[i] = areaList.get(i).getValue()
+							.getDisplayName(getActivity());
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setItems(choices,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								currentAreaId = areaList.get(which).getKey();
+								adapter = new IndoorLocatorAdapter(
+										getActivity(),
+										areaMapLocaionMapChildren
+												.get(currentAreaId),
+										locationMap, childrenMap, isSort);
+								listView.setAdapter(adapter);
+							}
+						});
+
+				builder.create().show();
+			}
+		});
 	}
 
 	public void updateView() {
@@ -221,25 +261,8 @@ public class IndoorLocatorFragment extends Fragment implements
 			while (autoUpdateFlag) {
 				updateView();
 				try {
-					// refresh time
-					long refreshTime = 5;
-					try {
-						if (Long.parseLong(SharePrefsUtils
-								.refreshTime(getActivity())) > 0) {
-							refreshTime = Long.parseLong(SharePrefsUtils
-									.refreshTime(getActivity())) * 1000;
-						} else {
-							SharePrefsUtils.setRefreshTime(getActivity(),
-									refreshTime + "");
-							refreshTime = refreshTime * 1000;
-						}
-					} catch (NumberFormatException e) {
-						SharePrefsUtils.setRefreshTime(getActivity(),
-								refreshTime + "");
-						refreshTime = refreshTime * 1000;
-						e.printStackTrace();
-					}
-					Thread.sleep(refreshTime);
+					Thread.sleep(SharePrefsUtils.getAutoUpdateTime(
+							getActivity(), 5) * 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -253,7 +276,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			if (autoUpdateFlag == false) {
+			if (autoUpdateFlag == false && isFirstUpdate) {
 				progressBar.setVisibility(View.VISIBLE);
 				hint.setVisibility(View.INVISIBLE);
 			}
@@ -288,21 +311,27 @@ public class IndoorLocatorFragment extends Fragment implements
 		protected void onPostExecute(String result) {
 			System.out.println("childrenList = " + result);
 			try {
+				isFirstUpdate = false;
+
 				JSONObject json = new JSONObject(result);
 				getAllAreaLocation(json);
 				getAllChild(json);
-				System.out.println(areaMapLocaionMapChildren);
 				adapter = new IndoorLocatorAdapter(getActivity(),
 						areaMapLocaionMapChildren.get(currentAreaId),
 						locationMap, childrenMap, isSort);
 				listView.setAdapter(adapter);
+				// set area name
+				if (areaMap.get(currentAreaId) != null) {
+					areaName.setText(areaMap.get(currentAreaId).getDisplayName(
+							getActivity()));
+				}
 
 			} catch (JSONException e) {
 				System.out.println("reportService/api/childrenList ---->> "
 						+ e.getMessage());
 			}
 			progressBar.setVisibility(View.INVISIBLE);
-			if (areaMapLocaionMapChildren.size() < 1) {
+			if (areaMapLocaionMapChildren.size() == 0) {
 				hint.setVisibility(View.VISIBLE);
 			} else {
 				hint.setVisibility(View.INVISIBLE);
@@ -378,7 +407,6 @@ public class IndoorLocatorFragment extends Fragment implements
 						.put(location.getId(), new ArrayList<Long>());
 				areaMapLocaion.get(area.getAreaId()).add(location.getId());
 			}
-			System.out.println("locationMapChildren = " + locationMapChildren);
 		}
 	}
 
@@ -415,6 +443,11 @@ public class IndoorLocatorFragment extends Fragment implements
 					locationMapChildren.put(locationId, new ArrayList<Long>());
 				}
 				locationMapChildren.get(locationId).add(childId);
+
+				// set the first child as default report child
+				if (i == 0) {
+					SharePrefsUtils.setReportChildId(getActivity(), childId);
+				}
 			}
 		}
 	}

@@ -58,149 +58,18 @@ public class SharePrefsUtils {
 		setString(context, ActivityConstants.SHARE_PREFS_ITEM_USER_PHONE, value);
 	}
 
-	public static long getUserId(Context context) {
-		return getLong(context, ActivityConstants.SHARE_PREFS_ITEM_USER_ID);
+	public static long getUserId(Context context, long defValue) {
+		return getLong(context, ActivityConstants.SHARE_PREFS_ITEM_USER_ID,
+				defValue);
 	}
 
 	public static void setUserId(Context context, long value) {
 		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_USER_ID, value);
 	}
 
-	/*public static int getKindergartenId(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
-	}
-
-	public static void setKindergartenId(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID,
-				value);
-	}*/
-
-	/*public static String getKindergartenName(Context context) {
-		int locale = SharePrefsUtils.getLanguage(context);
-		switch (locale) {
-		case BleDeviceConstants.LOCALE_CN:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC);
-		case BleDeviceConstants.LOCALE_TW:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
-		case BleDeviceConstants.LOCALE_HK:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
-		default:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN);
-		}
-
-	}
-
-	public static void setKindergartenNameTc(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC, value);
-	}
-
-	public static void setKindergartenNameSc(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC, value);
-	}
-
-	public static void setKindergartenNameEn(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN, value);
-	}*/
-
-	public static boolean isUpdateIndoorLocator(Context context) {
-		return getBoolean(context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_INDOOR_LOCATOR_FLAG,
-				true);
-	}
-
-	public static void setUpdateIndoorLocatorFlag(Context context, boolean value) {
-		setBoolean(context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_INDOOR_LOCATOR_FLAG,
-				value);
-	}
-
-	public static boolean isUpdateReportPerformance(Context context) {
-		return getBoolean(
-				context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG,
-				true);
-	}
-
-	public static void setUpdateReportPerfromanceFlag(Context context,
-			boolean value) {
-		setBoolean(
-				context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_PERFORMANCE_FLAG,
-				value);
-	}
-
-	public static boolean isUpdateReportActivities(Context context) {
-		return getBoolean(
-				context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG,
-				true);
-	}
-
-	public static void setUpdateReportActivitiesFlag(Context context,
-			boolean value) {
-		setBoolean(
-				context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_REPORT_ACTIVITIES_FLAG,
-				value);
-	}
-
-	public static boolean isInitHead(Context context) {
-		return getBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD,
-				true);
-	}
-
-	public static void setInitHead(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD, value);
-	}
-
-	public static boolean isfinishBeep(Context context) {
-		return getBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP,
-				false);
-	}
-
-	public static void setfinishBeep(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP, value);
-	}
-
-	public static int isConnectBleService(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE);
-	}
-
-	public static void setConnectBleService(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE,
-				value);
-	}
-
-	public static int bleServiceIndex(Context context) {
-		return getInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX);
-	}
-
-	public static void setBleServiceIndex(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX, value);
-	}
-
-	public static boolean isUpdateNotice(Context context) {
-		return getBoolean(context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, true);
-	}
-
-	public static void setUpdateNoticeFlag(Context context, boolean value) {
-		setBoolean(context,
-				ActivityConstants.SHARE_PREFS_ITEM_UPDATE_NOTICE_FLAG, value);
-	}
-
-	public static long getReportChildId(Context context) {
+	public static long getReportChildId(Context context, long defValue) {
 		return getLong(context,
-				ActivityConstants.SHARE_PREFS_ITEM_REPORT_CHILD_ID);
+				ActivityConstants.SHARE_PREFS_ITEM_REPORT_CHILD_ID, defValue);
 	}
 
 	public static void setReportChildId(Context context, long value) {
@@ -249,6 +118,96 @@ public class SharePrefsUtils {
 	public static void setLanguage(Context context, int value) {
 		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_LANGUAGE, value);
 	}
+	
+	public static Long getAutoUpdateTime(Context context, long defValue) {
+		return getLong(context,
+				ActivityConstants.SHARE_PREFS_ITEM_AUTO_UPDATE_TIME, defValue);
+	}
+
+	public static void setAutoUpdateTime(Context context, Long value) {
+		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_AUTO_UPDATE_TIME,
+				value);
+	}
+	
+	/*public static int getKindergartenId(Context context) {
+		return getInt(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
+	}
+
+	public static void setKindergartenId(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID,
+				value);
+	}*/
+
+	/*public static String getKindergartenName(Context context) {
+		int locale = SharePrefsUtils.getLanguage(context);
+		switch (locale) {
+		case BleDeviceConstants.LOCALE_CN:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC);
+		case BleDeviceConstants.LOCALE_TW:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
+		case BleDeviceConstants.LOCALE_HK:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
+		default:
+			return getString(context,
+					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN);
+		}
+
+	}
+
+	public static void setKindergartenNameTc(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC, value);
+	}
+
+	public static void setKindergartenNameSc(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC, value);
+	}
+
+	public static void setKindergartenNameEn(Context context, String value) {
+		setString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN, value);
+	}*/
+
+	public static boolean isInitHead(Context context) {
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD,
+				true);
+	}
+
+	public static void setInitHead(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD, value);
+	}
+
+	public static boolean isfinishBeep(Context context) {
+		return getBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP,
+				false);
+	}
+
+	public static void setfinishBeep(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP, value);
+	}
+
+	public static int isConnectBleService(Context context) {
+		return getInt(context,
+				ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE);
+	}
+
+	public static void setConnectBleService(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE,
+				value);
+	}
+
+	public static int bleServiceIndex(Context context) {
+		return getInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX);
+	}
+
+	public static void setBleServiceIndex(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX, value);
+	}
 
 	public static boolean isStartBeepDialog(Context context) {
 		return getBoolean(context,
@@ -279,13 +238,6 @@ public class SharePrefsUtils {
 				value);
 	}
 
-	public static String refreshTime(Context context) {
-		return getString(context, ActivityConstants.SHARE_PREFS_REFRESH_TIME);
-	}
-
-	public static void setRefreshTime(Context context, String value) {
-		setString(context, ActivityConstants.SHARE_PREFS_REFRESH_TIME, value);
-	}
 
 	public static String isMacAddress(Context context) {
 		return getString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS);
@@ -325,15 +277,6 @@ public class SharePrefsUtils {
 				ActivityConstants.SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS, value);
 	}
 
-	public static String registerChildBirthday(Context context) {
-		return getString(context, ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY);
-	}
-
-	public static void setRegisterChildBirthday(Context context, String value) {
-
-		setString(context, ActivityConstants.SHARE_PREFS_CHILID_BIRTHDAY, value);
-	}
-
 	public static int BleServiceRunOnceFlag(Context context) {
 		return getInt(context,
 				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG);
@@ -344,20 +287,11 @@ public class SharePrefsUtils {
 				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG, value);
 	}
 
-	public static String grantChildID(Context context) {
-		return getString(context, ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID);
-	}
-
-	public static void setGrantChildID(Context context, String value) {
-		setString(context, ActivityConstants.SHARE_PREFS_GRANT_CHILD_ID, value);
-	}
-
 	public static String deviceBattery(Context context) {
 		return getString(context, ActivityConstants.SHARE_PREFS_DEVICE_BATTERY);
 	}
 
 	public static void setdeviceBattery(Context context, String value) {
-
 		setString(context, ActivityConstants.SHARE_PREFS_DEVICE_BATTERY, value);
 	}
 
@@ -382,8 +316,8 @@ public class SharePrefsUtils {
 		return getPrefs(context).getInt(name, Integer.MIN_VALUE);
 	}
 
-	private static long getLong(Context context, String name) {
-		return getPrefs(context).getLong(name, Long.MIN_VALUE);
+	private static long getLong(Context context, String name, long defValue) {
+		return getPrefs(context).getLong(name, defValue);
 	}
 
 	private static void setString(Context context, String name, String value) {

@@ -30,13 +30,12 @@ public class RefreshTimeDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// keyboard
 				if (enterMail.getText().toString() != null
 						&& enterMail.getText().toString().length() > 0) {
 					if (Integer.parseInt(enterMail.getText().toString()) > 0) {
-						SharePrefsUtils.setRefreshTime(RefreshTimeDialog.this,
-								enterMail.getText().toString());
+						SharePrefsUtils.setAutoUpdateTime(
+								RefreshTimeDialog.this,
+								Long.parseLong(enterMail.getText().toString()));
 						Intent intent = new Intent(RefreshTimeDialog.this,
 								SettingsActivity.class);
 

@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
 import com.eyebb.R;
@@ -48,6 +49,20 @@ public class MyKidsListActivity extends Activity {
 				return true;
 			}
 		});
+		listView.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				Intent intent = new Intent(MyKidsListActivity.this,
+						KidProfileActivity.class);
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childrenList
+						.get(groupPosition).get(childPosition).getChildId());
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
+				return false;
+			}
+		});
 
 		groupList = new ArrayList<String>();
 		childrenList = new ArrayList<ArrayList<Child>>();
@@ -75,6 +90,7 @@ public class MyKidsListActivity extends Activity {
 		Child child;
 		for (int i = 0; i < allChildren.size(); i++) {
 			child = allChildren.get(i);
+			System.out.println(child);
 			if (child.getRelationWithUser().equals("P")) {
 				if (CommonUtils.isNull(child.getMacAddress())) {
 					childrenWithoutAddress.add(child);
@@ -87,17 +103,16 @@ public class MyKidsListActivity extends Activity {
 		}
 		if (childrenWithAddress.size() > 0) {
 			groupList.add(getString(R.string.text_bind_child));
+			childrenList.add(childrenWithAddress);
 		}
 		if (childrenWithoutAddress.size() > 0) {
 			groupList.add(getString(R.string.text_unbind_child));
+			childrenList.add(childrenWithoutAddress);
 		}
 		if (chidrenGuest.size() > 0) {
 			groupList.add(getString(R.string.text_granted_child));
+			childrenList.add(chidrenGuest);
 		}
-
-		childrenList.add(childrenWithAddress);
-		childrenList.add(childrenWithoutAddress);
-		childrenList.add(chidrenGuest);
 
 		adapter.notifyDataSetChanged();
 
@@ -130,12 +145,10 @@ public class MyKidsListActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY) {
-			System.out.println("========>>>>>>>" + resultCode);
 			if (resultCode == ActivityConstants.RESULT_UNBIND_SUCCESS) {
-				//new GetMyKidsTask().execute();
+				updateListView();
 			} else if (resultCode == ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS) {
-				System.out.println("========>>>>>>>");
-				//new GetMyKidsTask().execute();
+				updateListView();
 			}
 		}
 	}

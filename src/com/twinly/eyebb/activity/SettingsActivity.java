@@ -192,25 +192,12 @@ public class SettingsActivity extends Activity {
 			}
 		});
 
-		// batteryLifeBtn.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Auto-generated method stub
-		//
-		// Intent intent = new Intent(SettingsActivity.this,
-		// BatteryLifeActivity.class);
-		// startActivity(intent);
-		// }
-		// });
-
 	}
 
 	private void setupView() {
 		// auto refresh time
-		refreshTimeNumber
-				.setText(SharePrefsUtils.refreshTime(this) == null ? SharePrefsUtils
-						.refreshTime(this) : "5");
+		refreshTimeNumber.setText(String.valueOf(SharePrefsUtils
+				.getAutoUpdateTime(this, 5)));
 
 		// sound
 		if (SharePrefsUtils.isSoundOn(this)) {
