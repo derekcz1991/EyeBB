@@ -40,7 +40,7 @@ public class ChildDialog extends Activity {
 	private LinearLayout phoneBtn;
 	private CircleImageView avatar;
 	private String icon;
-	private int childId;
+	private long childId;
 	private String macAddress;
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
@@ -67,7 +67,7 @@ public class ChildDialog extends Activity {
 		name.setText(getIntent().getStringExtra("name"));
 		locationName.setText("@ " + getIntent().getStringExtra("location"));
 		icon = getIntent().getStringExtra("icon");
-		childId = getIntent().getIntExtra("id", -1);
+		childId = getIntent().getLongExtra("id", -1L);
 		macAddress = getIntent().getStringExtra("macAddress");
 
 		if (phone.getText().toString().trim().length() == 0) {

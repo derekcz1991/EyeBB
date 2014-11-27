@@ -25,7 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +49,8 @@ public class KidProfileActivity extends Activity {
 	private TextView kidName;
 	private TextView binding;
 	private ImageLoader imageLoader;
-	private RelativeLayout deviceItem;
+	private LinearLayout deviceItem;
+	private LinearLayout bindItem;
 	private BluetoothAdapter mBluetoothAdapter;
 	private Uri mImageCaptureUri;
 	private static final int PICK_FROM_CAMERA = 100;
@@ -84,9 +85,11 @@ public class KidProfileActivity extends Activity {
 		binding = (TextView) findViewById(R.id.btn_binding);
 		deviceAddress = (TextView) findViewById(R.id.device_address);
 		deviceBattery = (TextView) findViewById(R.id.device_battery);
-		deviceItem = (RelativeLayout) findViewById(R.id.device_item);
+		deviceItem = (LinearLayout) findViewById(R.id.device_item);
+		bindItem = (LinearLayout) findViewById(R.id.bind_item);
 
-		if (SharePrefsUtils.deviceBattery(KidProfileActivity.this).length() > 0) {
+		// set battery
+		if (SharePrefsUtils.deviceBattery(this).length() > 0) {
 			deviceBattery.setText(SharePrefsUtils
 					.deviceBattery(KidProfileActivity.this) + "%");
 		}
@@ -127,6 +130,11 @@ public class KidProfileActivity extends Activity {
 		} else {
 			binding.setText(getString(R.string.btn_unbind));
 		}
+
+		if (child.getRelationWithUser().equals("P") == false) {
+			bindItem.setVisibility(View.INVISIBLE);
+		}
+
 		mImageCaptureUri = Uri.fromFile(new File(
 				BleDeviceConstants.EYEBB_FOLDER + "temp.jpg"));
 	}

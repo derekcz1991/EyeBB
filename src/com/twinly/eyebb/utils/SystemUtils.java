@@ -9,6 +9,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.database.DBActivityInfo;
+import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.database.DBNotifications;
+import com.twinly.eyebb.database.DBPerformance;
 
 public class SystemUtils {
 
@@ -50,6 +54,13 @@ public class SystemUtils {
 		ImageLoader.getInstance().init(config);
 	}
 
-	
+	public static void clearData(Context context) {
+		DBActivityInfo.clear(context);
+		DBChildren.clear(context);
+		DBPerformance.clear(context);
+		DBNotifications.clear(context);
+
+		SharePrefsUtils.clear(context);
+	}
 
 }

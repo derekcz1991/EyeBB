@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,32 +27,27 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 public class SignUpActivity extends Activity {
-	// private Button btnContinue;
-	// private Button btnSkip;
 	private Button btnSignup;
 
 	private EditText ed_username;
 	private EditText ed_email;
 	private EditText ed_password;
 	private EditText ed_nickname;
-	// private EditText ed_phone;
 	private String userName;
 	private String email;
 	private String password;
 	private String nickname;
 	private String phone;
-	private String regType;
 
 	private TextView tv_username;
 	private TextView tv_email;
 	private TextView tv_password;
 	private TextView tv_nickname;
-	// private TextView tv_phone;
 
 	private boolean usernameFlag = false;
-	private boolean regSuccessFlag = false;
 
 	public static final int CHECK_ACC_SUCCESS = 1;
 	public static final int CHECK_ACC_FALSE = 2;
@@ -151,10 +145,6 @@ public class SignUpActivity extends Activity {
 					if (nickname != null && nickname.length() > 0) {
 
 						if (isPassword(password)) {
-							// editor.putString("usrname", username);
-							// editor.putString("email", email);
-							// editor.putString("password", password);
-							// editor.commit();
 							if (isEmail(email) || phone.length() > 0) {
 								if (phone != null || phone.length() > 0) {
 									if (usernameFlag) {
@@ -174,8 +164,6 @@ public class SignUpActivity extends Activity {
 										Toast.LENGTH_LONG).show();
 								tv_email.setBackground(getResources()
 										.getDrawable(R.drawable.ic_radar_missed));
-								// tv_phone.setBackground(getResources()
-								// .getDrawable(R.drawable.ic_radar_missed));
 
 							}
 						} else {
@@ -263,7 +251,6 @@ public class SignUpActivity extends Activity {
 		map.put("password", hashPassword);
 		map.put("email", email);
 		map.put("phoneNum", phone);
-		// map.put("regType", regType);
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
@@ -284,7 +271,8 @@ public class SignUpActivity extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = REG_SUCCESSFULLY;
 					handler.sendMessage(msg);
-					regSuccessFlag = true;
+
+					SystemUtils.clearData(SignUpActivity.this);
 
 					SharePrefsUtils.setLogin(SignUpActivity.this, true);
 					SharePrefsUtils.setLoginAccount(SignUpActivity.this,
@@ -307,28 +295,22 @@ public class SignUpActivity extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = CHECK_ACC_FALSE;
 					handler.sendMessage(msg);
-					regSuccessFlag = false;
 
 				} else {
 					Message msg = handler.obtainMessage();
 					msg.what = CONNECT_ERROR;
 					handler.sendMessage(msg);
-					regSuccessFlag = false;
 				}
 
 			}
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
-
 	}
 
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 

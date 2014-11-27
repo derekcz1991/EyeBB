@@ -174,7 +174,7 @@
        <string name="text_update_nickname_successful">修改暱稱成功,謝謝!</string>
     <string name="text_bind_child">已绑定</string>
     <string name="text_unbind_child">未绑定</string>
-
+    <string name="text_granted_child">授权的小孩</string>
     
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

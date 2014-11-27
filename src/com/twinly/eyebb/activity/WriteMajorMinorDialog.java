@@ -2,11 +2,11 @@ package com.twinly.eyebb.activity;
 
 import java.util.List;
 
-import com.twinly.eyebb.constant.ActivityConstants;
-
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.widget.Toast;
+
+import com.twinly.eyebb.constant.ActivityConstants;
 
 public abstract class WriteMajorMinorDialog extends WriteToBeaconDialog {
 	public static final String EXTRAS_DEVICE_MAJOR = "DEVICE_MAJOR";

@@ -23,13 +23,10 @@ import com.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.database.DBActivityInfo;
-import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.database.DBNotifications;
-import com.twinly.eyebb.database.DBPerformance;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 public class LoginActivity extends Activity {
 	private TextView forgetPasswordBtn;
@@ -114,6 +111,9 @@ public class LoginActivity extends Activity {
 				System.out.println("login result = " + result);
 				try {
 					JSONObject json = new JSONObject(result);
+
+					SystemUtils.clearData(LoginActivity.this);
+
 					SharePrefsUtils.setUserId(LoginActivity.this,
 							json.getLong(HttpConstants.JSON_KEY_USER_ID));
 					SharePrefsUtils.setUserName(LoginActivity.this,
@@ -122,11 +122,6 @@ public class LoginActivity extends Activity {
 							json.getString(HttpConstants.JSON_KEY_USER_PHONE));
 					SharePrefsUtils.setUserType(LoginActivity.this,
 							json.getString(HttpConstants.JSON_KEY_USER_TYPE));
-
-					DBActivityInfo.clear(LoginActivity.this);
-					DBChildren.clear(LoginActivity.this);
-					DBPerformance.clear(LoginActivity.this);
-					DBNotifications.clear(LoginActivity.this);
 
 					SharePrefsUtils.setLogin(LoginActivity.this, true);
 					SharePrefsUtils.setLoginAccount(LoginActivity.this,

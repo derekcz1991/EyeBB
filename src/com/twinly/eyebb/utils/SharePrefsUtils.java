@@ -6,7 +6,11 @@ import android.content.SharedPreferences;
 import com.twinly.eyebb.constant.ActivityConstants;
 
 public class SharePrefsUtils {
-
+	
+	public static void clear(Context context) {
+		getPrefs(context).edit().clear().commit();
+	}
+	
 	public static String getLoginAccount(Context context) {
 		return getString(context,
 				ActivityConstants.SHARE_PREFS_ITEM_LOGIN_ACCOUNT);
@@ -118,7 +122,7 @@ public class SharePrefsUtils {
 	public static void setLanguage(Context context, int value) {
 		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_LANGUAGE, value);
 	}
-	
+
 	public static Long getAutoUpdateTime(Context context, long defValue) {
 		return getLong(context,
 				ActivityConstants.SHARE_PREFS_ITEM_AUTO_UPDATE_TIME, defValue);
@@ -128,7 +132,7 @@ public class SharePrefsUtils {
 		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_AUTO_UPDATE_TIME,
 				value);
 	}
-	
+
 	/*public static int getKindergartenId(Context context) {
 		return getInt(context,
 				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
@@ -238,7 +242,6 @@ public class SharePrefsUtils {
 				value);
 	}
 
-
 	public static String isMacAddress(Context context) {
 		return getString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS);
 	}
@@ -335,4 +338,5 @@ public class SharePrefsUtils {
 	private static void setLong(Context context, String name, long value) {
 		getPrefs(context).edit().putLong(name, value).commit();
 	}
+
 }

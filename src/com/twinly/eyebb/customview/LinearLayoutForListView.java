@@ -1,13 +1,13 @@
 package com.twinly.eyebb.customview;
 
-import com.twinly.eyebb.utils.DensityUtil;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+
+import com.twinly.eyebb.utils.DensityUtil;
 
 /**
  * ȡ��ListView��LinearLayout��ʹ֮�ܹ��ɹ�Ƕ����ScrollView��

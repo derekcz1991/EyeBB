@@ -3,13 +3,6 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eyebb.R;
-import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
-import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.HttpRequestUtils;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +18,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class ForgetPasswordDialog extends Activity {
 

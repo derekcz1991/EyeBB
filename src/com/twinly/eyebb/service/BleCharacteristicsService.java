@@ -4,17 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import com.eyebb.R;
-import com.twinly.eyebb.activity.KidProfileActivity;
-import com.twinly.eyebb.bluetooth.BluetoothLeService;
-import com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity;
-import com.twinly.eyebb.bluetooth.SampleGattAttributes;
-import com.twinly.eyebb.constant.BleDeviceConstants;
-import com.twinly.eyebb.fragment.RadarTrackingFragment;
-import com.twinly.eyebb.utils.BLEUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -24,17 +13,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.twinly.eyebb.activity.KidProfileActivity;
+import com.twinly.eyebb.bluetooth.BluetoothLeService;
+import com.twinly.eyebb.bluetooth.SampleGattAttributes;
+import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.utils.BLEUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class BleCharacteristicsService extends Service {
 	SimpleAdapter listItemAdapter; // ListView的适配器

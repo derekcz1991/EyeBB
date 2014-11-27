@@ -1,11 +1,11 @@
 package com.twinly.eyebb.database;
 
-import com.twinly.eyebb.model.Performance;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.twinly.eyebb.model.Performance;
 
 public class DBPerformance {
 	private static SQLiteDatabase getInstance(Context context) {

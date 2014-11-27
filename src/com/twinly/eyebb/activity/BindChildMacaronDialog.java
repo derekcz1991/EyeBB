@@ -3,12 +3,12 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.os.AsyncTask;
+import android.widget.Toast;
+
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-
-import android.os.AsyncTask;
-import android.widget.Toast;
 
 public class BindChildMacaronDialog extends WriteMajorMinorDialog {
 	public static final String EXTRAS_RECEIVER_MAJOR = "RECEIVER_MAJOR";

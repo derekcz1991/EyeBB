@@ -2,7 +2,6 @@ package com.twinly.eyebb.activity;
 
 import android.app.Activity;
 import android.app.Service;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;

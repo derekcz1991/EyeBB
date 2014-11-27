@@ -55,7 +55,6 @@ import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
 import com.twinly.eyebb.activity.RadarShowAllMissImageDialog;
 import com.twinly.eyebb.activity.RadarShowAllScanImageDialog;
-import com.twinly.eyebb.adapter.GridViewScanAdapter;
 import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;

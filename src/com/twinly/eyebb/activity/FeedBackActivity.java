@@ -1,11 +1,10 @@
 package com.twinly.eyebb.activity;
 
-import com.eyebb.R;
-
 import android.app.Activity;
-
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.eyebb.R;
 
 public class FeedBackActivity extends Activity{
 	

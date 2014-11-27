@@ -109,7 +109,16 @@ public class LancherActivity extends Activity {
 				return;
 			}
 			try {
-				new JSONObject(result);
+				JSONObject json = new JSONObject(result);
+				SharePrefsUtils.setUserId(LancherActivity.this,
+						json.getLong(HttpConstants.JSON_KEY_USER_ID));
+				SharePrefsUtils.setUserName(LancherActivity.this,
+						json.getString(HttpConstants.JSON_KEY_USER_NAME));
+				SharePrefsUtils.setUserPhone(LancherActivity.this,
+						json.getString(HttpConstants.JSON_KEY_USER_PHONE));
+				SharePrefsUtils.setUserType(LancherActivity.this,
+						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
+
 				Intent intent = new Intent(LancherActivity.this,
 						MainActivity.class);
 				startActivity(intent);
