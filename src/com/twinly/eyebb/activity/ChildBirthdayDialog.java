@@ -30,8 +30,9 @@ public class ChildBirthdayDialog extends Activity {
 
 	private String getBirthday;
 
-	View dataPicker;
-	EditText dataPickerEd;
+	private View dataPicker;
+	private EditText dataPickerEd;
+	private boolean datePickerChangeFlag = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,8 @@ public class ChildBirthdayDialog extends Activity {
 				finish();
 			}
 		});
-
+		
+		System.out.println("birthday--child---dialog-->" + getBirthday);
 		if (getBirthday != null && getBirthday.length() > 0) {
 			String[] sGetBirthday = getBirthday.split("/");
 			dayOfMonth = Integer.parseInt(sGetBirthday[0]);
@@ -92,7 +94,7 @@ public class ChildBirthdayDialog extends Activity {
 				new OnDateChangedListener() {
 					public void onDateChanged(DatePicker view, int year,
 							int monthOfYear, int dayOfMonth) {
-
+						datePickerChangeFlag = true;
 						monthOfYear = monthOfYear + 1;
 						dateOfBirth = dayOfMonth + "/" + monthOfYear + "/"
 								+ year;
@@ -100,6 +102,14 @@ public class ChildBirthdayDialog extends Activity {
 
 					}
 				});
+		
+		
+		if(!datePickerChangeFlag){
+			monthOfYear = monthOfYear + 1;
+			dateOfBirth = dayOfMonth + "/" + monthOfYear + "/"
+					+ year;
+			System.out.println("dateOfBirth==>" + dateOfBirth);
+		}
 
 	}
 

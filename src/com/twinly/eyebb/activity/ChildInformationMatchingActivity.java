@@ -106,6 +106,7 @@ public class ChildInformationMatchingActivity extends Activity {
 							ChildBirthdayDialog.class);
 					if (birthday != null) {
 						intent.putExtra("birthday", birthday);
+						System.out.println("birthday--child-->" + birthday);
 					}
 					startActivityForResult(intent,
 							ActivityConstants.REQUEST_GO_TO_BIRTHDAY_ACTIVITY);

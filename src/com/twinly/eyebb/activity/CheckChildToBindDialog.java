@@ -48,8 +48,8 @@ public class CheckChildToBindDialog extends Activity {
 		Intent intent = getIntent();
 
 		childrenListJSON = intent.getStringExtra(EXTRA_CHILDREN_LIST);
-		guardianId = intent
-				.getLongExtra(ActivityConstants.EXTRA_GUARDIAN_ID, 0);
+		guardianId = intent.getLongExtra(ActivityConstants.EXTRA_GUARDIAN_ID,
+				-1L);
 
 		listView = (ListView) findViewById(R.id.listView);
 		parseJson(childrenListJSON);
@@ -107,7 +107,8 @@ public class CheckChildToBindDialog extends Activity {
 				+ guardianId);
 
 		map.put("childId", String.valueOf(childIdToPost));
-		map.put("guardianId", String.valueOf(guardianId));
+		map.put("guardianId",
+				guardianId == -1L ? "" : String.valueOf(guardianId));
 
 		try {
 			String retStr = HttpRequestUtils.postTo(
@@ -187,7 +188,7 @@ public class CheckChildToBindDialog extends Activity {
 				Bundle bundle = data.getExtras();
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
-				//TODO check the mac address
+				// TODO check the mac address
 				String macAddress = bundle.getString("result");
 				Intent intent = new Intent();
 				intent.setClass(this, BindingChildMacaronActivity.class);
