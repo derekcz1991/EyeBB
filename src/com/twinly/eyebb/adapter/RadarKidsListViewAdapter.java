@@ -128,6 +128,9 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 			viewHolder.DeviceConnectStatus = (TextView) convertView
 					.findViewById(R.id.device_connect_status);
 
+			
+			System.out.println("myDevice.size---->" + myDevice.size());
+			System.out.println("data.size---->" + data.size());
 			for (int y = 0; y < myDevice.size(); y++) {
 				// System.out.println(i);
 				if (data.get(position).getMacAddress()

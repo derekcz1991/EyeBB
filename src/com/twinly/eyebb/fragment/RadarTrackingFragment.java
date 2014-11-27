@@ -1414,11 +1414,30 @@ public class RadarTrackingFragment extends Fragment implements
 		// System.out.println(list);
 	}
 
-	public static void removeDuplicateList(ArrayList<Child> list) {
+	public static void removeChildDuplicateList(ArrayList<Child> list) {
 		HashSet h = new HashSet(list);
 		list.clear();
 		list.addAll(h);
 		// System.out.println(list);
+	}
+
+	public static void removeDeviceDuplicateList(ArrayList<Device> list) {
+		List<Device> tempList = new ArrayList<Device>();
+		
+		for (int i = 0; i < list.size(); i++) {
+			tempList = list;
+		}
+		// System.out.println(tempList);
+		for (int m = 0; m < tempList.size(); m++) {
+			for (int n = m + 1; n < tempList.size();) {
+				if (tempList.get(m).getAddress()
+						.equals(tempList.get(n).getAddress())) {
+					list.remove(n);
+				} else {
+					n++;
+				}
+			}
+		}
 	}
 
 	Handler handler = new Handler() {
@@ -1477,7 +1496,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 				// removeDuplicate(ScanedTempChildData);
 				try {
-					removeDuplicateList(ScanedTempChildData);
+					removeChildDuplicateList(ScanedTempChildData);
+					removeDeviceDuplicateList(myDevice);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					// removeDuplicateList(ScanedTempChildData);
@@ -1632,13 +1652,13 @@ public class RadarTrackingFragment extends Fragment implements
 				it3.remove();
 			}
 		}
-//		if (mLeDevices != null) {
-//			Iterator<BluetoothDevice> it4 = mLeDevices.iterator();
-//			for (; it4.hasNext();) {
-//				it4.next();
-//				it4.remove();
-//			}
-//		}
+		// if (mLeDevices != null) {
+		// Iterator<BluetoothDevice> it4 = mLeDevices.iterator();
+		// for (; it4.hasNext();) {
+		// it4.next();
+		// it4.remove();
+		// }
+		// }
 		if (ScanedChildData != null) {
 			Iterator<Child> it5 = ScanedChildData.iterator();
 			for (; it5.hasNext();) {
@@ -1739,7 +1759,7 @@ public class RadarTrackingFragment extends Fragment implements
 										ScanedChildData.add(child);
 
 										listItem.add(map);
-										//mLeDevices.add(device);
+										// mLeDevices.add(device);
 										myDevice.add(newDevice);
 
 										if (openAnti) {
