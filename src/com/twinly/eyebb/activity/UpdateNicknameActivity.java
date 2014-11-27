@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.eyebb.R;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -116,6 +117,7 @@ public class UpdateNicknameActivity extends Activity {
 					handler.sendMessage(msg);
 					SharePrefsUtils.setUserName(UpdateNicknameActivity.this,
 							new_nickname);
+					setResult(ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS);
 					finish();
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();

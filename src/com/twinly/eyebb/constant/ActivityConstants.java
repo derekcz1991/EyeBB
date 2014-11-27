@@ -59,6 +59,7 @@ public class ActivityConstants {
 	public static final int REQUEST_GO_TO_CHECK_CHILD_TO_BIND_DIALOG = 114;
 	public static final int REQUEST_GO_TO_GRANT_KIDS_ACTIVITY = 115;
 	public static final int REQUEST_GO_TO_SEARCH_GUEST_ACTIVITY = 116;
+	public static final int REQUEST_GO_TO_UPDATE_NICKNAME_ACTIVITY = 117;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;
@@ -69,6 +70,7 @@ public class ActivityConstants {
 	public static final int RESULT_UNBIND_CANCEL = 206;
 	public static final int RESULT_WRITE_MAJOR_MINOR_SUCCESS = 207;
 	public static final int RESULT_WRITE_MAJOR_MINOR_FAIL = 208;
+	public static final int RESULT_UPDATE_NICKNAME_SUCCESS = 209;
 
 	public static final int FRAGMENT_REPORT_ACTIVITY = 1;
 	public static final int FRAGMENT_PROFILE = 2;

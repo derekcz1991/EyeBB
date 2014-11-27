@@ -39,13 +39,15 @@ public class ProfileFragment extends Fragment {
 	private ArrayList<Notifications> list;
 	private ListView listView;
 	private NotificationsListViewAdapter adapter;
-	//没用的东西
+	// 没用的东西
 	int child;
+
+	private View v;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_profile, container, false);
+		v = inflater.inflate(R.layout.fragment_profile, container, false);
 		listView = (ListView) v.findViewById(R.id.listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -54,8 +56,7 @@ public class ProfileFragment extends Fragment {
 					int position, long id) {
 				Intent intent = new Intent(getActivity(), WebViewActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putInt("from",
-						ActivityConstants.FRAGMENT_PROFILE);
+				bundle.putInt("from", ActivityConstants.FRAGMENT_PROFILE);
 				bundle.putSerializable("notifications",
 						(Notifications) adapter.getItem(position));
 				intent.putExtras(bundle);
@@ -178,6 +179,10 @@ public class ProfileFragment extends Fragment {
 				intent.setClass(getActivity(), LancherActivity.class);
 				startActivity(intent);
 				getActivity().finish();
+			} else if (resultCode == ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS) {
+				((TextView) v.findViewById(R.id.username))
+						.setText(SharePrefsUtils.getUserName(getActivity()));
+				System.out.println("UPDATE NICK NAME!!!");
 			}
 		}
 	}

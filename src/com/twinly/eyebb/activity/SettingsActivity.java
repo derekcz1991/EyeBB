@@ -178,15 +178,17 @@ public class SettingsActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		
+
 		updateNicknameBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						UpdateNicknameActivity.class);
-				startActivity(intent);
+				startActivityForResult(
+						intent,
+						ActivityConstants.REQUEST_GO_TO_UPDATE_NICKNAME_ACTIVITY);
 			}
 		});
 
@@ -299,6 +301,17 @@ public class SettingsActivity extends Activity {
 			setResult(ActivityConstants.RESULT_AUTO_UPDATE_ON);
 		}
 		finish();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_UPDATE_NICKNAME_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS) {
+				setResult(ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS);
+			}
+		}
 	}
 
 }
