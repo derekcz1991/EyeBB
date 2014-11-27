@@ -342,7 +342,7 @@ public class AuthorizeKidsActivity extends Activity {
 				if (hasMasterFlag && hasGuestFlag) {
 					tvHint_auth_from.setVisibility(View.GONE);
 					tvHint_auth_to.setVisibility(View.GONE);
-				} else {
+				} else if(!hasMasterFlag && !hasGuestFlag){
 					tvHint_auth_to.setVisibility(View.VISIBLE);
 					tvHint_auth_from.setVisibility(View.VISIBLE);
 				}

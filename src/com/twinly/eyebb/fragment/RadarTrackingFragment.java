@@ -130,6 +130,8 @@ public class RadarTrackingFragment extends Fragment implements
 	// 判斷confirmRadarBtn是否被點擊
 	private Boolean isConfirmRadarBtn = false;
 
+	private int loopScanTimes = 0;
+
 	// device map
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
 
@@ -225,10 +227,15 @@ public class RadarTrackingFragment extends Fragment implements
 
 		initView(v);
 
-		if (DBChildren.getChildrenList(getActivity()) != null){
+		if (DBChildren.getChildrenList(getActivity()) != null) {
 			ChildData = DBChildren.getChildrenList(getActivity());
 		}
-			
+
+		for (int i = 0; i < ChildData.size(); i++) {
+			System.out.println("child_date-------->"
+					+ ChildData.get(i).getMacAddress());
+		}
+
 		updateDb = new UpdateDb();
 		getActivity().registerReceiver(updateDb,
 				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
@@ -510,8 +517,12 @@ public class RadarTrackingFragment extends Fragment implements
 		@Override
 		public void run() {
 			// System.out.println("isWhileLoop==>" + isWhileLoop);
-			while (isWhileLoop) {
+			if (isWhileLoop) {
+				// while (loopScanTimes < Integer.MAX_VALUE) {
 				scanLeDevice();
+				System.out.println("loopScanTimes--->" + loopScanTimes);
+				// }
+
 			}
 
 		}
@@ -520,22 +531,20 @@ public class RadarTrackingFragment extends Fragment implements
 	@SuppressLint("NewApi")
 	public void scanLeDevice() {
 
-		// Stops scanning after a pre-defined scan period.
-		// try {
-		// mBluetoothAdapter.stopLeScan(mLeScanCallback);
-		//
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 		mBluetoothAdapter.startLeScan(mLeScanCallback);
 
 		try {
 
-			Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
+			// Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
+			mHandler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+					new Thread(autoScan).start();
+					loopScanTimes++;
+				}
 
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			}, BleDeviceConstants.SCAN_INRERVAL_TIME);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
