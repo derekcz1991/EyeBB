@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -41,6 +42,7 @@ public class GrantKidsActivity extends Activity {
 	private String guestName;
 	private String grantChildId;
 	private String noAccessGrantChildId;
+	private boolean from_where = false;
 	public static final int UPDATE_VIEW = 11111;
 
 	@Override
@@ -50,6 +52,8 @@ public class GrantKidsActivity extends Activity {
 		Intent intent = getIntent();
 		guestdId = intent.getStringExtra("guestId");
 		guestName = intent.getStringExtra("guestName");
+		from_where = intent
+				.getBooleanExtra("from_search_guest_activity", false);
 
 		setTitle(getString(R.string.text_auth_to_user) + guestName);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -330,7 +334,7 @@ public class GrantKidsActivity extends Activity {
 		} else if (item.getItemId() == 0) {
 			grantChildId = "";
 			noAccessGrantChildId = "";
-			//System.out.println("SIZE==?"+GrantKidsListViewAdapter.grantkidId.size());
+			// System.out.println("SIZE==?"+GrantKidsListViewAdapter.grantkidId.size());
 			if (GrantKidsListViewAdapter.grantkidId.size() > 0) {
 				for (int i = 0; i < GrantKidsListViewAdapter.grantkidId.size(); i++) {
 					grantChildId += GrantKidsListViewAdapter.grantkidId.get(i)
@@ -355,5 +359,25 @@ public class GrantKidsActivity extends Activity {
 
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			// do something you want to
+
+			if (from_where) {
+				finish();
+			} else {
+				Intent intent = new Intent(GrantKidsActivity.this,
+						AuthorizeKidsActivity.class);
+				startActivity(intent);
+				finish();
+			}
+
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 }

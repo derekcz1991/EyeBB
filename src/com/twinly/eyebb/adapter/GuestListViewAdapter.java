@@ -2,6 +2,7 @@ package com.twinly.eyebb.adapter;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -103,7 +104,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 				intent.putExtra("guestId", guest.getGuardianId());
 				intent.putExtra("guestName", guest.getName());
 				context.startActivity(intent);
-				//((Activity) context).finish();
+				((Activity) context).finish();
 			}
 		});
 

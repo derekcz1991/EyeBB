@@ -246,6 +246,8 @@ public class SearchGuestActivity extends Activity {
 								parseJson(retStr).get(position).getGuardianId());
 						intent.putExtra("guestName",
 								parseJson(retStr).get(position).getName());
+						intent.putExtra("from_search_guest_activity",
+								true);
 						startActivityForResult(
 								intent,
 								ActivityConstants.REQUEST_GO_TO_GRANT_KIDS_ACTIVITY);
