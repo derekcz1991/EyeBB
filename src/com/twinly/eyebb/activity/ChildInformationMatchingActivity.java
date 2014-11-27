@@ -228,7 +228,7 @@ public class ChildInformationMatchingActivity extends Activity {
 					intent.putExtra(
 							ActivityConstants.EXTRA_GUARDIAN_ID,
 							getIntent().getLongExtra(
-									ActivityConstants.EXTRA_GUARDIAN_ID, 0));
+									ActivityConstants.EXTRA_GUARDIAN_ID, -1L));
 					intent.putExtra(CheckChildToBindDialog.EXTRA_CHILDREN_LIST,
 							retStr);
 					startActivity(intent);
