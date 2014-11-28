@@ -21,7 +21,7 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 
-public class GrantKidsListViewAdapter extends BaseAdapter {
+public class GrantKidsListViewFromGuestAdapter extends BaseAdapter {
 	private Context context;
 	private List<Child> data;
 	private LayoutInflater inflater;
@@ -36,22 +36,12 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 		public RelativeLayout layout;
 	}
 
-	public GrantKidsListViewAdapter(Context context, List<Child> data,
-			boolean isSortByName) {
+	public GrantKidsListViewFromGuestAdapter(Context context, List<Child> data) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
 		grantkidId = new ArrayList<String>();
 		noAccessGrantkidId = new ArrayList<String>();
-		if (isSortByName) {
-			Collections.sort(this.data, new Comparator<Child>() {
-
-				@Override
-				public int compare(Child lhs, Child rhs) {
-					return lhs.getName().charAt(0) - rhs.getName().charAt(0);
-				}
-			});
-		}
 
 		imageLoader = ImageLoader.getInstance();
 
@@ -63,6 +53,7 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 			} else {
 				noAccessGrantkidId.add(data.get(i).getChildId() + "");
 			}
+
 		}
 
 	}
@@ -111,6 +102,7 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		final Child child = data.get(position);
+
 		// init select
 		for (int i = 0; i < data.size(); i++) {
 			if (child.isWithAccess()) {
@@ -122,42 +114,46 @@ public class GrantKidsListViewAdapter extends BaseAdapter {
 						.getDrawable(R.drawable.ic_selected_off));
 
 			}
-		}
 
-		viewHolder.layout.setOnClickListener(new OnClickListener() {
+			viewHolder.layout.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
 
-				// first click
-				if (child.isWithAccess()) {
-					viewHolder.selected.setBackground(context.getResources()
-							.getDrawable(R.drawable.ic_selected_off));
-					child.setWithAccess(false);
-					for (int i = 0; i < grantkidId.size(); i++) {
-						if (grantkidId.get(i).toString()
-								.equals(child.getChildId() + "")) {
-							grantkidId.remove(i);
+					System.out.println("child.isWithAccess()--->"
+							+ child.isWithAccess());
+					// first click
+					if (child.isWithAccess()) {
+						viewHolder.selected.setBackground(context
+								.getResources().getDrawable(
+										R.drawable.ic_selected_off));
+						child.setWithAccess(false);
+						for (int i = 0; i < grantkidId.size(); i++) {
+							if (grantkidId.get(i).toString()
+									.equals(child.getChildId() + "")) {
+								grantkidId.remove(i);
+							}
 						}
-					}
 
-					noAccessGrantkidId.add(child.getChildId() + "");
-				} else {
-					viewHolder.selected.setBackground(context.getResources()
-							.getDrawable(R.drawable.ic_selected));
-					grantkidId.add(child.getChildId() + "");
-					for (int i = 0; i < noAccessGrantkidId.size(); i++) {
-						if (noAccessGrantkidId.get(i).toString()
-								.equals(child.getChildId() + "")) {
-							noAccessGrantkidId.remove(i);
+						noAccessGrantkidId.add(child.getChildId() + "");
+					} else {
+						viewHolder.selected.setBackground(context
+								.getResources().getDrawable(
+										R.drawable.ic_selected));
+						grantkidId.add(child.getChildId() + "");
+						for (int i = 0; i < noAccessGrantkidId.size(); i++) {
+							if (noAccessGrantkidId.get(i).toString()
+									.equals(child.getChildId() + "")) {
+								noAccessGrantkidId.remove(i);
+							}
 						}
+						child.setWithAccess(true);
 					}
-					child.setWithAccess(true);
 				}
 
-			}
-		});
+			});
+		}
 
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,

@@ -91,6 +91,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_WITH_ACCESS = "withAccess";
 	public static final String JSON_KEY_TOTAL_QUOTA = "totalQuota";
 	public static final String JSON_KEY_QUOTA_LEFT = "quotaLeft";
+	public static final String JSON_KEY_CHILDREN_BY_GUARDIAN = "chilrenByGuardian";
 
 	public static final String JSON_KEY_NOTICES = "notices";
 	public static final String JSON_KEY_NOTICES_TITLE = "title";

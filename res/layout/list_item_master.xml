@@ -19,35 +19,41 @@
         app:border_width="2dp" />
     -->
 
-    <TextView
-        android:id="@+id/name"
-        style="@style/DarkGreyText_20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/btn_bg_red" >
+    <RelativeLayout
+        android:id="@+id/btn_master_view"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp" >
 
         <TextView
+            android:id="@+id/name"
+            style="@style/DarkGreyText_20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/btn_list_call" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp" />
 
-        <TextView
-            android:id="@+id/phone"
-            style="@style/WhiteText_18"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp" />
-    </LinearLayout>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/btn_bg_red" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/btn_list_call" />
+
+            <TextView
+                android:id="@+id/phone"
+                style="@style/WhiteText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="20dp" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

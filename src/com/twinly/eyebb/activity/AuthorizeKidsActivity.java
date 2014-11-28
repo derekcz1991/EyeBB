@@ -30,6 +30,7 @@ import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
@@ -41,6 +42,7 @@ public class AuthorizeKidsActivity extends Activity {
 	// private Button btnAddNewGuest;
 	private ArrayList<User> auth_to_guest_data;
 	private ArrayList<User> auth_from_master_data;
+	private ArrayList<Child> auth_from_master_children_data;
 	private LinearLayout content;
 	private String guardianId;
 	private String name;
@@ -82,6 +84,7 @@ public class AuthorizeKidsActivity extends Activity {
 		content = (LinearLayout) findViewById(R.id.view_content);
 		auth_to_guest_data = new ArrayList<User>();
 		auth_from_master_data = new ArrayList<User>();
+		auth_from_master_children_data = new ArrayList<Child>();
 
 		ScrollView = (ScrollView) findViewById(R.id.scrollview);
 		ScrollView.smoothScrollTo(0, 0);
@@ -220,13 +223,13 @@ public class AuthorizeKidsActivity extends Activity {
 
 		try {
 			auth_from_master_data.clear();
+			auth_from_master_children_data.clear();
 			if (!JSONObject.NULL.equals(getData)) {
 				boolean isMasterNull = new JSONObject(getData)
 						.isNull(HttpConstants.JSON_KEY_MASTERS);
 				if (!isMasterNull) {
 					JSONArray masters = new JSONObject(getData)
 							.getJSONArray(HttpConstants.JSON_KEY_MASTERS);
-					;
 
 					if (masters.length() > 0) {
 						for (int i = 0; i < masters.length(); i++) {
@@ -264,13 +267,60 @@ public class AuthorizeKidsActivity extends Activity {
 											.getString(HttpConstants.JSON_KEY_GUARDIN_TYPE));
 
 							auth_from_master_data.add(masterMode);
+
+							JSONArray master_children = ((JSONObject) masters
+									.opt(i))
+									.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_BY_GUARDIAN);
+
+							for (int j = 0; j < master_children.length(); j++) {
+								JSONObject master_child_json = master_children
+										.getJSONObject(j);
+
+								Child master_child = new Child();
+
+								master_child
+										.setChildId(master_child_json
+												.getLong(HttpConstants.JSON_KEY_CHILD_ID));
+								master_child
+										.setName(master_child_json
+												.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_NAME));
+								master_child
+										.setIcon(master_child_json
+												.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ICON));
+
+								/**
+								 * keep guardin id
+								 */
+								master_child
+										.setPhone(master
+												.getString(HttpConstants.JSON_KEY_GUARDIN_ID));
+
+								System.out
+										.println("--->"
+												+ master_child_json
+														.getLong(HttpConstants.JSON_KEY_CHILD_ID));
+								System.out
+										.println("--->"
+												+ master_child_json
+														.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_NAME));
+								System.out
+										.println("--->"
+												+ master_child_json
+														.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ICON));
+								System.out
+										.println("--------------------------------------");
+
+								auth_from_master_children_data
+										.add(master_child);
+							}
 						}
 					}
 				}
 			}
 
 			System.out.println("master_data>" + auth_from_master_data.size());
-
+			System.out.println("master_data_children>"
+					+ auth_from_master_children_data.size());
 			// adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
 			// guest_data);
 			// listView.setAdapter(adapter);
@@ -335,14 +385,15 @@ public class AuthorizeKidsActivity extends Activity {
 					tvHint_auth_to.setVisibility(View.VISIBLE);
 					tvHint.setVisibility(View.GONE);
 					master_adapter = new MasterListViewAdapter(
-							AuthorizeKidsActivity.this, parseMasterJson(retStr));
+							AuthorizeKidsActivity.this, parseMasterJson(retStr),
+							auth_from_master_children_data);
 					master_listView.setAdapter(master_adapter);
 				}
 
 				if (hasMasterFlag && hasGuestFlag) {
 					tvHint_auth_from.setVisibility(View.GONE);
 					tvHint_auth_to.setVisibility(View.GONE);
-				} else if(!hasMasterFlag && !hasGuestFlag){
+				} else if (!hasMasterFlag && !hasGuestFlag) {
 					tvHint_auth_to.setVisibility(View.VISIBLE);
 					tvHint_auth_from.setVisibility(View.VISIBLE);
 				}

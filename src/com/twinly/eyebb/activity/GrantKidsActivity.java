@@ -21,7 +21,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.eyebb.R;
-import com.twinly.eyebb.adapter.GrantKidsListViewAdapter;
+import com.twinly.eyebb.adapter.GrantKidsListViewFromGuestAdapter;
+import com.twinly.eyebb.adapter.GrantKidsListViewFromMasterAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
@@ -30,7 +31,8 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class GrantKidsActivity extends Activity {
 	private ListView listView;
-	private GrantKidsListViewAdapter adapter;
+	private GrantKidsListViewFromGuestAdapter guest_adapter;
+	private GrantKidsListViewFromMasterAdapter master_adapter;
 	private boolean isSortByName;
 	private ArrayList<Child> returnList;
 	private ArrayList<Child> childList;
@@ -41,19 +43,41 @@ public class GrantKidsActivity extends Activity {
 	private String guestdId;
 	private String guestName;
 	private String grantChildId;
+	private String from_master_or_guest;
 	private String noAccessGrantChildId;
 	private boolean from_where = false;
 	public static final int UPDATE_VIEW = 11111;
+	private ArrayList<Child> new_children_data;
 
+	/**
+	 * 
+	 * from_master_or_guest 來自第一個activity AuthorizeKidsActivity ,因為chily並沒有給我
+	 * master 給來的json 所以我要自己傳值. 來判斷來自哪裡
+	 * 
+	 * 
+	 * from_where 這個用來判斷是不是來自search activity
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
+		new_children_data = new ArrayList<Child>();
 		guestdId = intent.getStringExtra("guestId");
 		guestName = intent.getStringExtra("guestName");
+
 		from_where = intent
 				.getBooleanExtra("from_search_guest_activity", false);
+
+		if (!from_where) {
+			from_master_or_guest = intent.getStringExtra("from_where");
+			if (from_master_or_guest.equals("master")) {
+				new_children_data = (ArrayList<Child>) intent
+						.getSerializableExtra("child_data");
+			}
+		}
 
 		setTitle(getString(R.string.text_auth_to_user) + guestName);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -307,10 +331,24 @@ public class GrantKidsActivity extends Activity {
 				break;
 
 			case UPDATE_VIEW:
-				returnList = parseChildJson(guestChildrenRetStr);
-				adapter = new GrantKidsListViewAdapter(GrantKidsActivity.this,
-						returnList, isSortByName);
-				listView.setAdapter(adapter);
+				if (!from_where) {
+					if (from_master_or_guest.equals("master")) {
+						master_adapter = new GrantKidsListViewFromMasterAdapter(
+								GrantKidsActivity.this, new_children_data);
+						listView.setAdapter(master_adapter);
+					} else if (from_master_or_guest.equals("guest")) {
+						returnList = parseChildJson(guestChildrenRetStr);
+						guest_adapter = new GrantKidsListViewFromGuestAdapter(
+								GrantKidsActivity.this, returnList);
+						listView.setAdapter(guest_adapter);
+					}
+				} else {
+					returnList = parseChildJson(guestChildrenRetStr);
+					guest_adapter = new GrantKidsListViewFromGuestAdapter(
+							GrantKidsActivity.this, returnList);
+					listView.setAdapter(guest_adapter);
+				}
+
 				break;
 
 			}
@@ -320,29 +358,46 @@ public class GrantKidsActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 0, 0, R.string.btn_confirm).setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_IF_ROOM
-						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		if (!from_where) {
+			if (from_master_or_guest.equals("guest")) {
+				menu.add(0, 0, 0, R.string.btn_confirm).setShowAsAction(
+						MenuItem.SHOW_AS_ACTION_IF_ROOM
+								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+			}
+		} else {
+			menu.add(0, 0, 0, R.string.btn_confirm).setShowAsAction(
+					MenuItem.SHOW_AS_ACTION_IF_ROOM
+							| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		}
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-			finish();
+			if (from_where) {
+				finish();
+			} else {
+				Intent intent = new Intent(GrantKidsActivity.this,
+						AuthorizeKidsActivity.class);
+				startActivity(intent);
+				finish();
+			}
+
 			return true;
 		} else if (item.getItemId() == 0) {
 			grantChildId = "";
 			noAccessGrantChildId = "";
 			// System.out.println("SIZE==?"+GrantKidsListViewAdapter.grantkidId.size());
-			if (GrantKidsListViewAdapter.grantkidId.size() > 0) {
-				for (int i = 0; i < GrantKidsListViewAdapter.grantkidId.size(); i++) {
-					grantChildId += GrantKidsListViewAdapter.grantkidId.get(i)
-							.toString() + ",";
-				}
-				for (int i = 0; i < GrantKidsListViewAdapter.noAccessGrantkidId
+			if (GrantKidsListViewFromGuestAdapter.grantkidId.size() > 0) {
+				for (int i = 0; i < GrantKidsListViewFromGuestAdapter.grantkidId
 						.size(); i++) {
-					noAccessGrantChildId += GrantKidsListViewAdapter.noAccessGrantkidId
+					grantChildId += GrantKidsListViewFromGuestAdapter.grantkidId
+							.get(i).toString() + ",";
+				}
+				for (int i = 0; i < GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
+						.size(); i++) {
+					noAccessGrantChildId += GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
 							.get(i).toString() + ",";
 				}
 
