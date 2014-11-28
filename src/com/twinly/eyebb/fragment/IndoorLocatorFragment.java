@@ -435,19 +435,24 @@ public class IndoorLocatorFragment extends Fragment implements
 			for (int j = 0; j < childrenBeanJSONList.length(); j++) {
 				JSONObject childrenBeanObject = childrenBeanJSONList
 						.getJSONObject(j);
-
-				long locationId = childrenBeanObject
-						.getLong(HttpConstants.JSON_KEY_CHILD_LOC_ID);
 				long childId = insertChild(childrenBeanObject);
-				if (locationMapChildren.get(locationId) == null) {
-					locationMapChildren.put(locationId, new ArrayList<Long>());
-				}
-				locationMapChildren.get(locationId).add(childId);
-
 				// set the first child as default report child
 				if (i == 0) {
 					SharePrefsUtils.setReportChildId(getActivity(), childId);
 				}
+				// if the child is located by router, show his location
+				if (CommonUtils.isNotNull(childrenBeanObject
+						.getString(HttpConstants.JSON_KEY_CHILD_LOC_ID))) {
+					long locationId = childrenBeanObject
+							.getLong(HttpConstants.JSON_KEY_CHILD_LOC_ID);
+
+					if (locationMapChildren.get(locationId) == null) {
+						locationMapChildren.put(locationId,
+								new ArrayList<Long>());
+					}
+					locationMapChildren.get(locationId).add(childId);
+				}
+
 			}
 		}
 	}
