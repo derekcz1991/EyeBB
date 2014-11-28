@@ -122,7 +122,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-         <activity
+        <activity
             android:name="com.twinly.eyebb.activity.UpdateNicknameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -243,7 +243,13 @@
             android:name="com.example.qr_codescan.MipcaActivityCapture"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme"
             android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name="com.example.qr_codescan.ManualInputActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.qrcode.QrCodeMainActivity"
