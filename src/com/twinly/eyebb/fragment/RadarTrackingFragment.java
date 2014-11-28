@@ -191,6 +191,7 @@ public class RadarTrackingFragment extends Fragment implements
 	ArrayList<Child> showAllMissImageData;
 
 	private UpdateDb updateDb;
+	private TextView hint_nodata;
 
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
@@ -394,6 +395,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// ScanedChildData.clear();
 		// MissChildData.clear();
 
+		hint_nodata = (TextView) v.findViewById(R.id.hint_no_data);
 		RadarView = v.findViewById(R.id.radar_view);
 
 		radarBeepAllBtn = v.findViewById(R.id.radar_beep_all_btn);
@@ -474,6 +476,8 @@ public class RadarTrackingFragment extends Fragment implements
 			if (beepIntent != null)
 				getActivity().stopService(beepIntent);
 			getActivity().unregisterReceiver(updateDb);
+			getActivity().unregisterReceiver(bluetoothState);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -595,9 +599,17 @@ public class RadarTrackingFragment extends Fragment implements
 	public void btnConfirmConnect() {
 		isConfirmRadarBtn = true;
 
+		//hint and get db data
 		if (DBChildren.getChildrenList(getActivity()) != null) {
-			ChildData = DBChildren.getChildrenList(getActivity());
+			ChildData = DBChildren.getChildrenList(getActivity());		
 		}
+		
+		if(ChildData != null && ChildData.size() > 0){
+			hint_nodata.setVisibility(View.GONE);
+		}else{
+			hint_nodata.setVisibility(View.VISIBLE);
+		}
+		
 		getActivity().registerReceiver(updateDb,
 				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
 
@@ -609,7 +621,7 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 		// if (checkIsBluetoothOpen) {
 		// 阻止底部button點擊
-
+	
 		isClickConnection = true;
 		// 開始循環掃描
 		isWhileLoop = true;

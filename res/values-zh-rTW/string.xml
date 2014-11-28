@@ -118,9 +118,9 @@
     <string name="text_feed_back_content">請提出您寶貴的建議或者告訴我們您的不滿:</string>
     <string name="text_your_comments">您的意見</string>
     <string name="text_feedback_bug">錯誤</string>
-    <string name="text_feedback_idea">想法</string>
+    <string name="text_feedback_idea">建議</string>
     <string name="text_feedback_question">問題</string>
-    <string name="text_no_content">(暫時)沒有內容...</string>
+    <string name="text_no_content">沒有過往活動</string>
     <string name="text_anti_lost_mode_miss">他/她得信號很弱或者已經丟失</string>
     <string name="text_fill_in_something">請填入內容!</string>
     <string name="text_contact_information">聯繫信息</string>
@@ -137,7 +137,7 @@
     <string name="text_unbind_device">確定解除綁定设备嗎?</string>
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
-    <string name="text_no_data">未綁定小童</string>
+    <string name="text_no_data">沒有監護的寶寶</string>
     <string name="text_no_guest">無監護人...</string>
     <string name="text_select_child">請選擇孩子.</string>
     <string name="text_grant_success">授權成功!</string>
@@ -173,8 +173,8 @@
       <string name="text_new_nickname">新暱稱</string>
        <string name="text_update_nickname_successful">修改暱稱成功,謝謝!</string>
     <string name="text_bind_child">已綁定</string>
-    <string name="text_unbind_child">未綁定</string>
-    <string name="text_granted_child">授权的小孩</string>
+    <string name="text_unbind_child">未綁定 (沒有監護的寶寶)</string>
+    <string name="text_granted_child">已被授權</string>
            <string name="text_rssi_strong">信號強</string>
      <string name="text_rssi_good">信號中</string>
      <string name="text_rssi_weak">信號差</string>

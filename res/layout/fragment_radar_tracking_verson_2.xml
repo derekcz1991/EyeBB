@@ -262,7 +262,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="240dp"
                 android:alpha="0.3"
-                
                 android:background="@drawable/bg_white" >
 
                 <RelativeLayout
@@ -406,7 +405,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
-                            
                                 android:src="@drawable/bg_radar_rotate" />
                         </RelativeLayout>
 
@@ -584,6 +582,16 @@
                 </RelativeLayout>
             </RelativeLayout>
             <!-- radar -->
+
+            <TextView
+                android:id="@+id/hint_no_data"
+                style="@style/DarkGreyText_20"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:text="@string/text_no_data" />
 
             <com.twinly.eyebb.customview.LinearLayoutForListView
                 android:id="@+id/radar_children_list"
