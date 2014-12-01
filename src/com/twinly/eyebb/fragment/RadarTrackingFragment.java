@@ -43,7 +43,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -70,29 +69,17 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RadarTrackingFragment extends Fragment implements
 		RadarKidsListViewAdapterCallback, UncaughtExceptionHandler {
-	private SimpleAdapter mkidsListAdapter;
+
 	ArrayList<HashMap<String, Object>> mKidsData;
 	ImageView radar_rotate;
 	private View radarBeepAllBtn;
 
-	private View btnStatus;
-
 	private BluetoothAdapter mBluetoothAdapter;
 	private final static int BLE_VERSION = 18;
-
-	// bluetooth
-	private boolean scan_flag = false;
-	// true 为第一次扫描
-	private Boolean firstScan = true;
-
-	private Handler mHandler;
-	private Handler autoScanHandler;
 
 	private final static int BEEPTIMEOUT = 7;
 	private final static int SCAN_CHILD_FOR_LIST = 8;
 
-	private String UUID;
-	private ArrayList<BluetoothDevice> mLeDevices = new ArrayList<BluetoothDevice>();
 	List<String> UUID_temp = new ArrayList<String>();
 
 	// SimpleAdapter Childadapter; // ListView的适配器
@@ -116,12 +103,10 @@ public class RadarTrackingFragment extends Fragment implements
 	private TextView missingChildNumTxt;
 	private TextView unMissingChildNumTxt;
 	private Boolean isClickConnection = false;
-	private Boolean isWhileLoop = true;
+	private Boolean isWhileLoop = false;
 	private ToggleButton confirmRadarBtn;
 	// 判斷confirmRadarBtn是否被點擊
 	private Boolean isConfirmRadarBtn = false;
-
-	private int loopScanTimes = 0;
 
 	// device map
 	private HashMap<String, Device> deviceMap = new HashMap<String, Device>();;
@@ -148,13 +133,11 @@ public class RadarTrackingFragment extends Fragment implements
 	private TimerTask BeepCheckTimeOutTask = null;
 
 	private boolean isFirstBeep = true;
-	private int beepAllTime = 0;
+
 	Timer timer = null;
 	TimerTask task = null;
 
 	Thread BLEScanThread;
-	// 控制timetask
-	private boolean buttonCancel = true;
 
 	public static Intent beepIntent;
 	private int beepTime = 0;
@@ -184,14 +167,14 @@ public class RadarTrackingFragment extends Fragment implements
 	private CircleImageView missImg6;
 
 	private RelativeLayout connectDeviceLayout;
-	private boolean checkIsBluetoothOpen = false;
 
-	;
 	ArrayList<Child> showAllScanImageData;
 	ArrayList<Child> showAllMissImageData;
 
 	private UpdateDb updateDb;
 	private TextView hint_nodata;
+	private boolean first_start_scan_thread_flag = true;
+	private boolean get_bluetooth_status;
 
 	@SuppressWarnings("static-access")
 	@SuppressLint({ "NewApi", "CutPasteId" })
@@ -211,9 +194,14 @@ public class RadarTrackingFragment extends Fragment implements
 		// }
 
 		updateDb = new UpdateDb();
+		final BluetoothManager bluetoothManager = (BluetoothManager) getActivity()
+				.getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
 
-		mHandler = new Handler();
-		autoScanHandler = new Handler();
+		// device status
+		getActivity().registerReceiver(bluetoothState,
+				new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+
 		listItem = new ArrayList<HashMap<String, Object>>();
 		myDevice = new ArrayList<Device>();
 		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
@@ -286,22 +274,6 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 		};
 
-		scanImg1.setOnClickListener(showAllScanImage);
-		scanImg2.setOnClickListener(showAllScanImage);
-		scanImg3.setOnClickListener(showAllScanImage);
-		scanImg4.setOnClickListener(showAllScanImage);
-		scanImg5.setOnClickListener(showAllScanImage);
-		scanImg6.setOnClickListener(showAllScanImage);
-		scanImg7.setOnClickListener(showAllScanImage);
-		scanImg8.setOnClickListener(showAllScanImage);
-		scanImg9.setOnClickListener(showAllScanImage);
-		missImg1.setOnClickListener(showAllMissImage);
-		missImg2.setOnClickListener(showAllMissImage);
-		missImg3.setOnClickListener(showAllMissImage);
-		missImg4.setOnClickListener(showAllMissImage);
-		missImg5.setOnClickListener(showAllMissImage);
-		missImg6.setOnClickListener(showAllMissImage);
-
 		// 點擊這裡i
 		confirmRadarBtn
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -346,6 +318,24 @@ public class RadarTrackingFragment extends Fragment implements
 			}
 		});
 
+		/*
+		 * initial the children head image postion
+		 */
+		scanImg1.setOnClickListener(showAllScanImage);
+		scanImg2.setOnClickListener(showAllScanImage);
+		scanImg3.setOnClickListener(showAllScanImage);
+		scanImg4.setOnClickListener(showAllScanImage);
+		scanImg5.setOnClickListener(showAllScanImage);
+		scanImg6.setOnClickListener(showAllScanImage);
+		scanImg7.setOnClickListener(showAllScanImage);
+		scanImg8.setOnClickListener(showAllScanImage);
+		scanImg9.setOnClickListener(showAllScanImage);
+		missImg1.setOnClickListener(showAllMissImage);
+		missImg2.setOnClickListener(showAllMissImage);
+		missImg3.setOnClickListener(showAllMissImage);
+		missImg4.setOnClickListener(showAllMissImage);
+		missImg5.setOnClickListener(showAllMissImage);
+		missImg6.setOnClickListener(showAllMissImage);
 		return v;
 
 	}
@@ -420,9 +410,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 		// bluetooth
 		// connect device
-		// btnConfirm = v.findViewById(R.id.btn_confirm);
-		// btnCancel = v.findViewById(R.id.btn_cancel);
-		btnStatus = v.findViewById(R.id.connection_status_btn);
 
 		scanImg1 = (CircleImageView) v
 				.findViewById(R.id.radar_child_scan_head_img1);
@@ -469,15 +456,16 @@ public class RadarTrackingFragment extends Fragment implements
 		super.onDestroy();
 		// 关闭循环扫描
 		isWhileLoop = false;
-		handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
-		handler.removeCallbacksAndMessages(BEEPTIMEOUT);
 
 		try {
+			handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
+			handler.removeCallbacksAndMessages(BEEPTIMEOUT);
+
 			if (beepIntent != null)
 				getActivity().stopService(beepIntent);
 			getActivity().unregisterReceiver(updateDb);
 			getActivity().unregisterReceiver(bluetoothState);
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -485,47 +473,6 @@ public class RadarTrackingFragment extends Fragment implements
 
 		stopTimer();
 		mBluetoothAdapter.stopLeScan(mLeScanCallback);
-	}
-
-	// 下面為bluetooth
-	Runnable autoScan = new Runnable() {
-		@Override
-		public void run() {
-			// System.out.println("isWhileLoop==>" + isWhileLoop);
-			if (isWhileLoop) {
-				// while (loopScanTimes < Integer.MAX_VALUE) {
-				scanLeDevice();
-				// System.out.println("loopScanTimes--->" + loopScanTimes);
-				// }
-
-			}
-
-		}
-	};
-
-	@SuppressLint("NewApi")
-	public void scanLeDevice() {
-
-		mBluetoothAdapter.startLeScan(mLeScanCallback);
-
-		try {
-
-			// Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
-			mHandler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					mBluetoothAdapter.stopLeScan(mLeScanCallback);
-					new Thread(autoScan).start();
-					loopScanTimes++;
-				}
-
-			}, BleDeviceConstants.SCAN_INRERVAL_TIME);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	@SuppressLint("NewApi")
@@ -548,11 +495,6 @@ public class RadarTrackingFragment extends Fragment implements
 		// }
 
 		if (mBluetoothAdapter.isEnabled()) {
-			// if (scan_flag) {
-			// autoScanHandler.postDelayed(autoScan, Constants.POSTDELAYTIME);
-			// } else {
-			// new Thread(autoScan).start();
-			// }
 
 		}
 
@@ -563,12 +505,6 @@ public class RadarTrackingFragment extends Fragment implements
 		} else {
 			System.out.println("isWhileLoop = true;");
 			isWhileLoop = true;
-			if (scan_flag) {
-				autoScanHandler.postDelayed(autoScan,
-						BleDeviceConstants.POSTDELAYTIME);
-			} else {
-				new Thread(autoScan).start();
-			}
 		}
 
 		// clearAlltheDate();
@@ -597,61 +533,44 @@ public class RadarTrackingFragment extends Fragment implements
 	}
 
 	public void btnConfirmConnect() {
+		// 確定點擊開啟button
+
 		isConfirmRadarBtn = true;
-
-		//hint and get db data
-		if (DBChildren.getChildrenList(getActivity()) != null) {
-			ChildData = DBChildren.getChildrenList(getActivity());		
-		}
-		
-		if(ChildData != null && ChildData.size() > 0){
-			hint_nodata.setVisibility(View.GONE);
-		}else{
-			hint_nodata.setVisibility(View.VISIBLE);
-		}
-		
-		getActivity().registerReceiver(updateDb,
-				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
-
 		try {
-			checkIsBluetoothOpen = checkIsBluetooth();
+			get_bluetooth_status = checkIsBluetooth();
+			if (get_bluetooth_status) {
+				clickConfirmRadarButton();
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+	private void clickConfirmRadarButton() {
+		// hint and get db data
+		if (DBChildren.getChildrenList(getActivity()) != null) {
+			ChildData = DBChildren.getChildrenList(getActivity());
+			Message msg = handler.obtainMessage();
+			msg.what = SCAN_CHILD_FOR_LIST;
+			handler.sendMessage(msg);
+		}
+
+		if (ChildData != null && ChildData.size() > 0) {
+			hint_nodata.setVisibility(View.GONE);
+		} else {
+			hint_nodata.setVisibility(View.VISIBLE);
+		}
+
+		getActivity().registerReceiver(updateDb,
+				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
+
 		// if (checkIsBluetoothOpen) {
 		// 阻止底部button點擊
-	
+
 		isClickConnection = true;
-		// 開始循環掃描
-		isWhileLoop = true;
-
-		// 確定點擊開啟button
-		isConfirmRadarBtn = true;
-
-		// 重新啟動timetask
-		// timer.schedule(task, 500, 5000);
-		if (buttonCancel) {
-			buttonCancel = false;
-			TimerTask task = new TimerTask() {
-
-				public void run() {
-					// System.out.println("AAAAAAAAAAA");
-					Message msg = handler.obtainMessage();
-					msg.what = SCAN_CHILD_FOR_LIST;
-					handler.sendMessage(msg);
-
-				}
-
-			};
-			timer = new Timer();
-
-			if (timer != null && task != null)
-				// System.out.println("bbbbbbbbbbbbbb");
-				timer.schedule(task, BleDeviceConstants.DELAY,
-						BleDeviceConstants.PERIOD);
-
-		}
 
 		// 顯示list
 		ChildlistView.setVisibility(View.VISIBLE);
@@ -669,29 +588,24 @@ public class RadarTrackingFragment extends Fragment implements
 				BleDeviceConstants.DEVICE_CONNECT_STATUS_DEFAULT);
 
 		// bluetooth
-
-		if (scan_flag) {
-			// System.out
-			// .println("autoScanHandler.postDelayed(autoScan, POSTDELAYTIME);");
-			autoScanHandler.postDelayed(autoScan,
-					BleDeviceConstants.POSTDELAYTIME);
-		} else {
-			new Thread(autoScan).start();
+		if (first_start_scan_thread_flag) {
+			autoScan.start();
+			first_start_scan_thread_flag = false;
 		}
-		// }
-
+		isWhileLoop = true;
 	}
 
+	@SuppressWarnings("static-access")
 	@SuppressLint("NewApi")
 	private void btnCancelConnect() {
 		// 没有点击的flag
 		isConfirmRadarBtn = false;
 		// 还原为没有点击
 		confirmRadarBtn.setChecked(false);
+		autoScan.currentThread().interrupt();
 
-		buttonCancel = true;
 		// 清除time task
-		stopTimer();
+		// stopTimer();
 
 		// listview消失
 		ChildlistView.setVisibility(View.GONE);
@@ -700,8 +614,6 @@ public class RadarTrackingFragment extends Fragment implements
 		MissChildlistView.setAlpha((float) 0.3);
 		RadarView.setAlpha((float) 0.3);
 		connectDeviceLayout.setAlpha((float) 0.3);
-
-		scan_flag = false;
 
 		// 關閉循環掃描
 		isWhileLoop = false;
@@ -785,17 +697,6 @@ public class RadarTrackingFragment extends Fragment implements
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader = ImageLoader.getInstance();
 
-		// for (int i = 0; i < scanedChildData2.size(); i++) {
-		// Child child = scanedChildData2.get(i);
-		// mainLayout = (RelativeLayout) v.findViewById(R.id.miss_radar_view);
-		// CircleImageView cim = new CircleImageView(getActivity());
-		// HeadPosition(cim);
-		//
-		// mainLayout.addView(cim);
-		// // AsyncImageLoader.setImageViewFromUrl(child.getIcon(), cim);
-		// imageLoader.displayImage(child.getIcon(), cim, options, null);
-		//
-		// }
 		scanImg1.setVisibility(View.INVISIBLE);
 		scanImg2.setVisibility(View.INVISIBLE);
 		scanImg3.setVisibility(View.INVISIBLE);
@@ -1093,17 +994,6 @@ public class RadarTrackingFragment extends Fragment implements
 		return scanedChildData2.size();
 
 	}
-
-	// private void removeImageHead(int scanedChildDataNum) {
-	//
-	// try {
-	// mainLayout.removeViewsInLayout(1, scanedChildDataNum);
-	// } catch (Exception e) {
-	// // TODO Auto-generated catch block
-	// // mainLayout.removeViewsInLayout(1, scanedChildDataNum);
-	// e.printStackTrace();
-	// }
-	// }
 
 	@SuppressWarnings("unchecked")
 	private int addMissImageHead(ArrayList<Child> missChildData2,
@@ -1434,17 +1324,13 @@ public class RadarTrackingFragment extends Fragment implements
 	}
 
 	public static void removeDeviceDuplicateList(ArrayList<Device> list) {
-		List<Device> tempList = new ArrayList<Device>();
-		
-		for (int i = 0; i < list.size(); i++) {
-			tempList = list;
-		}
+
 		// System.out.println(tempList);
-		for (int m = 0; m < tempList.size(); m++) {
-			for (int n = m + 1; n < tempList.size();) {
-				if (tempList.get(m).getAddress()
-						.equals(tempList.get(n).getAddress())) {
+		for (int m = 0; m < list.size(); m++) {
+			for (int n = m + 1; n < list.size();) {
+				if (list.get(m).getAddress().equals(list.get(n).getAddress())) {
 					list.remove(n);
+					n++;
 				} else {
 					n++;
 				}
@@ -1484,12 +1370,6 @@ public class RadarTrackingFragment extends Fragment implements
 				break;
 
 			case SCAN_CHILD_FOR_LIST:
-				// device status
-				getActivity()
-						.registerReceiver(
-								bluetoothState,
-								new IntentFilter(
-										BluetoothAdapter.ACTION_STATE_CHANGED));
 
 				if (SharePrefsUtils.DeviceConnectStatus(getActivity()) == BleDeviceConstants.DEVICE_CONNECT_STATUS_ERROR) {
 
@@ -1506,7 +1386,6 @@ public class RadarTrackingFragment extends Fragment implements
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
 						.clone();
 
-				// removeDuplicate(ScanedTempChildData);
 				try {
 					removeChildDuplicateList(ScanedTempChildData);
 					removeDeviceDuplicateList(myDevice);
@@ -1591,10 +1470,46 @@ public class RadarTrackingFragment extends Fragment implements
 				// radar頭像
 
 				clearAlltheDate();
+
 			}
 
 		}
 	};
+
+	// 下面為bluetooth
+	Thread autoScan = new Thread(new Runnable() {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+
+			while (isWhileLoop) {
+
+				try {
+					scanLeDevice();
+					Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
+
+					Message msg = handler.obtainMessage();
+					msg.what = SCAN_CHILD_FOR_LIST;
+					handler.sendMessage(msg);
+
+					System.out.println("scanLeDevice repeat start !!!!!!!!");
+					mBluetoothAdapter.stopLeScan(mLeScanCallback);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	});
+
+	/**
+	 * scan funciton
+	 */
+	@SuppressLint("NewApi")
+	public void scanLeDevice() {
+		mBluetoothAdapter.startLeScan(mLeScanCallback);
+	}
 
 	/**
 	 * broadcast
@@ -1607,6 +1522,13 @@ public class RadarTrackingFragment extends Fragment implements
 			case BluetoothAdapter.STATE_TURNING_ON:
 				break;
 			case BluetoothAdapter.STATE_ON:
+
+				if (isConfirmRadarBtn) {
+					if (!get_bluetooth_status) {
+						clickConfirmRadarButton();
+					}
+				}
+
 				break;
 			case BluetoothAdapter.STATE_TURNING_OFF:
 				System.out.println("STATE_TURNING_OFF");
@@ -1908,9 +1830,7 @@ public class RadarTrackingFragment extends Fragment implements
 					.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
 			beepIntent.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM,
 					"radar");
-			// if (scan_flag) {
-			// scanLeDevice(false);
-			// }
+
 			SharePrefsUtils.setConnectBleService(getActivity(), 1);
 			SharePrefsUtils.setfinishBeep(getActivity(), true);
 
@@ -1940,12 +1860,6 @@ public class RadarTrackingFragment extends Fragment implements
 					.equals(openAntiData2.get(i).getMacAddress())) {
 				if (rssi < BleDeviceConstants.BEEP_RSSI) {
 
-					// beepAllTime++;
-
-					// System.out.println("beepAllTime=>" + rssi + " "
-					// + beepAllTime);
-					// if (beepAllTime == 0) {
-
 					Intent beepForAntiIntent = new Intent();
 
 					beepForAntiIntent.setClass(getActivity(),
@@ -1954,12 +1868,8 @@ public class RadarTrackingFragment extends Fragment implements
 							openAntiData2.get(i));
 
 					startActivity(beepForAntiIntent);
-					beepAllTime = 0;
+
 					// }
-
-				} else {
-
-					beepAllTime = 0;
 
 				}
 			}
