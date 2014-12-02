@@ -55,16 +55,14 @@
             android:text="Kitty Chan"
             android:textColor="@color/dark_grey"
             android:textSize="18sp" />
-    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/radar_list_kids_device_rssi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/newslist_kids_name"
-        android:textSize="12sp" />
+        <TextView
+            android:id="@+id/radar_list_kids_device_rssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radar_list_kids_name"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/radar_item_beep_btn"
