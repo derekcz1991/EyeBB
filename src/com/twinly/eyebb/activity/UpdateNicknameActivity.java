@@ -78,9 +78,17 @@ public class UpdateNicknameActivity extends Activity {
 					msg.what = BleDeviceConstants.PASSWORD_FORMAT_ERROR;
 					handler.sendMessage(msg);
 				}
+			} else if (new_nickname.length() > 0) {
+				Message msg = handler.obtainMessage();
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_PASSWORD;
+				handler.sendMessage(msg);
+			} else if (password.length() > 0) {
+				Message msg = handler.obtainMessage();
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_NICKNAME;
+				handler.sendMessage(msg);
 			} else {
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_NICKNAME;
 				handler.sendMessage(msg);
 			}
 
@@ -159,6 +167,20 @@ public class UpdateNicknameActivity extends Activity {
 			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case BleDeviceConstants.NULL_FEEDBAKC_PASSWORD:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_password, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case BleDeviceConstants.NULL_FEEDBAKC_NICKNAME:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_nickname, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;

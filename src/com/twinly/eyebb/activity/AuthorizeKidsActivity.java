@@ -58,6 +58,7 @@ public class AuthorizeKidsActivity extends Activity {
 	private ScrollView ScrollView;
 	public static final int UPDATE_VIEW = 11111;
 	private Dialog authDialog;
+	private Runnable postFindGuestsToServerRunnable;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,14 @@ public class AuthorizeKidsActivity extends Activity {
 		authDialog = LoadingDialog.createLoadingDialog(
 				AuthorizeKidsActivity.this, getString(R.string.toast_loading));
 		authDialog.show();
+		postFindGuestsToServerRunnable = new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				postFindGuestsToServer();
+			}
+		};
 		new Thread(postFindGuestsToServerRunnable).start();
 
 		// btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
@@ -108,15 +117,6 @@ public class AuthorizeKidsActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
-	Runnable postFindGuestsToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-
-			postFindGuestsToServer();
-
-		}
-	};
 
 	@SuppressLint("ShowToast")
 	private void postFindGuestsToServer() {
@@ -385,7 +385,8 @@ public class AuthorizeKidsActivity extends Activity {
 					tvHint_auth_to.setVisibility(View.VISIBLE);
 					tvHint.setVisibility(View.GONE);
 					master_adapter = new MasterListViewAdapter(
-							AuthorizeKidsActivity.this, parseMasterJson(retStr),
+							AuthorizeKidsActivity.this,
+							parseMasterJson(retStr),
 							auth_from_master_children_data);
 					master_listView.setAdapter(master_adapter);
 				}

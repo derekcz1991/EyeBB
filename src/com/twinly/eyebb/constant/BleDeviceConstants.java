@@ -102,6 +102,10 @@ public class BleDeviceConstants {
 	public static final int ACCOUNT_DO_NOT_HAS_THIS_CHILD = 10019;
 	public static final int UPDATE_NICKNAME_SUCCESS = 10020;
 	public static final int UPDATE_NICKNAME_FAIL_WRONG_PASSWORD = 10021;
+	public static final int NULL_FEEDBAKC_PASSWORD = 10022;
+	public static final int NULL_FEEDBAKC_NICKNAME = 10023;
+	public static final int NULL_FEEDBAKC_NEW_PASSWORD = 10024;
+	public static final int NULL_FEEDBAKC_REPEAT_NEW_PASSWORD = 10025;
 	
 	public static final String BLE_SERVICE_COME_FROM = "device_come_from";
 

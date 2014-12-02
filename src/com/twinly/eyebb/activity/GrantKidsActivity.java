@@ -253,19 +253,24 @@ public class GrantKidsActivity extends Activity {
 		// TODO Auto-generated method stub
 
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>"
-				+ guestdId
-				+ " "
-				+ grantChildId.substring(0, grantChildId.length() - 1)
-				+ " "
-				+ noAccessGrantChildId.substring(0,
-						noAccessGrantChildId.length() - 1));
+		System.out.println("info=>" + guestdId + " ");
 
 		map.put("guestId", guestdId);
-		map.put("accessChildIds",
-				grantChildId.substring(0, grantChildId.length() - 1));
-		map.put("noAccessChildIds", noAccessGrantChildId.substring(0,
-				noAccessGrantChildId.length() - 1));
+		if (grantChildId.length() > 0) {
+			map.put("accessChildIds",
+					grantChildId.substring(0, grantChildId.length() - 1));
+		} else {
+			map.put("accessChildIds", "");
+		}
+
+		if (noAccessGrantChildId.length() > 0) {
+			map.put("noAccessChildIds",
+					noAccessGrantChildId.substring(0,
+							noAccessGrantChildId.length() - 1));
+		} else {
+			map.put("noAccessChildIds", "");
+		}
+
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.postTo(GrantKidsActivity.this,
@@ -389,28 +394,22 @@ public class GrantKidsActivity extends Activity {
 			grantChildId = "";
 			noAccessGrantChildId = "";
 			// System.out.println("SIZE==?"+GrantKidsListViewAdapter.grantkidId.size());
-			if (GrantKidsListViewFromGuestAdapter.grantkidId.size() > 0) {
-				for (int i = 0; i < GrantKidsListViewFromGuestAdapter.grantkidId
-						.size(); i++) {
-					grantChildId += GrantKidsListViewFromGuestAdapter.grantkidId
-							.get(i).toString() + ",";
-				}
-				for (int i = 0; i < GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
-						.size(); i++) {
-					noAccessGrantChildId += GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
-							.get(i).toString() + ",";
-				}
 
-				System.out.println("grantChildId-->" + grantChildId
-						+ "    nograntChildId--->" + noAccessGrantChildId);
-
-				new Thread(postGrantToServerRunnable).start();
-			} else {
-				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NO_SELECT_CHILDREN;
-				handler.sendMessage(msg);
-				// finish();
+			for (int i = 0; i < GrantKidsListViewFromGuestAdapter.grantkidId
+					.size(); i++) {
+				grantChildId += GrantKidsListViewFromGuestAdapter.grantkidId
+						.get(i).toString() + ",";
 			}
+			for (int i = 0; i < GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
+					.size(); i++) {
+				noAccessGrantChildId += GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
+						.get(i).toString() + ",";
+			}
+
+			System.out.println("grantChildId-->" + grantChildId
+					+ "    nograntChildId--->" + noAccessGrantChildId);
+
+			new Thread(postGrantToServerRunnable).start();
 
 		}
 		return super.onOptionsItemSelected(item);

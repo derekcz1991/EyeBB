@@ -172,6 +172,10 @@
      <string name="text_rssi_strong">Strong Signal</string>
      <string name="text_rssi_good">Good Signal</string>
      <string name="text_rssi_weak">Weak Signal</string>
+         <string name="text_fill_in_password">Please, enter your password!</string>
+<string name="text_fill_in_nickname">Please, enter your nickname!</string>
+<string name="text_fill_in_new_password">Please, enter your new password!</string>
+<string name="text_fill_in_repeat_new_password">Please, repeat to enter your new password!</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

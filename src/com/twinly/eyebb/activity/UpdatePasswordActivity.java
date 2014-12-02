@@ -92,9 +92,23 @@ public class UpdatePasswordActivity extends Activity {
 					handler.sendMessage(msg);
 				}
 
+			} else if (newPassword.length() > 0 && oldPassword.length() <= 0) {
+				Message msg = handler.obtainMessage();
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_PASSWORD;
+				handler.sendMessage(msg);
+			} else if (oldPassword.length() > 0 && newPassword.length() <= 0
+					&& newRepeatPassword.length() <= 0) {
+				Message msg = handler.obtainMessage();
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_NEW_PASSWORD;
+				handler.sendMessage(msg);
+			} else if (oldPassword.length() > 0 && newPassword.length() > 0
+					&& newRepeatPassword.length() <= 0) {
+				Message msg = handler.obtainMessage();
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_REPEAT_NEW_PASSWORD;
+				handler.sendMessage(msg);
 			} else {
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
+				msg.what = BleDeviceConstants.NULL_FEEDBAKC_PASSWORD;
 				handler.sendMessage(msg);
 			}
 
@@ -172,6 +186,28 @@ public class UpdatePasswordActivity extends Activity {
 			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case BleDeviceConstants.NULL_FEEDBAKC_PASSWORD:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_password, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case BleDeviceConstants.NULL_FEEDBAKC_NEW_PASSWORD:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_new_password, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case BleDeviceConstants.NULL_FEEDBAKC_REPEAT_NEW_PASSWORD:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_fill_in_repeat_new_password,
+						Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
