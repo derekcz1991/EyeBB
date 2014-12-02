@@ -1382,12 +1382,21 @@ public class RadarTrackingFragment extends Fragment implements
 					}
 					deviceStatusError++;
 				}
-
+//				for (int i = 0; i < ScanedChildData.size(); i++) {
+//					System.out.println("------->" + ScanedChildData.get(i).getMacAddress());
+//					
+//				}
+//				System.out.println("-----------------------------");
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
 						.clone();
 
 				try {
 					removeChildDuplicateList(ScanedTempChildData);
+//					for (int i = 0; i < ScanedTempChildData.size(); i++) {
+//						System.out.println("------->" + ScanedTempChildData.get(i).getMacAddress());
+//						
+//					}
+//					System.out.println("-----------------------------");
 					removeDeviceDuplicateList(myDevice);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -1784,6 +1793,7 @@ public class RadarTrackingFragment extends Fragment implements
 		};
 
 		if (isFirstBeep) {
+			timer = new Timer();
 			timer.schedule(BeepCheckTimeOutTask, 0, 1000);
 		} else {
 			if (SharePrefsUtils.isfinishBeep(getActivity())) {
