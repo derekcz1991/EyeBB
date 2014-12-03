@@ -19,9 +19,9 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.SharePrefsUtils;

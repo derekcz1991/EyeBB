@@ -21,7 +21,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.HttpRequestUtils;

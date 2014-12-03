@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 

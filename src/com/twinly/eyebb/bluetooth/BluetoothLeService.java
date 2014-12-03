@@ -36,7 +36,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.service.BleServicesService;

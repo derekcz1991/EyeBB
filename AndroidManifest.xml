@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.eyebb"
-    android:versionCode="3"
-    android:versionName="1.01" >
+    package="com.twinly.eyebb"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="18"
@@ -250,10 +250,6 @@
             android:name="com.example.qr_codescan.ManualInputActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.qrcode.QrCodeMainActivity"
-            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.AboutActivity"

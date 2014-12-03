@@ -47,9 +47,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.activity.RadarOutOfRssiBeepDialog;
 import com.twinly.eyebb.activity.RadarShowAllMissImageDialog;

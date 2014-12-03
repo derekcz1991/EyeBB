@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 
-import com.eyebb.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLoadedCallback;
@@ -25,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.utils.DirectionsJSONParser;
 
 public class SchoolBusTrackingActivity extends FragmentActivity {
@@ -42,7 +42,7 @@ public class SchoolBusTrackingActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.basic_demo);
+		setContentView(R.layout.activity_school_bus);
 		setTitle(getString(R.string.text_school_bus_tracking));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);

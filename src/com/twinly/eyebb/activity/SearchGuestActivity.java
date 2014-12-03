@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.SearchGuestListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;

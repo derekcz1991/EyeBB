@@ -30,8 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qr_codescan.MipcaActivityCapture;
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.database.DBChildren;

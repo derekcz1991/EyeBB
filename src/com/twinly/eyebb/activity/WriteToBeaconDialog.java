@@ -17,7 +17,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.service.BluetoothLeService;
 
 public abstract class WriteToBeaconDialog extends Activity {

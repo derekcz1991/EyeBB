@@ -19,7 +19,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.FeedbackDialog;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.SettingsActivity;

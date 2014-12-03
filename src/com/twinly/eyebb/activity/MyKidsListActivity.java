@@ -12,7 +12,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidExpandableListviewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;

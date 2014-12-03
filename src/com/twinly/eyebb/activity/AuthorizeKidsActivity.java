@@ -22,7 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.adapter.MasterListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;

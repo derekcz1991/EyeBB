@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class RefreshTimeDialog extends Activity {

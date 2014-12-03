@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.HttpConstants;

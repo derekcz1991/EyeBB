@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 
 public class FlowLayout extends ViewGroup {
     public static final int HORIZONTAL = 0;

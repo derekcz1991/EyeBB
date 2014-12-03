@@ -4,8 +4,7 @@
     android:id="@android:id/tabhost"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFf1f1e5"
-    tools:context=".QrCodeMainActivity" >
+    android:background="#FFf1f1e5" >
 
     <LinearLayout
         android:layout_width="match_parent"

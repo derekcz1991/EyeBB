@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.qr_codescan.MipcaActivityCapture;
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;

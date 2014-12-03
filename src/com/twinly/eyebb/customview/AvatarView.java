@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.ChildDialog;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;

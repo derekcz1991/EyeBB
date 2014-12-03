@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;

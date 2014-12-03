@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    tools:context=".QrCodeMainActivity" >
+    android:paddingRight="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

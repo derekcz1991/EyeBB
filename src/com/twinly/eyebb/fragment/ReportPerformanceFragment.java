@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;

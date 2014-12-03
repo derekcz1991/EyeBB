@@ -10,8 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.twinly.eyebb.R;
 
 public class CommonUtils {
 	private static long lastClickTime;

@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.BeepAllForRadarDialog;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;

@@ -1,8 +1,6 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
@@ -15,8 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;

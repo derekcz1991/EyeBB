@@ -20,11 +20,11 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.eyebb.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LoadingDialog;

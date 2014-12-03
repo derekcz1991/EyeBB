@@ -13,7 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ShareActionProvider;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.model.ActivityInfo;
@@ -28,7 +28,7 @@ public class WebViewActivity extends Activity {
 	@SuppressLint("SetJavaScriptEnabled")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_details);
+		setContentView(R.layout.activity_web_view);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 

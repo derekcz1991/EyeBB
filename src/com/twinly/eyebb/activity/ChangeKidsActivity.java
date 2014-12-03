@@ -18,7 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;

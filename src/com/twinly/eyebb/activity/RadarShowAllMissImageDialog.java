@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.GridViewMissAdapter;
 import com.twinly.eyebb.model.Child;
 

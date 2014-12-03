@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
 
-import com.eyebb.R;
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
