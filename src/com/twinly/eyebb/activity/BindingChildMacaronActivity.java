@@ -125,7 +125,7 @@ public class BindingChildMacaronActivity extends Activity {
 		iconBeacon = (TextView) findViewById(R.id.beacon);
 		btnEvent = (Button) findViewById(R.id.btn_event);
 		tvAddress = (TextView) findViewById(R.id.tv_address);
-		
+
 		tvAddress.setText(mDeviceAddress);
 
 		tvAnimation = new TextView[6];
@@ -271,6 +271,7 @@ public class BindingChildMacaronActivity extends Activity {
 					Toast.makeText(BindingChildMacaronActivity.this,
 							R.string.text_device_already_binded,
 							Toast.LENGTH_LONG).show();
+					finish();
 					return;
 				} else {
 					major = result.substring(0, result.indexOf(":"));
