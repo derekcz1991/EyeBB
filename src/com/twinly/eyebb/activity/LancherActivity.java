@@ -119,6 +119,8 @@ public class LancherActivity extends Activity {
 				SharePrefsUtils.setUserType(LancherActivity.this,
 						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
+				System.out.println("user type = "
+						+ SharePrefsUtils.getUserType(LancherActivity.this));
 				Intent intent = new Intent(LancherActivity.this,
 						MainActivity.class);
 				startActivity(intent);

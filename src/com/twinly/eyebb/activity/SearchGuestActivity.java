@@ -42,9 +42,6 @@ public class SearchGuestActivity extends Activity {
 	private ListView listView;
 	private ArrayList<User> guest_data;
 	private String retStr;
-	private String guestId;
-
-	public static SearchGuestActivity instance = null;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,12 +57,10 @@ public class SearchGuestActivity extends Activity {
 		btnSearchNewGuest = (TextView) findViewById(R.id.btn_search_new_guest);
 		guest_data = new ArrayList<User>();
 
-		instance = this;
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				guestName = edGuestname.getText().toString();
 
 				if (guestName.length() > 0) {
@@ -90,11 +85,7 @@ public class SearchGuestActivity extends Activity {
 	};
 
 	private ArrayList<User> parseJson(String getData) {
-		// TODO Auto-generated method stub
-		// System.out.println("getData=>" + getData);
-
 		try {
-
 			if (guest_data != null && guest_data.size() > 0)
 				guest_data.clear();
 			JSONArray arr = new JSONArray(getData);
@@ -163,59 +154,9 @@ public class SearchGuestActivity extends Activity {
 
 	}
 
-	// Runnable postGrantToServerRunnable = new Runnable() {
-	// @Override
-	// public void run() {
-	// postGrantToServer();
-	//
-	// }
-	// };
-	//
-	// @SuppressLint("ShowToast")
-	// private void postGrantToServer() {
-	// // TODO Auto-generated method stub
-	//
-	// Map<String, String> map = new HashMap<String, String>();
-	// System.out.println("info=>" + guestId);
-	//
-	// map.put("guestId", guestId);
-	// map.put("childIds", guestName);
-	// try {
-	// // String retStr = GetPostUtil.sendPost(url, postMessage);
-	// retStr = HttpRequestUtils.get(HttpConstants.GRANT_GUESTS, map);
-	// System.out.println("retStrpost======>" + retStr);
-	// if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-	// || retStr.equals("") || retStr.length() == 0) {
-	// System.out.println("connect error");
-	//
-	// Message msg = handler.obtainMessage();
-	// msg.what = Constants.CONNECT_ERROR;
-	// handler.sendMessage(msg);
-	// } else {
-	// if (retStr.length() > 2) {
-	// Message msg = handler.obtainMessage();
-	// msg.what = Constants.SUCCESS_SEARCH;
-	// handler.sendMessage(msg);
-	//
-	// } else if (retStr.equals("[]")) {
-	// Message msg = handler.obtainMessage();
-	// msg.what = Constants.SEARCH_GUEST_NULL;
-	// handler.sendMessage(msg);
-	// }
-	// }
-	//
-	// } catch (Exception e) {
-	//
-	// e.printStackTrace();
-	//
-	// }
-	//
-	// }
-
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
@@ -246,8 +187,7 @@ public class SearchGuestActivity extends Activity {
 								parseJson(retStr).get(position).getGuardianId());
 						intent.putExtra("guestName",
 								parseJson(retStr).get(position).getName());
-						intent.putExtra("from_search_guest_activity",
-								true);
+						intent.putExtra("from_search_guest_activity", true);
 						startActivityForResult(
 								intent,
 								ActivityConstants.REQUEST_GO_TO_GRANT_KIDS_ACTIVITY);
@@ -270,10 +210,8 @@ public class SearchGuestActivity extends Activity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			finish();
-			System.out.println("=========>onKeyDown");
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -290,7 +228,6 @@ public class SearchGuestActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_GRANT_KIDS_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {

@@ -60,6 +60,7 @@ public class KidProfileActivity extends Activity {
 	private TextView deviceAddress;
 	private TextView deviceBattery;
 	public static Intent checkBatteryService;
+	private UpdateDBReceiver updateDBReceiver;
 
 	Handler readBatteryHandler = new Handler();
 
@@ -76,6 +77,7 @@ public class KidProfileActivity extends Activity {
 						this,
 						getIntent().getLongExtra(
 								ActivityConstants.EXTRA_CHILD_ID, -1L));
+		setTitle(child.getName());
 
 		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
@@ -93,8 +95,6 @@ public class KidProfileActivity extends Activity {
 			deviceBattery.setText(SharePrefsUtils
 					.deviceBattery(KidProfileActivity.this) + "%");
 		}
-		registerReceiver(new UpdateDb(), new IntentFilter(
-				BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY));
 
 		if (child.getMacAddress().length() > 0) {
 			deviceItem.setVisibility(View.VISIBLE);
@@ -108,8 +108,6 @@ public class KidProfileActivity extends Activity {
 					} else {
 						readBattery();
 					}
-					registerReceiver(bluetoothState, new IntentFilter(
-							BluetoothAdapter.ACTION_STATE_CHANGED));
 				}
 			});
 		} else {
@@ -147,6 +145,31 @@ public class KidProfileActivity extends Activity {
 			readBattery();
 		}
 	};
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updateDBReceiver = new UpdateDBReceiver();
+		registerReceiver(updateDBReceiver, new IntentFilter(
+				BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY));
+		registerReceiver(bluetoothState, new IntentFilter(
+				BluetoothAdapter.ACTION_STATE_CHANGED));
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(updateDBReceiver);
+		unregisterReceiver(bluetoothState);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (checkBatteryService != null) {
+			stopService(checkBatteryService);
+		}
+	}
 
 	private void readBattery() {
 		deviceBattery.setText(getResources().getString(R.string.toast_loading));
@@ -191,7 +214,7 @@ public class KidProfileActivity extends Activity {
 		}
 	};
 
-	private class UpdateDb extends BroadcastReceiver {
+	private class UpdateDBReceiver extends BroadcastReceiver {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY)) {
@@ -387,18 +410,4 @@ public class KidProfileActivity extends Activity {
 		}
 	}
 
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		registerReceiver(new UpdateDb(), new IntentFilter(
-				BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY));
-		super.onResume();
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		// unregisterReceiver(new UpdateDb());
-		super.onDestroy();
-	}
 }

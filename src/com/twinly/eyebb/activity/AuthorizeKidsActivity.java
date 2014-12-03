@@ -44,10 +44,6 @@ public class AuthorizeKidsActivity extends Activity {
 	private ArrayList<User> auth_from_master_data;
 	private ArrayList<Child> auth_from_master_children_data;
 	private LinearLayout content;
-	private String guardianId;
-	private String name;
-	private String phoneNumber;
-	public static AuthorizeKidsActivity instance = null;
 	private TextView tvHint;
 	private TextView tvHint_auth_to;
 	private TextView tvHint_auth_from;
@@ -89,7 +85,6 @@ public class AuthorizeKidsActivity extends Activity {
 		tvHint_auth_to = (TextView) findViewById(R.id.tv_hint_authorized_to_others);
 		tvHint_auth_from = (TextView) findViewById(R.id.tv_hint_authorization_from_others);
 
-		instance = this;
 		content = (LinearLayout) findViewById(R.id.view_content);
 		auth_to_guest_data = new ArrayList<User>();
 		auth_from_master_data = new ArrayList<User>();
@@ -98,18 +93,10 @@ public class AuthorizeKidsActivity extends Activity {
 		ScrollView = (ScrollView) findViewById(R.id.scrollview);
 		ScrollView.smoothScrollTo(0, 0);
 
-		// guest_listView.setOnItemClickListener(new OnItemClickListener() {
-		// public void onItemClick(AdapterView<?> arg0, View arg1,
-		// int position, long arg3) {
-		//
-		// }
-		// });
-
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			finish();
 			System.out.println("=========>onKeyDown");
@@ -118,12 +105,8 @@ public class AuthorizeKidsActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	@SuppressLint("ShowToast")
 	private void postFindGuestsToServer() {
-		// TODO Auto-generated method stub
-
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			retStr = HttpRequestUtils.get(HttpConstants.AUTH_FIND_GUESTS, null);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
@@ -140,19 +123,13 @@ public class AuthorizeKidsActivity extends Activity {
 					handler.sendMessage(msg);
 				}
 			}
-
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
 
 	}
 
 	private ArrayList<User> parseGuestJson(String getData) {
-		// TODO Auto-generated method stub
-		// System.out.println("getData=>" + getData);
-
 		try {
 			auth_to_guest_data.clear();
 			if (!JSONObject.NULL.equals(getData)) {
@@ -204,23 +181,13 @@ public class AuthorizeKidsActivity extends Activity {
 			}
 
 			System.out.println("guest_data>" + auth_to_guest_data.size());
-
-			// adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
-			// guest_data);
-			// listView.setAdapter(adapter);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			// tvHint.setVisibility(View.VISIBLE);
-			// content.setVisibility(View.GONE);
 			e.printStackTrace();
 		}
 		return auth_to_guest_data;
 	}
 
 	private ArrayList<User> parseMasterJson(String getData) {
-		// TODO Auto-generated method stub
-		// System.out.println("getData=>" + getData);
-
 		try {
 			auth_from_master_data.clear();
 			auth_from_master_children_data.clear();
@@ -321,13 +288,7 @@ public class AuthorizeKidsActivity extends Activity {
 			System.out.println("master_data>" + auth_from_master_data.size());
 			System.out.println("master_data_children>"
 					+ auth_from_master_children_data.size());
-			// adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
-			// guest_data);
-			// listView.setAdapter(adapter);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			// tvHint.setVisibility(View.VISIBLE);
-			// content.setVisibility(View.GONE);
 			e.printStackTrace();
 		}
 		return auth_from_master_data;
@@ -431,7 +392,6 @@ public class AuthorizeKidsActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_SEARCH_GUEST_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {

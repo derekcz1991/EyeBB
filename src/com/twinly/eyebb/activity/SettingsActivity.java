@@ -160,7 +160,6 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						AuthorizeKidsActivity.class);
 				startActivity(intent);
@@ -292,7 +291,6 @@ public class SettingsActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_UPDATE_NICKNAME_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS) {
