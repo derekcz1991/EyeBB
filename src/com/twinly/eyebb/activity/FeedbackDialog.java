@@ -34,7 +34,7 @@ public class FeedbackDialog extends Activity {
 	private EditText ed;
 	private RadioGroup group;
 	private int radioButtonId;
-	private String type;
+	private String type = "";
 	private TextView textLast;
 
 	public static final int SUCCESS_FEEDBACK = 2;
@@ -132,11 +132,15 @@ public class FeedbackDialog extends Activity {
 				// TODO Auto-generated method stub
 				content = ed.getText().toString();
 
-				if (content.length() > 0) {
+				if (content.length() > 0 && type.length() > 0) {
 					new Thread(postFeedBackToServerRunnable).start();
-				} else {
+				} else if (content.length() <= 0 && type.length() == 0) {
 					Message msg = handler.obtainMessage();
 					msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
+					handler.sendMessage(msg);
+				} else if (content.length() > 0 && type.length() == 0) {
+					Message msg = handler.obtainMessage();
+					msg.what = BleDeviceConstants.FEEDBACK_DIALOG_CHOOSE_TYPE;
 					handler.sendMessage(msg);
 				}
 
@@ -231,6 +235,14 @@ public class FeedbackDialog extends Activity {
 			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER, 0, 0);
+				toast.show();
+				break;
+
+			case BleDeviceConstants.FEEDBACK_DIALOG_CHOOSE_TYPE:
+				toast = Toast.makeText(getApplicationContext(),
+						R.string.text_choose_your_feedback_type,
+						Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
