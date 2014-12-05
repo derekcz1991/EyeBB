@@ -7,14 +7,14 @@
         android:minSdkVersion="18"
         android:targetSdkVersion="20" />
 
-    <!-- use for bluetooth -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
-
+    
+    
+    <!-- use for bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -25,7 +25,6 @@
 
     <!-- CAMERA -->
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -34,21 +33,16 @@
     <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
     <!-- phone call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
     <!-- VIBRATE -->
     <uses-permission android:name="android.permission.VIBRATE" />
-
     <!-- language -->
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
-
     <!-- internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <!-- GCM requires a Google account. -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- Keeps the processor from sleeping when a message is received. -->
@@ -62,10 +56,10 @@
            where PACKAGE is the application's package name.
     -->
     <permission
-        android:name="com.eyebb.permission.C2D_MESSAGE"
+        android:name="com.twinly.eyebb.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.eyebb.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.twinly.eyebb.permission.C2D_MESSAGE" />
 
     <!--
      The following two permissions are not required to use
@@ -335,9 +329,10 @@
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
-                <category android:name="com.eyebb" />
+                <category android:name="com.twinly.eyebb" />
             </intent-filter>
         </receiver>
+        <service android:name="com.twinly.eyebb.service.GcmIntentService" />
         <!--
         <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
             <intent-filter>
@@ -355,7 +350,6 @@
             </intent-filter>
         </receiver>
         -->
-        <service android:name="com.twinly.eyebb.service.GcmIntentService" />
         <service
             android:name="com.twinly.eyebb.service.BleServicesService"
             android:enabled="true" >

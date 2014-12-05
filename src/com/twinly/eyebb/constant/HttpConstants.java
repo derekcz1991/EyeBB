@@ -4,10 +4,10 @@ public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
 	/**
-	 * 158.182.246.221 == srv.eyebb.com (Testing)
-	 * 158.182.246.223 (Production)
+	 * 158.182.246.221 == test.eyebb.com (Testing)
+	 * 158.182.246.223 == srv.eyebb.com (Production)
 	 */
-	public static final String SERVER_URL = "http://srv.eyebb.com:8089/";
+	public static final String SERVER_URL = "http://test.eyebb.com:8089/";
 	//public static final String SERVER_URL = "http://158.182.246.221:8089/";
 	// public static final String SERVER_URL = "http://158.182.246.224:8080/";
 	//public static final String SERVER_URL = "http://158.182.246.223:8080/";
