@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.BLEUtils;
 
 public class RadarCharacteristicsActivity extends Activity {

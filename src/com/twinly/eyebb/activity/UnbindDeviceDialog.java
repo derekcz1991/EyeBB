@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -75,12 +76,12 @@ public class UnbindDeviceDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("NC")) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.UNBIND_FAIL;
+					msg.what = Constants.UNBIND_FAIL;
 					handler.sendMessage(msg);
 
 					setResult(ActivityConstants.RESULT_UNBIND_CANCEL);
@@ -90,7 +91,7 @@ public class UnbindDeviceDialog extends Activity {
 
 				} else if (retStr.equals("Y")) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.UNBIND_SUCCESS;
+					msg.what = Constants.UNBIND_SUCCESS;
 					handler.sendMessage(msg);
 					DBChildren.updateMacAddressByChildId(
 							UnbindDeviceDialog.this, childId, "");
@@ -118,17 +119,17 @@ public class UnbindDeviceDialog extends Activity {
 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case BleDeviceConstants.CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				Toast.makeText(UnbindDeviceDialog.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 				break;
 
-			case BleDeviceConstants.UNBIND_SUCCESS:
+			case Constants.UNBIND_SUCCESS:
 				Toast.makeText(UnbindDeviceDialog.this,
 						R.string.text_unbind_success, Toast.LENGTH_LONG).show();
 				break;
 
-			case BleDeviceConstants.UNBIND_FAIL:
+			case Constants.UNBIND_FAIL:
 				Toast.makeText(UnbindDeviceDialog.this,
 						R.string.text_unbind_fail, Toast.LENGTH_LONG).show();
 				break;

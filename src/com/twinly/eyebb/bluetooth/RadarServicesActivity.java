@@ -73,11 +73,12 @@ public class RadarServicesActivity extends Activity {
 	private String mDeviceAddress;
 	private boolean mConnected = false;
 	private int ReadService = 1;
+
 	//SharedPreferences SandVpreferences;
 	@SuppressLint({ "NewApi", "ShowToast" })
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.ble_services);
@@ -88,14 +89,14 @@ public class RadarServicesActivity extends Activity {
 		dialog = LoadingDialog.createLoadingDialog(RadarServicesActivity.this,
 				getString(R.string.toast_loading));
 		dialog.show();
-//
-//		SandVpreferences = getSharedPreferences(
-//				"soundAndVibrate", MODE_PRIVATE);
-//		editor = SandVpreferences.edit();
-//		
-	
-//		major = MajorAndMinorPreferences.getString("major", "-1");
-//		minor = MajorAndMinorPreferences.getString("minor", "-1");
+		//
+		//		SandVpreferences = getSharedPreferences(
+		//				"soundAndVibrate", MODE_PRIVATE);
+		//		editor = SandVpreferences.edit();
+		//		
+
+		//		major = MajorAndMinorPreferences.getString("major", "-1");
+		//		minor = MajorAndMinorPreferences.getString("minor", "-1");
 
 		final Intent intent = getIntent();
 		mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -115,8 +116,6 @@ public class RadarServicesActivity extends Activity {
 		myList = (ListView) findViewById(R.id.services_listView);
 		myList.setAdapter(listItemAdapter);
 
-
-
 		Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 		boolean bll = bindService(gattServiceIntent, mServiceConnection,
 				BIND_AUTO_CREATE);
@@ -125,7 +124,6 @@ public class RadarServicesActivity extends Activity {
 					.show();
 			RadarServicesActivity.this.finish();
 		}
-
 
 	}
 
@@ -141,12 +139,12 @@ public class RadarServicesActivity extends Activity {
 	Runnable finishConnection = new Runnable() {
 		@Override
 		public void run() {
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			//			try {
+			//				Thread.sleep(1000);
+			//			} catch (InterruptedException e) {
+			//				// TODO Auto-generated catch block
+			//				e.printStackTrace();
+			//			}
 			if (BleDeviceConstants.mBluetoothLeService != null) {
 				BleDeviceConstants.mBluetoothLeService.disconnect();
 			}
@@ -266,11 +264,11 @@ public class RadarServicesActivity extends Activity {
 
 				//int num = MajorAndMinorPreferences.getInt("runNumRadar", 1);
 				int num = SharePrefsUtils.CancelConnectBleServiceTimes(context);
-				System.out.println("numnumnumnum"+num);
+				System.out.println("numnumnumnum" + num);
 				if (num == 1) {
 					new autoConnection().start();
-//					editor.putInt("runNumRadar", 2);
-//					editor.commit();
+					//					editor.putInt("runNumRadar", 2);
+					//					editor.commit();
 					SharePrefsUtils.setCancelConnectBleServiceTimes(context, 2);
 				}
 

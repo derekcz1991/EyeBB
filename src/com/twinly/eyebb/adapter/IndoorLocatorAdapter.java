@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Location;
@@ -183,7 +183,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			for (int i = 0; i < childrenIds.size(); i++) {
 				if (System.currentTimeMillis()
 						- childrenMap.get(childrenIds.get(i))
-								.getLastAppearTime() > BleDeviceConstants.validTimeDuration) {
+								.getLastAppearTime() > Constants.validTimeDuration) {
 					childrenIds.remove(i);
 					i--;
 				}
@@ -195,7 +195,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			// add the avatar to flowlayout
 			AvatarView avatarView;
 			if (System.currentTimeMillis()
-					- childrenMap.get(childrenIds.get(i)).getLastAppearTime() < BleDeviceConstants.validTimeDuration) {
+					- childrenMap.get(childrenIds.get(i)).getLastAppearTime() < Constants.validTimeDuration) {
 				avatarView = new AvatarView(context,
 						childrenMap.get(childrenIds.get(i)),
 						viewHolder.avatarContainer, true);

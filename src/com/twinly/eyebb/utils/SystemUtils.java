@@ -1,6 +1,8 @@
 package com.twinly.eyebb.utils;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
@@ -8,7 +10,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.database.DBActivityInfo;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.database.DBNotifications;
@@ -23,15 +25,15 @@ public class SystemUtils {
 		System.out.println("--->>" + config.locale);
 		if (config.locale.toString().equals("zh_TW")
 				|| config.locale.toString().equals("zh")) {
-			return BleDeviceConstants.LOCALE_TW;
+			return Constants.LOCALE_TW;
 		} else if (config.locale.toString().equals("zh_HK")
 				|| config.locale.toString().equals("zh")) {
-			return BleDeviceConstants.LOCALE_HK;
+			return Constants.LOCALE_HK;
 		} else if (config.locale.toString().equals("zh_CN")
 				|| config.locale.toString().equals("zh")) {
-			return BleDeviceConstants.LOCALE_CN;
+			return Constants.LOCALE_CN;
 		} else {
-			return BleDeviceConstants.LOCALE_EN;
+			return Constants.LOCALE_EN;
 		}
 	}
 
@@ -63,4 +65,17 @@ public class SystemUtils {
 		SharePrefsUtils.clear(context);
 	}
 
+	/**
+	 * @return Application's version code from the {@code PackageManager}.
+	 */
+	public static int getAppVersion(Context context) {
+		try {
+			PackageInfo packageInfo = context.getPackageManager()
+					.getPackageInfo(context.getPackageName(), 0);
+			return packageInfo.versionCode;
+		} catch (NameNotFoundException e) {
+			// should never happen
+			throw new RuntimeException("Could not get package name: " + e);
+		}
+	}
 }

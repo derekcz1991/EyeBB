@@ -58,6 +58,7 @@ import com.twinly.eyebb.adapter.MissRadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter.RadarKidsListViewAdapterCallback;
 import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
@@ -1292,7 +1293,7 @@ public class RadarTrackingFragment extends Fragment implements
 				Intent enableBtIntent = new Intent(
 						BluetoothAdapter.ACTION_REQUEST_ENABLE);
 				startActivityForResult(enableBtIntent,
-						BleDeviceConstants.REQUEST_ENABLE_BT);
+						Constants.REQUEST_ENABLE_BT);
 			}
 		}
 	}
@@ -1834,7 +1835,7 @@ public class RadarTrackingFragment extends Fragment implements
 			beepIntent = new Intent();
 
 			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-					BleDeviceConstants.DB_NAME);
+					Constants.DB_NAME);
 			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
 					BeepTempChildData.get(position).getMacAddress());
 			System.out

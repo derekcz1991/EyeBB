@@ -53,10 +53,10 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 
 	private String uuid;
 	public static final int FINISH_ACTIVITY = 1;
-	
+
 	private SharedPreferences MajorAndMinorPreferences;
 	private SharedPreferences.Editor editor;
-	
+
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,7 +67,7 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 		BaseApp.getInstance().addActivity(this);
 
 		status_text = (TextView) findViewById(R.id.characteristics_status);
-		
+
 		MajorAndMinorPreferences = getSharedPreferences("MajorAndMinor",
 				MODE_PRIVATE);
 		editor = MajorAndMinorPreferences.edit();
@@ -117,8 +117,8 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 
 		Thread disconverThread = new Thread() {
 			public void run() {
-				status_text.setText(BleDeviceConstants.gattServiceData.get(servidx).get(
-						"NAME")
+				status_text.setText(BleDeviceConstants.gattServiceData.get(
+						servidx).get("NAME")
 						+ ": Discovering Characteristics...");
 				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
 						.getCharacteristics();
@@ -148,8 +148,8 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 					addItem(name, uuid);
 
 				}
-				status_text.setText(BleDeviceConstants.gattServiceData.get(servidx).get(
-						"NAME")
+				status_text.setText(BleDeviceConstants.gattServiceData.get(
+						servidx).get("NAME")
 						+ ": Discovered");
 
 			}
@@ -176,7 +176,8 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 			uuid = characteristic.getUuid().toString();
 			uuid = uuid.substring(4, 8);
 			charaidx = 0;
-			BleDeviceConstants.mBluetoothLeService.readCharacteristic(characteristic);
+			BleDeviceConstants.mBluetoothLeService
+					.readCharacteristic(characteristic);
 		}
 	}
 
@@ -247,7 +248,8 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 
 		BluetoothGattCharacteristic characteristic = charas.get(charaidx);
 		characteristic.setValue(BLEUtils.HexString2Bytes(data));
-		BleDeviceConstants.mBluetoothLeService.wirteCharacteristic(characteristic);
+		BleDeviceConstants.mBluetoothLeService
+				.wirteCharacteristic(characteristic);
 		timer = new Timer(true);
 		timer.schedule(task, 1000, 1000); // 延时1000ms后执行，1000ms执行一次
 
@@ -255,7 +257,6 @@ public class RadarSOSCharacteristicsActivity extends Activity {
 		editor.commit();
 		final Intent SOSintent = new Intent();
 		SOSintent.setClass(this, BeepDialog.class);
-		
 
 		startActivity(SOSintent);
 

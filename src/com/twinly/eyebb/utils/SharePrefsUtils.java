@@ -2,15 +2,16 @@ package com.twinly.eyebb.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.twinly.eyebb.constant.ActivityConstants;
 
 public class SharePrefsUtils {
-	
+
 	public static void clear(Context context) {
 		getPrefs(context).edit().clear().commit();
 	}
-	
+
 	public static String getLoginAccount(Context context) {
 		return getString(context,
 				ActivityConstants.SHARE_PREFS_ITEM_LOGIN_ACCOUNT);
@@ -131,6 +132,36 @@ public class SharePrefsUtils {
 	public static void setAutoUpdateTime(Context context, Long value) {
 		setLong(context, ActivityConstants.SHARE_PREFS_ITEM_AUTO_UPDATE_TIME,
 				value);
+	}
+
+	public static int getAppVersion(Context context) {
+		return getInt(context, ActivityConstants.SHARE_PREFS_ITEM_APP_VERSION);
+	}
+
+	public static void setAppVersion(Context context, int value) {
+		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_APP_VERSION, value);
+	}
+
+	public static String getDeviceId(Context context) {
+		String deviceId = getString(context,
+				ActivityConstants.SHARE_PREFS_ITEM_DEVICE_ID);
+		if (TextUtils.isEmpty(deviceId)) {
+			return "";
+		}
+		// Check if app was updated; if so, it must clear the registration ID
+		// since the existing regID is not guaranteed to work with the new
+		// app version.
+		int registeredVersion = getAppVersion(context);
+		int currentVersion = SystemUtils.getAppVersion(context);
+		if (registeredVersion != currentVersion) {
+			return "";
+		}
+
+		return deviceId;
+	}
+
+	public static void setDeviceId(Context context, String value) {
+		setString(context, ActivityConstants.SHARE_PREFS_ITEM_DEVICE_ID, value);
 	}
 
 	/*public static int getKindergartenId(Context context) {

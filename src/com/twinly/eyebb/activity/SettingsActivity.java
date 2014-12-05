@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class SettingsActivity extends Activity {
@@ -74,7 +74,7 @@ public class SettingsActivity extends Activity {
 				chineseSelected
 						.setBackgroundResource(R.drawable.ic_selected_off);
 
-				setAppLanguage(BleDeviceConstants.LOCALE_EN);
+				setAppLanguage(Constants.LOCALE_EN);
 			}
 		});
 
@@ -86,7 +86,7 @@ public class SettingsActivity extends Activity {
 						.setBackgroundResource(R.drawable.ic_selected_off);
 				chineseSelected.setBackgroundResource(R.drawable.ic_selected);
 
-				setAppLanguage(BleDeviceConstants.LOCALE_HK);
+				setAppLanguage(Constants.LOCALE_HK);
 			}
 		});
 
@@ -217,9 +217,9 @@ public class SettingsActivity extends Activity {
 
 		// language
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case BleDeviceConstants.LOCALE_TW:
-		case BleDeviceConstants.LOCALE_HK:
-		case BleDeviceConstants.LOCALE_CN:
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			englishSelected.setBackgroundResource(R.drawable.ic_selected_off);
 			chineseSelected.setBackgroundResource(R.drawable.ic_selected);
 			break;
@@ -245,9 +245,9 @@ public class SettingsActivity extends Activity {
 		DisplayMetrics dm = resources.getDisplayMetrics();
 
 		switch (language) {
-		case BleDeviceConstants.LOCALE_TW:
-		case BleDeviceConstants.LOCALE_HK:
-		case BleDeviceConstants.LOCALE_CN:
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			config.locale = Locale.TRADITIONAL_CHINESE;
 			resources.updateConfiguration(config, dm);
 			break;

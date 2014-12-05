@@ -20,8 +20,9 @@ import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
@@ -53,9 +54,9 @@ public class LancherActivity extends Activity {
 	private void checkLogo() {
 		logo = (ImageView) findViewById(R.id.icon);
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case BleDeviceConstants.LOCALE_TW:
-		case BleDeviceConstants.LOCALE_HK:
-		case BleDeviceConstants.LOCALE_CN:
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
 			break;
 		default:
@@ -69,9 +70,9 @@ public class LancherActivity extends Activity {
 		Configuration config = resources.getConfiguration();
 		DisplayMetrics dm = resources.getDisplayMetrics();
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case BleDeviceConstants.LOCALE_TW:
-		case BleDeviceConstants.LOCALE_HK:
-		case BleDeviceConstants.LOCALE_CN:
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			config.locale = Locale.TRADITIONAL_CHINESE;
 			resources.updateConfiguration(config, dm);
 			break;
@@ -83,7 +84,7 @@ public class LancherActivity extends Activity {
 	}
 
 	private void mkdir() {
-		File floder = new File(BleDeviceConstants.EYEBB_FOLDER);
+		File floder = new File(Constants.EYEBB_FOLDER);
 		if (floder.exists() == false) {
 			floder.mkdirs();
 		}
@@ -119,6 +120,7 @@ public class LancherActivity extends Activity {
 				SharePrefsUtils.setUserType(LancherActivity.this,
 						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
+				//new GCMUtils().GCMRegistration(LancherActivity.this, false);
 				System.out.println("user type = "
 						+ SharePrefsUtils.getUserType(LancherActivity.this));
 				Intent intent = new Intent(LancherActivity.this,

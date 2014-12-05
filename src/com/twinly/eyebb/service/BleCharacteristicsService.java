@@ -277,8 +277,7 @@ public class BleCharacteristicsService extends Service {
 							+ charas.get(charaidx).toString());
 			characteristic.setValue(BLEUtils.HexString2Bytes(data));
 
-			BleDeviceConstants.mBluetoothLeService
-					.wirteCharacteristic(characteristic);
+			BleDeviceConstants.mBluetoothLeService.wirteCharacteristic(characteristic);
 			System.out
 					.println("Constants.mBluetoothLeService.wirteCharacteristic(characteristic);");
 		}

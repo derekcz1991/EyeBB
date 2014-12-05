@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -94,7 +94,7 @@ public class ForgetPasswordDialog extends Activity {
 					new Thread(postResetPasswordToServerRunnable).start();
 				} else {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
+					msg.what = Constants.NULL_FEEDBAKC_CONTENT;
 					handler.sendMessage(msg);
 				}
 
@@ -144,21 +144,21 @@ public class ForgetPasswordDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.PASSWORD_RESET_SUCCESS;
+					msg.what = Constants.PASSWORD_RESET_SUCCESS;
 					handler.sendMessage(msg);
 
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.ACCOUNT_NOT_EXIST;
+					msg.what = Constants.ACCOUNT_NOT_EXIST;
 					handler.sendMessage(msg);
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_NC)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.ACCOUNT_DO_NOT_HAS_THIS_CHILD;
+					msg.what = Constants.ACCOUNT_DO_NOT_HAS_THIS_CHILD;
 					handler.sendMessage(msg);
 				}
 
@@ -180,27 +180,27 @@ public class ForgetPasswordDialog extends Activity {
 			Toast toast = null;
 			switch (msg.what) {
 
-			case BleDeviceConstants.CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_network_error, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
-			case BleDeviceConstants.PASSWORD_RESET_SUCCESS:
+			case Constants.PASSWORD_RESET_SUCCESS:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_feed_back_successful, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
+			case Constants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case BleDeviceConstants.ACCOUNT_NOT_EXIST:
+			case Constants.ACCOUNT_NOT_EXIST:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_user_do_not_exist, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
@@ -208,7 +208,7 @@ public class ForgetPasswordDialog extends Activity {
 
 				break;
 
-			case BleDeviceConstants.ACCOUNT_DO_NOT_HAS_THIS_CHILD:
+			case Constants.ACCOUNT_DO_NOT_HAS_THIS_CHILD:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_account_user_do_not_have_this_child,
 						Toast.LENGTH_LONG);

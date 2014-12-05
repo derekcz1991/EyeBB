@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
@@ -136,11 +136,11 @@ public class FeedbackDialog extends Activity {
 					new Thread(postFeedBackToServerRunnable).start();
 				} else if (content.length() <= 0 && type.length() == 0) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.NULL_FEEDBAKC_CONTENT;
+					msg.what = Constants.NULL_FEEDBAKC_CONTENT;
 					handler.sendMessage(msg);
 				} else if (content.length() > 0 && type.length() == 0) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.FEEDBACK_DIALOG_CHOOSE_TYPE;
+					msg.what = Constants.FEEDBACK_DIALOG_CHOOSE_TYPE;
 					handler.sendMessage(msg);
 				}
 
@@ -187,7 +187,7 @@ public class FeedbackDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals("true")) {
@@ -198,7 +198,7 @@ public class FeedbackDialog extends Activity {
 					finish();
 				} else if (retStr.equals("false")) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.CONNECT_ERROR;
+					msg.what = Constants.CONNECT_ERROR;
 					handler.sendMessage(msg);
 				}
 			}
@@ -219,7 +219,7 @@ public class FeedbackDialog extends Activity {
 			Toast toast = null;
 			switch (msg.what) {
 
-			case BleDeviceConstants.CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_network_error, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
@@ -232,14 +232,14 @@ public class FeedbackDialog extends Activity {
 				toast.show();
 				break;
 
-			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
+			case Constants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case BleDeviceConstants.FEEDBACK_DIALOG_CHOOSE_TYPE:
+			case Constants.FEEDBACK_DIALOG_CHOOSE_TYPE:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_choose_your_feedback_type,
 						Toast.LENGTH_LONG);

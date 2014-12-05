@@ -2,7 +2,7 @@ package com.twinly.eyebb.model;
 
 import android.content.Context;
 
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class Area {
@@ -54,10 +54,10 @@ public class Area {
 
 	public String getDisplayName(Context context) {
 		switch (SharePrefsUtils.getLanguage(context)) {
-		case BleDeviceConstants.LOCALE_TW:
-		case BleDeviceConstants.LOCALE_HK:
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
 			return nameTc;
-		case BleDeviceConstants.LOCALE_CN:
+		case Constants.LOCALE_CN:
 			return nameSc;
 		default:
 			return name; 

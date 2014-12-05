@@ -24,6 +24,7 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
@@ -129,6 +130,7 @@ public class LoginActivity extends Activity {
 					SharePrefsUtils.setPassowrd(LoginActivity.this,
 							hashPassword);
 
+					//new GCMUtils().GCMRegistration(LoginActivity.this, false);
 					setResult(ActivityConstants.RESULT_RESULT_OK);
 
 					if (loginDialog.isShowing() && loginDialog != null) {

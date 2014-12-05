@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class WelcomeActivity extends Activity {
@@ -49,9 +49,9 @@ public class WelcomeActivity extends Activity {
 
 	private void checkLogo() {
 		switch (SharePrefsUtils.getLanguage(this)) {
-		case BleDeviceConstants.LOCALE_TW:
-		case BleDeviceConstants.LOCALE_HK:
-		case BleDeviceConstants.LOCALE_CN:
+		case Constants.LOCALE_TW:
+		case Constants.LOCALE_HK:
+		case Constants.LOCALE_CN:
 			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
 			break;
 		default:

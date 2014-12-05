@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.ChangeKidsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.database.DBActivityInfo;
@@ -264,7 +264,7 @@ public class ReportFragment extends Fragment implements
 			}
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(child.getChildId()));
-			map.put("avgDays", String.valueOf(BleDeviceConstants.averageDays));
+			map.put("avgDays", String.valueOf(Constants.averageDays));
 			String result = HttpRequestUtils
 					.get(HttpConstants.GET_REPORTS, map);
 			try {

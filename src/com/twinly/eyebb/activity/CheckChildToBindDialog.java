@@ -25,7 +25,7 @@ import com.example.qr_codescan.MipcaActivityCapture;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.CheckChildToBindAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -120,7 +120,7 @@ public class CheckChildToBindDialog extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
@@ -130,16 +130,16 @@ public class CheckChildToBindDialog extends Activity {
 					startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.MASTER_OF_CHILD_ALREAD_EXIST;
+					msg.what = Constants.MASTER_OF_CHILD_ALREAD_EXIST;
 					handler.sendMessage(msg);
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_WG)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.WRONG_LOGIN;
+					msg.what = Constants.WRONG_LOGIN;
 					handler.sendMessage(msg);
 				} else if (retStr.substring(0, 1).equals(
 						HttpConstants.SERVER_RETURN_E)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.ALREADY_RELATIONSHIP;
+					msg.what = Constants.ALREADY_RELATIONSHIP;
 					handler.sendMessage(msg);
 				}
 			}
@@ -153,23 +153,23 @@ public class CheckChildToBindDialog extends Activity {
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case BleDeviceConstants.CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 				break;
-			case BleDeviceConstants.ALREADY_RELATIONSHIP:
+			case Constants.ALREADY_RELATIONSHIP:
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_already_relationship, Toast.LENGTH_LONG)
 						.show();
 				adapter.notifyDataSetChanged();
 				break;
-			case BleDeviceConstants.WRONG_LOGIN:
+			case Constants.WRONG_LOGIN:
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_wrong_login_for_binding,
 						Toast.LENGTH_LONG).show();
 				adapter.notifyDataSetChanged();
 				break;
-			case BleDeviceConstants.MASTER_OF_CHILD_ALREAD_EXIST:
+			case Constants.MASTER_OF_CHILD_ALREAD_EXIST:
 				Toast.makeText(CheckChildToBindDialog.this,
 						R.string.text_master_of_the_child_exist_already,
 						Toast.LENGTH_LONG).show();

@@ -34,6 +34,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.service.BleServicesService;
@@ -134,7 +135,7 @@ public class KidProfileActivity extends Activity {
 		}
 
 		mImageCaptureUri = Uri.fromFile(new File(
-				BleDeviceConstants.EYEBB_FOLDER + "temp.jpg"));
+				Constants.EYEBB_FOLDER + "temp.jpg"));
 	}
 
 	Runnable readBatteryRunable = new Runnable() {
@@ -176,7 +177,7 @@ public class KidProfileActivity extends Activity {
 
 		checkBatteryService = new Intent();
 		checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-				BleDeviceConstants.DB_NAME);
+				Constants.DB_NAME);
 		checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
 				child.getMacAddress());
 		checkBatteryService
@@ -335,7 +336,7 @@ public class KidProfileActivity extends Activity {
 	}
 
 	private void saveAvatar(Bitmap bitmap) {
-		String path = BleDeviceConstants.EYEBB_FOLDER + "avatar"
+		String path = Constants.EYEBB_FOLDER + "avatar"
 				+ child.getChildId() + ".jpg";
 		if (ImageUtils.saveBitmap(bitmap, path)) {
 			child.setIcon(path);
@@ -351,7 +352,7 @@ public class KidProfileActivity extends Activity {
 				Intent enableBtIntent = new Intent(
 						BluetoothAdapter.ACTION_REQUEST_ENABLE);
 				startActivityForResult(enableBtIntent,
-						BleDeviceConstants.REQUEST_ENABLE_BT);
+						Constants.REQUEST_ENABLE_BT);
 			}
 		}
 	}

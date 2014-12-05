@@ -22,7 +22,7 @@ import android.widget.SimpleAdapter;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -110,15 +110,15 @@ public class KindergartenListActivity extends Activity {
 						int locale = SystemUtils
 								.getLocale(KindergartenListActivity.this);
 						switch (locale) {
-						case BleDeviceConstants.LOCALE_CN:
+						case Constants.LOCALE_CN:
 							map.put("displayName",
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_SC));
 							break;
-						case BleDeviceConstants.LOCALE_TW:
+						case Constants.LOCALE_TW:
 							map.put("displayName",
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
 							break;
-						case BleDeviceConstants.LOCALE_HK:
+						case Constants.LOCALE_HK:
 							map.put("displayName",
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
 							break;

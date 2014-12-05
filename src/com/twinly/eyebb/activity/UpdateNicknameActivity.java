@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -75,20 +75,20 @@ public class UpdateNicknameActivity extends Activity {
 					postUpdateNicknameToServer();
 				} else {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.PASSWORD_FORMAT_ERROR;
+					msg.what = Constants.PASSWORD_FORMAT_ERROR;
 					handler.sendMessage(msg);
 				}
 			} else if (new_nickname.length() > 0) {
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NULL_FEEDBAKC_PASSWORD;
+				msg.what = Constants.NULL_FEEDBAKC_PASSWORD;
 				handler.sendMessage(msg);
 			} else if (password.length() > 0) {
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NULL_FEEDBAKC_NICKNAME;
+				msg.what = Constants.NULL_FEEDBAKC_NICKNAME;
 				handler.sendMessage(msg);
 			} else {
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.NULL_FEEDBAKC_NICKNAME;
+				msg.what = Constants.NULL_FEEDBAKC_NICKNAME;
 				handler.sendMessage(msg);
 			}
 
@@ -116,12 +116,12 @@ public class UpdateNicknameActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.UPDATE_NICKNAME_SUCCESS;
+					msg.what = Constants.UPDATE_NICKNAME_SUCCESS;
 					handler.sendMessage(msg);
 					SharePrefsUtils.setUserName(UpdateNicknameActivity.this,
 							new_nickname);
@@ -129,7 +129,7 @@ public class UpdateNicknameActivity extends Activity {
 					finish();
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.UPDATE_NICKNAME_FAIL_WRONG_PASSWORD;
+					msg.what = Constants.UPDATE_NICKNAME_FAIL_WRONG_PASSWORD;
 					handler.sendMessage(msg);
 				}
 			}
@@ -150,13 +150,13 @@ public class UpdateNicknameActivity extends Activity {
 			Toast toast = null;
 			switch (msg.what) {
 
-			case BleDeviceConstants.CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_network_error, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
-			case BleDeviceConstants.UPDATE_NICKNAME_SUCCESS:
+			case Constants.UPDATE_NICKNAME_SUCCESS:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_update_nickname_successful,
 						Toast.LENGTH_LONG);
@@ -164,35 +164,35 @@ public class UpdateNicknameActivity extends Activity {
 				toast.show();
 				break;
 
-			case BleDeviceConstants.NULL_FEEDBAKC_CONTENT:
+			case Constants.NULL_FEEDBAKC_CONTENT:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_something, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case BleDeviceConstants.NULL_FEEDBAKC_PASSWORD:
+			case Constants.NULL_FEEDBAKC_PASSWORD:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_password, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case BleDeviceConstants.NULL_FEEDBAKC_NICKNAME:
+			case Constants.NULL_FEEDBAKC_NICKNAME:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_fill_in_nickname, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 				break;
 
-			case BleDeviceConstants.UPDATE_NICKNAME_FAIL_WRONG_PASSWORD:
+			case Constants.UPDATE_NICKNAME_FAIL_WRONG_PASSWORD:
 				Intent intent = new Intent(UpdateNicknameActivity.this,
 						OldPasswordIncorrectDialog.class);
 				startActivity(intent);
 
 				break;
 
-			case BleDeviceConstants.PASSWORD_FORMAT_ERROR:
+			case Constants.PASSWORD_FORMAT_ERROR:
 				toast = Toast.makeText(getApplicationContext(),
 						R.string.text_error_password, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);

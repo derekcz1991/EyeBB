@@ -28,13 +28,6 @@
     <string name="text_average">Average</string>
     <string name="text_beep">Beep</string>
     <string name="text_shcool_bus">School Bus</string>
-    <string name="text_mess_hall">Mess Hall</string>
-    <string name="text_playground">Playground</string>
-    <string name="text_sleeping">Sleeping</string>
-    <string name="text_music_room">Music Room</string>
-    <string name="text_class_room_2a">Class Room 2A</string>
-    <string name="text_computer_room">Computer Room</string>
-    <string name="text_art_room">Art Room</string>
     <string name="text_school_bus_tracking">School Bus Tracking</string>
     <string name="text_notifications">Notifications</string>
     <string name="text_settings">Settings</string>
@@ -169,13 +162,13 @@
     <string name="text_bind_child">Binding children</string>
     <string name="text_unbind_child">unBinding children</string>
     <string name="text_granted_child">Children has been granted</string>
-     <string name="text_rssi_strong">Strong Signal</string>
-     <string name="text_rssi_good">Good Signal</string>
-     <string name="text_rssi_weak">Weak Signal</string>
-         <string name="text_fill_in_password">Please, enter your password!</string>
-<string name="text_fill_in_nickname">Please, enter your nickname!</string>
-<string name="text_fill_in_new_password">Please, enter your new password!</string>
-<string name="text_fill_in_repeat_new_password">Please, repeat to enter your new password!</string>
+    <string name="text_rssi_strong">Strong Signal</string>
+    <string name="text_rssi_good">Good Signal</string>
+    <string name="text_rssi_weak">Weak Signal</string>
+    <string name="text_fill_in_password">Please, enter your password!</string>
+    <string name="text_fill_in_nickname">Please, enter your nickname!</string>
+    <string name="text_fill_in_new_password">Please, enter your new password!</string>
+    <string name="text_fill_in_repeat_new_password">Please, repeat to enter your new password!</string>
     <string name="text_choose_your_feedback_type">Please, choose your feedback type.</string>
     
     <string name="btn_sign_up">Sign Up</string>
@@ -208,7 +201,6 @@
     <string name="btn_re_update">re-update</string>
     <string name="btn_finish">Finish</string>
     
-    
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_loading">Loading&#8230;</string>
@@ -219,5 +211,7 @@
     <string name="toast_write_minor">Writing minor(2/2)&#8230;</string>
     <string name="toast_read_service">Reading Service&#8230;</string>
     <string name="toast_repeat_read_service">Reading service again:</string>
+    <string name="toast_register_to_gcm">Failed to get register id, retrying&#8230;</string>
+    <string name="toast_register_to_gcm_failed">Failed to connect to server, please try again later</string>
 
 </resources>

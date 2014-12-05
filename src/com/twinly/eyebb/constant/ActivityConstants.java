@@ -20,6 +20,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_START_BEEP = "isStartBeepDialog";
 	public static final String SHARE_PREFS_ITEM_RUN_NUM_RADAR = "runNumRadar";
 	public static final String SHARE_PREFS_ITEM_VIBRATE = "vibrate";
+	public static final String SHARE_PREFS_ITEM_DEVICE_ID = "device_id";
 
 	public static final String SHARE_PREFS_INIT_HEAD = "init_head";
 	public static final String SHARE_PREFS_FINISH_BEEP = "finish_beep";

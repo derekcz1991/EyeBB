@@ -24,7 +24,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.GrantKidsListViewFromGuestAdapter;
 import com.twinly.eyebb.adapter.GrantKidsListViewFromMasterAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
@@ -221,7 +221,7 @@ public class GrantKidsActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (guestChildrenRetStr.length() > 0) {
@@ -281,17 +281,17 @@ public class GrantKidsActivity extends Activity {
 				System.out.println("connect error");
 
 				Message msg = handler.obtainMessage();
-				msg.what = BleDeviceConstants.CONNECT_ERROR;
+				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
 				if (retStr.equals(HttpConstants.SERVER_RETURN_T)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.GRANT_SUCCESS;
+					msg.what = Constants.GRANT_SUCCESS;
 					handler.sendMessage(msg);
 
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
 					Message msg = handler.obtainMessage();
-					msg.what = BleDeviceConstants.CONNECT_ERROR;
+					msg.what = Constants.CONNECT_ERROR;
 					handler.sendMessage(msg);
 				}
 			}
@@ -311,13 +311,13 @@ public class GrantKidsActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
-			case BleDeviceConstants.CONNECT_ERROR:
+			case Constants.CONNECT_ERROR:
 				Toast.makeText(GrantKidsActivity.this,
 						R.string.text_network_error, Toast.LENGTH_LONG).show();
 
 				break;
 
-			case BleDeviceConstants.GRANT_SUCCESS:
+			case Constants.GRANT_SUCCESS:
 				Toast.makeText(GrantKidsActivity.this,
 						R.string.text_grant_success, Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(GrantKidsActivity.this,
@@ -329,7 +329,7 @@ public class GrantKidsActivity extends Activity {
 				finish();
 				break;
 
-			case BleDeviceConstants.NO_SELECT_CHILDREN:
+			case Constants.NO_SELECT_CHILDREN:
 				Toast.makeText(GrantKidsActivity.this,
 						R.string.text_select_child, Toast.LENGTH_LONG).show();
 

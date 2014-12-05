@@ -4,14 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 
 public class DBHelper extends SQLiteOpenHelper {
 
 	private SQLiteDatabase db;
 
 	public DBHelper(Context context) {
-		super(context, BleDeviceConstants.DB_NAME, null, BleDeviceConstants.DB_VERSION);
+		super(context, Constants.DB_NAME, null, Constants.DB_VERSION);
 	}
 
 	public SQLiteDatabase openDatabase() {

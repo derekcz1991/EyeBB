@@ -15,7 +15,7 @@ import android.widget.ShareActionProvider;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.model.ActivityInfo;
 import com.twinly.eyebb.model.Notifications;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -38,9 +38,9 @@ public class WebViewActivity extends Activity {
 			ActivityInfo activityInfo = (ActivityInfo) bundle
 					.getSerializable("activityInfo");
 			switch (SharePrefsUtils.getLanguage(this)) {
-			case BleDeviceConstants.LOCALE_TW:
-			case BleDeviceConstants.LOCALE_HK:
-			case BleDeviceConstants.LOCALE_CN:
+			case Constants.LOCALE_TW:
+			case Constants.LOCALE_HK:
+			case Constants.LOCALE_CN:
 				webViewDetailsURL = activityInfo.getUrlTc();
 				actionBarTitle = activityInfo.getTitleTc();
 				break;
@@ -54,9 +54,9 @@ public class WebViewActivity extends Activity {
 			Notifications notification = (Notifications) bundle
 					.getSerializable("notifications");
 			switch (SharePrefsUtils.getLanguage(this)) {
-			case BleDeviceConstants.LOCALE_TW:
-			case BleDeviceConstants.LOCALE_HK:
-			case BleDeviceConstants.LOCALE_CN:
+			case Constants.LOCALE_TW:
+			case Constants.LOCALE_HK:
+			case Constants.LOCALE_CN:
 				webViewDetailsURL = notification.getUrlTc();
 				actionBarTitle = notification.getTitleTc();
 				break;
