@@ -170,6 +170,7 @@
     <string name="text_fill_in_new_password">Please, enter your new password!</string>
     <string name="text_fill_in_repeat_new_password">Please, repeat to enter your new password!</string>
     <string name="text_choose_your_feedback_type">Please, choose your feedback type.</string>
+    <string name="text_check_battery_life">Click here</string>
     
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

@@ -92,10 +92,12 @@ public class KidProfileActivity extends Activity {
 		bindItem = (LinearLayout) findViewById(R.id.bind_item);
 
 		// set battery
-		if (SharePrefsUtils.deviceBattery(this).length() > 0) {
-			deviceBattery.setText(SharePrefsUtils
-					.deviceBattery(KidProfileActivity.this) + "%");
-		}
+		// if (SharePrefsUtils.deviceBattery(this).length() > 0) {
+		// deviceBattery.setText(SharePrefsUtils
+		// .deviceBattery(KidProfileActivity.this) + "%");
+		// }
+		deviceBattery.setText(getResources().getString(
+				R.string.text_check_battery_life));
 
 		if (child.getMacAddress().length() > 0) {
 			deviceItem.setVisibility(View.VISIBLE);
@@ -134,8 +136,8 @@ public class KidProfileActivity extends Activity {
 			bindItem.setVisibility(View.INVISIBLE);
 		}
 
-		mImageCaptureUri = Uri.fromFile(new File(
-				Constants.EYEBB_FOLDER + "temp.jpg"));
+		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
+				+ "temp.jpg"));
 	}
 
 	Runnable readBatteryRunable = new Runnable() {
@@ -336,8 +338,8 @@ public class KidProfileActivity extends Activity {
 	}
 
 	private void saveAvatar(Bitmap bitmap) {
-		String path = Constants.EYEBB_FOLDER + "avatar"
-				+ child.getChildId() + ".jpg";
+		String path = Constants.EYEBB_FOLDER + "avatar" + child.getChildId()
+				+ ".jpg";
 		if (ImageUtils.saveBitmap(bitmap, path)) {
 			child.setIcon(path);
 			DBChildren.updateIconByChildId(this, child.getChildId(), path);
@@ -394,7 +396,7 @@ public class KidProfileActivity extends Activity {
 				Bundle bundle = data.getExtras();
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
-				//TODO check the mac address
+				// TODO check the mac address
 				String macAddress = bundle.getString("result");
 				Intent intent = new Intent();
 				intent.setClass(this, BindingChildMacaronActivity.class);
