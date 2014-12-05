@@ -153,6 +153,7 @@ public class BluetoothLeService extends Service {
 			boolean isDeviceBinding = SharePrefsUtils
 					.isOpenBindingDevice(BluetoothLeService.this);
 			System.out.println("isDeviceBinding------>" + isDeviceBinding);
+			System.out.println("isFisish------>" + isFisish);
 			if (isFisish) {
 				System.out.println("--------write success----- status:"
 						+ status);

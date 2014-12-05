@@ -457,6 +457,7 @@ public class RadarTrackingFragment extends Fragment implements
 		super.onDestroy();
 		// 关闭循环扫描
 		isWhileLoop = false;
+		// mBluetoothAdapter.stopLeScan(mLeScanCallback);
 
 		try {
 			handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
@@ -473,7 +474,7 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 
 		stopTimer();
-		mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
 	}
 
 	@SuppressLint("NewApi")
@@ -502,10 +503,41 @@ public class RadarTrackingFragment extends Fragment implements
 		if (!isConfirmRadarBtn) {
 			System.out.println("isWhileLoop = false;");
 			isWhileLoop = false;
-			mBluetoothAdapter.stopLeScan(mLeScanCallback);
+			// .stopLeScan(mLeScanCallback);
 		} else {
 			System.out.println("isWhileLoop = true;");
 			isWhileLoop = true;
+			Thread autoScan = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+
+					while (isWhileLoop) {
+
+						try {
+							scanLeDevice();
+							Thread.sleep(BleDeviceConstants.SCAN_INRERVAL_TIME);
+
+							Message msg = handler.obtainMessage();
+							msg.what = SCAN_CHILD_FOR_LIST;
+							handler.sendMessage(msg);
+
+							System.out
+									.println("scanLeDevice repeat start !!!!!!!!");
+							mBluetoothAdapter.stopLeScan(mLeScanCallback);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			});
+			if (first_start_scan_thread_flag) {
+				autoScan.start();
+				first_start_scan_thread_flag = false;
+			}
+			// mBluetoothAdapter.startLeScan(mLeScanCallback);
 		}
 
 		// clearAlltheDate();
@@ -517,7 +549,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// TODO Auto-generated method stub
 		super.onStop();
 		System.out.println("onStop()");
-
+		first_start_scan_thread_flag = true;
 		isWhileLoop = false;
 		// handler.removeCallbacksAndMessages(SCAN_CHILD_FOR_LIST);
 		// handler.removeCallbacksAndMessages(BEEPTIMEOUT);
@@ -618,6 +650,8 @@ public class RadarTrackingFragment extends Fragment implements
 
 		// 關閉循環掃描
 		isWhileLoop = false;
+		// mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
 		// 清除動畫
 		if (radar_rotate != null) {
 			radar_rotate.clearAnimation();
@@ -628,8 +662,6 @@ public class RadarTrackingFragment extends Fragment implements
 		clearAlltheDate();
 		missingChildNumTxt.setText(MissChildData.size() + "");
 		unMissingChildNumTxt.setText(ScanedTempChildData.size() + "");
-
-		mBluetoothAdapter.stopLeScan(mLeScanCallback);
 
 		scanImg1.setVisibility(View.INVISIBLE);
 		scanImg2.setVisibility(View.INVISIBLE);
@@ -1355,7 +1387,9 @@ public class RadarTrackingFragment extends Fragment implements
 				SharePrefsUtils.setfinishBeep(getActivity(), false);
 
 				beepTime = 0;
-				BeepCheckTimeOutTask.cancel();
+				if (BeepCheckTimeOutTask != null) {
+					BeepCheckTimeOutTask.cancel();
+				}
 
 				switch (SharePrefsUtils.DeviceConnectStatus(getActivity())) {
 				case BleDeviceConstants.DEVICE_CONNECT_STATUS_SUCCESS:
