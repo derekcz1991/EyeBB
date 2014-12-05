@@ -618,7 +618,9 @@ public class RadarTrackingFragment extends Fragment implements
 		// 關閉循環掃描
 		isWhileLoop = false;
 		// 清除動畫
-		radar_rotate.clearAnimation();
+		if (radar_rotate != null) {
+			radar_rotate.clearAnimation();
+		}
 
 		// 清除頭像 清除數據 清除數量
 
@@ -1382,21 +1384,23 @@ public class RadarTrackingFragment extends Fragment implements
 					}
 					deviceStatusError++;
 				}
-//				for (int i = 0; i < ScanedChildData.size(); i++) {
-//					System.out.println("------->" + ScanedChildData.get(i).getMacAddress());
-//					
-//				}
-//				System.out.println("-----------------------------");
+				// for (int i = 0; i < ScanedChildData.size(); i++) {
+				// System.out.println("------->" +
+				// ScanedChildData.get(i).getMacAddress());
+				//
+				// }
+				// System.out.println("-----------------------------");
 				ScanedTempChildData = (ArrayList<Child>) ScanedChildData
 						.clone();
 
 				try {
 					removeChildDuplicateList(ScanedTempChildData);
-//					for (int i = 0; i < ScanedTempChildData.size(); i++) {
-//						System.out.println("------->" + ScanedTempChildData.get(i).getMacAddress());
-//						
-//					}
-//					System.out.println("-----------------------------");
+					// for (int i = 0; i < ScanedTempChildData.size(); i++) {
+					// System.out.println("------->" +
+					// ScanedTempChildData.get(i).getMacAddress());
+					//
+					// }
+					// System.out.println("-----------------------------");
 					removeDeviceDuplicateList(myDevice);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
