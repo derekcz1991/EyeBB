@@ -39,6 +39,7 @@ public class CheckChildToBindDialog extends Activity {
 	private String childrenListJSON;
 	private ArrayList<Child> childList;
 	private long childIdToPost;
+	private String childIcon;
 	private long guardianId;
 
 	@Override
@@ -60,6 +61,7 @@ public class CheckChildToBindDialog extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
 				childIdToPost = childList.get(position).getChildId();
+				childIcon = childList.get(position).getIcon();
 				new Thread(postCheckChildIsBindToServerRunnable).start();
 			}
 		});
@@ -196,6 +198,7 @@ public class CheckChildToBindDialog extends Activity {
 						ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND);
 				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);
 				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childIdToPost);
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ICON, childIcon);
 				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);
 				startActivity(intent);
 			}

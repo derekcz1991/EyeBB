@@ -405,6 +405,8 @@ public class KidProfileActivity extends Activity {
 				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, -1L);
 				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
 						child.getChildId());
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ICON,
+						child.getIcon());
 				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);
 				startActivityForResult(
 						intent,

@@ -78,4 +78,5 @@ public class ActivityConstants {
 	public static final String EXTRA_GUARDIAN_ID = "GUARDIAN_ID";
 	public static final String EXTRA_MAC_ADDRESS = "MAC_ADDRESS";
 	public static final String EXTRA_CHILD_ID = "CHILD_ID";
+	public static final String EXTRA_CHILD_ICON = "CHILD_ICON";
 }

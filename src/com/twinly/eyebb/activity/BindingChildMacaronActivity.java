@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +39,7 @@ import com.twinly.eyebb.service.BluetoothLeService;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class BindingChildMacaronActivity extends Activity {
 	public final static String BEEP_SERVICE_UUID = "00001000-0000-1000-8000-00805f9b34fb";
@@ -67,6 +69,7 @@ public class BindingChildMacaronActivity extends Activity {
 	private int from;
 	private String mDeviceAddress;
 	private long childId;
+	private String childIcon;
 	private long guardianId;
 	private String major;
 	private String minor;
@@ -119,6 +122,8 @@ public class BindingChildMacaronActivity extends Activity {
 		guardianId = getIntent().getLongExtra(
 				ActivityConstants.EXTRA_GUARDIAN_ID, -1L);
 		childId = getIntent().getLongExtra(ActivityConstants.EXTRA_CHILD_ID, 0);
+		childIcon = getIntent().getStringExtra(
+				ActivityConstants.EXTRA_CHILD_ICON);
 
 		avatar = (CircleImageView) findViewById(R.id.avatar);
 		tvMessage = (TextView) findViewById(R.id.message);
@@ -138,9 +143,15 @@ public class BindingChildMacaronActivity extends Activity {
 
 		iconBeacon.setAlpha(0.3f);
 
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.displayImage(DBChildren.getChildIconById(this, childId),
-				avatar, CommonUtils.getDisplayImageOptions(), null);
+		if (TextUtils.isEmpty(childIcon) == false) {
+			if (ImageUtils.isLocalImage(childIcon)) {
+				avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childIcon));
+			} else {
+				imageLoader = ImageLoader.getInstance();
+				imageLoader.displayImage(childIcon, avatar,
+						CommonUtils.getDisplayImageOptions(), null);
+			}
+		}
 
 		mHandler = new Handler();
 		mHandler.postDelayed(new UpdateAnimation(), 500);
