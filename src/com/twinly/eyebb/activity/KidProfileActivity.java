@@ -3,6 +3,7 @@ package com.twinly.eyebb.activity;
 import java.io.File;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -38,6 +39,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.service.BleServicesService;
+import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -65,6 +67,7 @@ public class KidProfileActivity extends Activity {
 
 	Handler readBatteryHandler = new Handler();
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -102,15 +105,23 @@ public class KidProfileActivity extends Activity {
 		if (child.getMacAddress().length() > 0) {
 			deviceItem.setVisibility(View.VISIBLE);
 			deviceAddress.setText(child.getMacAddress());
+
 			deviceItem.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (!mBluetoothAdapter.isEnabled()) {
-						openBluetooth();
+					if (BLEUtils.isSupportBle(KidProfileActivity.this)) {
+						if (!mBluetoothAdapter.isEnabled()) {
+							openBluetooth();
+						} else {
+							readBattery();
+						}
 					} else {
-						readBattery();
+						Toast.makeText(KidProfileActivity.this,
+								R.string.text_ble_not_supported,
+								Toast.LENGTH_LONG).show();
 					}
+
 				}
 			});
 		} else {

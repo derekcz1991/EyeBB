@@ -1,5 +1,11 @@
 package com.twinly.eyebb.utils;
 
+import com.twinly.eyebb.R;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.widget.Toast;
+
 public class BLEUtils {
 	public BLEUtils() {
 	}
@@ -105,5 +111,19 @@ public class BLEUtils {
 
 		}
 		return value;
+	}
+
+	/**
+	 * if device phone supports the ble
+	 */
+	public static boolean isSupportBle(Context context) {
+		if (!context.getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_BLUETOOTH_LE)) {
+			System.out.println("CAN NOT SUPPORT BLE");
+			return false;
+
+		} else {
+			return true;
+		}
 	}
 }

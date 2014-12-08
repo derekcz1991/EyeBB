@@ -7,8 +7,8 @@ public class HttpConstants {
 	 * 158.182.246.221 == test.eyebb.com (Testing)
 	 * 158.182.246.223 == srv.eyebb.com (Production)
 	 */
-	public static final String SERVER_URL = "http://test.eyebb.com:8089/";
-	// public static final String SERVER_URL = "http://158.182.246.224:8080/";
+	//public static final String SERVER_URL = "http://test.eyebb.com:8089/";
+	 public static final String SERVER_URL = "http://158.182.246.224:8080/";
 	//public static final String SERVER_URL = "http://158.182.246.223:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";

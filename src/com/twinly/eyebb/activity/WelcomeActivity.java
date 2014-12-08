@@ -1,5 +1,6 @@
 package com.twinly.eyebb.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class WelcomeActivity extends Activity {
 
 	}
 
+	@SuppressLint("NewApi")
 	private void checkLogo() {
 		switch (SharePrefsUtils.getLanguage(this)) {
 		case Constants.LOCALE_TW:

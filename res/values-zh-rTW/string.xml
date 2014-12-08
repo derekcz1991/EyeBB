@@ -47,7 +47,7 @@
     <string name="text_notificationDetails">通告詳情</string>
     <string name="text_beeping">蜂鳴</string>
     <string name="text_sec">秒.</string>
-    <string name="text_ble_not_supported">不支持bluetooth4.0</string>
+    <string name="text_ble_not_supported">對不起,你的手機不支持bluetooth4.0</string>
     <string name="text_error_bluetooth_not_supported">不支持bluetooth</string>
     <string name="text_shcool_bus">校車軌跡</string>
     <string name="text_Supervised">連接</string>

@@ -39,6 +39,7 @@ public class BleDeviceConstants {
 	public static final int BINDING_PERIOD = 40000;
 	public static final int BATTERY_DELAY_LOADING = 3000;
 
+
 	//broadcast
 	public static final String BROADCAST_FINISH_BIND = "FINISH_BIND";
 	public static final String BROADCAST_GET_DEVICE_BATTERY = "battery_broadcast";
@@ -51,4 +52,7 @@ public class BleDeviceConstants {
 	public static ArrayList<BluetoothGattService> gattServiceObject = new ArrayList<BluetoothGattService>();
 
 	public static final String BLE_SERVICE_COME_FROM = "device_come_from";
+	
+	//handler
+	public static final int CAN_NOT_SUPPORT_BLE = 30003;
 }
