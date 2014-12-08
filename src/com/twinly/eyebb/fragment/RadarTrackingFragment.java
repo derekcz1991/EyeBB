@@ -183,6 +183,9 @@ public class RadarTrackingFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		System.out.println("onCreateView");
 
+		
+
+		
 		v = inflater.inflate(R.layout.fragment_radar_tracking_verson_2,
 				container, false);
 		RadarTrackingFragmentInstance = this;
@@ -203,6 +206,13 @@ public class RadarTrackingFragment extends Fragment implements
 		getActivity().registerReceiver(bluetoothState,
 				new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
+		
+		// 检查当前手机是否支持ble 蓝牙,如果不支持退出程序
+		if (!getActivity().getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_BLUETOOTH_LE)) {
+			System.out.println("bu zhi chi!!!!!!!!!");
+		}
+		
 		listItem = new ArrayList<HashMap<String, Object>>();
 		myDevice = new ArrayList<Device>();
 		radarBeepAllBtn.setOnClickListener(new View.OnClickListener() {
@@ -341,6 +351,7 @@ public class RadarTrackingFragment extends Fragment implements
 
 	}
 
+	@SuppressLint("NewApi")
 	private void closeAntiMode() {
 		openAnti = false;
 		openAntiCurrentDataFlag = false;
@@ -1527,6 +1538,7 @@ public class RadarTrackingFragment extends Fragment implements
 	// 下面為bluetooth
 	Thread autoScan = new Thread(new Runnable() {
 
+		@SuppressLint("NewApi")
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
