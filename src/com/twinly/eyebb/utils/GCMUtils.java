@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -142,27 +139,15 @@ public class GCMUtils {
 			@Override
 			protected String doInBackground(Void... params) {
 				Map<String, String> map = new HashMap<String, String>();
-				//map.put("userId", SharePrefsUtils.getUserId(context));
 				map.put("deviceId", SharePrefsUtils.getDeviceId(context));
 				System.out.println("map = " + map);
-				return HttpRequestUtils.post("updateDeviceId", map);
+				return HttpRequestUtils.post(
+						HttpConstants.UPDATE_REGISTRATION_ID, map);
 			}
 
 			@Override
 			protected void onPostExecute(String result) {
-				super.onPostExecute(result);
-				try {
-					JSONObject json = new JSONObject(result);
-					String returnMessage = json.getString("returnMessage");
-					/*if(returnMessage.equals(HttpConstants.UPDATE_SUCCESS)) {
-						
-					} else {
-						System.out.println("updateDeviceId ---->> " + returnMessage);
-					}*/
-				} catch (JSONException e) {
-					System.out.println("updateDeviceId ---->> "
-							+ e.getMessage());
-				}
+				System.out.println("update device id result = " + result);
 			}
 
 		}.execute();

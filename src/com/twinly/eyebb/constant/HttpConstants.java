@@ -13,13 +13,14 @@ public class HttpConstants {
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
+	public static final String JSON_KEY_USER = "guardian";
 	public static final String JSON_KEY_USER_ID = "guardianId";
 	public static final String JSON_KEY_USER_NAME = "name";
 	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
 	public static final String JSON_KEY_USER_TYPE = "type";
-
+	public static final String JSON_KEY_REGISTRATION_ID = "registrationId";
+	
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
-	// public static final String JSON_KEY_KINDERGARTEN_id = "kindergartenId";
 	public static final String JSON_KEY_AREAS_id = "areaId";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
@@ -103,6 +104,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_NOTICES_VALID_UNTIL = "validUntil";
 
 	public static final String LOGIN = "j_spring_security_check";
+	public static final String UPDATE_REGISTRATION_ID = "/accSetting/api/updateDeviceId";
 	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
 	public static final String ACC_NAME_CHECK = "regService/api/accNameCheck";
 	public static final String REG_PARENTS = "regService/api/regParents";

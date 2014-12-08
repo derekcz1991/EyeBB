@@ -161,7 +161,10 @@ public class SharePrefsUtils {
 	}
 
 	public static void setDeviceId(Context context, String value) {
-		setString(context, ActivityConstants.SHARE_PREFS_ITEM_DEVICE_ID, value);
+		if (CommonUtils.isNotNull(value)) {
+			setString(context, ActivityConstants.SHARE_PREFS_ITEM_DEVICE_ID,
+					value);
+		}
 	}
 
 	/*public static int getKindergartenId(Context context) {

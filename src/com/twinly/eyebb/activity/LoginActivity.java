@@ -112,6 +112,7 @@ public class LoginActivity extends Activity {
 				System.out.println("login result = " + result);
 				try {
 					JSONObject json = new JSONObject(result);
+					json = json.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 					SystemUtils.clearData(LoginActivity.this);
 
@@ -123,6 +124,8 @@ public class LoginActivity extends Activity {
 							json.getString(HttpConstants.JSON_KEY_USER_PHONE));
 					SharePrefsUtils.setUserType(LoginActivity.this,
 							json.getString(HttpConstants.JSON_KEY_USER_TYPE));
+					SharePrefsUtils.setDeviceId(LoginActivity.this,
+							HttpConstants.JSON_KEY_REGISTRATION_ID);
 
 					SharePrefsUtils.setLogin(LoginActivity.this, true);
 					SharePrefsUtils.setLoginAccount(LoginActivity.this,
@@ -130,7 +133,7 @@ public class LoginActivity extends Activity {
 					SharePrefsUtils.setPassowrd(LoginActivity.this,
 							hashPassword);
 
-					//new GCMUtils().GCMRegistration(LoginActivity.this, false);
+					new GCMUtils().GCMRegistration(LoginActivity.this, false);
 					setResult(ActivityConstants.RESULT_RESULT_OK);
 
 					if (loginDialog.isShowing() && loginDialog != null) {

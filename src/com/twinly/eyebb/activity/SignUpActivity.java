@@ -282,7 +282,7 @@ public class SignUpActivity extends Activity {
 							hashPassword);
 
 					// register to GCM server
-					//new GCMUtils().GCMRegistration(SignUpActivity.this, true);
+					new GCMUtils().GCMRegistration(SignUpActivity.this, true);
 
 					Intent intent = new Intent(SignUpActivity.this,
 							SignUpAskToBindDialog.class);
