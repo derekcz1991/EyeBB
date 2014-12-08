@@ -83,8 +83,7 @@ public class KidProfileActivity extends Activity {
 								ActivityConstants.EXTRA_CHILD_ID, -1L));
 		setTitle(child.getName());
 
-		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-		mBluetoothAdapter = bluetoothManager.getAdapter();
+
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
@@ -111,6 +110,9 @@ public class KidProfileActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					if (BLEUtils.isSupportBle(KidProfileActivity.this)) {
+						final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+						mBluetoothAdapter = bluetoothManager.getAdapter();
+						
 						if (!mBluetoothAdapter.isEnabled()) {
 							openBluetooth();
 						} else {
