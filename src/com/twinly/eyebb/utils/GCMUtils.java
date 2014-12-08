@@ -21,20 +21,17 @@ public class GCMUtils {
 
 	/**
 	 * Check whether need to register to GCM server
-	 * 
-	 * @param context
-	 *            application's context.
+	 * @param context application's context.
+	 * @param receivedDeviceId server stored device id
 	 */
-	public void GCMRegistration(Context context, boolean isFirst) {
+	public void GCMRegistration(Context context, String receivedDeviceId) {
 		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
-		if (isFirst) {
+		if (CommonUtils.isNull(receivedDeviceId)) {
 			new RegisterInBackground(context, gcm).execute();
-			return;
-		}
-		if (CommonUtils.isNull(SharePrefsUtils.getDeviceId(context))) {
+		} else if (SharePrefsUtils.getDeviceId(context)
+				.equals(receivedDeviceId) == false) {
 			new RegisterInBackground(context, gcm).execute();
 		}
-
 	}
 
 	/**

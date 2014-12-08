@@ -22,7 +22,7 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class WebViewActivity extends Activity {
 	private WebView webViewDetails;
-	private String webViewDetailsURL = " http://158.182.246.221/twinly/share/html/notices/testing.html#sl_i1";
+	private String webViewDetailsURL;
 	private String actionBarTitle;
 
 	@SuppressLint("SetJavaScriptEnabled")

@@ -57,10 +57,10 @@ public class LancherActivity extends Activity {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
 		case Constants.LOCALE_CN:
-			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
+			logo.setBackgroundResource(R.drawable.logo_cht);
 			break;
 		default:
-			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
+			logo.setBackgroundResource(R.drawable.logo_en);
 			break;
 		}
 	}
@@ -108,6 +108,9 @@ public class LancherActivity extends Activity {
 			System.out.println("auto login result = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
+				String receivedDeviceId = json
+						.getString(HttpConstants.JSON_KEY_REGISTRATION_ID);
+
 				json = json.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 				SharePrefsUtils.setUserId(LancherActivity.this,
@@ -118,12 +121,10 @@ public class LancherActivity extends Activity {
 						json.getString(HttpConstants.JSON_KEY_USER_PHONE));
 				SharePrefsUtils.setUserType(LancherActivity.this,
 						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
-				SharePrefsUtils.setDeviceId(LancherActivity.this,
-						HttpConstants.JSON_KEY_REGISTRATION_ID);
 
-				new GCMUtils().GCMRegistration(LancherActivity.this, false);
-				System.out.println("user type = "
-						+ SharePrefsUtils.getUserType(LancherActivity.this));
+				new GCMUtils().GCMRegistration(LancherActivity.this,
+						receivedDeviceId);
+
 				Intent intent = new Intent(LancherActivity.this,
 						MainActivity.class);
 				startActivity(intent);

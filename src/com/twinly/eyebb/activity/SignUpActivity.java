@@ -163,32 +163,32 @@ public class SignUpActivity extends Activity {
 								Toast.makeText(SignUpActivity.this,
 										R.string.text_fill_email_or_phone,
 										Toast.LENGTH_LONG).show();
-								tv_email.setBackground(getResources()
-										.getDrawable(R.drawable.ic_radar_missed));
+								tv_email.setBackgroundResource(R.drawable.ic_radar_missed);
 
 							}
 						} else {
 							Toast.makeText(SignUpActivity.this,
 									R.string.text_error_password,
 									Toast.LENGTH_LONG).show();
-							tv_password.setBackground(getResources()
-									.getDrawable(R.drawable.ic_radar_missed));
+
+							tv_password
+									.setBackgroundResource(R.drawable.ic_radar_missed);
 						}
 
 					} else {
 						Toast.makeText(SignUpActivity.this,
 								R.string.text_error_nickname, Toast.LENGTH_LONG)
 								.show();
-						tv_nickname.setBackground(getResources().getDrawable(
-								R.drawable.ic_radar_missed));
+						tv_nickname
+								.setBackgroundResource(R.drawable.ic_radar_missed);
 					}
 
 				} else {
 					Toast.makeText(SignUpActivity.this,
 							R.string.text_error_username, Toast.LENGTH_LONG)
 							.show();
-					tv_username.setBackground(getResources().getDrawable(
-							R.drawable.ic_radar_missed));
+					tv_username
+							.setBackgroundResource(R.drawable.ic_radar_missed);
 				}
 			}
 		});
@@ -282,7 +282,7 @@ public class SignUpActivity extends Activity {
 							hashPassword);
 
 					// register to GCM server
-					new GCMUtils().GCMRegistration(SignUpActivity.this, true);
+					new GCMUtils().GCMRegistration(SignUpActivity.this, "");
 
 					Intent intent = new Intent(SignUpActivity.this,
 							SignUpAskToBindDialog.class);
@@ -319,23 +319,20 @@ public class SignUpActivity extends Activity {
 			switch (msg.what) {
 
 			case CHECK_ACC_SUCCESS:
-				tv_username.setBackground(getResources().getDrawable(
-						R.drawable.ic_selected));
+				tv_username.setBackgroundResource(R.drawable.ic_selected);
 				break;
 
 			case CHECK_ACC_FALSE:
 				Toast.makeText(SignUpActivity.this,
 						R.string.text_username_is_used, Toast.LENGTH_LONG)
 						.show();
-				tv_username.setBackground(getResources().getDrawable(
-						R.drawable.ic_radar_missed));
+				tv_username.setBackgroundResource(R.drawable.ic_radar_missed);
 				break;
 
 			case CHECK_ACC_ERROR:
 				Toast.makeText(SignUpActivity.this,
 						R.string.text_error_username, Toast.LENGTH_LONG).show();
-				tv_username.setBackground(getResources().getDrawable(
-						R.drawable.ic_radar_missed));
+				tv_username.setBackgroundResource(R.drawable.ic_radar_missed);
 				break;
 
 			case CONNECT_ERROR:
