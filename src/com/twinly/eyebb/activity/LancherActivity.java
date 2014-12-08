@@ -105,12 +105,11 @@ public class LancherActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
-				goBackToLogin();
-				return;
-			}
+			System.out.println("auto login result = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
+				json = json.getJSONObject(HttpConstants.JSON_KEY_USER);
+
 				SharePrefsUtils.setUserId(LancherActivity.this,
 						json.getLong(HttpConstants.JSON_KEY_USER_ID));
 				SharePrefsUtils.setUserName(LancherActivity.this,
@@ -119,8 +118,10 @@ public class LancherActivity extends Activity {
 						json.getString(HttpConstants.JSON_KEY_USER_PHONE));
 				SharePrefsUtils.setUserType(LancherActivity.this,
 						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
+				SharePrefsUtils.setDeviceId(LancherActivity.this,
+						HttpConstants.JSON_KEY_REGISTRATION_ID);
 
-				//new GCMUtils().GCMRegistration(LancherActivity.this, false);
+				new GCMUtils().GCMRegistration(LancherActivity.this, false);
 				System.out.println("user type = "
 						+ SharePrefsUtils.getUserType(LancherActivity.this));
 				Intent intent = new Intent(LancherActivity.this,
