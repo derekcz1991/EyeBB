@@ -83,8 +83,6 @@ public class KidProfileActivity extends Activity {
 								ActivityConstants.EXTRA_CHILD_ID, -1L));
 		setTitle(child.getName());
 
-
-
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
 		binding = (TextView) findViewById(R.id.btn_binding);
@@ -112,7 +110,7 @@ public class KidProfileActivity extends Activity {
 					if (BLEUtils.isSupportBle(KidProfileActivity.this)) {
 						final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 						mBluetoothAdapter = bluetoothManager.getAdapter();
-						
+
 						if (!mBluetoothAdapter.isEnabled()) {
 							openBluetooth();
 						} else {
@@ -281,17 +279,22 @@ public class KidProfileActivity extends Activity {
 	}
 
 	public void onBindClicked(View view) {
-		if (CommonUtils.isNull(child.getMacAddress())) {
-			Intent intent = new Intent(this, MipcaActivityCapture.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+		if (BLEUtils.isSupportBle(KidProfileActivity.this)) {
+			if (CommonUtils.isNull(child.getMacAddress())) {
+				Intent intent = new Intent(this, MipcaActivityCapture.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+			} else {
+				Intent intent = new Intent();
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+						child.getChildId());
+				intent.setClass(this, UnbindDeviceDialog.class);
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
+			}
 		} else {
-			Intent intent = new Intent();
-			intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
-					child.getChildId());
-			intent.setClass(this, UnbindDeviceDialog.class);
-			startActivityForResult(intent,
-					ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
+			Toast.makeText(KidProfileActivity.this,
+					R.string.text_ble_not_supported, Toast.LENGTH_LONG).show();
 		}
 	}
 

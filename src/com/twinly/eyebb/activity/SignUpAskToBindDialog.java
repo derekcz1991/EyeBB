@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.utils.BLEUtils;
 
 public class SignUpAskToBindDialog extends Activity {
 	private LinearLayout btn_skip;
@@ -45,13 +47,21 @@ public class SignUpAskToBindDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SignUpAskToBindDialog.this,
-						ChildInformationMatchingActivity.class);
-				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);
-				startActivityForResult(
-						intent,
-						ActivityConstants.REQUEST_GO_TO_CHILD_INFO_MATCHING_ACTIVITY);
-				finish();
+
+				if (BLEUtils.isSupportBle(SignUpAskToBindDialog.this)) {
+					Intent intent = new Intent(SignUpAskToBindDialog.this,
+							ChildInformationMatchingActivity.class);
+					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID,
+							guardianId);
+					startActivityForResult(
+							intent,
+							ActivityConstants.REQUEST_GO_TO_CHILD_INFO_MATCHING_ACTIVITY);
+					finish();
+				} else {
+					Toast.makeText(SignUpAskToBindDialog.this,
+							R.string.text_ble_not_supported, Toast.LENGTH_LONG)
+							.show();
+				}
 
 			}
 		});
