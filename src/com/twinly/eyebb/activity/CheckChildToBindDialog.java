@@ -193,7 +193,7 @@ public class CheckChildToBindDialog extends Activity {
 				// TODO check the mac address
 				String macAddress = bundle.getString("result");
 				Intent intent = new Intent();
-				intent.setClass(this, BindingChildMacaronActivity.class);
+				intent.setClass(this, BindingChildMacaronActivityBackup.class);
 				intent.putExtra(ActivityConstants.EXTRA_FROM,
 						ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND);
 				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);

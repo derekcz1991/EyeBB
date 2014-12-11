@@ -18,6 +18,7 @@ package com.twinly.eyebb.service;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -37,6 +38,7 @@ import android.util.Log;
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */
+@SuppressLint("NewApi")
 public class BluetoothLeService extends Service {
 	private final static String TAG = BluetoothLeService.class.getSimpleName();
 
@@ -46,7 +48,7 @@ public class BluetoothLeService extends Service {
 	private BluetoothGatt mBluetoothGatt;
 	private int mConnectionState = STATE_DISCONNECTED;
 
-	private static final int STATE_DISCONNECTED = 0;
+	public static final int STATE_DISCONNECTED = 0;
 	private static final int STATE_CONNECTING = 1;
 	private static final int STATE_CONNECTED = 2;
 
@@ -138,9 +140,8 @@ public class BluetoothLeService extends Service {
 		if (data != null && data.length > 0) {
 			final StringBuilder stringBuilder = new StringBuilder(data.length);
 			for (byte byteChar : data)
-				stringBuilder.append(String.format("%02X ", byteChar));
-			intent.putExtra(EXTRA_DATA,
-					new String(data) + "\n" + stringBuilder.toString());
+				stringBuilder.append(String.format("%02X", byteChar));
+			intent.putExtra(EXTRA_DATA, stringBuilder.toString());
 		}
 		//}
 		sendBroadcast(intent);
@@ -272,12 +273,12 @@ public class BluetoothLeService extends Service {
 	 *
 	 * @param characteristic The characteristic to read from.
 	 */
-	public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
+	public boolean readCharacteristic(BluetoothGattCharacteristic characteristic) {
 		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
 			Log.w(TAG, "BluetoothAdapter not initialized");
-			return;
+			return false;
 		}
-		mBluetoothGatt.readCharacteristic(characteristic);
+		return mBluetoothGatt.readCharacteristic(characteristic);
 	}
 
 	public boolean writeCharacteristic(
@@ -326,4 +327,9 @@ public class BluetoothLeService extends Service {
 
 		return mBluetoothGatt.getServices();
 	}
+
+	public int getmConnectionState() {
+		return mConnectionState;
+	}
+
 }

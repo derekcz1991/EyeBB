@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Text strings -->
     <string name="app_name">EyeBB</string>
     <string name="text_policy">By Continuing, you agree to our <u>Terms</u> and <u>Privacy Policy</u>.</string>
     <string name="text_user_name">User Name</string>
@@ -148,9 +149,10 @@
     <string name="text_wrong_login_for_binding">Wrong login, only parents account can register binding.</string>
     <string name="text_master_of_the_child_exist_already">Master of the child already exists.</string>
     <string name="text_scanning">Scanning Macaron</string>
+    <string name="text_connecting">Connecting Macaron</string>
     <string name="text_scan_no_device">Cannot scan Macaron</string>
     <string name="text_update_device_data">Update Macaron data</string>
-    <string name="text_connect_device_failed">Connect Macaron failed</string>
+    <string name="text_connect_device_failed">Cannot connect Macaron</string>
     <string name="text_update_server_data">Update server data</string>
     <string name="text_update_server_data_fail">Update server data fail</string>
     <string name="text_bind_success">Eyebb binding successfully</string>
@@ -171,7 +173,7 @@
     <string name="text_choose_your_feedback_type">Please, choose your feedback type.</string>
     <string name="text_check_battery_life">Click here</string>
     <string name="text_ble_not_supported">Sorry, Your phone is not supported.</string>
-    
+    <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
     <string name="btn_add_new_guest">Add guest</string>
@@ -186,7 +188,9 @@
     <string name="btn_activities">Activities</string>
     <string name="btn_back">Back</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_turn_on">Turn on</string>
     <string name="btn_confirm">Confirm</string>
+    <string name="btn_ok">OK</string>
     <string name="btn_skip">Skip</string>
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
@@ -201,15 +205,13 @@
     <string name="btn_re_connect">re-connect</string>
     <string name="btn_re_update">re-update</string>
     <string name="btn_finish">Finish</string>
-    
+    <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_loading">Loading&#8230;</string>
     <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username and password, or check your network.</string>
     <string name="toast_login_failed">Login failed, please try again</string>
-    <string name="toast_write_major">Writing major(1/2)&#8230;</string>
-    <string name="toast_write_minor">Writing minor(2/2)&#8230;</string>
     <string name="toast_read_service">Reading Service&#8230;</string>
     <string name="toast_repeat_read_service">Reading service again:</string>
     <string name="toast_register_to_gcm">Failed to get register id, retrying&#8230;</string>

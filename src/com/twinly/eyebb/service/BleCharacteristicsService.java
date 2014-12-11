@@ -245,7 +245,7 @@ public class BleCharacteristicsService extends Service {
 					sendBroadcast(broadcast);
 
 					stopService(BleServicesService.intentToChara);
-					stopService(KidProfileActivity.checkBatteryService);
+					//stopService(KidProfileActivity.checkBatteryService);
 
 					if (BleDeviceConstants.mBluetoothLeService != null) {
 						BleDeviceConstants.mBluetoothLeService.disconnect();

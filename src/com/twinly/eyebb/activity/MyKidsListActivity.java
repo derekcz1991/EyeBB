@@ -90,7 +90,6 @@ public class MyKidsListActivity extends Activity {
 		Child child;
 		for (int i = 0; i < allChildren.size(); i++) {
 			child = allChildren.get(i);
-			System.out.println(child);
 			if (child.getRelationWithUser().equals("P")) {
 				if (CommonUtils.isNull(child.getMacAddress())) {
 					childrenWithoutAddress.add(child);

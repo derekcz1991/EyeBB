@@ -5,14 +5,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,17 +29,15 @@ import com.example.qr_codescan.MipcaActivityCapture;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.service.BleServicesService;
-import com.twinly.eyebb.utils.BLEUtils;
+import com.twinly.eyebb.utils.BluetoothUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
-import com.twinly.eyebb.utils.SharePrefsUtils;
 
-public class KidProfileActivity extends Activity {
+public class KidProfileActivity extends Activity implements
+		BluetoothUtils.BleConnectCallback {
 	private final static int SCANNIN_GREQUEST_CODE = 500;
 
 	private Child child;
@@ -54,7 +47,6 @@ public class KidProfileActivity extends Activity {
 	private ImageLoader imageLoader;
 	private LinearLayout deviceItem;
 	private LinearLayout bindItem;
-	private BluetoothAdapter mBluetoothAdapter;
 	private Uri mImageCaptureUri;
 	private static final int PICK_FROM_CAMERA = 100;
 	private static final int CROP_PHOTO = 200;
@@ -62,9 +54,7 @@ public class KidProfileActivity extends Activity {
 
 	private TextView deviceAddress;
 	private TextView deviceBattery;
-	public static Intent checkBatteryService;
-	private UpdateDBReceiver updateDBReceiver;
-
+	private BluetoothUtils mBluetoothUtils;
 	Handler readBatteryHandler = new Handler();
 
 	@SuppressLint("NewApi")
@@ -91,15 +81,13 @@ public class KidProfileActivity extends Activity {
 		deviceItem = (LinearLayout) findViewById(R.id.device_item);
 		bindItem = (LinearLayout) findViewById(R.id.bind_item);
 
-		// set battery
-		// if (SharePrefsUtils.deviceBattery(this).length() > 0) {
-		// deviceBattery.setText(SharePrefsUtils
-		// .deviceBattery(KidProfileActivity.this) + "%");
-		// }
 		deviceBattery.setText(getResources().getString(
 				R.string.text_check_battery_life));
 
 		if (child.getMacAddress().length() > 0) {
+			mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
+					getFragmentManager(), KidProfileActivity.this);
+
 			deviceItem.setVisibility(View.VISIBLE);
 			deviceAddress.setText(child.getMacAddress());
 
@@ -107,21 +95,7 @@ public class KidProfileActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					if (BLEUtils.isSupportBle(KidProfileActivity.this)) {
-						final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-						mBluetoothAdapter = bluetoothManager.getAdapter();
-
-						if (!mBluetoothAdapter.isEnabled()) {
-							openBluetooth();
-						} else {
-							readBattery();
-						}
-					} else {
-						Toast.makeText(KidProfileActivity.this,
-								R.string.text_ble_not_supported,
-								Toast.LENGTH_LONG).show();
-					}
-
+					mBluetoothUtils.readBattery(child.getMacAddress(), 15000L);
 				}
 			});
 		} else {
@@ -151,99 +125,13 @@ public class KidProfileActivity extends Activity {
 				+ "temp.jpg"));
 	}
 
-	Runnable readBatteryRunable = new Runnable() {
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			readBattery();
-		}
-	};
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		updateDBReceiver = new UpdateDBReceiver();
-		registerReceiver(updateDBReceiver, new IntentFilter(
-				BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY));
-		registerReceiver(bluetoothState, new IntentFilter(
-				BluetoothAdapter.ACTION_STATE_CHANGED));
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		unregisterReceiver(updateDBReceiver);
-		unregisterReceiver(bluetoothState);
-	}
-
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (checkBatteryService != null) {
-			stopService(checkBatteryService);
+		if (mBluetoothUtils != null) {
+			mBluetoothUtils.disconnect();
 		}
 	}
-
-	private void readBattery() {
-		deviceBattery.setText(getResources().getString(R.string.toast_loading));
-
-		checkBatteryService = new Intent();
-		checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-				Constants.DB_NAME);
-		checkBatteryService.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
-				child.getMacAddress());
-		checkBatteryService
-				.setAction("com.twinly.eyebb.service.BLE_SERVICES_SERVICES");
-		checkBatteryService.putExtra(BleDeviceConstants.BLE_SERVICE_COME_FROM,
-				"battery");
-		startService(checkBatteryService);
-	}
-
-	BroadcastReceiver bluetoothState = new BroadcastReceiver() {
-		public void onReceive(Context context, Intent intent) {
-			String stateExtra = BluetoothAdapter.EXTRA_STATE;
-			int state = intent.getIntExtra(stateExtra, -1);
-			switch (state) {
-			case BluetoothAdapter.STATE_TURNING_ON:
-				System.out.println("STATE_TURNING_ON");
-
-				break;
-			case BluetoothAdapter.STATE_ON:
-				System.out.println("STATE_ON");
-				readBatteryHandler.postDelayed(readBatteryRunable,
-						BleDeviceConstants.BATTERY_DELAY_LOADING);
-				break;
-			case BluetoothAdapter.STATE_TURNING_OFF:
-				System.out.println("STATE_TURNING_OFF");
-
-				break;
-			case BluetoothAdapter.STATE_OFF:
-				System.out.println("STATE_OFF");
-
-				break;
-
-			}
-
-		}
-	};
-
-	private class UpdateDBReceiver extends BroadcastReceiver {
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (action.equals(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY)) {
-				if (SharePrefsUtils.deviceBattery(KidProfileActivity.this)
-						.equals("")) {
-					deviceBattery.setText(getResources().getString(
-							R.string.text_no_device_nearby));
-				} else {
-					deviceBattery.setText(SharePrefsUtils
-							.deviceBattery(KidProfileActivity.this) + "%");
-				}
-
-			}
-		}
-	};
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -279,22 +167,17 @@ public class KidProfileActivity extends Activity {
 	}
 
 	public void onBindClicked(View view) {
-		if (BLEUtils.isSupportBle(KidProfileActivity.this)) {
-			if (CommonUtils.isNull(child.getMacAddress())) {
-				Intent intent = new Intent(this, MipcaActivityCapture.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
-			} else {
-				Intent intent = new Intent();
-				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
-						child.getChildId());
-				intent.setClass(this, UnbindDeviceDialog.class);
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
-			}
+		if (CommonUtils.isNull(child.getMacAddress())) {
+			Intent intent = new Intent(this, MipcaActivityCapture.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
 		} else {
-			Toast.makeText(KidProfileActivity.this,
-					R.string.text_ble_not_supported, Toast.LENGTH_LONG).show();
+			Intent intent = new Intent();
+			intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+					child.getChildId());
+			intent.setClass(this, UnbindDeviceDialog.class);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY);
 		}
 	}
 
@@ -363,23 +246,8 @@ public class KidProfileActivity extends Activity {
 		}
 	}
 
-	private void openBluetooth() {
-		// 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
-		if (!mBluetoothAdapter.isEnabled()) {
-			if (!mBluetoothAdapter.isEnabled()) {
-				Intent enableBtIntent = new Intent(
-						BluetoothAdapter.ACTION_REQUEST_ENABLE);
-				startActivityForResult(enableBtIntent,
-						Constants.REQUEST_ENABLE_BT);
-			}
-		}
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		/*
-		 * if (resultCode != RESULT_OK) return;
-		 */
 		switch (requestCode) {
 		case PICK_FROM_CAMERA:
 			doCrop();
@@ -412,7 +280,6 @@ public class KidProfileActivity extends Activity {
 				Bundle bundle = data.getExtras();
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
-				// TODO check the mac address
 				String macAddress = bundle.getString("result");
 				Intent intent = new Intent();
 				intent.setClass(this, BindingChildMacaronActivity.class);
@@ -429,6 +296,70 @@ public class KidProfileActivity extends Activity {
 						ActivityConstants.REQUEST_GO_TO_BIND_CHILD_MACARON_ACTIVITY);
 			}
 		}
+	}
+
+	@Override
+	public void onPreConnect() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				deviceBattery.setText(getResources().getString(
+						R.string.toast_loading));
+			}
+		});
+	}
+
+	@Override
+	public void onConnected() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				deviceBattery.setText(getResources().getString(
+						R.string.toast_loading));
+			}
+		});
+	}
+
+	@Override
+	public void onDisConnected() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				deviceBattery.setText(getResources().getString(
+						R.string.text_no_device_nearby));
+			}
+		});
+	}
+
+	@Override
+	public void onDiscovered() {
+		// do nothing
+	}
+
+	@Override
+	public void onDataAvailable(final String value) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				deviceBattery.setText(Integer.parseInt(value, 16) + "%");
+			}
+		});
+
+	}
+
+	@Override
+	public void onResult(final boolean result) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				if (result) {
+
+				} else {
+					deviceBattery.setText(getResources().getString(
+							R.string.text_no_device_nearby));
+				}
+			}
+		});
 	}
 
 }
