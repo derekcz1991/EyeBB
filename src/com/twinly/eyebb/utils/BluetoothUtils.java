@@ -21,6 +21,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.bluetooth.BleDevicesScanner;
 import com.twinly.eyebb.dialog.ErrorDialog;
 import com.twinly.eyebb.service.BluetoothLeService;
 
@@ -45,6 +46,7 @@ public class BluetoothUtils {
 	private BluetoothAdapter mBluetoothAdapter;
 	private BroadcastReceiver mGattUpdateReceiver;
 	private BluetoothLeService mBluetoothLeService;
+	private BleDevicesScanner scanner;
 	private ServiceConnection mServiceConnection;
 	private List<BluetoothGattService> gattServices;
 
@@ -273,12 +275,20 @@ public class BluetoothUtils {
 		return true;
 	}
 
-	public void startLeScan() {
+	public void startLeScan(BluetoothAdapter.LeScanCallback leScanCallback,
+			long scanPeriod) {
+		if (initialize()) {
+			scanner = new BleDevicesScanner(mBluetoothAdapter, leScanCallback);
+			scanner.setScanPeriod(scanPeriod);
+			scanner.start();
+		}
 
 	}
 
 	public void stopLeScan() {
-
+		if (scanner != null) {
+			scanner.stop();
+		}
 	}
 
 	/**
