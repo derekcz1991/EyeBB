@@ -2,11 +2,11 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
-import android.support.v4.app.Fragment;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +58,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 
 	public TabsAdapter(FragmentActivity activity, TabHost tabHost,
 			ViewPager pager) {
-		super(activity.getSupportFragmentManager());
+		super(activity.getFragmentManager());
 		mContext = activity;
 		mTabHost = tabHost;
 		mViewPager = pager;

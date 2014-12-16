@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -39,6 +40,7 @@ import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
+@SuppressLint("NewApi")
 public class BeaconListActivity extends Activity {
 	private static final int REQUEST_ENABLE_BT = 1;
 	// Stops scanning after 30 seconds.

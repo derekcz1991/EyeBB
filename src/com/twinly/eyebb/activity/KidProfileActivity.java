@@ -86,7 +86,7 @@ public class KidProfileActivity extends Activity implements
 
 		if (child.getMacAddress().length() > 0) {
 			mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
-					getFragmentManager(), KidProfileActivity.this);
+					getFragmentManager(), this);
 
 			deviceItem.setVisibility(View.VISIBLE);
 			deviceAddress.setText(child.getMacAddress());

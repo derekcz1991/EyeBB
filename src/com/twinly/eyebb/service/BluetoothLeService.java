@@ -52,14 +52,14 @@ public class BluetoothLeService extends Service {
 	private static final int STATE_CONNECTING = 1;
 	private static final int STATE_CONNECTED = 2;
 
-	public final static String ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-	public final static String ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-	public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-	public final static String ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
-	public final static String EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA";
-
-	/*public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID
-			.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);*/
+	public final static String ACTION_GATT_CONNECTED = "bluetooth.le.ACTION_GATT_CONNECTED";
+	public final static String ACTION_GATT_DISCONNECTED = "bluetooth.le.ACTION_GATT_DISCONNECTED";
+	public final static String ACTION_GATT_SERVICES_DISCOVERED = "bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
+	public final static String ACTION_DATA_AVAILABLE = "bluetooth.le.ACTION_DATA_AVAILABLE";
+	public final static String ACTION_GATT_WRITE_SUCCESS = "bluetooth.le.ACTION_GATT_WRITE_SUCCEED";
+	public final static String ACTION_GATT_WRITE_FAILURE = "bluetooth.le.ACTION_GATT_WRITE_FAILURE";
+	public final static String ACTION_GATT_READ_FAILURE = "bluetooth.le.ACTION_GATT_READ_FAILURE";
+	public final static String EXTRA_DATA = "bluetooth.le.EXTRA_DATA";
 
 	// Implements callback methods for GATT events that the app cares about.  For example,
 	// connection change and services discovered.
@@ -99,6 +99,8 @@ public class BluetoothLeService extends Service {
 				BluetoothGattCharacteristic characteristic, int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+			} else {
+				broadcastUpdate(ACTION_GATT_READ_FAILURE);
 			}
 		}
 
@@ -107,6 +109,17 @@ public class BluetoothLeService extends Service {
 				BluetoothGattCharacteristic characteristic) {
 			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
 		}
+
+		@Override
+		public void onCharacteristicWrite(BluetoothGatt gatt,
+				BluetoothGattCharacteristic characteristic, int status) {
+			if (status == BluetoothGatt.GATT_SUCCESS) {
+				broadcastUpdate(ACTION_GATT_WRITE_SUCCESS);
+			} else {
+				broadcastUpdate(ACTION_GATT_WRITE_FAILURE);
+			}
+		}
+
 	};
 
 	private void broadcastUpdate(final String action) {
@@ -117,25 +130,6 @@ public class BluetoothLeService extends Service {
 	private void broadcastUpdate(final String action,
 			final BluetoothGattCharacteristic characteristic) {
 		final Intent intent = new Intent(action);
-
-		// This is special handling for the Heart Rate Measurement profile.  Data parsing is
-		// carried out as per profile specifications:
-		// http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-		/*if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-			int flag = characteristic.getProperties();
-			int format = -1;
-			if ((flag & 0x01) != 0) {
-				format = BluetoothGattCharacteristic.FORMAT_UINT16;
-				Log.d(TAG, "Heart rate format UINT16.");
-			} else {
-				format = BluetoothGattCharacteristic.FORMAT_UINT8;
-				Log.d(TAG, "Heart rate format UINT8.");
-			}
-			final int heartRate = characteristic.getIntValue(format, 1);
-			Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-			intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
-		} else {*/
-		// For all other profiles, writes the data formatted in HEX.
 		final byte[] data = characteristic.getValue();
 		if (data != null && data.length > 0) {
 			final StringBuilder stringBuilder = new StringBuilder(data.length);
@@ -143,7 +137,6 @@ public class BluetoothLeService extends Service {
 				stringBuilder.append(String.format("%02X", byteChar));
 			intent.putExtra(EXTRA_DATA, stringBuilder.toString());
 		}
-		//}
 		sendBroadcast(intent);
 	}
 
@@ -212,7 +205,7 @@ public class BluetoothLeService extends Service {
 		}
 
 		// Previously connected device.  Try to reconnect.
-		if (mBluetoothDeviceAddress != null
+		/*if (mBluetoothDeviceAddress != null
 				&& address.equals(mBluetoothDeviceAddress)
 				&& mBluetoothGatt != null) {
 			Log.d(TAG,
@@ -223,7 +216,7 @@ public class BluetoothLeService extends Service {
 			} else {
 				return false;
 			}
-		}
+		}*/
 
 		final BluetoothDevice device = mBluetoothAdapter
 				.getRemoteDevice(address);
