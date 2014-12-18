@@ -55,10 +55,10 @@ public class BluetoothLeService extends Service {
 	public final static String ACTION_GATT_CONNECTED = "bluetooth.le.ACTION_GATT_CONNECTED";
 	public final static String ACTION_GATT_DISCONNECTED = "bluetooth.le.ACTION_GATT_DISCONNECTED";
 	public final static String ACTION_GATT_SERVICES_DISCOVERED = "bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-	public final static String ACTION_DATA_AVAILABLE = "bluetooth.le.ACTION_DATA_AVAILABLE";
+	public final static String ACTION_GATT_READ_SUCCESS = "bluetooth.le.ACTION_GATT_READ_SUCCESS";
+	public final static String ACTION_GATT_READ_FAILURE = "bluetooth.le.ACTION_GATT_READ_FAILURE";
 	public final static String ACTION_GATT_WRITE_SUCCESS = "bluetooth.le.ACTION_GATT_WRITE_SUCCEED";
 	public final static String ACTION_GATT_WRITE_FAILURE = "bluetooth.le.ACTION_GATT_WRITE_FAILURE";
-	public final static String ACTION_GATT_READ_FAILURE = "bluetooth.le.ACTION_GATT_READ_FAILURE";
 	public final static String EXTRA_DATA = "bluetooth.le.EXTRA_DATA";
 
 	// Implements callback methods for GATT events that the app cares about.  For example,
@@ -98,7 +98,7 @@ public class BluetoothLeService extends Service {
 		public void onCharacteristicRead(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
-				broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+				broadcastUpdate(ACTION_GATT_READ_SUCCESS, characteristic);
 			} else {
 				broadcastUpdate(ACTION_GATT_READ_FAILURE);
 			}
@@ -107,7 +107,7 @@ public class BluetoothLeService extends Service {
 		@Override
 		public void onCharacteristicChanged(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic) {
-			broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+			broadcastUpdate(ACTION_GATT_READ_SUCCESS, characteristic);
 		}
 
 		@Override
@@ -204,7 +204,7 @@ public class BluetoothLeService extends Service {
 			return false;
 		}
 
-		// Previously connected device.  Try to reconnect.
+		// Previously connected device. Try to reconnect.
 		/*if (mBluetoothDeviceAddress != null
 				&& address.equals(mBluetoothDeviceAddress)
 				&& mBluetoothGatt != null) {

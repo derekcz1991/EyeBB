@@ -56,9 +56,14 @@ public class BluetoothUtils {
 
 	public interface BleConnectCallback {
 		/**
-		 * UI update for preparing to connect to BLE device 
+		 * UI update before connecting to BLE device 
 		 */
 		public void onPreConnect();
+
+		/**
+		 * UI update when cancel connect to BLE device, always connect to device failed
+		 */
+		public void onConnectCanceled();
 
 		/**
 		 * UI update when connected to BLE device
@@ -103,14 +108,14 @@ public class BluetoothUtils {
 					callback.onConnected();
 				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
 						.equals(action)) {
-					//callback.onDisConnected();
+					callback.onDisConnected();
 				} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
 						.equals(action)) {
 					callback.onDiscovered();
 					gattServices = mBluetoothLeService
 							.getSupportedGattServices();
 					onDiscovered();
-				} else if (BluetoothLeService.ACTION_DATA_AVAILABLE
+				} else if (BluetoothLeService.ACTION_GATT_READ_SUCCESS
 						.equals(action)) {
 					callback.onDataAvailable(intent
 							.getStringExtra(BluetoothLeService.EXTRA_DATA));
@@ -146,14 +151,13 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Read battery from device
+	 * Read battery from device, keep connection if not disconnect manual
 	 * @param mDeviceAddress The device mac address
 	 * @param timeout The timeout to connect to device
 	 */
 	public void readBattery(String mDeviceAddress, long timeout) {
 		command = READ_BATTERY;
 		if (gattServices != null) {
-			//callback.onPreConnect();
 			read(CHARACTERISTICS_BATTERY_UUID);
 		} else {
 			if (initialize()) {
@@ -162,6 +166,12 @@ public class BluetoothUtils {
 		}
 	}
 
+	/**
+	 * Write major & minor to device, disconnect device when finish writing
+	 * @param mDeviceAddress The device mac address
+	 * @param timeout The timeout to connect to device
+	 * @param value The value of major & minor
+	 */
 	public void writeMajorMinor(String mDeviceAddress, long timeout,
 			String... value) {
 		command = WRITE_MAJOR_MINOR;
@@ -178,6 +188,12 @@ public class BluetoothUtils {
 		}
 	}
 
+	/**
+	 * Make device beep, disconnect device when finish writing
+	 * @param mDeviceAddress The device mac address
+	 * @param timeout The timeout to connect to device
+	 * @param value The value of to beep
+	 */
 	public void writeBeep(String mDeviceAddress, long timeout, String... value) {
 		command = WRITE_BEEP;
 		this.value = value;
@@ -186,6 +202,11 @@ public class BluetoothUtils {
 		}
 	}
 
+	/**
+	 * Start scan ble device
+	 * @param leScanCallback Callback function to receive scanned ble device
+	 * @param scanPeriod The period time of switch between scan off and scan on, normally set 500ms
+	 */
 	public void startLeScan(BluetoothAdapter.LeScanCallback leScanCallback,
 			long scanPeriod) {
 		if (initialize()) {
@@ -196,6 +217,9 @@ public class BluetoothUtils {
 
 	}
 
+	/**
+	 * Stop scan ble device
+	 */
 	public void stopLeScan() {
 		if (scanner != null) {
 			scanner.stop();
@@ -253,41 +277,43 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Connect to the device, only invoked once. 
+	 * Connect to the device. If it is the first connection, create a new BluetoothLeService, otherwise connect to device directly
 	 * @param mDeviceAddress The device mac address
 	 * @param timeout The timeout to connect to device
 	 */
 	private void connect(final String mDeviceAddress, long timeout) {
-		//if (mServiceConnection == null) {
 		callback.onPreConnect();
-		mServiceConnection = new ServiceConnection() {
+		if (mServiceConnection == null) {
+			mServiceConnection = new ServiceConnection() {
 
-			@Override
-			public void onServiceConnected(ComponentName componentName,
-					IBinder service) {
-				mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
-						.getService();
-				if (!mBluetoothLeService.initialize()) {
-					Log.e(TAG, "Unable to initialize Bluetooth");
+				@Override
+				public void onServiceConnected(ComponentName componentName,
+						IBinder service) {
+					mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
+							.getService();
+					if (!mBluetoothLeService.initialize()) {
+						Log.e(TAG, "Unable to initialize Bluetooth");
+					}
+					// Automatically connects to the device upon successful start-up initialization.
+					mBluetoothLeService.connect(mDeviceAddress);
 				}
-				// Automatically connects to the device upon successful start-up initialization.
-				final boolean result = mBluetoothLeService
-						.connect(mDeviceAddress);
-				Log.d(TAG, "Connect request A result ===>>> " + result);
-			}
 
-			@Override
-			public void onServiceDisconnected(ComponentName componentName) {
-				Log.d(TAG, "onServiceDisconnected");
-				mBluetoothLeService = null;
-				gattServices = null;
-			}
-		};
+				@Override
+				public void onServiceDisconnected(ComponentName componentName) {
+					Log.d(TAG, "onServiceDisconnected");
+					mBluetoothLeService = null;
+					gattServices = null;
+				}
+			};
 
-		Intent gattServiceIntent = new Intent(context, BluetoothLeService.class);
-		context.bindService(gattServiceIntent, mServiceConnection,
-				Context.BIND_AUTO_CREATE);
-
+			Intent gattServiceIntent = new Intent(context,
+					BluetoothLeService.class);
+			context.bindService(gattServiceIntent, mServiceConnection,
+					Context.BIND_AUTO_CREATE);
+		} else {
+			mBluetoothLeService.connect(mDeviceAddress);
+		}
+		// cancel connect to device if not success when timeout
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 
@@ -295,14 +321,13 @@ public class BluetoothUtils {
 			public void run() {
 				if (mBluetoothLeService != null) {
 					if (mBluetoothLeService.getmConnectionState() == BluetoothLeService.STATE_DISCONNECTED) {
-						callback.onDisConnected();
+						callback.onConnectCanceled();
 						mBluetoothLeService.disconnect();
 						mBluetoothLeService = null;
 					}
 				}
 			}
 		}, timeout);
-		//}
 	}
 
 	/**
@@ -397,7 +422,6 @@ public class BluetoothUtils {
 		}
 		if (mBluetoothLeService != null) {
 			mBluetoothLeService.disconnect();
-			mBluetoothLeService.close();
 			mBluetoothLeService = null;
 		}
 		gattServices = null;
@@ -409,7 +433,10 @@ public class BluetoothUtils {
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
 		intentFilter
 				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_SUCCESS);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_FAILURE);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_WRITE_SUCCESS);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_WRITE_FAILURE);
 		return intentFilter;
 	}
 }

@@ -106,7 +106,8 @@ public class BindingChildMacaronActivityBackup extends Activity {
 					.equals(action)) {
 				System.out.println("mGattUpdateReceiver ==>> writeToMacaron");
 				writeToMacaron(mBluetoothLeService.getSupportedGattServices());
-			} else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+			} else if (BluetoothLeService.ACTION_GATT_READ_SUCCESS
+					.equals(action)) {
 			}
 		}
 	};
@@ -374,7 +375,8 @@ public class BindingChildMacaronActivityBackup extends Activity {
 			};
 
 			Intent gattServiceIntent = new Intent(
-					BindingChildMacaronActivityBackup.this, BluetoothLeService.class);
+					BindingChildMacaronActivityBackup.this,
+					BluetoothLeService.class);
 			bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
 			if (mBluetoothLeService != null) {
@@ -471,7 +473,7 @@ public class BindingChildMacaronActivityBackup extends Activity {
 		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
 		intentFilter
 				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_SUCCESS);
 		return intentFilter;
 	}
 

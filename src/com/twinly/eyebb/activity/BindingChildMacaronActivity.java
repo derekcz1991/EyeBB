@@ -267,17 +267,22 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
+	public void onConnectCanceled() {
+		bindStep = BIND_STEP_CONNECT_FAIL;
+		tvMessage.setText(R.string.text_connect_device_failed);
+		btnEvent.setText(R.string.btn_re_connect);
+	}
+	
+	@Override
 	public void onConnected() {
 		iconBeacon.setAlpha(1);
 	}
 
 	@Override
 	public void onDisConnected() {
-		bindStep = BIND_STEP_CONNECT_FAIL;
-		tvMessage.setText(R.string.text_connect_device_failed);
-		btnEvent.setText(R.string.btn_re_connect);
+		// do nothing
 	}
-
+	
 	@Override
 	public void onDiscovered() {
 		bindStep = BIND_STEP_CONNECTING;

@@ -306,16 +306,6 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.BeaconListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.BindChildMacaronDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.BindingChildMacaronActivityBackup"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >

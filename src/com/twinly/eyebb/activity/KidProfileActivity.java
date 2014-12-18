@@ -310,6 +310,17 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
+	public void onConnectCanceled() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				deviceBattery.setText(getResources().getString(
+						R.string.text_no_device_nearby));
+			}
+		});
+	}
+
+	@Override
 	public void onConnected() {
 		runOnUiThread(new Runnable() {
 			@Override
@@ -322,13 +333,7 @@ public class KidProfileActivity extends Activity implements
 
 	@Override
 	public void onDisConnected() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				deviceBattery.setText(getResources().getString(
-						R.string.text_no_device_nearby));
-			}
-		});
+		// do nothing
 	}
 
 	@Override
