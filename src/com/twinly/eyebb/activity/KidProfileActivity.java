@@ -126,6 +126,22 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mBluetoothUtils != null) {
+			mBluetoothUtils.registerReceiver();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mBluetoothUtils != null) {
+			mBluetoothUtils.unregisterReceiver();
+		}
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		if (mBluetoothUtils != null) {

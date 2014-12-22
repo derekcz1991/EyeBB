@@ -131,9 +131,6 @@ public class BluetoothUtils {
 				}
 			}
 		};
-
-		context.registerReceiver(mGattUpdateReceiver,
-				makeGattUpdateIntentFilter());
 	}
 
 	/**
@@ -148,6 +145,23 @@ public class BluetoothUtils {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Register broadcast receiver, called in onResume()
+	 */
+	public void registerReceiver() {
+		context.registerReceiver(mGattUpdateReceiver,
+				makeGattUpdateIntentFilter());
+	}
+
+	/**
+	 * Unregister broadcast receiver, called i onPause()
+	 */
+	public void unregisterReceiver() {
+		if (mGattUpdateReceiver != null) {
+			context.unregisterReceiver(mGattUpdateReceiver);
+		}
 	}
 
 	/**
@@ -203,22 +217,25 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Start scan ble device
+	 * Start scan ble device, called in onResume
 	 * @param leScanCallback Callback function to receive scanned ble device
 	 * @param scanPeriod The period time of switch between scan off and scan on, normally set 500ms
 	 */
 	public void startLeScan(BluetoothAdapter.LeScanCallback leScanCallback,
 			long scanPeriod) {
 		if (initialize()) {
-			scanner = new BleDevicesScanner(mBluetoothAdapter, leScanCallback);
-			scanner.setScanPeriod(scanPeriod);
+			if (scanner == null) {
+				scanner = new BleDevicesScanner(mBluetoothAdapter,
+						leScanCallback);
+				scanner.setScanPeriod(scanPeriod);
+			}
 			scanner.start();
 		}
 
 	}
 
 	/**
-	 * Stop scan ble device
+	 * Stop scan ble device, called in onPause()
 	 */
 	public void stopLeScan() {
 		if (scanner != null) {
@@ -410,13 +427,9 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Disconnet to Bluetooth service and gatt service
+	 * Disconnet to Bluetooth service and gatt service, called in onDestroy()
 	 */
 	public void disconnect() {
-
-		if (mGattUpdateReceiver != null) {
-			context.unregisterReceiver(mGattUpdateReceiver);
-		}
 		if (mServiceConnection != null) {
 			context.unbindService(mServiceConnection);
 		}
