@@ -58,8 +58,6 @@
     <string name="text_beeping">Beeping</string>
     <string name="text_sec">Sec.</string>
     <string name="text_error_bluetooth_not_supported">Bluetooth not supported</string>
-    <string name="text_Supervised">Scanned</string>
-    <string name="text_Missed">Missed</string>
     <string name="text_notificationDetails">Notification Details</string>
     <string name="text_about_details">EyeBB is a smart kid bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，EyeBB can help you monitor the safety of kids at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your kids.</string>
     <string name="text_version">Version</string>
@@ -77,7 +75,7 @@
     <string name="text_error_password">The Password is not in the correct format! \n(eg.A-Z a-z 0-9) Length:6-20</string>
     <string name="text_loading">Loading...</string>
     <string name="text_radar_status_disconnection">Close the anti-lost model</string>
-    <string name="text_radar_status_start_connected">Open the anti-lost model</string>
+    <string name="text_radar_status_start_connected">Anti-lost model</string>
     <string name="text_connect_device">Start to find the kids nearby?</string>
     <string name="text_select_device">Please select your device.</string>
     <string name="text_device_list">Device list</string>
@@ -205,6 +203,8 @@
     <string name="btn_re_connect">re-connect</string>
     <string name="btn_re_update">re-update</string>
     <string name="btn_finish">Finish</string>
+    <string name="btn_supervised">Supervised</string>
+    <string name="btn_missed">Missed</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

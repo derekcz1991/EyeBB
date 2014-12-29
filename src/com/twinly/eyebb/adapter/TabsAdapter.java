@@ -16,6 +16,7 @@ import android.widget.TabWidget;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
+import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
 
 /**
@@ -36,7 +37,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	// private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 	private final ArrayList<Integer> mFragments = new ArrayList<Integer>();
 	private IndoorLocatorFragment indoorLocatorFragment;
-	private RadarTrackingFragment radarTrackingFragment;
+	private RadarTrackingFragmentTemp radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
@@ -74,8 +75,15 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		addTab(tabSpec);
 	}
 
-	public void addFragment(TabHost.TabSpec tabSpec,
+	/*public void addFragment(TabHost.TabSpec tabSpec,
 			RadarTrackingFragment radarTrackingFragment) {
+		this.radarTrackingFragment = radarTrackingFragment;
+		mFragments.add(1);
+		addTab(tabSpec);
+	}*/
+
+	public void addFragment(TabHost.TabSpec tabSpec,
+			RadarTrackingFragmentTemp radarTrackingFragment) {
 		this.radarTrackingFragment = radarTrackingFragment;
 		mFragments.add(1);
 		addTab(tabSpec);

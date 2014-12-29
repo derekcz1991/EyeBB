@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,7 +54,6 @@ public class KidProfileActivity extends Activity implements
 	private TextView deviceAddress;
 	private TextView deviceBattery;
 	private BluetoothUtils mBluetoothUtils;
-	Handler readBatteryHandler = new Handler();
 
 	@SuppressLint("NewApi")
 	@Override
