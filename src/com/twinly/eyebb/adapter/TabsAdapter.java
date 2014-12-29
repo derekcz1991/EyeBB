@@ -2,11 +2,11 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
-import android.support.v4.app.Fragment;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import android.widget.TabWidget;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
+import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
 
 /**
@@ -36,7 +37,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	// private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 	private final ArrayList<Integer> mFragments = new ArrayList<Integer>();
 	private IndoorLocatorFragment indoorLocatorFragment;
-	private RadarTrackingFragment radarTrackingFragment;
+	private RadarTrackingFragmentTemp radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
@@ -58,7 +59,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 
 	public TabsAdapter(FragmentActivity activity, TabHost tabHost,
 			ViewPager pager) {
-		super(activity.getSupportFragmentManager());
+		super(activity.getFragmentManager());
 		mContext = activity;
 		mTabHost = tabHost;
 		mViewPager = pager;
@@ -74,8 +75,15 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		addTab(tabSpec);
 	}
 
-	public void addFragment(TabHost.TabSpec tabSpec,
+	/*public void addFragment(TabHost.TabSpec tabSpec,
 			RadarTrackingFragment radarTrackingFragment) {
+		this.radarTrackingFragment = radarTrackingFragment;
+		mFragments.add(1);
+		addTab(tabSpec);
+	}*/
+
+	public void addFragment(TabHost.TabSpec tabSpec,
+			RadarTrackingFragmentTemp radarTrackingFragment) {
 		this.radarTrackingFragment = radarTrackingFragment;
 		mFragments.add(1);
 		addTab(tabSpec);

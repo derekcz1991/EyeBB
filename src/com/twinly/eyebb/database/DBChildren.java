@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.utils.CommonUtils;
 
 public class DBChildren {
 	private static SQLiteDatabase getInstance(Context context) {
@@ -59,7 +61,26 @@ public class DBChildren {
 		while (cursor.moveToNext()) {
 			Child child = new Child();
 			createChild(child, cursor);
-			map.put(String.valueOf(child.getChildId()), child);
+			if (CommonUtils.isNotNull(child.getMacAddress())) {
+				map.put(child.getMacAddress(), child);
+			}
+		}
+		cursor.close();
+		db.close();
+		return map;
+	}
+
+	public static HashMap<String, Macaron> getMacaronMap(Context context) {
+		HashMap<String, Macaron> map = new HashMap<String, Macaron>();
+		SQLiteDatabase db = getInstance(context);
+		Cursor cursor = db.rawQuery("select * from children", null);
+		while (cursor.moveToNext()) {
+			Child child = new Child();
+			createChild(child, cursor);
+			if (CommonUtils.isNotNull(child.getMacAddress())) {
+				map.put(child.getMacAddress(),
+						new Macaron(child.getMacAddress()));
+			}
 		}
 		cursor.close();
 		db.close();

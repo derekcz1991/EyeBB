@@ -22,6 +22,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
+import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
@@ -34,7 +35,7 @@ public class MainActivity extends FragmentActivity implements
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
 	private IndoorLocatorFragment indoorLocatorFragment;
-	private RadarTrackingFragment radarTrackingFragment;
+	private RadarTrackingFragmentTemp radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
@@ -98,7 +99,7 @@ public class MainActivity extends FragmentActivity implements
 				indoorLocatorFragment);
 
 		// radar
-		radarTrackingFragment = new RadarTrackingFragment();
+		radarTrackingFragment = new RadarTrackingFragmentTemp();
 		View trackingLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		trackingLabel.findViewById(R.id.label).setBackgroundResource(

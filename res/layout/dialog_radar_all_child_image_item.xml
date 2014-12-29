@@ -8,7 +8,7 @@
         android:id="@+id/radar_child_all_head_img"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/hugh"
+        android:src="@drawable/icon_avatar_dark"
         app:border_color="@color/white"
         app:border_width="2dp" />
 

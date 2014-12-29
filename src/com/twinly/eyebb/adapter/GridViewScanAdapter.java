@@ -115,7 +115,7 @@ public class GridViewScanAdapter extends BaseAdapter {
 
 		} else {
 			viewHolder.civ.setImageDrawable(context.getResources().getDrawable(
-					R.drawable.hugh));
+					R.drawable.icon_avatar_dark));
 		}
 
 	}

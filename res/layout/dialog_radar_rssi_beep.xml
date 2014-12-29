@@ -27,7 +27,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/hugh"
+                android:src="@drawable/icon_avatar_dark"
                 app:border_color="@color/red"
                 app:border_width="2dp" />
         </LinearLayout>

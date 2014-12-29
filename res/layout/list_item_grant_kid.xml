@@ -16,7 +16,7 @@
         android:layout_height="44dp"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="16dp"
-        android:src="@drawable/hugh"
+        android:src="@drawable/icon_avatar_dark"
         app:border_color="@color/white"
         app:border_width="2dp" />
 

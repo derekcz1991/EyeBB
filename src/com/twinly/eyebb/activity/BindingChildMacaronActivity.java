@@ -110,7 +110,6 @@ public class BindingChildMacaronActivity extends Activity implements
 			public void onClick(View v) {
 				switch (bindStep) {
 				case BIND_STEP_CONNECTING:
-					mBluetoothUtils.disconnect();
 					finish();
 					break;
 				case BIND_STEP_CONNECT_FAIL:
@@ -122,7 +121,8 @@ public class BindingChildMacaronActivity extends Activity implements
 				case BIND_STEP_BIND_FINISH:
 					switch (from) {
 					case ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND:
-						Intent intent = new Intent(BindingChildMacaronActivity.this,
+						Intent intent = new Intent(
+								BindingChildMacaronActivity.this,
 								LancherActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(intent);
@@ -131,12 +131,29 @@ public class BindingChildMacaronActivity extends Activity implements
 						setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_SUCCESS);
 						break;
 					}
-					mBluetoothUtils.disconnect();
 					finish();
 					break;
 				}
 			}
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mBluetoothUtils.registerReceiver();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mBluetoothUtils.unregisterReceiver();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mBluetoothUtils.disconnect();
 	}
 
 	/**
@@ -168,7 +185,6 @@ public class BindingChildMacaronActivity extends Activity implements
 					Toast.makeText(BindingChildMacaronActivity.this,
 							R.string.text_device_already_binded,
 							Toast.LENGTH_LONG).show();
-					mBluetoothUtils.disconnect();
 					finish();
 					return;
 				} else {
@@ -244,8 +260,9 @@ public class BindingChildMacaronActivity extends Activity implements
 				if (result.equals("T")) {
 					bindStep = BIND_STEP_BIND_FINISH;
 					tvMessage.setText(R.string.text_bind_success);
-					DBChildren.updateMacAddressByChildId(BindingChildMacaronActivity.this,
-							childId, mDeviceAddress);
+					DBChildren.updateMacAddressByChildId(
+							BindingChildMacaronActivity.this, childId,
+							mDeviceAddress);
 				} else {
 					bindStep = BIND_STEP_UPLOAD_FAIL;
 					tvMessage.setText(R.string.text_update_server_data_fail);
@@ -264,6 +281,13 @@ public class BindingChildMacaronActivity extends Activity implements
 		bindStep = BIND_STEP_CONNECTING;
 		tvMessage.setText(R.string.text_connecting);
 		btnEvent.setText(R.string.btn_cancel);
+	}
+
+	@Override
+	public void onConnectCanceled() {
+		bindStep = BIND_STEP_CONNECT_FAIL;
+		tvMessage.setText(R.string.text_connect_device_failed);
+		btnEvent.setText(R.string.btn_re_connect);
 	}
 
 	@Override

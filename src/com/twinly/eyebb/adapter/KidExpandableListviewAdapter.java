@@ -132,7 +132,7 @@ public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 					CommonUtils.getDisplayImageOptions(), null);
 		} else {
 			childrenHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.hugh));
+					.getDrawable(R.drawable.icon_avatar_dark));
 		}
 		childrenHolder.name.setText(child.getName());
 	}

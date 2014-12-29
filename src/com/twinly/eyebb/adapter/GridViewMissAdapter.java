@@ -114,7 +114,7 @@ public class GridViewMissAdapter extends BaseAdapter {
 
 		} else {
 			viewHolder.civ.setImageDrawable(context.getResources().getDrawable(
-					R.drawable.hugh));
+					R.drawable.icon_avatar_dark));
 		}
 
 	}

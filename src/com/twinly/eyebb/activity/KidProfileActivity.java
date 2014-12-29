@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -55,7 +54,6 @@ public class KidProfileActivity extends Activity implements
 	private TextView deviceAddress;
 	private TextView deviceBattery;
 	private BluetoothUtils mBluetoothUtils;
-	Handler readBatteryHandler = new Handler();
 
 	@SuppressLint("NewApi")
 	@Override
@@ -86,7 +84,7 @@ public class KidProfileActivity extends Activity implements
 
 		if (child.getMacAddress().length() > 0) {
 			mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
-					getFragmentManager(), KidProfileActivity.this);
+					getFragmentManager(), this);
 
 			deviceItem.setVisibility(View.VISIBLE);
 			deviceAddress.setText(child.getMacAddress());
@@ -123,6 +121,22 @@ public class KidProfileActivity extends Activity implements
 
 		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
 				+ "temp.jpg"));
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (mBluetoothUtils != null) {
+			mBluetoothUtils.registerReceiver();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mBluetoothUtils != null) {
+			mBluetoothUtils.unregisterReceiver();
+		}
 	}
 
 	@Override
@@ -310,6 +324,17 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
+	public void onConnectCanceled() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				deviceBattery.setText(getResources().getString(
+						R.string.text_no_device_nearby));
+			}
+		});
+	}
+
+	@Override
 	public void onConnected() {
 		runOnUiThread(new Runnable() {
 			@Override
@@ -322,13 +347,7 @@ public class KidProfileActivity extends Activity implements
 
 	@Override
 	public void onDisConnected() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				deviceBattery.setText(getResources().getString(
-						R.string.text_no_device_nearby));
-			}
-		});
+		// do nothing
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.twinly.eyebb.utils;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.constant.BleDeviceConstants;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -124,6 +125,16 @@ public class BLEUtils {
 
 		} else {
 			return true;
+		}
+	}
+
+	public static int getRssiLevel(int rssi) {
+		if (rssi > BleDeviceConstants.RSSI_STRONG) {
+			return BleDeviceConstants.RSSI_STRONG;
+		} else if (rssi < BleDeviceConstants.RSSI_GOOD) {
+			return BleDeviceConstants.RSSI_WEEK;
+		} else {
+			return BleDeviceConstants.RSSI_GOOD;
 		}
 	}
 }

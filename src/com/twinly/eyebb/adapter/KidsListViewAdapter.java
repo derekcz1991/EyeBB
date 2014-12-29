@@ -126,7 +126,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 					CommonUtils.getDisplayImageOptions(), null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.hugh));
+					.getDrawable(R.drawable.icon_avatar_dark));
 		}
 		viewHolder.name.setText(child.getName());
 		viewHolder.locationName.setText("@ " + child.getLocationName());

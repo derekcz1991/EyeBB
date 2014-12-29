@@ -340,7 +340,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/layout_supervised_liner"
-                                android:text="@string/text_Supervised" />
+                                android:text="@string/btn_supervised" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -381,7 +381,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/layout_missed_liner"
-                                android:text="@string/text_Missed" />
+                                android:text="@string/btn_missed" />
                         </RelativeLayout>
                     </RelativeLayout>
                 </RelativeLayout>
