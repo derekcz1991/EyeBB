@@ -180,7 +180,7 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
 					R.color.dark_grey));
 			break;
-		case BleDeviceConstants.RSSI_WEEK:
+		case BleDeviceConstants.RSSI_WEAK:
 			viewHolder.deviceRssi.setText(context.getResources().getString(
 					R.string.text_rssi_weak)
 					+ "(" + rssi + ")");

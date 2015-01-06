@@ -25,7 +25,7 @@ public class BleDeviceConstants {
 
 	public static final int RSSI_STRONG = -50;
 	public static final int RSSI_GOOD = -70;
-	public static final int RSSI_WEEK = -100;
+	public static final int RSSI_WEAK = -100;
 
 	public static final int POSTDELAYTIME = Integer.MAX_VALUE - 500;
 	public static final int DEVICE_CONNECT_STATUS_LOADING = 100;

@@ -61,7 +61,7 @@ public class RadarView extends View {
 				r = (int) (smallRadius + Math.random()
 						* (normalRadius - smallRadius + 1));
 				break;
-			case BleDeviceConstants.RSSI_WEEK:
+			case BleDeviceConstants.RSSI_WEAK:
 				r = (int) (Math.random() * (smallRadius + 1));
 				break;
 			}

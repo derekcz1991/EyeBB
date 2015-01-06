@@ -132,7 +132,7 @@ public class BLEUtils {
 		if (rssi > BleDeviceConstants.RSSI_STRONG) {
 			return BleDeviceConstants.RSSI_STRONG;
 		} else if (rssi < BleDeviceConstants.RSSI_GOOD) {
-			return BleDeviceConstants.RSSI_WEEK;
+			return BleDeviceConstants.RSSI_WEAK;
 		} else {
 			return BleDeviceConstants.RSSI_GOOD;
 		}
