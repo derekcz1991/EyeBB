@@ -26,7 +26,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 	private final class ViewHolder {
 		private TextView title;
 		private RelativeLayout content;
-		private TextView subTitle;
+		//private TextView subTitle;
 		private ProgressBar progressBar;
 		private TextView time;
 	}
@@ -69,7 +69,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.title = (TextView) v.findViewById(R.id.title);
 			viewHolder.content = (RelativeLayout) v.findViewById(R.id.content);
-			viewHolder.subTitle = (TextView) v.findViewById(R.id.subtitle);
+			//viewHolder.subTitle = (TextView) v.findViewById(R.id.subtitle);
 			viewHolder.progressBar = (ProgressBar) v
 					.findViewById(R.id.progressBar);
 			viewHolder.time = (TextView) v.findViewById(R.id.time);
@@ -90,7 +90,7 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 		viewHolder.title.setVisibility(View.GONE);
 		if (list.get(position).getTitle().equals("")) {
 			viewHolder.content.setVisibility(View.VISIBLE);
-			viewHolder.subTitle.setText(list.get(position).getSubTitle());
+			//viewHolder.subTitle.setText(list.get(position).getSubTitle());
 			if (list.get(position).getTime() != 0) {
 				viewHolder.time.setText(CommonUtils.minutesToHours(list.get(
 						position).getTime()));
@@ -115,10 +115,10 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 							e1.printStackTrace();
 						}*/
 						while (progress < list.get(position).getProgress()) {
-							progress += 4;
+							progress += 10;
 							publishProgress(progress);
 							try {
-								Thread.sleep(10);
+								Thread.sleep(5);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -135,8 +135,6 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 			}
 		} else {
 			viewHolder.title.setVisibility(View.VISIBLE);
-			viewHolder.title.setBackgroundResource(list.get(position)
-					.getTitleBackground());
 			viewHolder.title.setText(list.get(position).getTitle());
 		}
 	}

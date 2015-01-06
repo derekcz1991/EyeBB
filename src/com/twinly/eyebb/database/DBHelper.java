@@ -45,9 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		tableCreate.append("create table if not exists performance")
 				.append("(id integer primary key autoincrement,")
 				.append("child_id integer,")
-				.append("daily text,")
-				.append("weekly text,")
-				.append("monthly text,")
+				.append("json_data text,")
 				.append("last_update_date text)");
 		db.execSQL(tableCreate.toString());
 			

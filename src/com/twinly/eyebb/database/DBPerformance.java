@@ -19,9 +19,7 @@ public class DBPerformance {
 		SQLiteDatabase db = getInstance(context);
 		ContentValues values = new ContentValues();
 		values.put("child_id", performance.getChildId());
-		values.put("daily", performance.getDaily());
-		values.put("weekly", performance.getWeekly());
-		values.put("monthly", performance.getMonthly());
+		values.put("json_data", performance.getJsonData());
 		values.put("last_update_date", performance.getLastUpdateTime());
 		db.insertOrThrow("performance", null, values);
 		db.close();
@@ -31,9 +29,7 @@ public class DBPerformance {
 			Performance performance) {
 		SQLiteDatabase db = getInstance(context);
 		ContentValues values = new ContentValues();
-		values.put("daily", performance.getDaily());
-		values.put("weekly", performance.getWeekly());
-		values.put("monthly", performance.getMonthly());
+		values.put("json_data", performance.getJsonData());
 		values.put("last_update_date", performance.getLastUpdateTime());
 		int result = db.update("performance", values, "child_id=?",
 				new String[] { String.valueOf(performance.getChildId()) });
@@ -55,12 +51,8 @@ public class DBPerformance {
 		if (cursor.moveToFirst()) {
 			performance = new Performance();
 			performance.setChildId(childId);
-			performance.setDaily(cursor.getString(cursor
-					.getColumnIndex("daily")));
-			performance.setWeekly(cursor.getString(cursor
-					.getColumnIndex("weekly")));
-			performance.setMonthly(cursor.getString(cursor
-					.getColumnIndex("monthly")));
+			performance.setJsonData(cursor.getString(cursor
+					.getColumnIndex("json_data")));
 			performance.setLastUpdateTime(cursor.getString(cursor
 					.getColumnIndex("last_update_date")));
 		}

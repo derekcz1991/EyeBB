@@ -10,8 +10,7 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
-    
-    
+
     <!-- use for bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -25,6 +24,7 @@
 
     <!-- CAMERA -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -315,6 +315,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.Test"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
 
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
@@ -327,6 +332,7 @@
                 <category android:name="com.twinly.eyebb" />
             </intent-filter>
         </receiver>
+
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
         <!--
         <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >

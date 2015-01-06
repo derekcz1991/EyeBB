@@ -33,9 +33,10 @@ public class BluetoothUtils {
 	public final static String CHARACTERISTICS_BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
 
-	public final static int WRITE_MAJOR_MINOR = 1;
-	public final static int WRITE_BEEP = 2;
-	public final static int READ_BATTERY = 3;
+	public final static int CONNECT_ONLY = 1;
+	public final static int WRITE_MAJOR_MINOR = 2;
+	public final static int WRITE_BEEP = 3;
+	public final static int READ_BATTERY = 4;
 
 	private final static String TAG = BluetoothUtils.class.getSimpleName();
 
@@ -103,7 +104,7 @@ public class BluetoothUtils {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				final String action = intent.getAction();
-				System.out.println("mGattUpdateReceiver ==>> " + action);
+				//System.out.println("mGattUpdateReceiver ==>> " + action);
 				if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 					callback.onConnected();
 				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
@@ -164,6 +165,20 @@ public class BluetoothUtils {
 		}
 	}
 
+	public void connectOnly(String mDeviceAddress, long timeout) {
+		command = CONNECT_ONLY;
+		if (initialize()) {
+			connect(mDeviceAddress, timeout);
+		}
+	}
+
+	public void close() {
+		if (mBluetoothLeService != null) {
+			mBluetoothLeService.disconnect();
+			mBluetoothLeService.close();
+		}
+	}
+
 	/**
 	 * Read battery from device, keep connection if not disconnect manual
 	 * @param mDeviceAddress The device mac address
@@ -193,7 +208,7 @@ public class BluetoothUtils {
 		if (gattServices != null) {
 			write(CHARACTERISTICS_MAJOR_UUID,
 					BLEUtils.checkMajorMinor(value[0]), false);
-			write(CHARACTERISTICS_MAJOR_UUID,
+			write(CHARACTERISTICS_MINOR_UUID,
 					BLEUtils.checkMajorMinor(value[1]), true);
 		} else {
 			if (initialize()) {
@@ -331,16 +346,17 @@ public class BluetoothUtils {
 			mBluetoothLeService.connect(mDeviceAddress);
 		}
 		// cancel connect to device if not success when timeout
+		//System.out.println(mDeviceAddress + " --->>> start timer");
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
 				if (mBluetoothLeService != null) {
-					if (mBluetoothLeService.getmConnectionState() == BluetoothLeService.STATE_DISCONNECTED) {
+					if (mBluetoothLeService.getmConnectionState() != BluetoothLeService.STATE_CONNECTED) {
 						callback.onConnectCanceled();
-						mBluetoothLeService.disconnect();
-						mBluetoothLeService = null;
+						//mBluetoothLeService.disconnect();
+						//mBluetoothLeService = null;
 					}
 				}
 			}
@@ -361,7 +377,7 @@ public class BluetoothUtils {
 		case WRITE_MAJOR_MINOR:
 			write(CHARACTERISTICS_MAJOR_UUID,
 					BLEUtils.checkMajorMinor(value[0]), false);
-			write(CHARACTERISTICS_MAJOR_UUID,
+			write(CHARACTERISTICS_MINOR_UUID,
 					BLEUtils.checkMajorMinor(value[1]), true);
 			break;
 		case READ_BATTERY:

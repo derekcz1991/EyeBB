@@ -2,8 +2,6 @@ package com.twinly.eyebb.model;
 
 public class PerformanceListItem {
 	private String title;
-	private String subTitle;
-	private int titleBackground;
 	private int progressBarstyle;
 	private int time;
 	private int progress;
@@ -12,21 +10,18 @@ public class PerformanceListItem {
 
 	/**
 	 * 
-	 * @param title daily, weekly...
-	 * @param subTitle playground, sleeping room...
+	 * @param title location name
+	 * @param subTitle today 
 	 * @param titleBackground
 	 * @param progressBarstyle
 	 * @param time
 	 * @param progress
 	 * @param maxProgress
 	 */
-	public PerformanceListItem(String title, String subTitle,
-			int titleBackground, int progressBarstyle, int time, int progress,
-			int maxProgress) {
+	public PerformanceListItem(String title, int progressBarstyle, int time,
+			int progress, int maxProgress) {
 		super();
 		this.title = title;
-		this.subTitle = subTitle;
-		this.titleBackground = titleBackground;
 		this.progressBarstyle = progressBarstyle;
 		this.time = time;
 		this.progress = progress;
@@ -35,14 +30,6 @@ public class PerformanceListItem {
 
 	public String getTitle() {
 		return title;
-	}
-
-	public String getSubTitle() {
-		return subTitle;
-	}
-
-	public int getTitleBackground() {
-		return titleBackground;
 	}
 
 	public int getProgressBarstyle() {

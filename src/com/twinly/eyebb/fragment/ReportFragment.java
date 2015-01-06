@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+@SuppressLint("NewApi")
 public class ReportFragment extends Fragment implements
 		ReportPerformanceFragment.CallbackInterface,
 		ReportActivitiesFragment.CallbackInterface {
@@ -315,12 +317,8 @@ public class ReportFragment extends Fragment implements
 	private void updatePerformance(JSONObject json) throws JSONException {
 		Performance performance = new Performance();
 		performance.setChildId(child.getChildId());
-		performance.setDaily(json
-				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_DAILY));
-		performance.setWeekly(json
-				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_WEEKLY));
-		performance.setAverage(json
-				.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_AVERAGE));
+		performance.setJsonData(json.getJSONArray(
+				HttpConstants.JSON_KEY_REPORT_PERFORMANCE).toString());
 		performance
 				.setLastUpdateTime(json
 						.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LAST_UPDATE_TIME));

@@ -36,8 +36,6 @@ public class RadarViewFragment extends Fragment {
 
 					@Override
 					public void onGlobalLayout() {
-						System.out.println("height = "
-								+ radarViewContainer.getHeight());
 						radarView.initialize(
 								radarViewContainer.getHeight() / 2,
 								getActivity());

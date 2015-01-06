@@ -21,7 +21,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
 	public static final String JSON_KEY_USER_TYPE = "type";
 	public static final String JSON_KEY_REGISTRATION_ID = "registrationId";
-	
+
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
 	public static final String JSON_KEY_AREAS_id = "areaId";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";
@@ -39,7 +39,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_CHILD_MAC_ADDRESS = "macAddress";
 	public static final String JSON_KEY_CHILD_LAST_APPEAR_TIME = "lastAppearTime";
 	public static final String JSON_KEY_CHILD_LOC_ID = "locId";
-	
+
 	public static final String JSON_KEY_LOCATION_ALL = "allLocations";
 	public static final String JSON_KEY_LOCATION_AREA = "area";
 	public static final String JSON_KEY_LOCATION_AREA_ID = "areaId";
@@ -52,18 +52,17 @@ public class HttpConstants {
 	public static final String JSON_KEY_LOCATION_NAME = "locationName";
 	public static final String JSON_KEY_LOCATION_TYPE = "type";
 	public static final String JSON_KEY_LOCATION_ICON = "icon";
-	
+
 	public static final String JSON_KEY_LOCATION_TIME = "locTime";
-	
+
 	public static final String JSON_KEY_PARENTS = "parents";
 	public static final String JSON_KEY_PARENTS_PHONE = "phoneNumber";
 	public static final String JSON_KEY_PARENTS_TYPE = "type";
 
-	// public static final String JSON_KEY_LAST_UPDATE_TIME = "lastUpdateTime";
-
-	public static final String JSON_KEY_REPORT_PERFORMANCE_DAILY = "dailyFigure";
-	public static final String JSON_KEY_REPORT_PERFORMANCE_WEEKLY = "weeklyFigure";
-	public static final String JSON_KEY_REPORT_PERFORMANCE_AVERAGE = "averageFigure";
+	public static final String JSON_KEY_REPORT_PERFORMANCE = "dailyAvgFigure";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_LOC_NAME = "locName";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_DAILY = "daily";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_AVERAGE = "average";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_LAST_UPDATE_TIME = "lastUpdateTime";
 
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO = "activityInfos";
@@ -128,7 +127,6 @@ public class HttpConstants {
 	public static final String RESET_PASSWORD = "regService/api/resetPassword";
 	public static final String GET_MASTER_CHILDREN = "masterService/api/masterChildren";
 	public static final String CHANGE_NICKNAME = "accSetting/api/changeNickname";
-	
 
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";

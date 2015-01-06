@@ -18,9 +18,9 @@
     <string name="text_kids_list">兒童列表</string>
     <string name="text_beep_all">全部蜂鳴</string>
     <string name="text_change">修改</string>
-    <string name="text_daily">本日</string>
-    <string name="text_weekly">本週</string>
-    <string name="text_average">平均</string>
+    <string name="text_today">本日</string>
+    <string name="text_customized">自定義: 最近 </string>
+    <string name="text_days">天</string>
     <string name="text_beep">蜂鳴</string>
     <string name="text_school_bus">校車</string>
     <string name="text_school_bus_tracking">校車軌跡</string>

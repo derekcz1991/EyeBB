@@ -44,13 +44,13 @@ public class BluetoothLeService extends Service {
 
 	private BluetoothManager mBluetoothManager;
 	private BluetoothAdapter mBluetoothAdapter;
-	private String mBluetoothDeviceAddress;
+	//private String mBluetoothDeviceAddress;
 	private BluetoothGatt mBluetoothGatt;
 	private int mConnectionState = STATE_DISCONNECTED;
 
 	public static final int STATE_DISCONNECTED = 0;
-	private static final int STATE_CONNECTING = 1;
-	private static final int STATE_CONNECTED = 2;
+	public static final int STATE_CONNECTING = 1;
+	public static final int STATE_CONNECTED = 2;
 
 	public final static String ACTION_GATT_CONNECTED = "bluetooth.le.ACTION_GATT_CONNECTED";
 	public final static String ACTION_GATT_DISCONNECTED = "bluetooth.le.ACTION_GATT_DISCONNECTED";
@@ -74,8 +74,8 @@ public class BluetoothLeService extends Service {
 				broadcastUpdate(intentAction);
 				Log.i(TAG, "Connected to GATT server.");
 				// Attempts to discover services after successful connection.
-				Log.i(TAG, "Attempting to start service discovery:"
-						+ mBluetoothGatt.discoverServices());
+				/*Log.i(TAG, "Attempting to start service discovery:"
+						+ mBluetoothGatt.discoverServices());*/
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				intentAction = ACTION_GATT_DISCONNECTED;
@@ -221,14 +221,15 @@ public class BluetoothLeService extends Service {
 		final BluetoothDevice device = mBluetoothAdapter
 				.getRemoteDevice(address);
 		if (device == null) {
-			Log.w(TAG, "Device not found.  Unable to connect.");
+			Log.w(TAG, "Device not found. Unable to connect.");
 			return false;
 		}
 		// We want to directly connect to the device, so we are setting the autoConnect
 		// parameter to false.
 		mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-		Log.d(TAG, "Trying to create a new connection.");
-		mBluetoothDeviceAddress = address;
+		Log.d(TAG, "Trying to create a new connection ==>> " + address);
+		//System.out.println("Trying to create a new connection " + address);
+		//mBluetoothDeviceAddress = address;
 		mConnectionState = STATE_CONNECTING;
 		return true;
 	}
@@ -257,6 +258,7 @@ public class BluetoothLeService extends Service {
 		}
 		mBluetoothGatt.close();
 		mBluetoothGatt = null;
+		System.out.println("set null");
 	}
 
 	/**

@@ -7,6 +7,7 @@ public class Macaron {
 	private long lastAppearTime;
 	private int axisX;
 	private int axisY;
+	private boolean isAntiLostOpen;
 
 	public Macaron(String macAddress) {
 		this.macAddress = macAddress;
@@ -54,6 +55,14 @@ public class Macaron {
 
 	public void setAxisY(int axisY) {
 		this.axisY = axisY;
+	}
+
+	public boolean isAntiLostOpen() {
+		return isAntiLostOpen;
+	}
+
+	public void setAntiLostOpen(boolean isAntiLostOpen) {
+		this.isAntiLostOpen = isAntiLostOpen;
 	}
 
 	@Override

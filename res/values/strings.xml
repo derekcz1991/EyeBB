@@ -24,9 +24,9 @@
     <string name="text_change_kids">Change Kids</string>
     <string name="text_beep_all">Beep all</string>
     <string name="text_change">Change</string>
-    <string name="text_daily">Daily</string>
-    <string name="text_weekly">Weekly</string>
-    <string name="text_average">Average</string>
+    <string name="text_today">Today</string>
+    <string name="text_customized">Customized: Last</string>
+    <string name="text_days">days</string>
     <string name="text_beep">Beep</string>
     <string name="text_shcool_bus">School Bus</string>
     <string name="text_school_bus_tracking">School Bus Tracking</string>

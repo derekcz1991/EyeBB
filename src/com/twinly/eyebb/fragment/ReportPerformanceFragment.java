@@ -1,20 +1,22 @@
 package com.twinly.eyebb.fragment;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
-import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBPerformance;
@@ -25,6 +27,7 @@ public class ReportPerformanceFragment extends Fragment implements
 		PullToRefreshListener {
 
 	private PullToRefreshListView listView;
+	private Spinner mSpinner;
 	private PerformanceListViewAdapter adapter;
 	private List<PerformanceListItem> list;
 	private CallbackInterface callback;
@@ -52,6 +55,7 @@ public class ReportPerformanceFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report_performance,
 				container, false);
+		mSpinner = (Spinner) v.findViewById(R.id.customized_day);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 
@@ -69,79 +73,39 @@ public class ReportPerformanceFragment extends Fragment implements
 		if (performance != null) {
 			list.clear();
 
-			Iterator<Entry<String, Integer>> iter;
-			int index;
-
-			PerformanceListItem dailyTitle = new PerformanceListItem(
-					getResources().getString(R.string.text_daily), "",
-					R.drawable.bg_report_daily, -1, 0, 0, 0);
-			list.add(dailyTitle);
-			if (performance.getDailyMap() != null) {
-				iter = performance.getDailyMap().entrySet().iterator();
-				index = 0;
-				while (iter.hasNext()) {
-					Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter
-							.next();
-					PerformanceListItem item = new PerformanceListItem("",
-							entry.getKey(), -1,
-							Constants.progressBarStyleSet[index],
-							entry.getValue(), entry.getValue(), 1440);
+			JSONArray jsonArray;
+			try {
+				jsonArray = new JSONArray(performance.getJsonData());
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject object = jsonArray.getJSONObject(i);
+					// location name
+					PerformanceListItem item = new PerformanceListItem(
+							object.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LOC_NAME),
+							-1, 0, 0, 0);
 					list.add(item);
-					index++;
-				}
-			} else {
-				PerformanceListItem item = new PerformanceListItem("",
-						getString(R.string.text_no_record), -1,
-						Constants.progressBarStyleSet[0], 0, 0, 0);
-				list.add(item);
-			}
-
-			PerformanceListItem weeklyTitle = new PerformanceListItem(
-					getResources().getString(R.string.text_weekly), "",
-					R.drawable.bg_report_weekly, -1, 0, 0, 0);
-			list.add(weeklyTitle);
-			if (performance.getWeeklyMap() != null) {
-				iter = performance.getWeeklyMap().entrySet().iterator();
-				index = 0;
-				while (iter.hasNext()) {
-					Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter
-							.next();
-					PerformanceListItem item = new PerformanceListItem("",
-							entry.getKey(), -1,
-							Constants.progressBarStyleSet[index],
-							entry.getValue(), entry.getValue(), 1440);
+					// today
+					item = new PerformanceListItem(
+							"",
+							R.drawable.my_progress_blue01,
+							(int) Double.parseDouble(object
+									.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_DAILY)),
+							(int) Double.parseDouble(object
+									.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_DAILY)),
+							1440);
 					list.add(item);
-					index++;
-				}
-			} else {
-				PerformanceListItem item = new PerformanceListItem("",
-						getString(R.string.text_no_record), -1,
-						Constants.progressBarStyleSet[0], 0, 0, 0);
-				list.add(item);
-			}
-			
-			PerformanceListItem averageTitle = new PerformanceListItem(
-					getResources().getString(R.string.text_average), "",
-					R.drawable.bg_report_average, -1, 0, 0, 0);
-			list.add(averageTitle);
-			if (performance.getAverageMap() != null) {
-				iter = performance.getAverageMap().entrySet().iterator();
-				index = 0;
-				while (iter.hasNext()) {
-					Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter
-							.next();
-					PerformanceListItem item = new PerformanceListItem("",
-							entry.getKey(), -1,
-							Constants.progressBarStyleSet[index],
-							entry.getValue(), entry.getValue(), 1440);
+					// average
+					item = new PerformanceListItem(
+							"",
+							R.drawable.my_progress_yellow,
+							(int) Double.parseDouble(object
+									.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_AVERAGE)),
+							(int) Double.parseDouble(object
+									.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_AVERAGE)),
+							1440);
 					list.add(item);
-					index++;
 				}
-			} else {
-				PerformanceListItem item = new PerformanceListItem("",
-						getString(R.string.text_no_record), -1,
-						Constants.progressBarStyleSet[0], 0, 0, 0);
-				list.add(item);
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 			updateAdapter();
 		}

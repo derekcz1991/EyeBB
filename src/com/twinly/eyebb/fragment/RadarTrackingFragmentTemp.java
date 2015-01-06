@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.activity.Test;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapterTemp;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Macaron;
@@ -36,7 +38,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private BluetoothUtils mBluetoothUtils;
 	private ListView listView;
 	private ScrollView radarScrollView;
-	private RelativeLayout connectDeviceLayout;
 	private ToggleButton confirmRadarBtn;
 	private RelativeLayout btnSuperised;
 	private RelativeLayout btnMissed;
@@ -49,7 +50,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private RadarViewFragment radarViewFragment;
 	// 開啟防丟器
 	private TextView openAntiTheft;
-	private boolean openAnti = false;
+	private boolean isAntiLostOpen = false;
 	private boolean isRadarOpen = false;
 	private boolean isSuperisedSection = true;
 
@@ -72,8 +73,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		radarScrollView.smoothScrollTo(0, 0);
 
 		openAntiTheft = (TextView) v.findViewById(R.id.confirm_anti_lost_btn);
-		connectDeviceLayout = (RelativeLayout) v
-				.findViewById(R.id.connect_device_layout);
 		confirmRadarBtn = (ToggleButton) v
 				.findViewById(R.id.connection_status_btn);
 		btnSuperised = (RelativeLayout) v.findViewById(R.id.btn_supervised);
@@ -110,7 +109,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		missedDeviceList = new ArrayList<Macaron>();
 		mHandler = new Handler();
 		mAdapter = new RadarKidsListViewAdapterTemp(getActivity(),
-				displayDeviceList, false);
+				displayDeviceList, true);
 		listView.setAdapter(mAdapter);
 	}
 
@@ -163,6 +162,28 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 				updateListView();
 			}
 		});
+		openAntiTheft.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				getActivity().startActivity(
+						new Intent(getActivity(), Test.class));
+				/*if (isAntiLostOpen) {
+					isAntiLostOpen = false;
+					openAntiTheft
+							.setBackgroundResource(R.drawable.ic_selected_off);
+					mAdapter.setAntiLostOpen(false);
+				} else {
+					isAntiLostOpen = true;
+					openAntiTheft.setBackgroundResource(R.drawable.ic_selected);
+					for (int i = 0; i < scannedDeviceList.size(); i++) {
+						scannedDeviceList.get(i).setAntiLostOpen(true);
+					}
+					mAdapter.setAntiLostOpen(true);
+				}
+				updateListView();*/
+			}
+		});
 	}
 
 	private void startRadar() {
@@ -170,18 +191,18 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		radarScrollView.setAlpha(1F);
 		mBluetoothUtils.startLeScan(leScanCallback, 500);
 		radarViewFragment.startAnimation();
-		mHandler.postDelayed(updateView, 2000);
+		mHandler.postDelayed(updateViewRunnable, 2000);
 	}
 
 	private void stopRadar() {
 		isRadarOpen = false;
 		radarScrollView.setAlpha(0.3F);
-		mHandler.removeCallbacks(updateView);
+		mHandler.removeCallbacks(updateViewRunnable);
 		mBluetoothUtils.stopLeScan();
 		radarViewFragment.stopAnimation();
 	}
 
-	Runnable updateView = new Runnable() {
+	Runnable updateViewRunnable = new Runnable() {
 
 		@Override
 		public void run() {
@@ -205,7 +226,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 			updateListView();
 
 			if (isRadarOpen) {
-				mHandler.postDelayed(updateView, 5000);
+				mHandler.postDelayed(updateViewRunnable, 5000);
 			}
 		}
 
@@ -215,10 +236,10 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		displayDeviceList.clear();
 		if (isSuperisedSection) {
 			displayDeviceList.addAll(scannedDeviceList);
-			mAdapter.setMiss(false);
+			mAdapter.setSuperisedSection(true);
 		} else {
 			displayDeviceList.addAll(missedDeviceList);
-			mAdapter.setMiss(true);
+			mAdapter.setSuperisedSection(false);
 		}
 
 		mAdapter.notifyDataSetChanged();

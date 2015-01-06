@@ -92,7 +92,6 @@ public class RadarView extends View {
 	protected void onDraw(Canvas canvas) {
 		if (scannedDeviceList != null) {
 			for (int i = 0; i < scannedDeviceList.size(); i++) {
-				System.out.println(scannedDeviceList.get(i));
 				canvas.drawBitmap(bitmap, scannedDeviceList.get(i).getAxisX(),
 						scannedDeviceList.get(i).getAxisY(), paint);
 			}

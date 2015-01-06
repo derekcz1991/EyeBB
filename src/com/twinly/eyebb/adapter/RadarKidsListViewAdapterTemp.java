@@ -9,9 +9,11 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
@@ -29,22 +31,25 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 	private ImageLoader imageLoader;
 	private ArrayList<Macaron> deviceList;
 	private HashMap<String, Child> childMap;
-	private boolean isMiss;
+	private boolean isSuperisedSection;
+	private boolean isAntiLostOpen;
+	private ViewHolder viewHolder;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
 		public TextView name;
-		public View beepBtn;
+		public View btnBeep;
+		public TextView btnSelected;
 		public TextView deviceConnectStatus;
 		public TextView deviceRssi;
 	}
 
 	public RadarKidsListViewAdapterTemp(Context context,
-			ArrayList<Macaron> deviceList, boolean isMiss) {
+			ArrayList<Macaron> deviceList, boolean isMissSection) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.deviceList = deviceList;
-		this.isMiss = isMiss;
+		this.isSuperisedSection = isMissSection;
 		childMap = DBChildren.getChildrenMap(context);
 		imageLoader = ImageLoader.getInstance();
 
@@ -59,8 +64,12 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 		});
 	}
 
-	public void setMiss(boolean isMiss) {
-		this.isMiss = isMiss;
+	public void setSuperisedSection(boolean isSuperisedSection) {
+		this.isSuperisedSection = isSuperisedSection;
+	}
+
+	public void setAntiLostOpen(boolean isAntiLostOpen) {
+		this.isAntiLostOpen = isAntiLostOpen;
 	}
 
 	@Override
@@ -79,8 +88,7 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder viewHolder = null;
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = inflater.inflate(
 					R.layout.list_item_radar_tracking_kid, parent, false);
@@ -89,10 +97,36 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 					.findViewById(R.id.avatar);
 			viewHolder.deviceRssi = (TextView) convertView
 					.findViewById(R.id.rssi);
-			viewHolder.beepBtn = convertView.findViewById(R.id.btn_beep);
+			viewHolder.btnBeep = convertView.findViewById(R.id.btn_beep);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.deviceConnectStatus = (TextView) convertView
 					.findViewById(R.id.device_connect_status);
+			viewHolder.btnSelected = (TextView) convertView
+					.findViewById(R.id.btn_selected);
+			viewHolder.btnSelected.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					System.out.println(deviceList.size() + "  " + position);
+					if (position < deviceList.size()) {
+						Toast.makeText(
+								context,
+								position
+										+ "  "
+										+ childMap.get(
+												deviceList.get(position)
+														.getMacAddress())
+												.getName(), Toast.LENGTH_SHORT)
+								.show();
+						if (deviceList.get(position).isAntiLostOpen()) {
+							deviceList.get(position).setAntiLostOpen(false);
+						} else {
+							deviceList.get(position).setAntiLostOpen(true);
+						}
+						notifyDataSetChanged();
+					}
+				}
+			});
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -102,16 +136,23 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 	}
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
-		if (isMiss) {
-			viewHolder.avatar.setBorderColor(context.getResources().getColor(
-					R.color.red));
-			viewHolder.beepBtn.setVisibility(View.INVISIBLE);
-			viewHolder.deviceRssi.setVisibility(View.GONE);
-		} else {
+		if (isSuperisedSection) {
 			viewHolder.avatar.setBorderColor(context.getResources().getColor(
 					R.color.white));
-			viewHolder.beepBtn.setVisibility(View.VISIBLE);
 			viewHolder.deviceRssi.setVisibility(View.VISIBLE);
+			if (isAntiLostOpen) {
+				viewHolder.btnBeep.setVisibility(View.INVISIBLE);
+				viewHolder.btnSelected.setVisibility(View.VISIBLE);
+			} else {
+				viewHolder.btnBeep.setVisibility(View.VISIBLE);
+				viewHolder.btnSelected.setVisibility(View.INVISIBLE);
+			}
+		} else {
+			viewHolder.avatar.setBorderColor(context.getResources().getColor(
+					R.color.red));
+			viewHolder.btnBeep.setVisibility(View.INVISIBLE);
+			viewHolder.deviceRssi.setVisibility(View.GONE);
+			viewHolder.btnSelected.setVisibility(View.INVISIBLE);
 		}
 		Child child = childMap.get(deviceList.get(position).getMacAddress());
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
@@ -146,6 +187,14 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
 					R.color.red));
 			break;
+		}
+
+		if (deviceList.get(position).isAntiLostOpen()) {
+			viewHolder.btnSelected
+					.setBackgroundResource(R.drawable.ic_selected);
+		} else {
+			viewHolder.btnSelected
+					.setBackgroundResource(R.drawable.ic_selected_off);
 		}
 	}
 

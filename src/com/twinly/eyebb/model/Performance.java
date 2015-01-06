@@ -7,10 +7,7 @@ import com.twinly.eyebb.utils.CommonUtils;
 
 public class Performance {
 	private long childId;
-	private String daily;
-	private String weekly;
-	private String monthly;
-	private String average;
+	private String jsonData;
 	private String lastUpdateTime;
 
 	public long getChildId() {
@@ -21,52 +18,13 @@ public class Performance {
 		this.childId = childId;
 	}
 
-	public String getDaily() {
-		return daily;
+	public String getJsonData() {
+		return jsonData;
 	}
 
-	public Map<String, Integer> getDailyMap() {
-		return getEntrySet(daily);
-	}
-
-	public void setDaily(String daily) {
-		if (CommonUtils.isNotNull(daily))
-			this.daily = daily;
-	}
-
-	public String getWeekly() {
-		return weekly;
-	}
-
-	public Map<String, Integer> getWeeklyMap() {
-		return getEntrySet(weekly);
-	}
-
-	public void setWeekly(String weekly) {
-		if (CommonUtils.isNotNull(weekly))
-			this.weekly = weekly;
-	}
-
-	public String getMonthly() {
-		return monthly;
-	}
-
-	public void setMonthly(String monthly) {
-		if (CommonUtils.isNotNull(monthly))
-			this.monthly = monthly;
-	}
-
-	public String getAverage() {
-		return average;
-	}
-	
-	public Map<String, Integer> getAverageMap() {
-		return getEntrySet(average);
-	}
-
-	public void setAverage(String average) {
-		if (CommonUtils.isNotNull(average))
-			this.average = average;
+	public void setJsonData(String jsonData) {
+		if (CommonUtils.isNotNull(jsonData))
+			this.jsonData = jsonData;
 	}
 
 	public String getLastUpdateTime() {
