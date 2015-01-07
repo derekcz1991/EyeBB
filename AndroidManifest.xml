@@ -300,11 +300,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-         <activity
-            android:name="com.twinly.eyebb.activity.KidProfileActivityTemp"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
+  
         <activity
             android:name="com.twinly.eyebb.activity.BindingChildMacaronActivityBackup"
             android:screenOrientation="portrait"
