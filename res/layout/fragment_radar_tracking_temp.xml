@@ -128,13 +128,34 @@
                         android:layout_weight="1"
                         android:clickable="true" >
 
-                        <TextView
-                            android:id="@+id/tv_supervised"
-                            style="@style/RedText_18"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/btn_supervised" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_radar_supervised" />
+
+                            <TextView
+                                android:id="@+id/tv_supervised_number"
+                                style="@style/RedText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_supervised"
+                                style="@style/RedText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:text="@string/btn_supervised" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/red_divider_supervised"
@@ -166,13 +187,34 @@
                         android:layout_weight="1"
                         android:clickable="true" >
 
-                        <TextView
-                            android:id="@+id/tv_missed"
-                            style="@style/LightGreyText_18"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/btn_missed" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_radar_missed" />
+
+                            <TextView
+                                android:id="@+id/tv_missed_number"
+                                style="@style/LightGreyText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_missed"
+                                style="@style/LightGreyText_18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:text="@string/btn_missed" />
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/red_divider_missed"

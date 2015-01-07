@@ -45,6 +45,9 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private TextView redDividerMissed;
 	private TextView blackDividerMissed;
 	private TextView tvMissed;
+	
+	private TextView tv_supervised_number;
+	private TextView tv_missed_number;
 	private RadarViewFragment radarViewFragment;
 	// 開啟防丟器
 	private TextView openAntiTheft;
@@ -83,6 +86,8 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		blackDividerMissed = (TextView) v
 				.findViewById(R.id.black_divider_missed);
 		btnMissed = (RelativeLayout) v.findViewById(R.id.btn_missed);
+		tv_supervised_number = (TextView) v.findViewById(R.id.tv_supervised_number);
+		tv_missed_number = (TextView) v.findViewById(R.id.tv_missed_number);
 
 		radarViewFragment = (RadarViewFragment) getChildFragmentManager()
 				.findFragmentByTag("radarView");
@@ -235,11 +240,16 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		if (isSuperisedSection) {
 			displayDeviceList.addAll(scannedDeviceList);
 			mAdapter.setSuperisedSection(true);
+			
 		} else {
 			displayDeviceList.addAll(missedDeviceList);
 			mAdapter.setSuperisedSection(false);
+				
 		}
 
+		tv_supervised_number.setText(scannedDeviceList.size() + "");
+		tv_missed_number.setText(missedDeviceList.size() + "");
+		
 		mAdapter.notifyDataSetChanged();
 		setListViewHeightBasedOnChildren(listView);
 	}
