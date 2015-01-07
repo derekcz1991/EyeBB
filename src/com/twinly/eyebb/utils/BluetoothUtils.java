@@ -353,6 +353,7 @@ public class BluetoothUtils {
 			@Override
 			public void run() {
 				if (mBluetoothLeService != null) {
+					System.out.println("time out ==" + mBluetoothLeService.getmConnectionState());
 					if (mBluetoothLeService.getmConnectionState() != BluetoothLeService.STATE_CONNECTED) {
 						callback.onConnectCanceled();
 						//mBluetoothLeService.disconnect();
@@ -432,8 +433,10 @@ public class BluetoothUtils {
 				for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
 					uuid = gattCharacteristic.getUuid().toString();
 					if (uuid.equals(gattUuid)) {
+						System.out.println("Characteristic == >> " + uuid);
 						if (!mBluetoothLeService
 								.readCharacteristic(gattCharacteristic)) {
+							//System.out.println("Characteristic == >> false");
 							callback.onResult(false);
 						}
 					}

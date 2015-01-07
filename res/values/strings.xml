@@ -142,8 +142,8 @@
     <string name="text_authorization_from_others">Authorization from others</string>
     <string name="text_avatar">Avatar</string>
     <string name="text_kindergarten">Kindergarten</string>
-    <string name="text_battery_life">Battery life of eyebb</string>
-    <string name="text_no_device_nearby">No device nearby</string>
+    <string name="text_battery_life">eyeBB Battery Usage:</string>
+    <string name="text_no_device_nearby">Bluetooth is closed, no device nearby</string>
     <string name="text_wrong_login_for_binding">Wrong login, only parents account can register binding.</string>
     <string name="text_master_of_the_child_exist_already">Master of the child already exists.</string>
     <string name="text_scanning">Scanning Macaron</string>
@@ -205,6 +205,7 @@
     <string name="btn_finish">Finish</string>
     <string name="btn_supervised">Supervised</string>
     <string name="btn_missed">Missed</string>
+      <string name="btn_disconnect">Disconnect</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

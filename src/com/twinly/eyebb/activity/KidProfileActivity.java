@@ -3,11 +3,21 @@ package com.twinly.eyebb.activity;
 import java.io.File;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +39,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.customview.HoloCircularProgressBar;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.BluetoothUtils;
@@ -46,6 +57,7 @@ public class KidProfileActivity extends Activity implements
 	private ImageLoader imageLoader;
 	private LinearLayout deviceItem;
 	private LinearLayout bindItem;
+	private LinearLayout avatarItemLayout;
 	private Uri mImageCaptureUri;
 	private static final int PICK_FROM_CAMERA = 100;
 	private static final int CROP_PHOTO = 200;
@@ -54,12 +66,18 @@ public class KidProfileActivity extends Activity implements
 	private TextView deviceAddress;
 	private TextView deviceBattery;
 	private BluetoothUtils mBluetoothUtils;
+	private BluetoothAdapter mBluetoothAdapter;
+
+	private HoloCircularProgressBar mHoloCircularProgressBar;
+	private ObjectAnimator mProgressBarAnimator;
+
+	private String getDeviceBattery;
 
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_kid_profile);
+		setContentView(R.layout.activity_kid_profile_temp);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 		registerForContextMenu(findViewById(R.id.avatarItem));
@@ -78,27 +96,29 @@ public class KidProfileActivity extends Activity implements
 		deviceBattery = (TextView) findViewById(R.id.device_battery);
 		deviceItem = (LinearLayout) findViewById(R.id.device_item);
 		bindItem = (LinearLayout) findViewById(R.id.bind_item);
+		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 
-		deviceBattery.setText(getResources().getString(
-				R.string.text_check_battery_life));
+		mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
+				getFragmentManager(), this);
+		deviceAddress.setText(child.getMacAddress());
 
-		if (child.getMacAddress().length() > 0) {
-			mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
-					getFragmentManager(), this);
-
-			deviceItem.setVisibility(View.VISIBLE);
-			deviceAddress.setText(child.getMacAddress());
-
-			deviceItem.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					mBluetoothUtils.readBattery(child.getMacAddress(), 15000L);
-				}
-			});
-		} else {
-			deviceItem.setVisibility(View.GONE);
-		}
+		// if (child.getMacAddress().length() > 0) {
+		// mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
+		// getFragmentManager(), this);
+		//
+		// deviceItem.setVisibility(View.VISIBLE);
+		//
+		//
+		// deviceItem.setOnClickListener(new OnClickListener() {
+		//
+		// @Override
+		// public void onClick(View v) {
+		// mBluetoothUtils.readBattery(child.getMacAddress(), 15000L);
+		// }
+		// });
+		// } else {
+		// deviceItem.setVisibility(View.GONE);
+		// }
 
 		kidName.setText(child.getName());
 		imageLoader = ImageLoader.getInstance();
@@ -121,6 +141,55 @@ public class KidProfileActivity extends Activity implements
 
 		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
 				+ "temp.jpg"));
+
+		mHoloCircularProgressBar = (HoloCircularProgressBar) findViewById(R.id.holoCircularProgressBar);
+
+		// deviceBattery.setText(getResources().getString(
+		// R.string.text_check_battery_life));
+		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+		mBluetoothAdapter = bluetoothManager.getAdapter();
+
+		initToReadBattery();
+	}
+
+	@SuppressLint("NewApi")
+	private void initToReadBattery() {
+
+		if (!mBluetoothAdapter.isEnabled()) {
+			bluetoothNotOpenCancelReadBattery();
+		} else {
+			avatarItemLayout.setBackgroundColor(getResources().getColor(
+					R.color.activity_background_red));
+
+			if (getDeviceBattery == null) {
+				System.out.println("start to read battery");
+				mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
+				mHoloCircularProgressBar.setMarkerEnabled(true);
+
+				// mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
+				mHoloCircularProgressBar.setMarkerEnabled(false);
+				mHoloCircularProgressBar.setProgress(1.0f);
+			} else {
+				mHoloCircularProgressBar.setProgress(1f);
+
+				if (mProgressBarAnimator != null) {
+					mProgressBarAnimator.cancel();
+				}
+
+				animate(mHoloCircularProgressBar, null,
+						Float.valueOf(getDeviceBattery), 2000);
+				mHoloCircularProgressBar.setMarkerProgress(Float
+						.valueOf(getDeviceBattery));
+
+				deviceBattery.setText(getResources().getString(
+						R.string.text_battery_life)
+						+ " "
+						+ (1 - Float.valueOf(getDeviceBattery) + "")
+								.substring(2, 4) + "%");
+
+			}
+		}
+
 	}
 
 	@Override
@@ -129,6 +198,10 @@ public class KidProfileActivity extends Activity implements
 		if (mBluetoothUtils != null) {
 			mBluetoothUtils.registerReceiver();
 		}
+
+		registerReceiver(bluetoothState, new IntentFilter(
+				BluetoothAdapter.ACTION_STATE_CHANGED));
+
 	}
 
 	@Override
@@ -145,6 +218,18 @@ public class KidProfileActivity extends Activity implements
 		if (mBluetoothUtils != null) {
 			mBluetoothUtils.disconnect();
 		}
+
+		try {
+			unregisterReceiver(bluetoothState);
+		} catch (IllegalArgumentException e) {
+			if (e.getMessage().contains("Receiver not registered")) {
+				// Ignore this exception. This is exactly what is desired
+			} else {
+				// unexpected, re-throw
+				throw e;
+			}
+		}
+
 	}
 
 	@Override
@@ -260,6 +345,46 @@ public class KidProfileActivity extends Activity implements
 		}
 	}
 
+	private void bluetoothNotOpenCancelReadBattery() {
+		avatarItemLayout.setBackgroundColor(getResources().getColor(
+				R.color.lilac_colour));
+		mHoloCircularProgressBar.setMarkerEnabled(false);
+		mHoloCircularProgressBar.setProgress(0.0f);
+
+		deviceBattery.setText(getResources().getString(
+				R.string.text_no_device_nearby));
+	}
+
+	BroadcastReceiver bluetoothState = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String stateExtra = BluetoothAdapter.EXTRA_STATE;
+			int state = intent.getIntExtra(stateExtra, -1);
+			switch (state) {
+			case BluetoothAdapter.STATE_TURNING_ON:
+				System.out.println("STATE_TURNING_ON");
+
+				break;
+			case BluetoothAdapter.STATE_ON:
+				System.out.println("STATE_ON");
+
+				initToReadBattery();
+
+				break;
+			case BluetoothAdapter.STATE_TURNING_OFF:
+				System.out.println("STATE_TURNING_OFF");
+
+				break;
+			case BluetoothAdapter.STATE_OFF:
+				System.out.println("STATE_OFF");
+				bluetoothNotOpenCancelReadBattery();
+
+				break;
+
+			}
+
+		}
+	};
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
@@ -267,14 +392,19 @@ public class KidProfileActivity extends Activity implements
 			doCrop();
 			break;
 		case PICK_FROM_FILE:
-			mImageCaptureUri = data.getData();
-			doCrop();
+			if (data != null) {
+				mImageCaptureUri = data.getData();
+				doCrop();
+			}
+
 			break;
 		case CROP_PHOTO:
-			Bundle extras = data.getExtras();
-			if (extras != null) {
-				Bitmap photo = extras.getParcelable("data");
-				saveAvatar(photo);
+			if (data != null) {
+				Bundle extras = data.getExtras();
+				if (extras != null) {
+					Bitmap photo = extras.getParcelable("data");
+					saveAvatar(photo);
+				}
 			}
 			break;
 		case ActivityConstants.REQUEST_GO_TO_UNBIND_ACTIVITY:
@@ -312,13 +442,64 @@ public class KidProfileActivity extends Activity implements
 		}
 	}
 
+	private void animate(final HoloCircularProgressBar progressBar,
+			final AnimatorListener listener) {
+		final float progress = (float) (Math.random() * 2);
+		int duration = 3000;
+		animate(progressBar, listener, progress, duration);
+	}
+
+	private void animate(final HoloCircularProgressBar progressBar,
+			final AnimatorListener listener, final float progress,
+			final int duration) {
+
+		mProgressBarAnimator = ObjectAnimator.ofFloat(progressBar, "progress",
+				progress);
+		mProgressBarAnimator.setDuration(duration);
+
+		mProgressBarAnimator.addListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationCancel(final Animator animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(final Animator animation) {
+				progressBar.setProgress(progress);
+			}
+
+			@Override
+			public void onAnimationRepeat(final Animator animation) {
+			}
+
+			@Override
+			public void onAnimationStart(final Animator animation) {
+			}
+		});
+		if (listener != null) {
+			mProgressBarAnimator.addListener(listener);
+		}
+		mProgressBarAnimator.reverse();
+		mProgressBarAnimator.addUpdateListener(new AnimatorUpdateListener() {
+
+			@Override
+			public void onAnimationUpdate(final ValueAnimator animation) {
+				progressBar.setProgress((Float) animation.getAnimatedValue());
+			}
+		});
+		progressBar.setMarkerProgress(progress);
+		mProgressBarAnimator.start();
+	}
+
 	@Override
 	public void onPreConnect() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				deviceBattery.setText(getResources().getString(
-						R.string.toast_loading));
+						R.string.text_battery_life)
+						+ " "
+						+ getResources().getString(R.string.toast_loading));
 			}
 		});
 	}
@@ -328,8 +509,10 @@ public class KidProfileActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				deviceBattery.setText(getResources().getString(
-						R.string.text_no_device_nearby));
+				System.out.println("onConnectCanceled() ");
+				bluetoothNotOpenCancelReadBattery();
+				// deviceBattery.setText(getResources().getString(
+				// R.string.text_battery_life));
 			}
 		});
 	}
@@ -340,7 +523,9 @@ public class KidProfileActivity extends Activity implements
 			@Override
 			public void run() {
 				deviceBattery.setText(getResources().getString(
-						R.string.toast_loading));
+						R.string.text_battery_life)
+						+ " "
+						+ getResources().getString(R.string.toast_loading));
 			}
 		});
 	}
@@ -360,7 +545,29 @@ public class KidProfileActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				deviceBattery.setText(Integer.parseInt(value, 16) + "%");
+
+				System.out.println("BATTERY-->" + Integer.parseInt(value, 16)
+						+ "%");
+				mHoloCircularProgressBar.setProgress(1f);
+
+				if (mProgressBarAnimator != null) {
+					mProgressBarAnimator.cancel();
+				}
+
+				animate(mHoloCircularProgressBar,
+						null,
+						(1 - Float.valueOf("0." + Integer.parseInt(value, 16))),
+						2000);
+				mHoloCircularProgressBar.setMarkerProgress((1 - Float
+						.valueOf("0." + Integer.parseInt(value, 16))));
+
+				deviceBattery.setText(getResources().getString(
+						R.string.text_battery_life)
+						+ " " + Integer.parseInt(value, 16) + "%");
+
+				getDeviceBattery = (1 - Float.valueOf("0."
+						+ Integer.parseInt(value, 16)))
+						+ "";
 			}
 		});
 
@@ -374,8 +581,7 @@ public class KidProfileActivity extends Activity implements
 				if (result) {
 
 				} else {
-					deviceBattery.setText(getResources().getString(
-							R.string.text_no_device_nearby));
+					bluetoothNotOpenCancelReadBattery();
 				}
 			}
 		});

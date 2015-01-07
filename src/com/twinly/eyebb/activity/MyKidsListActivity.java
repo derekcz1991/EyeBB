@@ -60,6 +60,8 @@ public class MyKidsListActivity extends Activity {
 						.get(groupPosition).get(childPosition).getChildId());
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
+
+				// startActivity(intent);
 				return false;
 			}
 		});

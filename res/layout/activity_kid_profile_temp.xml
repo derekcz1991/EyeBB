@@ -1,136 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context="com.twinly.eyebb.activity.KidProfileActivityTemp" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/avatarItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:background="@color/activity_background_red"
-        android:clickable="true"
-        android:onClick="onAvatarItemCliked"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:paddingBottom="8dp"
         android:paddingTop="8dp" >
 
-        <com.twinly.eyebb.customview.CircleImageView
-            android:id="@+id/avatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/icon_avatar_dark"
-            android:clickable="false"
-            android:focusable="false" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.twinly.eyebb.customview.HoloCircularProgressBar
+                android:id="@+id/holoCircularProgressBar"
+                style="@style/CircularProgressBar"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerInParent="true"
+                app:marker_progress="0.3"
+                app:progress="0.4" />
+            <!--
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/icon_avatar_dark"
+                 android:layout_centerInParent="true"
+                android:clickable="false"
+                android:focusable="false" />
+            -->
+
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                android:onClick="onAvatarItemCliked"
+                android:src="@drawable/icon_avatar_dark" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/kidname"
-            style="@style/LightGreyText_15"
+            style="@style/WhiteText_18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="8dp" />
-    </RelativeLayout>
+            android:padding="8dp"
+            android:text="Sally Li" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/device_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
 
-        <RelativeLayout
+        <!-- device_battery -->
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_item_selector"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                android:padding="8dp" >
-
-                <TextView
-                    style="@style/DarkGreyText_16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/text_battery_life" />
-
-                <TextView
-                    android:id="@+id/device_address"
-                    style="@style/DarkGreyText_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            android:gravity="center"
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/device_battery"
-                style="@style/LightGreyText_15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="8dp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/divider" >
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bind_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginTop="20dp"
-            android:background="@color/divider" >
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_item_selector"
-            android:clickable="true"
-            android:onClick="onBindClicked"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
-
-            <TextView
-                android:id="@+id/btn_binding"
                 style="@style/DarkGreyText_16"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:padding="8dp"
-                android:text="@string/btn_binding" />
-        </RelativeLayout>
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:text="@string/text_battery_life" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" >
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- device_address -->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/divider" >
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/device_address"
+                style="@style/DarkGreyText_16"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:text="XX:XX:XX:XX:XX:XX" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" >
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/btn_binding"
         style="@style/WhiteText_18"
         android:layout_width="180dp"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="120dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/btn_bg_red"
-        android:text="@string/btn_login" />
+        android:text="@string/btn_binding" />
 
 </LinearLayout>

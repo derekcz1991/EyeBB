@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="20" />
 
     <uses-feature
@@ -305,6 +305,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+         <activity
+            android:name="com.twinly.eyebb.activity.KidProfileActivityTemp"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
         <activity
             android:name="com.twinly.eyebb.activity.BindingChildMacaronActivityBackup"
             android:screenOrientation="portrait"
@@ -321,6 +326,8 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
 
+        
+        
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >

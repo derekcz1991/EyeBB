@@ -141,8 +141,8 @@
     <string name="text_authorization_from_others">被哪些親友授權:</string>
     <string name="text_avatar">头像</string>
     <string name="text_kindergarten">幼稚園</string>
-    <string name="text_battery_life">eyebb電量</string>
-    <string name="text_no_device_nearby">找尋不到設備</string>
+    <string name="text_battery_life">eyebb電量:</string>
+    <string name="text_no_device_nearby">未開啟藍牙,找尋不到設備</string>
     <string name="text_wrong_login_for_binding">錯誤,只有父母賬號才可以進行綁定.</string>
     <string name="text_master_of_the_child_exist_already">此孩子已經擁有監護人.</string>
     <string name="text_scanning">設備掃描中</string>
@@ -204,6 +204,7 @@
     <string name="btn_finish">完成</string>
     <string name="btn_supervised">連接</string>
     <string name="btn_missed">未連接</string>
+     <string name="btn_disconnect">解綁</string>
     <!-- Toast strings -->
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>
