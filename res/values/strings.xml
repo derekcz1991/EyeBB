@@ -141,7 +141,7 @@
     <string name="text_avatar">Avatar</string>
     <string name="text_kindergarten">Kindergarten</string>
     <string name="text_battery_life">eyeBB Battery Usage:</string>
-    <string name="text_no_device_nearby">Bluetooth is closed, no device nearby</string>
+    <string name="text_no_device_nearby">eyebb is not connected</string>
     <string name="text_wrong_login_for_binding">Wrong login, only parents account can register binding.</string>
     <string name="text_master_of_the_child_exist_already">Master of the child already exists.</string>
     <string name="text_scanning">Scanning Macaron</string>

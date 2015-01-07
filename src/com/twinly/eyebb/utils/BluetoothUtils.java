@@ -104,7 +104,7 @@ public class BluetoothUtils {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				final String action = intent.getAction();
-				//System.out.println("mGattUpdateReceiver ==>> " + action);
+				System.out.println("mGattUpdateReceiver ==>> " + action);
 				if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
 					callback.onConnected();
 				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED

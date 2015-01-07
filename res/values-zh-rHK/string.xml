@@ -140,7 +140,7 @@
     <string name="text_avatar">头像</string>
     <string name="text_kindergarten">幼稚園</string>
     <string name="text_battery_life">eyebb電量:</string>
-    <string name="text_no_device_nearby">未開啟藍牙,找尋不到設備</string>
+    <string name="text_no_device_nearby">eyebb未連接,電量未知</string>
     <string name="text_wrong_login_for_binding">錯誤,只有父母賬號才可以進行綁定.</string>
     <string name="text_master_of_the_child_exist_already">此孩子已經擁有監護人.</string>
     <string name="text_scanning">設備掃描中</string>
