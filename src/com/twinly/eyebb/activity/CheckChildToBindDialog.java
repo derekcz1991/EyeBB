@@ -28,6 +28,7 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class CheckChildToBindDialog extends Activity {
@@ -190,17 +191,24 @@ public class CheckChildToBindDialog extends Activity {
 				Bundle bundle = data.getExtras();
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
-				// TODO check the mac address
 				String macAddress = bundle.getString("result");
-				Intent intent = new Intent();
-				intent.setClass(this, BindingChildMacaronActivityBackup.class);
-				intent.putExtra(ActivityConstants.EXTRA_FROM,
-						ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND);
-				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, guardianId);
-				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childIdToPost);
-				intent.putExtra(ActivityConstants.EXTRA_CHILD_ICON, childIcon);
-				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);
-				startActivity(intent);
+				macAddress = BLEUtils.getValidMacAddress(this, macAddress);
+				if (macAddress != null) {
+					Intent intent = new Intent();
+					intent.setClass(this, BindingChildMacaronActivity.class);
+					intent.putExtra(ActivityConstants.EXTRA_FROM,
+							ActivityConstants.ACTIVITY_CHECK_CHILD_TO_BIND);
+					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID,
+							guardianId);
+					intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+							childIdToPost);
+					intent.putExtra(ActivityConstants.EXTRA_CHILD_ICON,
+							childIcon);
+					intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS,
+							macAddress);
+					startActivity(intent);
+				}
+
 			}
 			break;
 		}

@@ -1,4 +1,4 @@
-package com.twinly.eyebb.activity;
+package com.twinly.eyebb.dialog;
 
 import java.util.Collections;
 import java.util.HashMap;

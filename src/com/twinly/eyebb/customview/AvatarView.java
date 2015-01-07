@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.activity.ChildDialog;
+import com.twinly.eyebb.dialog.ChildDialog;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;

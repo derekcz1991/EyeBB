@@ -55,6 +55,7 @@ public class ActivityConstants {
 	public static final int REQUEST_GO_TO_GRANT_KIDS_ACTIVITY = 115;
 	public static final int REQUEST_GO_TO_SEARCH_GUEST_ACTIVITY = 116;
 	public static final int REQUEST_GO_TO_UPDATE_NICKNAME_ACTIVITY = 117;
+	public static final int REQUEST_GO_TO_OPTIONS_DIALOG = 118;
 
 	public static final int RESULT_RESULT_OK = 200;
 	public static final int RESULT_LOGOUT = 201;

@@ -353,7 +353,6 @@ public class BluetoothUtils {
 			@Override
 			public void run() {
 				if (mBluetoothLeService != null) {
-					System.out.println("time out ==" + mBluetoothLeService.getmConnectionState());
 					if (mBluetoothLeService.getmConnectionState() != BluetoothLeService.STATE_CONNECTED) {
 						callback.onConnectCanceled();
 						//mBluetoothLeService.disconnect();

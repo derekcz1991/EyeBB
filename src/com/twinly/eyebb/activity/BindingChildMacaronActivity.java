@@ -33,11 +33,16 @@ public class BindingChildMacaronActivity extends Activity implements
 	private final static int BIND_STEP_UPLOADING = 3;
 	private final static int BIND_STEP_UPLOAD_FAIL = 4;
 	private final static int BIND_STEP_BIND_FINISH = 5;
+	private final int[] images = new int[] { R.drawable.ani_connecting_01,
+			R.drawable.ani_connecting_02, R.drawable.ani_connecting_03,
+			R.drawable.ani_connecting_04, R.drawable.ani_connecting_05,
+			R.drawable.ani_connecting_06, R.drawable.ani_connecting_07,
+			R.drawable.ani_connecting_08, R.drawable.ani_connecting_09,
+			R.drawable.ani_connecting_10, R.drawable.ani_connecting_11 };
 
 	private CircleImageView avatar;
-	private TextView[] tvAnimation;
+	private TextView tvAnimation;
 	private TextView tvMessage;
-	private TextView iconBeacon;
 	private TextView tvAddress;
 	private Button btnEvent;
 	private Handler mHandler;
@@ -70,22 +75,12 @@ public class BindingChildMacaronActivity extends Activity implements
 				ActivityConstants.EXTRA_CHILD_ICON);
 
 		avatar = (CircleImageView) findViewById(R.id.avatar);
+		tvAnimation = (TextView) findViewById(R.id.tv_animation);
 		tvMessage = (TextView) findViewById(R.id.message);
-		iconBeacon = (TextView) findViewById(R.id.beacon);
 		btnEvent = (Button) findViewById(R.id.btn_event);
 		tvAddress = (TextView) findViewById(R.id.tv_address);
 
 		tvAddress.setText(mDeviceAddress);
-
-		tvAnimation = new TextView[6];
-		tvAnimation[0] = (TextView) findViewById(R.id.animation_0);
-		tvAnimation[1] = (TextView) findViewById(R.id.animation_1);
-		tvAnimation[2] = (TextView) findViewById(R.id.animation_2);
-		tvAnimation[3] = (TextView) findViewById(R.id.animation_3);
-		tvAnimation[4] = (TextView) findViewById(R.id.animation_4);
-		tvAnimation[5] = (TextView) findViewById(R.id.animation_5);
-
-		iconBeacon.setAlpha(0.3f);
 
 		if (TextUtils.isEmpty(childIcon) == false) {
 			if (ImageUtils.isLocalImage(childIcon)) {
@@ -204,19 +199,16 @@ public class BindingChildMacaronActivity extends Activity implements
 
 		@Override
 		public void run() {
-			if (index == 6) {
-				index = 0;
-				tvAnimation[0].setVisibility(View.INVISIBLE);
-				tvAnimation[1].setVisibility(View.INVISIBLE);
-				tvAnimation[2].setVisibility(View.INVISIBLE);
-				tvAnimation[3].setVisibility(View.INVISIBLE);
-				tvAnimation[4].setVisibility(View.INVISIBLE);
-				tvAnimation[5].setVisibility(View.INVISIBLE);
-			} else {
-				tvAnimation[index].setVisibility(View.VISIBLE);
-				index++;
+			if (bindStep == BIND_STEP_CONNECTING
+					|| bindStep == BIND_STEP_UPLOADING) {
+				if (index == 10) {
+					index = 0;
+				} else {
+					index++;
+				}
+				tvAnimation.setBackgroundResource(images[index]);
+				mHandler.postDelayed(new UpdateAnimation(), 500);
 			}
-			mHandler.postDelayed(new UpdateAnimation(), 500);
 		}
 	}
 
@@ -253,60 +245,91 @@ public class BindingChildMacaronActivity extends Activity implements
 				btnEvent.setText(R.string.btn_finish);
 				btnEvent.setEnabled(true);
 				if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
-					bindStep = BIND_STEP_UPLOAD_FAIL;
-					tvMessage.setText(R.string.text_update_server_data_fail);
+					uploadFailed();
 					return;
 				}
 				if (result.equals("T")) {
 					bindStep = BIND_STEP_BIND_FINISH;
+					tvAnimation
+							.setBackgroundResource(R.drawable.ani_connecting_done);
 					tvMessage.setText(R.string.text_bind_success);
 					DBChildren.updateMacAddressByChildId(
 							BindingChildMacaronActivity.this, childId,
 							mDeviceAddress);
 				} else {
-					bindStep = BIND_STEP_UPLOAD_FAIL;
-					tvMessage.setText(R.string.text_update_server_data_fail);
+					uploadFailed();
 					setResult(ActivityConstants.RESULT_WRITE_MAJOR_MINOR_FAIL);
 				}
 			} else {
-				bindStep = BIND_STEP_UPLOAD_FAIL;
-				tvMessage.setText(R.string.text_update_server_data_fail);
+				uploadFailed();
 			}
 
 		}
 	}
 
+	private void writeFailed() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				bindStep = BIND_STEP_CONNECT_FAIL;
+				tvAnimation
+						.setBackgroundResource(R.drawable.ani_connecting_fail);
+				tvMessage.setText(R.string.text_connect_device_failed);
+				btnEvent.setText(R.string.btn_re_connect);
+			}
+		});
+
+	}
+
+	private void uploadFailed() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				bindStep = BIND_STEP_UPLOAD_FAIL;
+				tvAnimation
+						.setBackgroundResource(R.drawable.ani_connecting_fail);
+				tvMessage.setText(R.string.text_update_server_data_fail);
+			}
+		});
+	}
+
 	@Override
 	public void onPreConnect() {
-		bindStep = BIND_STEP_CONNECTING;
-		tvMessage.setText(R.string.text_connecting);
-		btnEvent.setText(R.string.btn_cancel);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				bindStep = BIND_STEP_CONNECTING;
+				tvMessage.setText(R.string.text_connecting);
+				btnEvent.setText(R.string.btn_cancel);
+			}
+		});
 	}
 
 	@Override
 	public void onConnectCanceled() {
-		bindStep = BIND_STEP_CONNECT_FAIL;
-		tvMessage.setText(R.string.text_connect_device_failed);
-		btnEvent.setText(R.string.btn_re_connect);
+		writeFailed();
 	}
 
 	@Override
 	public void onConnected() {
-		iconBeacon.setAlpha(1);
+		// do nothing
 	}
 
 	@Override
 	public void onDisConnected() {
-		bindStep = BIND_STEP_CONNECT_FAIL;
-		tvMessage.setText(R.string.text_connect_device_failed);
-		btnEvent.setText(R.string.btn_re_connect);
+		writeFailed();
 	}
 
 	@Override
 	public void onDiscovered() {
-		bindStep = BIND_STEP_CONNECTING;
-		tvMessage.setText(R.string.text_update_device_data);
-		btnEvent.setText(R.string.btn_cancel);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				bindStep = BIND_STEP_CONNECTING;
+				tvMessage.setText(R.string.text_update_device_data);
+				btnEvent.setText(R.string.btn_cancel);
+			}
+		});
 	}
 
 	@Override
@@ -320,9 +343,7 @@ public class BindingChildMacaronActivity extends Activity implements
 		if (result) {
 			new PostToServerTask().execute();
 		} else {
-			bindStep = BIND_STEP_CONNECT_FAIL;
-			tvMessage.setText(R.string.text_connect_device_failed);
-			btnEvent.setText(R.string.btn_re_connect);
+			writeFailed();
 		}
 
 	}

@@ -60,7 +60,7 @@ public class ChangeKidsActivity extends Activity {
 			}
 		});
 
-		findViewById(R.id.sort_locator).setVisibility(View.GONE);
+		/*findViewById(R.id.sort_locator).setVisibility(View.GONE);
 
 		findViewById(R.id.sort_name).setOnClickListener(new OnClickListener() {
 
@@ -73,7 +73,7 @@ public class ChangeKidsActivity extends Activity {
 						isSortByName);
 				listView.setAdapter(adapter);
 			}
-		});
+		});*/
 
 	}
 

@@ -42,6 +42,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.HoloCircularProgressBar;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.BluetoothUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
@@ -425,19 +426,23 @@ public class KidProfileActivity extends Activity implements
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
 				String macAddress = bundle.getString("result");
-				Intent intent = new Intent();
-				intent.setClass(this, BindingChildMacaronActivity.class);
-				intent.putExtra(ActivityConstants.EXTRA_FROM,
-						ActivityConstants.ACTIVITY_KID_PROFILE);
-				intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, -1L);
-				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
-						child.getChildId());
-				intent.putExtra(ActivityConstants.EXTRA_CHILD_ICON,
-						child.getIcon());
-				intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS, macAddress);
-				startActivityForResult(
-						intent,
-						ActivityConstants.REQUEST_GO_TO_BIND_CHILD_MACARON_ACTIVITY);
+				macAddress = BLEUtils.getValidMacAddress(this, macAddress);
+				if (macAddress != null) {
+					Intent intent = new Intent();
+					intent.setClass(this, BindingChildMacaronActivity.class);
+					intent.putExtra(ActivityConstants.EXTRA_FROM,
+							ActivityConstants.ACTIVITY_KID_PROFILE);
+					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID, -1L);
+					intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+							child.getChildId());
+					intent.putExtra(ActivityConstants.EXTRA_CHILD_ICON,
+							child.getIcon());
+					intent.putExtra(ActivityConstants.EXTRA_MAC_ADDRESS,
+							macAddress);
+					startActivityForResult(
+							intent,
+							ActivityConstants.REQUEST_GO_TO_BIND_CHILD_MACARON_ACTIVITY);
+				}
 			}
 		}
 	}

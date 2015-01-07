@@ -87,13 +87,11 @@
     <string name="text_connect_device_status_success">Success</string>
     <string name="text_connect_device_status_wait">Waiting...</string>
     <string name="text_no_record">No record</string>
-    <string name="text_sort_on">Sort Children</string>
-    <string name="text_sort_off">All locations</string>
+    <string name="text_view_all_room">View All Rooms</string>
     <string name="text_role_master">Master user</string>
     <string name="text_role_guest">Guest user</string>
     <string name="text_something_has_gone_wrong">Oops, Something has gone wrong!</string>
-    <string name="text_auto_refresh_on">Auto-Refresh ON</string>
-    <string name="text_auto_refresh_off">Auto-Refresh OFF</string>
+    <string name="text_auto_refresh">Auto-Refresh</string>
     <string name="text_binding_device">Binding Eyebb Device?</string>
     <string name="text_anti_lost_mode">Anti lost</string>
     <string name="text_anti_lost_mode_miss">Low signal or Missing!</string>
@@ -171,6 +169,10 @@
     <string name="text_choose_your_feedback_type">Please, choose your feedback type.</string>
     <string name="text_check_battery_life">Click here</string>
     <string name="text_ble_not_supported">Sorry, Your phone is not supported.</string>
+    <string name="text_sort_by">Sort by</string>
+    <string name="text_name">Name</string>
+    <string name="text_location">Location</string>
+    <string name="text_search_kid">Search kids&#8230;</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -205,7 +207,8 @@
     <string name="btn_finish">Finish</string>
     <string name="btn_supervised">Supervised</string>
     <string name="btn_missed">Missed</string>
-      <string name="btn_disconnect">Disconnect</string>
+    <string name="btn_disconnect">Disconnect</string>
+    <string name="btn_options">Options</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

@@ -5,31 +5,31 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewAdapter;
+import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.dialog.KidsListOptionsDialog;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.SerializableChildrenMap;
-import com.twinly.eyebb.utils.CommonUtils;
 
 public class KidsListActivity extends Activity {
 	private ListView listView;
+	private EditText etSearch;
 	private List<Map.Entry<Long, Child>> list;
 	private List<Map.Entry<Long, Child>> searchList;
 	private KidsListViewAdapter adapter;
 	private boolean isSortByName;
-	private boolean isSortByLocator;
+	private boolean isSortByLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,39 +48,39 @@ public class KidsListActivity extends Activity {
 			list = new ArrayList<Map.Entry<Long, Child>>(serializableMap
 					.getMap().entrySet());
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
-					isSortByLocator);
+					isSortByLocation);
 		}
+
+		etSearch = (EditText) findViewById(R.id.et_search);
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(adapter);
 
-		findViewById(R.id.sort_name).setOnClickListener(new OnClickListener() {
+		etSearch.addTextChangedListener(new TextWatcher() {
 
 			@Override
-			public void onClick(View v) {
-				isSortByName = !isSortByName;
-				adapter = new KidsListViewAdapter(KidsListActivity.this, list,
-						isSortByName, isSortByLocator);
-				listView.setAdapter(adapter);
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				search(etSearch.getText().toString());
 			}
 		});
-
-		findViewById(R.id.sort_locator).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						isSortByLocator = !isSortByLocator;
-						adapter = new KidsListViewAdapter(
-								KidsListActivity.this, list, isSortByName,
-								isSortByLocator);
-						listView.setAdapter(adapter);
-					}
-				});
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_search));
+		getMenuInflater().inflate(R.menu.activity_kids_list, menu);
+
+		/*MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_options));
 		search.setIcon(R.drawable.ic_search)
 				.setActionView(R.layout.actionbar_search)
 				.setShowAsAction(
@@ -128,7 +128,7 @@ public class KidsListActivity extends Activity {
 			public void afterTextChanged(Editable s) {
 				search(etSearch.getText().toString());
 			}
-		});
+		});*/
 		//search.collapseActionView();
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -142,11 +142,11 @@ public class KidsListActivity extends Activity {
 				}
 			}
 			adapter = new KidsListViewAdapter(KidsListActivity.this,
-					searchList, isSortByName, isSortByLocator);
+					searchList, isSortByName, isSortByLocation);
 			listView.setAdapter(adapter);
 		} else {
 			adapter = new KidsListViewAdapter(KidsListActivity.this, list,
-					isSortByName, isSortByLocator);
+					isSortByName, isSortByLocation);
 			listView.setAdapter(adapter);
 		}
 	}
@@ -156,8 +156,39 @@ public class KidsListActivity extends Activity {
 		if (item.getItemId() == android.R.id.home) {
 			finish();
 			return true;
+		} else if (item.getItemId() == R.id.menu_options) {
+			Intent intent = new Intent(this, KidsListOptionsDialog.class);
+			intent.putExtra(KidsListOptionsDialog.EXTRA_SORT_BY_NAME,
+					isSortByName);
+			intent.putExtra(KidsListOptionsDialog.EXTRA_SORT_BY_LOCATION,
+					isSortByLocation);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_OPTIONS_DIALOG);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_OPTIONS_DIALOG) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+				if (isSortByName != data.getBooleanExtra(
+						KidsListOptionsDialog.EXTRA_SORT_BY_NAME, isSortByName)
+						|| isSortByLocation != data.getBooleanExtra(
+								KidsListOptionsDialog.EXTRA_SORT_BY_LOCATION,
+								isSortByLocation)) {
+					isSortByName = data.getBooleanExtra(
+							KidsListOptionsDialog.EXTRA_SORT_BY_NAME,
+							isSortByName);
+					isSortByLocation = data.getBooleanExtra(
+							KidsListOptionsDialog.EXTRA_SORT_BY_LOCATION,
+							isSortByLocation);
+					adapter = new KidsListViewAdapter(KidsListActivity.this,
+							list, isSortByName, isSortByLocation);
+					listView.setAdapter(adapter);
+				}
+			}
+		}
 	}
 
 }

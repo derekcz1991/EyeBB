@@ -19,15 +19,13 @@
             android:layout_centerVertical="true"
             android:text="@string/text_radar_tracking" />
 
-        <ToggleButton
-            android:id="@+id/connection_status_btn"
-            style="@style/DarkGreyText_12"
+        <TextView
+            android:id="@+id/btn_radar_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textOff="@string/text_radar_model_off"
-            android:textOn="@string/text_radar_model_on" />
+            android:background="@drawable/btn_switch_off"/>
     </RelativeLayout>
 
     <ScrollView

@@ -35,7 +35,7 @@ public class RadarView extends View {
 		normalRadius = smallRadius * 2;
 		largeRadius = smallRadius * 3;
 		bitmap = BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.btn_actbar_home);
+				R.drawable.ic_radar_dot);
 		paint = new Paint();
 	}
 

@@ -18,25 +18,26 @@
             android:layout_centerVertical="true"
             android:text="@string/text_indoor_locator" />
 
-        <ToggleButton
-            android:id="@+id/sortButton"
-            style="@style/DarkGreyText_12"
+        <LinearLayout
+            android:id="@+id/btn_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textOff="@string/text_sort_off"
-            android:textOn="@string/text_sort_on" />
+            android:gravity="center"
+            android:orientation="horizontal" >
 
-        <ToggleButton
-            android:id="@+id/autoUpdateButton"
-            style="@style/DarkGreyText_12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/sortButton"
-            android:textOff="@string/text_auto_refresh_off"
-            android:textOn="@string/text_auto_refresh_on" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_option" />
+
+            <TextView
+                style="@style/RedText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_options" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/btn_shcool_bus"

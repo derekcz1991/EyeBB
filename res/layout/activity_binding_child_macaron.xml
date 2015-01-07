@@ -3,123 +3,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_background_yellow"
+    android:background="@color/red"
     android:gravity="center"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_bg_white"
         android:gravity="center"
         android:orientation="vertical" >
 
-        <com.twinly.eyebb.customview.CircleImageView
-            android:id="@+id/avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/icon_avatar_dark"
-            app:border_color="@color/white"
-            app:border_width="2dp" />
-
-        <TextView
-            android:id="@+id/tv_address"
-            style="@style/DarkGreyText_16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="72dp"
-            android:layout_height="120dp"
-            android:background="@drawable/icon_phone" />
-
         <LinearLayout
-            android:id="@+id/center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="8dp"
-            android:orientation="horizontal" >
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <com.twinly.eyebb.customview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/icon_avatar_dark"
+                app:border_color="@color/white"
+                app:border_width="2dp" />
 
             <TextView
-                android:id="@+id/animation_0"
-                android:layout_width="12dp"
-                android:layout_height="2dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/dark_grey"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/animation_1"
-                android:layout_width="12dp"
-                android:layout_height="2dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/dark_grey"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/animation_2"
-                android:layout_width="12dp"
-                android:layout_height="2dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/dark_grey"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/animation_3"
-                android:layout_width="12dp"
-                android:layout_height="2dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/dark_grey"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/animation_4"
-                android:layout_width="12dp"
-                android:layout_height="2dp"
-                android:layout_marginRight="8dp"
-                android:background="@color/dark_grey"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/animation_5"
-                android:layout_width="12dp"
-                android:layout_height="2dp"
-                android:background="@color/dark_grey"
-                android:visibility="invisible" />
+                android:id="@+id/tv_address"
+                style="@style/DarkGreyText_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/beacon"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/icon_beacon" />
+            android:id="@+id/tv_animation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/ani_connecting_01" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/message"
+            style="@style/DarkGreyText_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_connecting" />
+
+        <Button
+            android:id="@+id/btn_event"
+            style="@style/WhiteText_18"
+            android:layout_width="180dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_bg_red"
+            android:text="@string/btn_cancel" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/message"
-        style="@style/DarkGreyText_20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_connecting" />
-
-    <Button
-        android:id="@+id/btn_event"
-        style="@style/WhiteText_18"
-        android:layout_width="180dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/btn_bg_red"
-        android:text="@string/btn_cancel" />
 
 </LinearLayout>

@@ -21,16 +21,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.dialog.IndoorLocatorOptionsDialog;
 import com.twinly.eyebb.model.Area;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Location;
@@ -58,10 +59,9 @@ public class IndoorLocatorFragment extends Fragment implements
 	private HashMap<Long, HashMap<Long, ArrayList<Long>>> areaMapLocaionMapChildren;
 	private ArrayList<HashMap.Entry<Long, Area>> areaList;
 
-	private ToggleButton autoUpdateButton;
 	private boolean autoUpdateFlag;
 	private AutoUpdateTask autoUpdateTask;
-	private boolean isSort = false;
+	private boolean isViewAllRooms = false;
 	private boolean isFirstUpdate = true;
 
 	public interface CallbackInterface {
@@ -100,7 +100,6 @@ public class IndoorLocatorFragment extends Fragment implements
 		hint = (TextView) v.findViewById(R.id.hint);
 		areaName = (TextView) v.findViewById(R.id.area_name);
 		hint.setVisibility(View.INVISIBLE);
-		autoUpdateButton = (ToggleButton) v.findViewById(R.id.autoUpdateButton);
 
 		myMap = new SerializableChildrenMap();
 		setUpListener(v);
@@ -123,7 +122,6 @@ public class IndoorLocatorFragment extends Fragment implements
 			listView.setLockPullAction(true);
 			autoUpdateTask = new AutoUpdateTask();
 			autoUpdateTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			autoUpdateButton.setChecked(true);
 		} else {
 			updateView();
 		}
@@ -172,37 +170,18 @@ public class IndoorLocatorFragment extends Fragment implements
 						startActivity(intent);
 					}
 				});
-		v.findViewById(R.id.sortButton).setOnClickListener(
+		v.findViewById(R.id.btn_option).setOnClickListener(
 				new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						isSort = !isSort;
-						adapter = new IndoorLocatorAdapter(getActivity(),
-								areaMapLocaionMapChildren.get(currentAreaId),
-								locationMap, childrenMap, isSort);
-						listView.setAdapter(adapter);
-					}
-				});
+						Intent intent = new Intent(getActivity(),
+								IndoorLocatorOptionsDialog.class);
+						intent.putExtra(IndoorLocatorOptionsDialog.EXTRA_VIEW_ALL_ROOMS,
+								isViewAllRooms);
+						startActivityForResult(intent,
+								ActivityConstants.REQUEST_GO_TO_OPTIONS_DIALOG);
 
-		v.findViewById(R.id.autoUpdateButton).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						if (autoUpdateFlag) {
-							SharePrefsUtils.setAutoUpdate(getActivity(), false);
-							autoUpdateFlag = false;
-							listView.setLockPullAction(false);
-							if (autoUpdateTask != null)
-								autoUpdateTask.cancel(true);
-						} else {
-							SharePrefsUtils.setAutoUpdate(getActivity(), true);
-							autoUpdateFlag = true;
-							listView.setLockPullAction(true);
-							autoUpdateTask = new AutoUpdateTask();
-							autoUpdateTask.execute();
-						}
 					}
 				});
 		areaName.setOnClickListener(new OnClickListener() {
@@ -229,7 +208,8 @@ public class IndoorLocatorFragment extends Fragment implements
 										getActivity(),
 										areaMapLocaionMapChildren
 												.get(currentAreaId),
-										locationMap, childrenMap, isSort);
+										locationMap, childrenMap,
+										isViewAllRooms);
 								listView.setAdapter(adapter);
 							}
 						});
@@ -318,7 +298,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				getAllChild(json);
 				adapter = new IndoorLocatorAdapter(getActivity(),
 						areaMapLocaionMapChildren.get(currentAreaId),
-						locationMap, childrenMap, isSort);
+						locationMap, childrenMap, isViewAllRooms);
 				listView.setAdapter(adapter);
 				// set area name
 				if (areaMap.get(currentAreaId) != null) {
@@ -488,4 +468,34 @@ public class IndoorLocatorFragment extends Fragment implements
 		return child.getChildId();
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_OPTIONS_DIALOG) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+				if (autoUpdateFlag != data.getBooleanExtra(
+						IndoorLocatorOptionsDialog.EXTRA_AUTO_REFRESH, autoUpdateFlag)) {
+					autoUpdateFlag = !autoUpdateFlag;
+					if (autoUpdateFlag) {
+						listView.setLockPullAction(true);
+						autoUpdateTask = new AutoUpdateTask();
+						autoUpdateTask.execute();
+					} else {
+						listView.setLockPullAction(false);
+						if (autoUpdateTask != null)
+							autoUpdateTask.cancel(true);
+					}
+				}
+
+				if (isViewAllRooms != data.getBooleanExtra(
+						IndoorLocatorOptionsDialog.EXTRA_VIEW_ALL_ROOMS, isViewAllRooms)) {
+					isViewAllRooms = !isViewAllRooms;
+					adapter = new IndoorLocatorAdapter(getActivity(),
+							areaMapLocaionMapChildren.get(currentAreaId),
+							locationMap, childrenMap, isViewAllRooms);
+					listView.setAdapter(adapter);
+				}
+			}
+		}
+	}
 }

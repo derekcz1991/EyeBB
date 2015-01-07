@@ -9,24 +9,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal" >
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:padding="15dp" >
 
-        <ToggleButton
-            android:id="@+id/sort_name"
-            style="@style/DarkGreyText_12"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textOff="按名字"
-            android:textOn="按名字" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
-        <ToggleButton
-            android:id="@+id/sort_locator"
-            style="@style/DarkGreyText_12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="按位置"
-            android:textOn="按位置" />
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_search" />
+
+            <EditText
+                android:id="@+id/et_search"
+                style="@style/DarkGreyText_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@color/transparent"
+                android:hint="@string/text_search_kid"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_red" />
     </LinearLayout>
 
     <ListView

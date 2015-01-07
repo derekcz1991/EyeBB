@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.activity.FeedbackDialog;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 import com.twinly.eyebb.activity.WebViewActivity;
@@ -28,6 +27,7 @@ import com.twinly.eyebb.adapter.NotificationsListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBNotifications;
+import com.twinly.eyebb.dialog.FeedbackDialog;
 import com.twinly.eyebb.model.Notifications;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;

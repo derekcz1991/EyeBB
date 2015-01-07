@@ -132,11 +132,6 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.FeedBackActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.ForgetPasswordDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
@@ -177,12 +172,12 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.ChildDialog"
+            android:name="com.twinly.eyebb.dialog.ChildDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.FeedbackDialog"
+            android:name="com.twinly.eyebb.dialog.FeedbackDialog"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
@@ -324,6 +319,16 @@
             android:name="com.twinly.eyebb.activity.Test"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.dialog.IndoorLocatorOptionsDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.dialog.KidsListOptionsDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleActivity" >
         </activity>
 
         

@@ -15,14 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.Test;
@@ -38,7 +35,8 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private BluetoothUtils mBluetoothUtils;
 	private ListView listView;
 	private ScrollView radarScrollView;
-	private ToggleButton confirmRadarBtn;
+	//private ToggleButton confirmRadarBtn;
+	private TextView btnRadarSwitch;
 	private RelativeLayout btnSuperised;
 	private RelativeLayout btnMissed;
 	private TextView redDividerSuperised;
@@ -72,9 +70,8 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		radarScrollView.setAlpha(0.3F);
 		radarScrollView.smoothScrollTo(0, 0);
 
+		btnRadarSwitch = (TextView) v.findViewById(R.id.btn_radar_switch);
 		openAntiTheft = (TextView) v.findViewById(R.id.confirm_anti_lost_btn);
-		confirmRadarBtn = (ToggleButton) v
-				.findViewById(R.id.connection_status_btn);
 		btnSuperised = (RelativeLayout) v.findViewById(R.id.btn_supervised);
 		tvSuperised = (TextView) v.findViewById(R.id.tv_supervised);
 		redDividerSuperised = (TextView) v
@@ -114,19 +111,18 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	}
 
 	private void setupListener() {
-		confirmRadarBtn
-				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		btnRadarSwitch.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
-						if (isChecked) {
-							startRadar();
-						} else {
-							stopRadar();
-						}
-					}
-				});
+			@Override
+			public void onClick(View v) {
+				if (isRadarOpen) {
+					stopRadar();
+				} else {
+					startRadar();
+				}
+
+			}
+		});
 		btnSuperised.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -188,6 +184,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 
 	private void startRadar() {
 		isRadarOpen = true;
+		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_on);
 		radarScrollView.setAlpha(1F);
 		mBluetoothUtils.startLeScan(leScanCallback, 500);
 		radarViewFragment.startAnimation();
@@ -196,6 +193,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 
 	private void stopRadar() {
 		isRadarOpen = false;
+		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_off);
 		radarScrollView.setAlpha(0.3F);
 		mHandler.removeCallbacks(updateViewRunnable);
 		mBluetoothUtils.stopLeScan();
