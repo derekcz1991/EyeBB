@@ -5,10 +5,25 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.twinly.eyebb.R;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class ImageUtils {
+	public static DisplayImageOptions avatarOpitons = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.drawable.icon_avatar_dark)
+			.showImageForEmptyUri(R.drawable.icon_avatar_dark)
+			.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+			.cacheOnDisk(true).considerExifParams(true).build();
+
+	public static DisplayImageOptions locationIconOpitons = new DisplayImageOptions.Builder()
+			.showImageOnLoading(R.drawable.ic_location_default)
+			.showImageForEmptyUri(R.drawable.ic_location_default)
+			.showImageOnFail(R.drawable.ic_location_default)
+			.cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+			.build();
 
 	public static boolean saveBitmap(Bitmap bitmap, String path) {
 		File file = new File(path);

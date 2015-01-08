@@ -23,7 +23,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Location;
-import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class IndoorLocatorAdapter extends BaseAdapter {
 	private Context context;
@@ -216,7 +216,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 					.setBackgroundResource(R.drawable.bg_home_blue02);
 		} else {
 			imageLoader.displayImage(locationIcon, viewHolder.icon,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.locationIconOpitons, null);
 		}
 
 		if (locationName.contains("Sleeping")) {

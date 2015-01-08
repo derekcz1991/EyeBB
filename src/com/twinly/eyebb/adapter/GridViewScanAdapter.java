@@ -35,7 +35,7 @@ public class GridViewScanAdapter extends BaseAdapter {
 		imageLoader = ImageLoader.getInstance();
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageForEmptyUri(R.drawable.ic_location_default)
 				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 

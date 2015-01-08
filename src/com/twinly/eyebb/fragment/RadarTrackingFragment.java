@@ -876,7 +876,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// // 手动添加imageview
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageForEmptyUri(R.drawable.ic_location_default)
 				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader = ImageLoader.getInstance();
@@ -1185,7 +1185,7 @@ public class RadarTrackingFragment extends Fragment implements
 		// 手动添加imageview
 		options = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_empty)
+				.showImageForEmptyUri(R.drawable.ic_location_default)
 				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
 				.cacheOnDisk(true).considerExifParams(true).build();
 		imageLoader = ImageLoader.getInstance();

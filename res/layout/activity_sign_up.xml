@@ -15,52 +15,6 @@
         android:layout_marginTop="6dp"
         android:text="@string/text_user_information" />
 
-    <!--
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/ic_signup_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                android:background="@drawable/ic_login_name" />
-
-            <EditText
-                android:id="@+id/ed_username"
-                style="@style/DarkGreyText_18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:digits="0123456789
-		            abcdefghigklmnopqrstuvwxyz
-		            ABCDEFGHIJKLMNOPQRSTUVWXYZ_"
-                android:hint="@string/text_user_name"
-                android:imeOptions="actionNext"       
-                android:inputType="textPersonName"
-                android:longClickable="false"
-                android:maxLength="30"
-                android:singleLine="true" >
-            </EditText>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/divider_red" >
-        </LinearLayout>
-    </RelativeLayout>
-    -->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp" >
@@ -76,7 +30,7 @@
                 android:id="@+id/ic_signup_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/ic_login_phone" />
 
             <EditText
@@ -117,7 +71,7 @@
                 android:id="@+id/ic_signup_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/ic_login_name" />
 
             <EditText
@@ -158,7 +112,7 @@
                 android:id="@+id/ic_signup_pw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/ic_login_pw" />
 
             <EditText
@@ -205,7 +159,7 @@
                 android:id="@+id/ic_signup_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/ic_login_email" />
 
             <EditText
@@ -229,53 +183,15 @@
             android:background="@color/divider_red" >
         </LinearLayout>
     </RelativeLayout>
-    
-      <Button
-          android:id="@+id/btn_signup"
-          style="@style/WhiteText_18"
-          android:layout_width="120dp"
-          android:layout_height="44dp"
-          android:layout_gravity="center_horizontal"
-          android:layout_marginTop="32dp"
-          android:background="@drawable/btn_bg_red"
-          android:text="@string/btn_sign_up" />
 
-    <!--
-    <TextView
-        style="@style/RedText_26"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:singleLine="true"
-        android:text="@string/text_binding_device" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_signup"
+        style="@style/WhiteText_18"
+        android:layout_width="180dp"
+        android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/btn_signup_continue"
-            style="@style/WhiteText_18"
-            android:layout_width="120dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/btn_bg_red"
-            android:text="@string/btn_binding" />
-
-        <Button
-            android:id="@+id/btn_signup_skip"
-            style="@style/WhiteText_18"
-            android:layout_width="120dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/btn_bg_red"
-            android:text="@string/btn_skip" />
-    </LinearLayout>
-    -->
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_bg_red"
+        android:text="@string/btn_sign_up" />
 
 </LinearLayout>

@@ -24,7 +24,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.ChangeKidsActivity;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.database.DBActivityInfo;
@@ -35,6 +34,7 @@ import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Performance;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("NewApi")
@@ -154,7 +154,7 @@ public class ReportFragment extends Fragment implements
 
 		if (child != null) {
 			imageLoader.displayImage(child.getIcon(), avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		}
 
 	}
@@ -392,7 +392,7 @@ public class ReportFragment extends Fragment implements
 				// change a child to display
 				child = (Child) data.getSerializableExtra("child");
 				imageLoader.displayImage(child.getIcon(), avatar,
-						CommonUtils.getDisplayImageOptions(), null);
+						ImageUtils.avatarOpitons, null);
 				SharePrefsUtils.setReportChildId(getActivity(),
 						child.getChildId());
 				updateView();

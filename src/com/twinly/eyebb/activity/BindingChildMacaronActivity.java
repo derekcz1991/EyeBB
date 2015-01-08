@@ -22,7 +22,6 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.BluetoothUtils;
-import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 
@@ -88,7 +87,7 @@ public class BindingChildMacaronActivity extends Activity implements
 			} else {
 				imageLoader = ImageLoader.getInstance();
 				imageLoader.displayImage(childIcon, avatar,
-						CommonUtils.getDisplayImageOptions(), null);
+						ImageUtils.avatarOpitons, null);
 			}
 		}
 

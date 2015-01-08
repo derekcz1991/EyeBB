@@ -21,19 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:indeterminate="true" />
-
-            <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-                android:id="@+id/bar"
-                style="@style/GNowProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:indeterminate="true" />
-
             <LinearLayout
                 android:id="@+id/contentLayout"
                 android:layout_width="match_parent"
@@ -52,6 +39,19 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
             </LinearLayout>
+
+            <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:indeterminate="true" />
+
+            <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+                android:id="@+id/bar"
+                style="@style/GNowProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:indeterminate="true" />
         </RelativeLayout>
     </LinearLayout>
 

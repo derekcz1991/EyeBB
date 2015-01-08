@@ -23,7 +23,7 @@ import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Macaron;
 import com.twinly.eyebb.utils.BLEUtils;
-import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 	private Context context;
@@ -157,7 +157,7 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 		Child child = childMap.get(deviceList.get(position).getMacAddress());
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.icon_avatar_dark));

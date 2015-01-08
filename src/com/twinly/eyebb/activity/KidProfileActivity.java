@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.List;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -28,7 +28,6 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,8 +55,6 @@ public class KidProfileActivity extends Activity implements
 	private TextView kidName;
 	private TextView binding;
 	private ImageLoader imageLoader;
-	private LinearLayout deviceItem;
-	private LinearLayout bindItem;
 	private LinearLayout avatarItemLayout;
 	private Uri mImageCaptureUri;
 	private static final int PICK_FROM_CAMERA = 100;
@@ -95,31 +92,11 @@ public class KidProfileActivity extends Activity implements
 		binding = (TextView) findViewById(R.id.btn_binding);
 		deviceAddress = (TextView) findViewById(R.id.device_address);
 		deviceBattery = (TextView) findViewById(R.id.device_battery);
-		deviceItem = (LinearLayout) findViewById(R.id.device_item);
-		bindItem = (LinearLayout) findViewById(R.id.bind_item);
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 
 		mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
 				getFragmentManager(), this);
 		deviceAddress.setText(child.getMacAddress());
-
-		// if (child.getMacAddress().length() > 0) {
-		// mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
-		// getFragmentManager(), this);
-		//
-		// deviceItem.setVisibility(View.VISIBLE);
-		//
-		//
-		// deviceItem.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// mBluetoothUtils.readBattery(child.getMacAddress(), 15000L);
-		// }
-		// });
-		// } else {
-		// deviceItem.setVisibility(View.GONE);
-		// }
 
 		kidName.setText(child.getName());
 		imageLoader = ImageLoader.getInstance();
@@ -127,7 +104,7 @@ public class KidProfileActivity extends Activity implements
 			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child.getIcon()));
 		} else {
 			imageLoader.displayImage(child.getIcon(), avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		}
 
 		if (CommonUtils.isNull(child.getMacAddress())) {
@@ -137,7 +114,7 @@ public class KidProfileActivity extends Activity implements
 		}
 
 		if (child.getRelationWithUser().equals("P") == false) {
-			bindItem.setVisibility(View.INVISIBLE);
+			binding.setVisibility(View.INVISIBLE);
 		}
 
 		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
@@ -185,8 +162,8 @@ public class KidProfileActivity extends Activity implements
 				deviceBattery.setText(getResources().getString(
 						R.string.text_battery_life)
 						+ " "
-						+ (1 - Float.valueOf(getDeviceBattery) + "")
-								.substring(2, 4) + "%");
+						+ (1 - Float.valueOf(getDeviceBattery) + "").substring(
+								2, 4) + "%");
 
 			}
 		}
@@ -445,13 +422,6 @@ public class KidProfileActivity extends Activity implements
 				}
 			}
 		}
-	}
-
-	private void animate(final HoloCircularProgressBar progressBar,
-			final AnimatorListener listener) {
-		final float progress = (float) (Math.random() * 2);
-		int duration = 3000;
-		animate(progressBar, listener, progress, duration);
 	}
 
 	private void animate(final HoloCircularProgressBar progressBar,

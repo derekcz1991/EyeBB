@@ -17,7 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class GrantKidsListViewFromGuestAdapter extends BaseAdapter {
 	private Context context;
@@ -155,7 +155,7 @@ public class GrantKidsListViewFromGuestAdapter extends BaseAdapter {
 
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.ic_stub));

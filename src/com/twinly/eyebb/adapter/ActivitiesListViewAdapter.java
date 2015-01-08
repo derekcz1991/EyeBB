@@ -15,6 +15,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.ActivityInfo;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class ActivitiesListViewAdapter extends BaseAdapter {
@@ -87,7 +88,7 @@ public class ActivitiesListViewAdapter extends BaseAdapter {
 		viewHolder.date.setText(activityInfo.getDate());
 		if (CommonUtils.isNotNull(activityInfo.getIcon())) {
 			imageLoader.displayImage(activityInfo.getIcon(), viewHolder.icon,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.locationIconOpitons, null);
 		}
 	}
 }

@@ -10,16 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.twinly.eyebb.R;
-
 public class CommonUtils {
 	private static long lastClickTime;
-	private static DisplayImageOptions opitons = new DisplayImageOptions.Builder()
-			.showImageOnLoading(R.drawable.ic_stub)
-			.showImageForEmptyUri(R.drawable.ic_empty)
-			.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-			.cacheOnDisk(true).considerExifParams(true).build();
 
 	public static boolean isFastDoubleClick() {
 		long time = System.currentTimeMillis();
@@ -51,10 +43,6 @@ public class CommonUtils {
 		}
 	}
 
-	public static DisplayImageOptions getDisplayImageOptions() {
-		return opitons;
-	}
-
 	public static String getSHAHashValue(String password) {
 		String passwordSHA256 = "";
 		try {
@@ -79,7 +67,7 @@ public class CommonUtils {
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 	}
-	
+
 	public static void hideSoftKeyboard(View view, Activity activity) {
 		InputMethodManager imm = (InputMethodManager) activity
 				.getSystemService(Context.INPUT_METHOD_SERVICE);

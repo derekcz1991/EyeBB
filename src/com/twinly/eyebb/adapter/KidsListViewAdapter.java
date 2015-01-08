@@ -24,6 +24,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class KidsListViewAdapter extends BaseAdapter {
 	private Context context;
@@ -123,7 +124,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 		final Child child = list.get(position).getValue();
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.icon_avatar_dark));

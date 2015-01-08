@@ -15,7 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class CheckChildToBindAdapter extends BaseAdapter {
 
@@ -82,10 +82,8 @@ public class CheckChildToBindAdapter extends BaseAdapter {
 		final Child child = data.get(position);
 		if (TextUtils.isEmpty(child.getIcon()) == false
 				&& !child.getIcon().equals("null")) {
-			// imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-			// CommonUtils.getDisplayImageOptions(), null);
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		} else {
 			viewHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.ic_stub));

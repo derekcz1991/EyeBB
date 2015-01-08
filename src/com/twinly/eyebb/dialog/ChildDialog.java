@@ -78,8 +78,8 @@ public class ChildDialog extends Activity {
 		if (ImageUtils.isLocalImage(icon)) {
 			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(icon));
 		} else {
-			imageLoader.displayImage(icon, avatar,
-					CommonUtils.getDisplayImageOptions(), animateFirstListener);
+			imageLoader.displayImage(icon, avatar, ImageUtils.avatarOpitons,
+					animateFirstListener);
 		}
 
 		phoneBtn.setOnClickListener(new OnClickListener() {

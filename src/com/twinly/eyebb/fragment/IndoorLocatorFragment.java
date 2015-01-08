@@ -8,9 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,7 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
@@ -44,6 +47,8 @@ public class IndoorLocatorFragment extends Fragment implements
 		PullToRefreshListener {
 	private PullToRefreshListView listView;
 	private ProgressBar progressBar;
+	private LinearLayout secondMenu;
+	private Spinner mSpinner;
 	private TextView hint;
 	private TextView areaName;
 	private CallbackInterface callback;
@@ -93,6 +98,9 @@ public class IndoorLocatorFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_indoor_locator, container,
 				false);
+		secondMenu = (LinearLayout) v.findViewById(R.id.second_menu);
+		secondMenu.setVisibility(View.INVISIBLE);
+		mSpinner = (Spinner) v.findViewById(R.id.spinner);
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 
@@ -169,50 +177,34 @@ public class IndoorLocatorFragment extends Fragment implements
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
 								IndoorLocatorOptionsDialog.class);
-						intent.putExtra(IndoorLocatorOptionsDialog.EXTRA_VIEW_ALL_ROOMS,
+						intent.putExtra(
+								IndoorLocatorOptionsDialog.EXTRA_VIEW_ALL_ROOMS,
 								isViewAllRooms);
 						startActivityForResult(intent,
 								ActivityConstants.REQUEST_GO_TO_OPTIONS_DIALOG);
 
 					}
 				});
-		areaName.setOnClickListener(new OnClickListener() {
+		mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onClick(View v) {
-				areaList = new ArrayList<HashMap.Entry<Long, Area>>(areaMap
-						.entrySet());
-				String[] choices = new String[areaList.size()];
-				for (int i = 0; i < areaList.size(); i++) {
-					choices[i] = areaList.get(i).getValue()
-							.getDisplayName(getActivity());
-				}
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						getActivity());
-				builder.setItems(choices,
-						new DialogInterface.OnClickListener() {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				currentAreaId = areaList.get(position).getKey();
+				adapter = new IndoorLocatorAdapter(getActivity(),
+						areaMapLocaionMapChildren.get(currentAreaId),
+						locationMap, childrenMap, isViewAllRooms);
+				listView.setAdapter(adapter);
+			}
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								currentAreaId = areaList.get(which).getKey();
-								adapter = new IndoorLocatorAdapter(
-										getActivity(),
-										areaMapLocaionMapChildren
-												.get(currentAreaId),
-										locationMap, childrenMap,
-										isViewAllRooms);
-								listView.setAdapter(adapter);
-							}
-						});
-
-				builder.create().show();
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
 			}
 		});
 	}
 
 	public void updateView() {
-		new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		new UpdateViewTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
 
 	@Override
@@ -243,7 +235,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 	}
 
-	private class UpdateView extends AsyncTask<Void, Void, String> {
+	private class UpdateViewTask extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected void onPreExecute() {
@@ -292,8 +284,11 @@ public class IndoorLocatorFragment extends Fragment implements
 						areaMapLocaionMapChildren.get(currentAreaId),
 						locationMap, childrenMap, isViewAllRooms);
 				listView.setAdapter(adapter);
+
 				// set area name
 				if (areaMap.get(currentAreaId) != null) {
+					secondMenu.setVisibility(View.VISIBLE);
+					setAeraSpinner();
 					areaName.setText(areaMap.get(currentAreaId).getDisplayName(
 							getActivity()));
 				}
@@ -460,13 +455,30 @@ public class IndoorLocatorFragment extends Fragment implements
 		return child.getChildId();
 	}
 
+	/**
+	 * Set aera spinner
+	 */
+	private void setAeraSpinner() {
+		areaList = new ArrayList<HashMap.Entry<Long, Area>>(areaMap.entrySet());
+		String[] choices = new String[areaList.size()];
+		for (int i = 0; i < areaList.size(); i++) {
+			choices[i] = areaList.get(i).getValue()
+					.getDisplayName(getActivity());
+		}
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+				getActivity(), R.layout.item_spinner, choices);
+		adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
+		mSpinner.setAdapter(adapter);
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_OPTIONS_DIALOG) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
 				if (autoUpdateFlag != data.getBooleanExtra(
-						IndoorLocatorOptionsDialog.EXTRA_AUTO_REFRESH, autoUpdateFlag)) {
+						IndoorLocatorOptionsDialog.EXTRA_AUTO_REFRESH,
+						autoUpdateFlag)) {
 					autoUpdateFlag = !autoUpdateFlag;
 					if (autoUpdateFlag) {
 						listView.setLockPullAction(true);
@@ -480,7 +492,8 @@ public class IndoorLocatorFragment extends Fragment implements
 				}
 
 				if (isViewAllRooms != data.getBooleanExtra(
-						IndoorLocatorOptionsDialog.EXTRA_VIEW_ALL_ROOMS, isViewAllRooms)) {
+						IndoorLocatorOptionsDialog.EXTRA_VIEW_ALL_ROOMS,
+						isViewAllRooms)) {
 					isViewAllRooms = !isViewAllRooms;
 					adapter = new IndoorLocatorAdapter(getActivity(),
 							areaMapLocaionMapChildren.get(currentAreaId),

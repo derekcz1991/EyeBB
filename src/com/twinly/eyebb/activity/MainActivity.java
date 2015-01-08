@@ -21,7 +21,6 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
-import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.HttpRequestUtils;

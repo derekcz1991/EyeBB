@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.CommonUtils;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 	private Context context;
@@ -129,7 +129,7 @@ public class KidExpandableListviewAdapter extends BaseExpandableListAdapter {
 		Child child = childrenList.get(groupPosition).get(childPosition);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), childrenHolder.avatar,
-					CommonUtils.getDisplayImageOptions(), null);
+					ImageUtils.avatarOpitons, null);
 		} else {
 			childrenHolder.avatar.setImageDrawable(context.getResources()
 					.getDrawable(R.drawable.icon_avatar_dark));
