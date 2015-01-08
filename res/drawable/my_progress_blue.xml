@@ -7,7 +7,7 @@
         android:drawable="@drawable/bg_report_bar_base"/>
     <!-- 定义轨道上已完成部分的样式 -->
     <item android:id="@android:id/progress">
-        <clip android:drawable="@color/progressbar_yellow" >
+        <clip android:drawable="@color/progressbar_blue" >
         </clip>
     </item>
 

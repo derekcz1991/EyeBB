@@ -244,18 +244,24 @@ public class ReportFragment extends Fragment implements
 		callback.cancelProgressBar();
 	}
 
+	@Override
+	public void onSelectDaysChange() {
+		updateView();
+	}
+
 	/**
 	 * Get newest the data from server and update the view
 	 */
 	public void updateView() {
 		if (child != null) {
-			new UpdateView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			new UpdateViewTask()
+					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
 			callback.resetProgressBar();
 		}
 	}
 
-	private class UpdateView extends AsyncTask<Void, Void, String> {
+	private class UpdateViewTask extends AsyncTask<Void, Void, String> {
 
 		@Override
 		protected String doInBackground(Void... params) {
@@ -266,7 +272,8 @@ public class ReportFragment extends Fragment implements
 			}
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(child.getChildId()));
-			map.put("avgDays", String.valueOf(Constants.averageDays));
+			map.put("avgDays",
+					String.valueOf(performanceFragment.getSelectDay()));
 			String result = HttpRequestUtils
 					.get(HttpConstants.GET_REPORTS, map);
 			try {
@@ -388,7 +395,6 @@ public class ReportFragment extends Fragment implements
 						CommonUtils.getDisplayImageOptions(), null);
 				SharePrefsUtils.setReportChildId(getActivity(),
 						child.getChildId());
-				// reInitView();
 				updateView();
 			}
 		}

@@ -62,8 +62,8 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 		//list.add("44:A6:E5:00:04:EF");
 		//list.add("44:A6:E5:00:04:DD");
 		//list.add("44:A6:E5:00:04:A7");
-		//list.add("44:46:E5:00:37:E9");
-		list.add("78:A5:04:55:28:C7");
+		list.add("44:46:E5:00:37:E9");
+		//list.add("78:A5:04:55:28:C7");
 
 		mBluetoothUtils1 = new BluetoothUtils(this, getFragmentManager(), this);
 
@@ -115,7 +115,7 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 
 	@Override
 	public void onConnected() {
-		mHandler.sendEmptyMessageDelayed(2, 1000);
+		//mHandler.sendEmptyMessageDelayed(2, 1000);
 	}
 
 	@Override

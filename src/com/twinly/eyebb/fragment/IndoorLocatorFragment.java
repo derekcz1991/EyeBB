@@ -137,14 +137,6 @@ public class IndoorLocatorFragment extends Fragment implements
 	}
 
 	private void setUpListener(View v) {
-		v.findViewById(R.id.btn_beepall).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-
-					}
-				});
-
 		v.findViewById(R.id.btn_shcool_bus).setOnClickListener(
 				new OnClickListener() {
 					@Override

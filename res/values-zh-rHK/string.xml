@@ -19,7 +19,7 @@
     <string name="text_beep_all">全部蜂鳴</string>
     <string name="text_change">修改</string>
     <string name="text_today">本日</string>
-    <string name="text_customized">自定義: 最近 </string>
+    <string name="text_customized">自定義:\&#160;</string>
     <string name="text_days">天</string>
     <string name="text_beep">蜂鳴</string>
     <string name="text_school_bus">校車</string>

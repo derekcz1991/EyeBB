@@ -6,7 +6,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    android:background="@color/activity_background_white"
+    android:background="@color/activity_background_grey"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@color/activity_background_white"
+        android:background="@color/activity_background_grey"
         android:paddingBottom="32dp"
         android:paddingTop="32dp" >
 

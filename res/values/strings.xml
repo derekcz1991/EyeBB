@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="tt">
+        <item>This week</item>
+        <item>Last 14 days</item>
+        <item>50 days</item>
+    </string-array>
     <!-- Text strings -->
     <string name="app_name">EyeBB</string>
     <string name="text_policy">By Continuing, you agree to our <u>Terms</u> and <u>Privacy Policy</u>.</string>
@@ -25,7 +30,7 @@
     <string name="text_beep_all">Beep all</string>
     <string name="text_change">Change</string>
     <string name="text_today">Today</string>
-    <string name="text_customized">Customized: Last</string>
+    <string name="text_customized">Customized:\&#160;</string>
     <string name="text_days">days</string>
     <string name="text_beep">Beep</string>
     <string name="text_shcool_bus">School Bus</string>

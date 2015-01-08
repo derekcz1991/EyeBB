@@ -12,7 +12,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
@@ -25,9 +29,11 @@ import com.twinly.eyebb.model.PerformanceListItem;
 
 public class ReportPerformanceFragment extends Fragment implements
 		PullToRefreshListener {
-
+	private final int[] days = new int[] { 5, 14, 50 };
+	private int selectDay = days[0];
 	private PullToRefreshListView listView;
 	private Spinner mSpinner;
+	private TextView tvDay;
 	private PerformanceListViewAdapter adapter;
 	private List<PerformanceListItem> list;
 	private CallbackInterface callback;
@@ -44,6 +50,11 @@ public class ReportPerformanceFragment extends Fragment implements
 		 * Cancel update the progressBar when release the listView  
 		 */
 		public void cancelProgressBar();
+
+		/**
+		 * Update view when select a new period 
+		 */
+		public void onSelectDaysChange();
 	}
 
 	public void setCallbackInterface(CallbackInterface callback) {
@@ -55,7 +66,33 @@ public class ReportPerformanceFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_report_performance,
 				container, false);
+		tvDay = (TextView) v.findViewById(R.id.days);
 		mSpinner = (Spinner) v.findViewById(R.id.customized_day);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				getActivity(), R.array.tt, R.layout.item_spinner);
+		adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
+		tvDay.setText(getResources().getStringArray(R.array.tt)[0]);
+		mSpinner.setAdapter(adapter);
+		mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				tvDay.setText(getResources().getStringArray(R.array.tt)[position]);
+				if (selectDay != days[position]) {
+					selectDay = days[position];
+					callback.onSelectDaysChange();
+				}
+
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		listView = (PullToRefreshListView) v.findViewById(R.id.listView);
 		listView.setPullToRefreshListener(this);
 
@@ -86,7 +123,7 @@ public class ReportPerformanceFragment extends Fragment implements
 					// today
 					item = new PerformanceListItem(
 							"",
-							R.drawable.my_progress_blue01,
+							R.drawable.my_progress_blue,
 							(int) Double.parseDouble(object
 									.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_DAILY)),
 							(int) Double.parseDouble(object
@@ -126,6 +163,10 @@ public class ReportPerformanceFragment extends Fragment implements
 	public void cancelProgressBar() {
 		callback.cancelProgressBar();
 
+	}
+
+	public int getSelectDay() {
+		return selectDay;
 	}
 
 	/**

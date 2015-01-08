@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_background_yellow"
+    android:background="@color/activity_background_grey"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:orientation="vertical" >
+    android:paddingRight="8dp" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -14,12 +14,11 @@
         android:orientation="vertical" >
 
         <ImageView
-            android:layout_gravity="center_horizontal"
             android:id="@+id/logo_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -33,33 +32,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_version" />
-            
-       
+
             <TextView
-                android:layout_marginLeft="5dp"
                 android:id="@+id/version"
                 style="@style/DarkGreyText_20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="1.0" />
         </LinearLayout>
-             <TextView
-                   style="@style/DarkGreyText_20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_http"
-                />
-        
+
+        <TextView
+            style="@style/DarkGreyText_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_http" />
     </LinearLayout>
 
     <TextView
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
         style="@style/DarkGreyText_16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/text_about_details" />
 
 </LinearLayout>
