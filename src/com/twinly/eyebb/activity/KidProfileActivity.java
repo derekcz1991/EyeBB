@@ -159,11 +159,18 @@ public class KidProfileActivity extends Activity implements
 				mHoloCircularProgressBar.setMarkerProgress(Float
 						.valueOf(getDeviceBattery));
 
-				deviceBattery.setText(getResources().getString(
-						R.string.text_battery_life)
-						+ " "
-						+ (1 - Float.valueOf(getDeviceBattery) + "").substring(
-								2, 4) + "%");
+				if (getDeviceBattery.equals("0")) {
+					deviceBattery.setText(getResources().getString(
+							R.string.text_battery_life)
+							+ " " + "100%");
+
+				} else {
+					deviceBattery.setText(getResources().getString(
+							R.string.text_battery_life)
+							+ " "
+							+ (1 - Float.valueOf(getDeviceBattery) + "")
+									.substring(2, 4) + "%");
+				}
 
 			}
 		}
@@ -529,20 +536,32 @@ public class KidProfileActivity extends Activity implements
 					mProgressBarAnimator.cancel();
 				}
 
-				animate(mHoloCircularProgressBar,
-						null,
-						(1 - Float.valueOf("0." + Integer.parseInt(value, 16))),
-						2000);
-				mHoloCircularProgressBar.setMarkerProgress((1 - Float
-						.valueOf("0." + Integer.parseInt(value, 16))));
+				if (Integer.parseInt(value, 16) != 100) {
+					animate(mHoloCircularProgressBar,
+							null,
+							(1 - Float.valueOf("0."
+									+ Integer.parseInt(value, 16))), 2000);
+					mHoloCircularProgressBar.setMarkerProgress((1 - Float
+							.valueOf("0." + Integer.parseInt(value, 16))));
 
-				deviceBattery.setText(getResources().getString(
-						R.string.text_battery_life)
-						+ " " + Integer.parseInt(value, 16) + "%");
+					deviceBattery.setText(getResources().getString(
+							R.string.text_battery_life)
+							+ " " + Integer.parseInt(value, 16) + "%");
 
-				getDeviceBattery = (1 - Float.valueOf("0."
-						+ Integer.parseInt(value, 16)))
-						+ "";
+					getDeviceBattery = (1 - Float.valueOf("0."
+							+ Integer.parseInt(value, 16)))
+							+ "";
+				} else {
+
+					animate(mHoloCircularProgressBar, null, 0f, 2000);
+					mHoloCircularProgressBar.setMarkerProgress(0f);
+
+					deviceBattery.setText(getResources().getString(
+							R.string.text_battery_life)
+							+ " " + Integer.parseInt(value, 16) + "%");
+
+					getDeviceBattery = 0 + "";
+				}
 			}
 		});
 
