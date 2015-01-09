@@ -42,6 +42,7 @@ public class ProfileFragment extends Fragment {
 	// 没用的东西
 	int child;
 
+	private ProfileFragment profileFragment;
 	private View v;
 
 	@Override
@@ -101,6 +102,12 @@ public class ProfileFragment extends Fragment {
 		return v;
 	}
 
+	public void refreshProfileFragment() {
+		if (profileFragment != null) {
+			// performanceFragment.updateAdapter();
+		}
+	}
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);

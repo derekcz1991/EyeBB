@@ -31,6 +31,7 @@ import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.RadarServicesActivity;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class BleServicesService extends Service {
@@ -127,7 +128,7 @@ public class BleServicesService extends Service {
 									// UPDATE BATTERY VIEW
 									Intent broadcast = new Intent();
 									broadcast
-											.setAction(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY);
+											.setAction(BroadcastUtils.BROADCAST_GET_DEVICE_BATTERY);
 									SharePrefsUtils.setdeviceBattery(
 											BleServicesService.this, "");
 									sendBroadcast(broadcast);

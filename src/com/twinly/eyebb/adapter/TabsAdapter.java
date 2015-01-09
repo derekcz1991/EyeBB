@@ -13,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
+import com.twinly.eyebb.activity.MainActivity;
+
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.utils.BroadcastUtils;
 
 /**
  * This is a helper class that implements the management of tabs and all details
@@ -40,6 +43,8 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	private RadarTrackingFragmentTemp radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
+
+
 
 	static class DummyTabFactory implements TabHost.TabContentFactory {
 		private final Context mContext;
@@ -158,7 +163,8 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		case 2:
 			reportFragment.refreshPerformanceFragment();
 			break;
-		case 3:
+		case 3:	
+			BroadcastUtils.cancelNotificationDot(mContext);
 			break;
 		}
 	}

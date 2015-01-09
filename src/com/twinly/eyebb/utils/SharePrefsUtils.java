@@ -273,6 +273,16 @@ public class SharePrefsUtils {
 				value);
 	}
 
+	public static boolean isNotificationDot(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_NOTIFICATION_DOT, false);
+	}
+
+	public static void setNotificationDot(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_NOTIFICATION_DOT,
+				value);
+	}
+	
 	public static String isMacAddress(Context context) {
 		return getString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS);
 	}

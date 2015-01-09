@@ -1,7 +1,11 @@
 package com.twinly.eyebb.activity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
@@ -13,17 +17,22 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TabHost;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.fragment.ReportPerformanceFragment.CallbackInterface;
+import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -43,6 +52,10 @@ public class MainActivity extends FragmentActivity implements
 	private boolean isRefreshing;
 	private KeepSessionAliveTask keepSessionAliveTask;
 	private int timeoutCounter;
+	private View profileLabel;
+	private ImageView notification_dot;
+	private MainActivity mainActivity;
+	private HandleNotificationDot handleNotificationDot;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +66,8 @@ public class MainActivity extends FragmentActivity implements
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 
+	
+		
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
@@ -67,6 +82,13 @@ public class MainActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		bar.setVisibility(View.INVISIBLE);
+		
+		handleNotificationDot = new HandleNotificationDot();
+		registerReceiver(handleNotificationDot,
+				new IntentFilter(BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT));
+		registerReceiver(handleNotificationDot,
+				new IntentFilter(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT));
+		
 	}
 
 	@Override
@@ -75,6 +97,19 @@ public class MainActivity extends FragmentActivity implements
 		if (keepSessionAliveTask != null) {
 			keepSessionAliveTask.cancel(true);
 		}
+		
+		//unregisterReceiver
+		try {
+			unregisterReceiver(handleNotificationDot);
+		} catch (IllegalArgumentException e) {
+			if (e.getMessage().contains("Receiver not registered")) {
+				// Ignore this exception. This is exactly what is desired
+			} else {
+				// unexpected, re-throw
+				throw e;
+			}
+		}
+	
 	}
 
 	@SuppressLint("InflateParams")
@@ -83,6 +118,7 @@ public class MainActivity extends FragmentActivity implements
 		mTabHost.setup();
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
+		notification_dot = (ImageView) findViewById(R.id.notification_number);
 		mViewPager.setOffscreenPageLimit(3);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
@@ -93,6 +129,8 @@ public class MainActivity extends FragmentActivity implements
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_home_selector);
+		mainLabel.findViewById(R.id.notification_number).setVisibility(
+				View.GONE);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
 				indoorLocatorFragment);
@@ -103,6 +141,8 @@ public class MainActivity extends FragmentActivity implements
 				R.layout.tab_label, null);
 		trackingLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_tracking_selector);
+		trackingLabel.findViewById(R.id.notification_number).setVisibility(
+				View.GONE);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
 				radarTrackingFragment);
@@ -114,19 +154,29 @@ public class MainActivity extends FragmentActivity implements
 				R.layout.tab_label, null);
 		reportLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_report_selector);
+		reportLabel.findViewById(R.id.notification_number).setVisibility(
+				View.GONE);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Report").setIndicator(reportLabel),
 				reportFragment);
 
 		// profile
 		profileFragment = new ProfileFragment();
-		View profileLabel = (View) LayoutInflater.from(this).inflate(
+		profileLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		profileLabel.findViewById(R.id.label).setBackgroundResource(
 				R.drawable.btn_actbar_profile_selector);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
+
+		if(SharePrefsUtils.isNotificationDot(MainActivity.this)){
+			
+		}else{
+			profileLabel.findViewById(R.id.notification_number).setVisibility(
+					View.GONE);
+		}
+	
 
 		mTabHost.setCurrentTab(0);
 		if (savedInstanceState != null) {
@@ -209,7 +259,7 @@ public class MainActivity extends FragmentActivity implements
 		isRefreshing = false;
 		progressBar.setProgress(0);
 		bar.progressiveStop();
-		//reportFragment.setRefreshing(false);
+		// reportFragment.setRefreshing(false);
 	}
 
 	private class KeepSessionAliveTask extends AsyncTask<Void, String, Void> {
@@ -218,7 +268,7 @@ public class MainActivity extends FragmentActivity implements
 		protected Void doInBackground(Void... params) {
 			while (true) {
 				try {
-					Thread.sleep(600000); //10min = 600000s
+					Thread.sleep(600000); // 10min = 600000s
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -251,5 +301,27 @@ public class MainActivity extends FragmentActivity implements
 			}
 		}
 	}
+
+	
+	/**
+	 *  broadcast notificaiton dot receiver 
+	 *  
+	 *  
+	 */
+	private class HandleNotificationDot extends BroadcastReceiver {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals(BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT)) {
+				profileLabel.findViewById(R.id.notification_number).setVisibility(View.VISIBLE);
+				SharePrefsUtils.setNotificationDot(MainActivity.this, true);
+
+			}else if(action.equals(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT)){
+				profileLabel.findViewById(R.id.notification_number).setVisibility(View.GONE);
+				SharePrefsUtils.setNotificationDot(MainActivity.this, false);
+			}
+		}
+	};
+	
+
 
 }

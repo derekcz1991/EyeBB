@@ -18,11 +18,11 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.twinly.eyebb.activity.KidProfileActivity;
 import com.twinly.eyebb.bluetooth.BluetoothLeService;
 import com.twinly.eyebb.bluetooth.SampleGattAttributes;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.utils.BLEUtils;
+import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class BleCharacteristicsService extends Service {
@@ -241,7 +241,7 @@ public class BleCharacteristicsService extends Service {
 					// UPDATE BATTERY VIEW
 					Intent broadcast = new Intent();
 					broadcast
-							.setAction(BleDeviceConstants.BROADCAST_GET_DEVICE_BATTERY);
+							.setAction(BroadcastUtils.BROADCAST_GET_DEVICE_BATTERY);
 					sendBroadcast(broadcast);
 
 					stopService(BleServicesService.intentToChara);

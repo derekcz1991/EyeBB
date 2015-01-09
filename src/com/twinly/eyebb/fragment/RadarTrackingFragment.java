@@ -66,6 +66,7 @@ import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.BLEUtils;
+import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -747,7 +748,7 @@ public class RadarTrackingFragment extends Fragment implements
 		}
 
 		getActivity().registerReceiver(updateDb,
-				new IntentFilter(BleDeviceConstants.BROADCAST_FINISH_BIND));
+				new IntentFilter(BroadcastUtils.BROADCAST_FINISH_BIND));
 
 		// if (checkIsBluetoothOpen) {
 		// 阻止底部button點擊
@@ -1753,7 +1754,7 @@ public class RadarTrackingFragment extends Fragment implements
 	private class UpdateDb extends BroadcastReceiver {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (action.equals(BleDeviceConstants.BROADCAST_FINISH_BIND)) {
+			if (action.equals(BroadcastUtils.BROADCAST_FINISH_BIND)) {
 				ChildData = DBChildren.getChildrenList(getActivity());
 			}
 		}

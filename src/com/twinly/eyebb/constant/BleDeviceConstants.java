@@ -40,9 +40,7 @@ public class BleDeviceConstants {
 	public static final int BATTERY_DELAY_LOADING = 3000;
 
 
-	//broadcast
-	public static final String BROADCAST_FINISH_BIND = "FINISH_BIND";
-	public static final String BROADCAST_GET_DEVICE_BATTERY = "battery_broadcast";
+
 
 	public static boolean DEBUG = true;
 

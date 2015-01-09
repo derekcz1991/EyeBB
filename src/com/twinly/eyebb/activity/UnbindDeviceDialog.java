@@ -16,10 +16,10 @@ import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class UnbindDeviceDialog extends Activity {
@@ -99,7 +99,7 @@ public class UnbindDeviceDialog extends Activity {
 					//UPDATE RADAR VIEW
 					Intent broadcast = new Intent();
 					broadcast
-							.setAction(BleDeviceConstants.BROADCAST_FINISH_BIND);
+							.setAction(BroadcastUtils.BROADCAST_FINISH_BIND);
 					sendBroadcast(broadcast);
 
 					System.out.println("=====>>>>");
