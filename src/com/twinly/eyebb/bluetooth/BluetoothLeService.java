@@ -39,7 +39,6 @@ import android.util.Log;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.fragment.RadarTrackingFragment;
-import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 /**
@@ -168,7 +167,7 @@ public class BluetoothLeService extends Service {
 
 				isSuccessfulWrite = true;
 
-				stopService(BleServicesService.intentToChara);
+			//	stopService(BleServicesService.intentToChara);
 				stopService(RadarTrackingFragment.beepIntent);
 
 				// device status

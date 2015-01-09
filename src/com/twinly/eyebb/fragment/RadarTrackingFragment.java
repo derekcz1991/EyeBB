@@ -64,7 +64,6 @@ import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
-import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -747,8 +746,8 @@ public class RadarTrackingFragment extends Fragment implements
 			hint_nodata.setVisibility(View.VISIBLE);
 		}
 
-		getActivity().registerReceiver(updateDb,
-				new IntentFilter(BroadcastUtils.BROADCAST_FINISH_BIND));
+		// getActivity().registerReceiver(updateDb,
+		// new IntentFilter(BroadcastUtils.BROADCAST_FINISH_BIND));
 
 		// if (checkIsBluetoothOpen) {
 		// 阻止底部button點擊
@@ -1535,8 +1534,8 @@ public class RadarTrackingFragment extends Fragment implements
 				break;
 
 			case BEEPTIMEOUT:
-				if (BleServicesService.intentToChara != null)
-					getActivity().stopService(BleServicesService.intentToChara);
+				// if (BleServicesService.intentToChara != null)
+				// getActivity().stopService(BleServicesService.intentToChara);
 				getActivity().stopService(beepIntent);
 				SharePrefsUtils.setfinishBeep(getActivity(), false);
 
@@ -1754,9 +1753,9 @@ public class RadarTrackingFragment extends Fragment implements
 	private class UpdateDb extends BroadcastReceiver {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (action.equals(BroadcastUtils.BROADCAST_FINISH_BIND)) {
-				ChildData = DBChildren.getChildrenList(getActivity());
-			}
+			// if (action.equals(BroadcastUtils.BROADCAST_FINISH_BIND)) {
+			// ChildData = DBChildren.getChildrenList(getActivity());
+			// }
 		}
 	};
 
@@ -1876,7 +1875,7 @@ public class RadarTrackingFragment extends Fragment implements
 			timer.schedule(BeepCheckTimeOutTask, 0, 1000);
 		} else {
 			if (SharePrefsUtils.isfinishBeep(getActivity())) {
-				getActivity().stopService(BleServicesService.intentToChara);
+				// getActivity().stopService(BleServicesService.intentToChara);
 				getActivity().stopService(beepIntent);
 
 			}
@@ -1907,11 +1906,11 @@ public class RadarTrackingFragment extends Fragment implements
 			isFirstBeep = false;
 
 			beepIntent = new Intent();
-
-			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-					Constants.DB_NAME);
-			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
-					BeepTempChildData.get(position).getMacAddress());
+			//
+			// beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+			// Constants.DB_NAME);
+			// beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+			// BeepTempChildData.get(position).getMacAddress());
 			System.out
 					.println("BeepTempChildData.get(position).getMacAddress()==>"
 							+ BeepTempChildData.get(position).getMacAddress());

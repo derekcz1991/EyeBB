@@ -60,7 +60,6 @@ import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
-import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -1130,8 +1129,8 @@ public class RadarTrackingFragmentBackup extends Fragment implements
 			switch (msg.what) {
 
 			case BEEPTIMEOUT:
-				if (BleServicesService.intentToChara != null)
-					getActivity().stopService(BleServicesService.intentToChara);
+//				if (BleServicesService.intentToChara != null)
+//					getActivity().stopService(BleServicesService.intentToChara);
 				getActivity().stopService(beepIntent);
 				SharePrefsUtils.setfinishBeep(getActivity(), false);
 
@@ -1586,7 +1585,7 @@ public class RadarTrackingFragmentBackup extends Fragment implements
 			timer.schedule(BeepCheckTimeOutTask, 0, 1000);
 		} else {
 			if (SharePrefsUtils.isfinishBeep(getActivity())) {
-				getActivity().stopService(BleServicesService.intentToChara);
+				//getActivity().stopService(BleServicesService.intentToChara);
 				getActivity().stopService(beepIntent);
 
 			}
@@ -1618,10 +1617,10 @@ public class RadarTrackingFragmentBackup extends Fragment implements
 
 			beepIntent = new Intent();
 
-			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
-					"Macaron");
-			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
-					BeepTempChildData.get(position).getMacAddress());
+//			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_NAME,
+//					"Macaron");
+//			beepIntent.putExtra(BleServicesService.EXTRAS_DEVICE_ADDRESS,
+//					BeepTempChildData.get(position).getMacAddress());
 			System.out
 					.println("BeepTempChildData.get(position).getMacAddress()==>"
 							+ BeepTempChildData.get(position).getMacAddress());

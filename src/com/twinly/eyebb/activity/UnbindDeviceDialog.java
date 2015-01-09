@@ -96,11 +96,11 @@ public class UnbindDeviceDialog extends Activity {
 					DBChildren.updateMacAddressByChildId(
 							UnbindDeviceDialog.this, childId, "");
 
-					//UPDATE RADAR VIEW
-					Intent broadcast = new Intent();
-					broadcast
-							.setAction(BroadcastUtils.BROADCAST_FINISH_BIND);
-					sendBroadcast(broadcast);
+					// UPDATE RADAR VIEW
+					// Intent broadcast = new Intent();
+					// broadcast
+					// .setAction(BroadcastUtils.BROADCAST_FINISH_BIND);
+					// sendBroadcast(broadcast);
 
 					System.out.println("=====>>>>");
 					setResult(ActivityConstants.RESULT_UNBIND_SUCCESS);

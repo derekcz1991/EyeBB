@@ -173,6 +173,7 @@
     <string name="text_name">Name</string>
     <string name="text_location">Location</string>
     <string name="text_search_kid">查找孩子&#8230;</string>
+    <string name="text_can_not_open_options">請先關閉雷達功能</string>
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

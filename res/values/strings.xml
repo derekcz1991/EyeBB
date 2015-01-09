@@ -178,6 +178,7 @@
     <string name="text_name">Name</string>
     <string name="text_location">Location</string>
     <string name="text_search_kid">Search kids&#8230;</string>
+    <string name="text_can_not_open_options">Please, turn off the radar function.</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

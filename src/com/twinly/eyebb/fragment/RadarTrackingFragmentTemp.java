@@ -27,6 +27,7 @@ import com.twinly.eyebb.adapter.RadarKidsListViewAdapterTemp;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Macaron;
 import com.twinly.eyebb.utils.BluetoothUtils;
+import com.twinly.eyebb.utils.BroadcastUtils;
 
 @SuppressLint("NewApi")
 public class RadarTrackingFragmentTemp extends Fragment implements
@@ -52,7 +53,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	// 開啟防丟器
 	private TextView openAntiTheft;
 	private boolean isAntiLostOpen = false;
-	private boolean isRadarOpen = false;
+	public static boolean isRadarOpen = false;
 	private boolean isSuperisedSection = true;
 
 	private HashMap<String, Macaron> macaronHashMap;
@@ -194,6 +195,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		mBluetoothUtils.startLeScan(leScanCallback, 500);
 		radarViewFragment.startAnimation();
 		mHandler.postDelayed(updateViewRunnable, 2000);
+		BroadcastUtils.opeanRadar(getActivity());
 	}
 
 	private void stopRadar() {
@@ -203,6 +205,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		mHandler.removeCallbacks(updateViewRunnable);
 		mBluetoothUtils.stopLeScan();
 		radarViewFragment.stopAnimation();
+		BroadcastUtils.closeRadar(getActivity());
 	}
 
 	Runnable updateViewRunnable = new Runnable() {

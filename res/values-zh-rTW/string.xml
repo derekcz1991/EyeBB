@@ -208,6 +208,7 @@
     <string name="btn_missed">未連接</string>
     <string name="btn_disconnect">解綁</string>
     <string name="btn_options">Options</string>
+    <string name="text_can_not_open_options">請先關閉雷達功能</string>
     <!-- Toast strings -->
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

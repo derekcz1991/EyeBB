@@ -7,7 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,9 +21,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.LancherActivity;
+import com.twinly.eyebb.activity.MainActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 import com.twinly.eyebb.activity.WebViewActivity;
 import com.twinly.eyebb.adapter.NotificationsListViewAdapter;
@@ -29,6 +34,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBNotifications;
 import com.twinly.eyebb.dialog.FeedbackDialog;
 import com.twinly.eyebb.model.Notifications;
+import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -39,11 +45,13 @@ public class ProfileFragment extends Fragment {
 	private ArrayList<Notifications> list;
 	private ListView listView;
 	private NotificationsListViewAdapter adapter;
-	// 没用的东西
+
 	int child;
 
 	private ProfileFragment profileFragment;
 	private View v;
+
+	private UpdateTheOptionsUi updateTheOptionsUi;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,11 +84,19 @@ public class ProfileFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				if (RadarTrackingFragmentTemp.isRadarOpen) {
+					Toast.makeText(
+							getActivity(),
+							getResources().getString(
+									R.string.text_can_not_open_options),
+							Toast.LENGTH_LONG).show();
 
-				Intent intent = new Intent(getActivity(),
-						SettingsActivity.class);
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_SETTING_ACTIVITY);
+				} else {
+					Intent intent = new Intent(getActivity(),
+							SettingsActivity.class);
+					startActivityForResult(intent,
+							ActivityConstants.REQUEST_GO_TO_SETTING_ACTIVITY);
+				}
 
 			}
 		});
@@ -102,12 +118,59 @@ public class ProfileFragment extends Fragment {
 		return v;
 	}
 
+	/**
+	 * broadcast whether the radar function is open or not receiver
+	 * 
+	 * 
+	 */
+	private class UpdateTheOptionsUi extends BroadcastReceiver {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals(BroadcastUtils.BROADCAST_OPEN_RADAR)) {
+				settingBtn.setAlpha(0.3f);
+				System.out.println("BROADCAST_OPEN_RADAR");
+			} else if (action.equals(BroadcastUtils.BROADCAST_CLOSE_RADAR)) {
+				settingBtn.setAlpha(1.0f);
+			}
+		}
+	};
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		updateTheOptionsUi = new UpdateTheOptionsUi();
+		getActivity().registerReceiver(updateTheOptionsUi,
+				new IntentFilter(BroadcastUtils.BROADCAST_OPEN_RADAR));
+		getActivity().registerReceiver(updateTheOptionsUi,
+				new IntentFilter(BroadcastUtils.BROADCAST_CLOSE_RADAR));
+
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
+		// unregisterReceiver
+		try {
+			getActivity().unregisterReceiver(updateTheOptionsUi);
+		} catch (IllegalArgumentException e) {
+			if (e.getMessage().contains("Receiver not registered")) {
+				// Ignore this exception. This is exactly what is desired
+			} else {
+				// unexpected, re-throw
+				throw e;
+			}
+		}
+	}
+
 	public void refreshProfileFragment() {
 		if (profileFragment != null) {
 			// performanceFragment.updateAdapter();
 		}
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);

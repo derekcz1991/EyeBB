@@ -20,7 +20,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.BleDeviceConstants;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.service.BleServicesService;
+//import com.twinly.eyebb.service.BleServicesService;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class BeepAllForRadarDialog extends Activity {
@@ -194,15 +194,15 @@ public class BeepAllForRadarDialog extends Activity {
 
 								Intent beepIntent = new Intent();
 
-								beepIntent.putExtra(
-										BleServicesService.EXTRAS_DEVICE_NAME,
-										"Macaron");
-								beepIntent
-										.putExtra(
-												BleServicesService.EXTRAS_DEVICE_ADDRESS,
-												BeepAllTempChildData.get(
-														BeepAlli)
-														.getMacAddress());
+//								beepIntent.putExtra(
+//										BleServicesService.EXTRAS_DEVICE_NAME,
+//										"Macaron");
+//								beepIntent
+//										.putExtra(
+//												BleServicesService.EXTRAS_DEVICE_ADDRESS,
+//												BeepAllTempChildData.get(
+//														BeepAlli)
+//														.getMacAddress());
 								System.out
 										.println("BeepTempChildData.get(position).getMacAddress()==>"
 												+ BeepAllTempChildData.get(
