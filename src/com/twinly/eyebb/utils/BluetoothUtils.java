@@ -27,16 +27,21 @@ import com.twinly.eyebb.service.BluetoothLeService;
 
 @SuppressLint("NewApi")
 public class BluetoothUtils {
-	private final static String SERVICE_UUID = "00001000-0000-1000-8000-00805f9b34fb";
+	private final static String SERVICE_UUID_0001 = "00001000-0000-1000-8000-00805f9b34fb";
+	private final static String SERVICE_UUID_0002 = "00002000-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_PASSWORD = "00002005-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_MAJOR_UUID = "00001008-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_MINOR_UUID = "00001009-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_LED_BLINK_UUID = "0000100b-0000-1000-8000-00805f9b34fb";
 
 	public final static int CONNECT_ONLY = 1;
-	public final static int WRITE_MAJOR_MINOR = 2;
-	public final static int WRITE_BEEP = 3;
-	public final static int READ_BATTERY = 4;
+	public final static int WRITE_MAJOR = 2;
+	public final static int WRITE_MINOR = 3;
+	public final static int WRITE_BEEP = 4;
+	public final static int WRITE_LED_BLINK = 5;
+	public final static int READ_BATTERY = 6;
 
 	private final static String TAG = BluetoothUtils.class.getSimpleName();
 
@@ -51,8 +56,9 @@ public class BluetoothUtils {
 	private ServiceConnection mServiceConnection;
 	private List<BluetoothGattService> gattServices;
 
+	private boolean isPasswordSet;
 	private int command;
-	private String[] value;
+	private String value;
 	private Timer timer;
 
 	public interface BleConnectCallback {
@@ -104,8 +110,9 @@ public class BluetoothUtils {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				final String action = intent.getAction();
-				System.out.println("mGattUpdateReceiver ==>> " + action);
+				//System.out.println("mGattUpdateReceiver ==>> " + action);
 				if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+					timer.cancel();
 					callback.onConnected();
 				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
 						.equals(action)) {
@@ -125,7 +132,12 @@ public class BluetoothUtils {
 					callback.onResult(false);
 				} else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS
 						.equals(action)) {
-					callback.onResult(true);
+					if (isPasswordSet) {
+						callback.onResult(true);
+					} else {
+						isPasswordSet = true;
+						onDiscovered();
+					}
 				} else if (BluetoothLeService.ACTION_GATT_WRITE_FAILURE
 						.equals(action)) {
 					callback.onResult(false);
@@ -176,6 +188,7 @@ public class BluetoothUtils {
 		if (mBluetoothLeService != null) {
 			mBluetoothLeService.disconnect();
 			mBluetoothLeService.close();
+			isPasswordSet = false;
 		}
 	}
 
@@ -187,7 +200,7 @@ public class BluetoothUtils {
 	public void readBattery(String mDeviceAddress, long timeout) {
 		command = READ_BATTERY;
 		if (gattServices != null) {
-			read(CHARACTERISTICS_BATTERY_UUID);
+			read(SERVICE_UUID_0001, CHARACTERISTICS_BATTERY_UUID);
 		} else {
 			if (initialize()) {
 				connect(mDeviceAddress, timeout);
@@ -196,20 +209,36 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Write major & minor to device, disconnect device when finish writing
+	 * Write major to device
 	 * @param mDeviceAddress The device mac address
 	 * @param timeout The timeout to connect to device
-	 * @param value The value of major & minor
+	 * @param value The value of major
 	 */
-	public void writeMajorMinor(String mDeviceAddress, long timeout,
-			String... value) {
-		command = WRITE_MAJOR_MINOR;
+	public void writeMajor(String mDeviceAddress, long timeout, String value) {
+		command = WRITE_MAJOR;
 		this.value = value;
 		if (gattServices != null) {
-			write(CHARACTERISTICS_MAJOR_UUID,
-					BLEUtils.checkMajorMinor(value[0]), false);
-			write(CHARACTERISTICS_MINOR_UUID,
-					BLEUtils.checkMajorMinor(value[1]), true);
+			write(SERVICE_UUID_0001, CHARACTERISTICS_MAJOR_UUID,
+					BLEUtils.checkMajorMinor(value), true);
+		} else {
+			if (initialize()) {
+				connect(mDeviceAddress, timeout);
+			}
+		}
+	}
+
+	/**
+	 * Write minor to device
+	 * @param mDeviceAddress The device mac address
+	 * @param timeout The timeout to connect to device
+	 * @param value The value of minor
+	 */
+	public void writeMinor(String mDeviceAddress, long timeout, String value) {
+		command = WRITE_MINOR;
+		this.value = value;
+		if (gattServices != null) {
+			write(SERVICE_UUID_0001, CHARACTERISTICS_MINOR_UUID,
+					BLEUtils.checkMajorMinor(value), true);
 		} else {
 			if (initialize()) {
 				connect(mDeviceAddress, timeout);
@@ -223,11 +252,34 @@ public class BluetoothUtils {
 	 * @param timeout The timeout to connect to device
 	 * @param value The value of to beep
 	 */
-	public void writeBeep(String mDeviceAddress, long timeout, String... value) {
+	public void writeBeep(String mDeviceAddress, long timeout, String value) {
 		command = WRITE_BEEP;
 		this.value = value;
-		if (initialize()) {
-			connect(mDeviceAddress, timeout);
+		if (gattServices != null) {
+			write(SERVICE_UUID_0001, CHARACTERISTICS_BEEP_UUID, value, true);
+		} else {
+			if (initialize()) {
+				connect(mDeviceAddress, timeout);
+			}
+		}
+	}
+
+	/**
+	 * Make device led blink
+	 * @param mDeviceAddress The device mac address
+	 * @param timeout The timeout to connect to device
+	 * @param value The value of to led blink
+	 */
+	public void writeBleBlink(String mDeviceAddress, long timeout, String value) {
+		command = WRITE_LED_BLINK;
+		this.value = value;
+		if (gattServices != null) {
+			write(SERVICE_UUID_0001, CHARACTERISTICS_LED_BLINK_UUID, value,
+					true);
+		} else {
+			if (initialize()) {
+				connect(mDeviceAddress, timeout);
+			}
 		}
 	}
 
@@ -346,10 +398,11 @@ public class BluetoothUtils {
 			context.bindService(gattServiceIntent, mServiceConnection,
 					Context.BIND_AUTO_CREATE);
 		} else {
-			mBluetoothLeService.connect(mDeviceAddress);
+			if (mBluetoothLeService != null) {
+				mBluetoothLeService.connect(mDeviceAddress);
+			}
 		}
 		// cancel connect to device if not success when timeout
-		//System.out.println(mDeviceAddress + " --->>> start timer");
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 
@@ -370,42 +423,70 @@ public class BluetoothUtils {
 	 * Call when descovered the BLE services
 	 */
 	private void onDiscovered() {
-		if (timer != null) {
-			timer.cancel();
-		}
+
 		switch (command) {
-		case WRITE_BEEP:
-			write(CHARACTERISTICS_BEEP_UUID, value[0], true);
+		case WRITE_MAJOR:
+			if (isPasswordSet) {
+				write(SERVICE_UUID_0001, CHARACTERISTICS_MAJOR_UUID,
+						BLEUtils.checkMajorMinor(value), true);
+			} else {
+				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
+						false);
+			}
 			break;
-		case WRITE_MAJOR_MINOR:
-			write(CHARACTERISTICS_MAJOR_UUID,
-					BLEUtils.checkMajorMinor(value[0]), false);
-			write(CHARACTERISTICS_MINOR_UUID,
-					BLEUtils.checkMajorMinor(value[1]), true);
+		case WRITE_MINOR:
+			if (isPasswordSet) {
+				write(SERVICE_UUID_0001, CHARACTERISTICS_MINOR_UUID,
+						BLEUtils.checkMajorMinor(value), true);
+			} else {
+				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
+						false);
+			}
+			break;
+		case WRITE_BEEP:
+			if (isPasswordSet) {
+				write(SERVICE_UUID_0001, CHARACTERISTICS_BEEP_UUID, value, true);
+			} else {
+				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
+						false);
+			}
+			break;
+		case WRITE_LED_BLINK:
+			if (isPasswordSet) {
+				write(SERVICE_UUID_0001, CHARACTERISTICS_LED_BLINK_UUID, value,
+						true);
+			} else {
+				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
+						false);
+			}
 			break;
 		case READ_BATTERY:
-			read(CHARACTERISTICS_BATTERY_UUID);
+			read(SERVICE_UUID_0001, CHARACTERISTICS_BATTERY_UUID);
 			break;
 		}
+
 	}
 
 	/**
 	 * Write the value to given UUID
+	 * @param serviceUuid
 	 * @param gattUuid
 	 * @param value
 	 * @param needCallback whether need callback when finish write to BLE device
 	 */
-	private void write(String gattUuid, String value, boolean needCallback) {
+	private void write(String serviceUuid, String gattUuid, String value,
+			boolean needCallback) {
+		System.out.println("write == >> " + gattUuid + "  " + value);
 		for (BluetoothGattService gattService : gattServices) {
 			String uuid = gattService.getUuid().toString();
 			System.out.println("Service == >> " + uuid);
-			if (uuid.equals(SERVICE_UUID)) {
+			if (uuid.equals(serviceUuid)) {
 				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
 						.getCharacteristics();
 				for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
 					uuid = gattCharacteristic.getUuid().toString();
 					if (uuid.equals(gattUuid)) {
-						//System.out.println("Characteristic == >> " + uuid);
+						System.out.println("Characteristic == >> " + uuid);
 						gattCharacteristic.setValue(BLEUtils
 								.HexString2Bytes(value));
 						if (!mBluetoothLeService
@@ -423,13 +504,14 @@ public class BluetoothUtils {
 
 	/**
 	 * Read value from given UUID
+	 * @param serviceUuid
 	 * @param gattUuid
 	 */
-	private void read(String gattUuid) {
+	private void read(String serviceUuid, String gattUuid) {
 		for (BluetoothGattService gattService : gattServices) {
 			String uuid = gattService.getUuid().toString();
 			System.out.println("Service == >> " + uuid);
-			if (uuid.equals(SERVICE_UUID)) {
+			if (uuid.equals(serviceUuid)) {
 				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
 						.getCharacteristics();
 				for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
@@ -456,9 +538,11 @@ public class BluetoothUtils {
 		}
 		if (mBluetoothLeService != null) {
 			mBluetoothLeService.disconnect();
+			mBluetoothLeService.close();
 			mBluetoothLeService = null;
 		}
 		gattServices = null;
+		isPasswordSet = false;
 	}
 
 	private IntentFilter makeGattUpdateIntentFilter() {

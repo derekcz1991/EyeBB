@@ -10,9 +10,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -23,10 +21,10 @@ import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.CommonUtils;
 
 public class ChangeKidsActivity extends Activity {
 	private ListView listView;
+	private EditText etSearch;
 	private KidsListViewSimpleAdapter adapter;
 	private boolean isSortByName;
 	private ArrayList<Child> list;
@@ -41,6 +39,7 @@ public class ChangeKidsActivity extends Activity {
 
 		setContentView(R.layout.activity_kids_list);
 
+		etSearch = (EditText) findViewById(R.id.et_search);
 		listView = (ListView) findViewById(R.id.listView);
 		list = DBChildren.getChildrenList(this);
 		searchList = new ArrayList<Child>();
@@ -57,55 +56,6 @@ public class ChangeKidsActivity extends Activity {
 				data.putExtras(bundle);
 				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
-			}
-		});
-
-		/*findViewById(R.id.sort_locator).setVisibility(View.GONE);
-
-		findViewById(R.id.sort_name).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				isSortByName = !isSortByName;
-				adapter = new KidsListViewSimpleAdapter(
-						ChangeKidsActivity.this, DBChildren
-								.getChildrenList(ChangeKidsActivity.this),
-						isSortByName);
-				listView.setAdapter(adapter);
-			}
-		});*/
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_search));
-		search.setIcon(R.drawable.ic_search)
-				.setActionView(R.layout.actionbar_search)
-				.setShowAsAction(
-						MenuItem.SHOW_AS_ACTION_ALWAYS
-								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
-		final EditText etSearch = (EditText) search.getActionView()
-				.findViewById(R.id.search_addr);
-
-		search.setOnActionExpandListener(new OnActionExpandListener() {
-
-			@Override
-			public boolean onMenuItemActionExpand(MenuItem item) {
-				etSearch.requestFocus();
-				CommonUtils.switchSoftKeyboardstate(ChangeKidsActivity.this);
-				return true;
-			}
-
-			@Override
-			public boolean onMenuItemActionCollapse(MenuItem item) {
-				etSearch.clearFocus();
-				CommonUtils.hideSoftKeyboard(etSearch, ChangeKidsActivity.this);
-				adapter = new KidsListViewSimpleAdapter(
-						ChangeKidsActivity.this, list, isSortByName);
-				listView.setAdapter(adapter);
-				return true;
 			}
 		});
 
@@ -128,7 +78,12 @@ public class ChangeKidsActivity extends Activity {
 				search(etSearch.getText().toString());
 			}
 		});
-		//search.collapseActionView();
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_kids_list, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

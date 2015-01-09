@@ -61,9 +61,8 @@ public class BluetoothLeService extends Service {
 	public final static String ACTION_GATT_WRITE_FAILURE = "bluetooth.le.ACTION_GATT_WRITE_FAILURE";
 	public final static String EXTRA_DATA = "bluetooth.le.EXTRA_DATA";
 
-	// Implements callback methods for GATT events that the app cares about. For
-	// example,
-	// connection change and services discovered.
+	// Implements callback methods for GATT events that the app cares about. 
+	// For example, connection change and services discovered.
 	private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
 		@Override
 		public void onConnectionStateChange(BluetoothGatt gatt, int status,
@@ -261,7 +260,6 @@ public class BluetoothLeService extends Service {
 		}
 		mBluetoothGatt.close();
 		mBluetoothGatt = null;
-		System.out.println("set null");
 	}
 
 	/**

@@ -162,33 +162,31 @@ public class SignUpActivity extends Activity {
 
 								Toast.makeText(SignUpActivity.this,
 										R.string.text_fill_email_or_phone,
-										Toast.LENGTH_LONG).show();
-								tv_email.setBackgroundResource(R.drawable.ic_radar_missed);
+										Toast.LENGTH_SHORT).show();
+								tv_email.setBackgroundResource(R.drawable.ic_cross);
 
 							}
 						} else {
 							Toast.makeText(SignUpActivity.this,
 									R.string.text_error_password,
-									Toast.LENGTH_LONG).show();
+									Toast.LENGTH_SHORT).show();
 
 							tv_password
-									.setBackgroundResource(R.drawable.ic_radar_missed);
+									.setBackgroundResource(R.drawable.ic_cross);
 						}
 
 					} else {
 						Toast.makeText(SignUpActivity.this,
-								R.string.text_error_nickname, Toast.LENGTH_LONG)
-								.show();
-						tv_nickname
-								.setBackgroundResource(R.drawable.ic_radar_missed);
+								R.string.text_error_nickname,
+								Toast.LENGTH_SHORT).show();
+						tv_nickname.setBackgroundResource(R.drawable.ic_cross);
 					}
 
 				} else {
 					Toast.makeText(SignUpActivity.this,
-							R.string.text_error_username, Toast.LENGTH_LONG)
+							R.string.text_error_username, Toast.LENGTH_SHORT)
 							.show();
-					tv_username
-							.setBackgroundResource(R.drawable.ic_radar_missed);
+					tv_username.setBackgroundResource(R.drawable.ic_cross);
 				}
 			}
 		});
@@ -324,26 +322,27 @@ public class SignUpActivity extends Activity {
 
 			case CHECK_ACC_FALSE:
 				Toast.makeText(SignUpActivity.this,
-						R.string.text_username_is_used, Toast.LENGTH_LONG)
+						R.string.text_username_is_used, Toast.LENGTH_SHORT)
 						.show();
-				tv_username.setBackgroundResource(R.drawable.ic_radar_missed);
+				tv_username.setBackgroundResource(R.drawable.ic_cross);
 				break;
 
 			case CHECK_ACC_ERROR:
 				Toast.makeText(SignUpActivity.this,
-						R.string.text_error_username, Toast.LENGTH_LONG).show();
-				tv_username.setBackgroundResource(R.drawable.ic_radar_missed);
+						R.string.text_error_username, Toast.LENGTH_SHORT)
+						.show();
+				tv_username.setBackgroundResource(R.drawable.ic_cross);
 				break;
 
 			case CONNECT_ERROR:
 				Toast.makeText(SignUpActivity.this,
-						R.string.text_network_error, Toast.LENGTH_LONG).show();
+						R.string.text_network_error, Toast.LENGTH_SHORT).show();
 
 				break;
 
 			case REG_SUCCESSFULLY:
 				Toast.makeText(SignUpActivity.this,
-						R.string.text_register_successfully, Toast.LENGTH_LONG)
+						R.string.text_register_successfully, Toast.LENGTH_SHORT)
 						.show();
 				break;
 			}

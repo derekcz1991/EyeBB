@@ -161,11 +161,11 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/ic_radar_missed" />
+                    android:background="@drawable/ic_cross" />
 
                 <TextView
                     style="@style/DarkGreyText_18"
@@ -189,11 +189,11 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/ic_radar_supervised" />
+                    android:background="@drawable/ic_tick" />
 
                 <TextView
                     style="@style/DarkGreyText_18"

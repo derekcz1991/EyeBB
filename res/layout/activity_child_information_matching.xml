@@ -114,12 +114,12 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="6dp" >
 
-            <TextView
+            <ImageView
                 android:id="@+id/ic_kindergarten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/ic_radar_missed"
+                android:background="@drawable/ic_cross"
                 android:visibility="invisible" />
 
             <TextView

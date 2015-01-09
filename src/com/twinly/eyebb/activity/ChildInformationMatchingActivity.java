@@ -100,7 +100,7 @@ public class ChildInformationMatchingActivity extends Activity {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(
 							childBirthdayLayout.getWindowToken(), 0);
-					
+
 					Intent intent = new Intent(
 							ChildInformationMatchingActivity.this,
 							ChildBirthdayDialog.class);
@@ -128,7 +128,7 @@ public class ChildInformationMatchingActivity extends Activity {
 					childNameFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
 					ic_childName.setBackground(getResources().getDrawable(
-							R.drawable.ic_radar_missed));
+							R.drawable.ic_cross));
 				}
 
 				if (birthday != null && birthday.length() > 0) {
@@ -139,7 +139,7 @@ public class ChildInformationMatchingActivity extends Activity {
 					birthdayFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
 					ic_birthday.setBackground(getResources().getDrawable(
-							R.drawable.ic_radar_missed));
+							R.drawable.ic_cross));
 				}
 
 				if (kindergartenId >= 0) {

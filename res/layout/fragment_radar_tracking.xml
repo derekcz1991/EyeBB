@@ -323,7 +323,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_radar_supervised" />
+                                    android:src="@drawable/ic_tick" />
 
                                 <TextView
                                     android:id="@+id/radar_text_supervised_number"
@@ -364,7 +364,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginRight="4dp"
-                                    android:src="@drawable/ic_radar_missed" />
+                                    android:src="@drawable/ic_cross" />
 
                                 <TextView
                                     android:id="@+id/radar_text_missed_number"

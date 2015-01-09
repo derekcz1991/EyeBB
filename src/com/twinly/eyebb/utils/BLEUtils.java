@@ -106,7 +106,6 @@ public class BLEUtils {
 		case 1:
 			value = "000" + value;
 			break;
-
 		case 2:
 			value = "00" + value;
 			break;

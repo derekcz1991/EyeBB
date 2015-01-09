@@ -79,57 +79,6 @@ public class KidsListActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_kids_list, menu);
-
-		/*MenuItem search = menu.add(0, 1, 0, getString(R.string.btn_options));
-		search.setIcon(R.drawable.ic_search)
-				.setActionView(R.layout.actionbar_search)
-				.setShowAsAction(
-						MenuItem.SHOW_AS_ACTION_ALWAYS
-								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
-		final EditText etSearch = (EditText) search.getActionView()
-				.findViewById(R.id.search_addr);
-
-		search.setOnActionExpandListener(new OnActionExpandListener() {
-
-			@Override
-			public boolean onMenuItemActionExpand(MenuItem item) {
-				etSearch.requestFocus();
-				CommonUtils.switchSoftKeyboardstate(KidsListActivity.this);
-				return true;
-			}
-
-			@Override
-			public boolean onMenuItemActionCollapse(MenuItem item) {
-				etSearch.clearFocus();
-				CommonUtils.hideSoftKeyboard(etSearch, KidsListActivity.this);
-				adapter = new KidsListViewAdapter(KidsListActivity.this, list,
-						isSortByName, isSortByLocator);
-				listView.setAdapter(adapter);
-				return true;
-			}
-		});
-
-		etSearch.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				search(etSearch.getText().toString());
-			}
-		});*/
-		//search.collapseActionView();
 		return super.onCreateOptionsMenu(menu);
 	}
 

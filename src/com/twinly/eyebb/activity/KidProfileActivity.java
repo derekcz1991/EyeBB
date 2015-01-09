@@ -127,7 +127,9 @@ public class KidProfileActivity extends Activity implements
 		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
 
-		initToReadBattery();
+		if (CommonUtils.isNotNull(child.getMacAddress())) {
+			initToReadBattery();
+		}
 	}
 
 	@SuppressLint("NewApi")

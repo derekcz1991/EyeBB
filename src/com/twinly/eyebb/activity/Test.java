@@ -19,13 +19,15 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 	private BluetoothUtils mBluetoothUtils1;
 	private Button button;
 	private int index;
+	private int count;
 	private Handler mHandler = new Handler(Looper.getMainLooper()) {
 
 		@Override
 		public void handleMessage(Message msg) {
+			System.out.println(count++);
 			switch (msg.what) {
 			case 0:
-				mBluetoothUtils1.connectOnly(list.get(index), 3000);
+				mBluetoothUtils1.connectOnly(list.get(index), 5000);
 				break;
 			case 1:
 				mBluetoothUtils1.close();
@@ -34,7 +36,7 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 				System.out.println(" ");
 				index++;
 				index = index % list.size();
-				mBluetoothUtils1.connectOnly(list.get(index), 3000);
+				mBluetoothUtils1.connectOnly(list.get(index), 5000);
 				break;
 			case 2:
 				mBluetoothUtils1.close();
@@ -43,7 +45,7 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 				System.out.println(" ");
 				index++;
 				index = index % list.size();
-				mBluetoothUtils1.connectOnly(list.get(index), 3000);
+				mBluetoothUtils1.connectOnly(list.get(index), 5000);
 				break;
 
 			}
@@ -58,11 +60,14 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 		setContentView(R.layout.activity_test);
 
 		list = new ArrayList<String>();
-		//list.add("44:A6:E5:00:05:AB");
+		list.add("44:A6:E5:00:37:E7");
+		list.add("44:A6:E5:00:37:EE");
+		list.add("44:A6:E5:00:37:EA");
+		list.add("44:A6:E5:00:38:DD");
 		//list.add("44:A6:E5:00:04:EF");
 		//list.add("44:A6:E5:00:04:DD");
 		//list.add("44:A6:E5:00:04:A7");
-		list.add("44:46:E5:00:37:E9");
+		//list.add("44:46:E5:00:37:E9");
 		//list.add("78:A5:04:55:28:C7");
 
 		mBluetoothUtils1 = new BluetoothUtils(this, getFragmentManager(), this);
@@ -110,12 +115,12 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 
 	@Override
 	public void onConnectCanceled() {
-		mHandler.sendEmptyMessage(1);
+		mHandler.sendEmptyMessageDelayed(1, 500);
 	}
 
 	@Override
 	public void onConnected() {
-		//mHandler.sendEmptyMessageDelayed(2, 1000);
+		mHandler.sendEmptyMessageDelayed(2, 1000);
 	}
 
 	@Override

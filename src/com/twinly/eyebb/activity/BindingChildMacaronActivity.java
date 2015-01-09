@@ -29,9 +29,12 @@ public class BindingChildMacaronActivity extends Activity implements
 		BluetoothUtils.BleConnectCallback {
 	private final static int BIND_STEP_CONNECTING = 1;
 	private final static int BIND_STEP_CONNECT_FAIL = 2;
-	private final static int BIND_STEP_UPLOADING = 3;
-	private final static int BIND_STEP_UPLOAD_FAIL = 4;
-	private final static int BIND_STEP_BIND_FINISH = 5;
+	private final static int BIND_STEP_DISCOVERED = 3;
+	private final static int BIND_STEP_MAJOR_WRITEN = 4;
+	private final static int BIND_STEP_MINOR_WRITEN = 5;
+	private final static int BIND_STEP_UPLOADING = 6;
+	private final static int BIND_STEP_UPLOAD_FAIL = 7;
+	private final static int BIND_STEP_BIND_FINISH = 8;
 	private final int[] images = new int[] { R.drawable.ani_connecting_01,
 			R.drawable.ani_connecting_02, R.drawable.ani_connecting_03,
 			R.drawable.ani_connecting_04, R.drawable.ani_connecting_05,
@@ -150,6 +153,24 @@ public class BindingChildMacaronActivity extends Activity implements
 		mBluetoothUtils.disconnect();
 	}
 
+	private class UpdateAnimation implements Runnable {
+
+		@Override
+		public void run() {
+			if (bindStep == BIND_STEP_CONNECTING
+					|| bindStep == BIND_STEP_UPLOADING
+					|| bindStep == BIND_STEP_DISCOVERED) {
+				if (index == 10) {
+					index = 0;
+				} else {
+					index++;
+				}
+				tvAnimation.setBackgroundResource(images[index]);
+				mHandler.postDelayed(new UpdateAnimation(), 500);
+			}
+		}
+	}
+
 	/**
 	 * To get major & minor from server by child_id and mac address
 	 * @author derek
@@ -187,26 +208,8 @@ public class BindingChildMacaronActivity extends Activity implements
 							result.length());
 					System.out.println("major = " + major + "  minor = "
 							+ minor);
-					mBluetoothUtils.writeMajorMinor(mDeviceAddress, 15000L,
-							new String[] { major, minor });
+					mBluetoothUtils.writeMajor(mDeviceAddress, 15000L, major);
 				}
-			}
-		}
-	}
-
-	private class UpdateAnimation implements Runnable {
-
-		@Override
-		public void run() {
-			if (bindStep == BIND_STEP_CONNECTING
-					|| bindStep == BIND_STEP_UPLOADING) {
-				if (index == 10) {
-					index = 0;
-				} else {
-					index++;
-				}
-				tvAnimation.setBackgroundResource(images[index]);
-				mHandler.postDelayed(new UpdateAnimation(), 500);
 			}
 		}
 	}
@@ -267,10 +270,10 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	private void writeFailed() {
+		bindStep = BIND_STEP_CONNECT_FAIL;
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				bindStep = BIND_STEP_CONNECT_FAIL;
 				tvAnimation
 						.setBackgroundResource(R.drawable.ani_connecting_fail);
 				tvMessage.setText(R.string.text_connect_device_failed);
@@ -281,10 +284,10 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	private void uploadFailed() {
+		bindStep = BIND_STEP_UPLOAD_FAIL;
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				bindStep = BIND_STEP_UPLOAD_FAIL;
 				tvAnimation
 						.setBackgroundResource(R.drawable.ani_connecting_fail);
 				tvMessage.setText(R.string.text_update_server_data_fail);
@@ -294,10 +297,10 @@ public class BindingChildMacaronActivity extends Activity implements
 
 	@Override
 	public void onPreConnect() {
+		bindStep = BIND_STEP_CONNECTING;
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				bindStep = BIND_STEP_CONNECTING;
 				tvMessage.setText(R.string.text_connecting);
 				btnEvent.setText(R.string.btn_cancel);
 			}
@@ -321,10 +324,10 @@ public class BindingChildMacaronActivity extends Activity implements
 
 	@Override
 	public void onDiscovered() {
+		bindStep = BIND_STEP_DISCOVERED;
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				bindStep = BIND_STEP_CONNECTING;
 				tvMessage.setText(R.string.text_update_device_data);
 				btnEvent.setText(R.string.btn_cancel);
 			}
@@ -339,8 +342,18 @@ public class BindingChildMacaronActivity extends Activity implements
 
 	@Override
 	public void onResult(boolean result) {
+		System.out.println(result + "   " + bindStep);
 		if (result) {
-			new PostToServerTask().execute();
+			if (bindStep == BIND_STEP_DISCOVERED) {
+				bindStep = BIND_STEP_MAJOR_WRITEN;
+				mBluetoothUtils.writeMinor(mDeviceAddress, 15000L, minor);
+			} else if (bindStep == BIND_STEP_MAJOR_WRITEN) {
+				bindStep = BIND_STEP_MINOR_WRITEN;
+				mBluetoothUtils.writeBleBlink(mDeviceAddress, 15000L, "40");
+				//mBluetoothUtils.writeBeep(mDeviceAddress, 15000L, "01");
+			} else {
+				new PostToServerTask().execute();
+			}
 		} else {
 			writeFailed();
 		}
