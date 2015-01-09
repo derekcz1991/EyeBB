@@ -20,8 +20,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,9 @@ public class SearchGuestActivity extends Activity {
 	private ArrayList<User> guest_data;
 	private String retStr;
 
+	private TextView tx_share;
+	private RelativeLayout btn_share;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -55,6 +60,9 @@ public class SearchGuestActivity extends Activity {
 		listView = (ListView) findViewById(R.id.listView);
 		edGuestname = (EditText) findViewById(R.id.ed_guestname);
 		btnSearchNewGuest = (TextView) findViewById(R.id.btn_search_new_guest);
+		tx_share = (TextView) findViewById(R.id.tx_share_two);
+		btn_share = (RelativeLayout) findViewById(R.id.btn_share);
+
 		guest_data = new ArrayList<User>();
 
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
@@ -197,9 +205,27 @@ public class SearchGuestActivity extends Activity {
 				break;
 
 			case Constants.SEARCH_GUEST_NULL:
-				Toast.makeText(SearchGuestActivity.this,
-						R.string.text_search_guest_null, Toast.LENGTH_LONG)
-						.show();
+				// Toast.makeText(SearchGuestActivity.this,
+				// R.string.text_search_guest_null, Toast.LENGTH_LONG)
+				// .show();
+				tx_share.setText(getResources().getString(
+						R.string.text_click_to_share)
+						+ guestName + ")");
+				btn_share.setVisibility(View.VISIBLE);
+
+				btn_share.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent shareIntent = new Intent(Intent.ACTION_SEND);
+						shareIntent.setType("text/plain");
+						shareIntent.putExtra(Intent.EXTRA_TEXT,
+								"Welcome to call 123456789");
+						startActivity(shareIntent);
+
+					}
+				});
 
 				break;
 

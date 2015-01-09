@@ -327,7 +327,10 @@ public class BluetoothUtils {
 						Log.e(TAG, "Unable to initialize Bluetooth");
 					}
 					// Automatically connects to the device upon successful start-up initialization.
-					mBluetoothLeService.connect(mDeviceAddress);
+					if(mDeviceAddress != null){
+						mBluetoothLeService.connect(mDeviceAddress);
+					}			
+				
 				}
 
 				@Override

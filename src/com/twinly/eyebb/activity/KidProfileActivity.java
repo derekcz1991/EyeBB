@@ -141,7 +141,9 @@ public class KidProfileActivity extends Activity implements
 
 			if (getDeviceBattery == null) {
 				System.out.println("start to read battery");
-				mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
+				if (child.getMacAddress() != null) {
+					mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
+				}
 				mHoloCircularProgressBar.setMarkerEnabled(true);
 
 				// mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
