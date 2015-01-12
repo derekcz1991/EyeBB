@@ -15,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,12 +27,16 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
+import com.twinly.eyebb.utils.PinYin;
+import com.woozzu.android.util.StringMatcher;
 
-public class KidsListViewAdapter extends BaseAdapter {
+public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
+		implements SectionIndexer {
 	private Context context;
 	private List<Map.Entry<Long, Child>> list;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
+	private String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	private final class ViewHolder {
 		public CircleImageView avatar;
@@ -44,6 +50,8 @@ public class KidsListViewAdapter extends BaseAdapter {
 	public KidsListViewAdapter(Context context,
 			List<Map.Entry<Long, Child>> data, boolean isSortByName,
 			boolean isSortByLocator) {
+		super(context, android.R.layout.simple_list_item_1);
+
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.list = new ArrayList<Map.Entry<Long, Child>>();
@@ -86,7 +94,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public Entry<Long, Child> getItem(int position) {
 		return list.get(position);
 	}
 
@@ -130,6 +138,7 @@ public class KidsListViewAdapter extends BaseAdapter {
 					.getDrawable(R.drawable.icon_avatar_dark));
 		}
 		viewHolder.name.setText(child.getName());
+		System.out.println(PinYin.getPinYin(child.getName()) + "<------");
 		viewHolder.locationName.setText("@ " + child.getLocationName());
 		viewHolder.phone.setText(child.getPhone());
 		if (viewHolder.phone.getText().toString().trim().length() == 0) {
@@ -162,5 +171,45 @@ public class KidsListViewAdapter extends BaseAdapter {
 			}
 		});
 
+	}
+
+	@Override
+	public int getPositionForSection(int section) {
+		// If there is no item for current section, previous section will be
+		// selected
+		for (int i = section; i >= 0; i--) {
+			for (int j = 0; j < getCount(); j++) {
+				if (i == 0) {
+					// For numeric section
+					for (int k = 0; k <= 9; k++) {
+						if (StringMatcher.match(
+								String.valueOf((getItem(j)).getValue()
+										.getName().charAt(0)),
+								String.valueOf(k)))
+							return j;
+					}
+				} else {
+					if (StringMatcher.match(
+							String.valueOf((getItem(j)).getValue().getName()
+									.charAt(0)),
+							String.valueOf(mSections.charAt(i))))
+						return j;
+				}
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public int getSectionForPosition(int position) {
+		return 0;
+	}
+
+	@Override
+	public Object[] getSections() {
+		String[] sections = new String[mSections.length()];
+		for (int i = 0; i < mSections.length(); i++)
+			sections[i] = String.valueOf(mSections.charAt(i));
+		return sections;
 	}
 }

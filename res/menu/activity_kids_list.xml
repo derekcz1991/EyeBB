@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/menu_options"
-        android:icon="@drawable/btn_option"
+        android:icon="@drawable/btn_option_actionbar"
         android:orderInCategory="1"
         android:showAsAction="always"
         android:title="@string/btn_options"/>

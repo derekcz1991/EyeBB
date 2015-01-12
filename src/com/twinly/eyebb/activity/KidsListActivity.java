@@ -1,6 +1,7 @@
 package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,15 +22,16 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.dialog.KidsListOptionsDialog;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.SerializableChildrenMap;
+import com.woozzu.android.widget.IndexableListView;
 
 public class KidsListActivity extends Activity {
-	private ListView listView;
+	private IndexableListView listView;
 	private EditText etSearch;
 	private List<Map.Entry<Long, Child>> list;
 	private List<Map.Entry<Long, Child>> searchList;
 	private KidsListViewAdapter adapter;
-	private boolean isSortByName;
-	private boolean isSortByLocation;
+	private boolean isSortByName = true;
+	private boolean isSortByLocation = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +49,15 @@ public class KidsListActivity extends Activity {
 		if (serializableMap != null) {
 			list = new ArrayList<Map.Entry<Long, Child>>(serializableMap
 					.getMap().entrySet());
+			 
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
 					isSortByLocation);
 		}
 
 		etSearch = (EditText) findViewById(R.id.et_search);
-		listView = (ListView) findViewById(R.id.listView);
+		listView = (IndexableListView) findViewById(R.id.listView);
 		listView.setAdapter(adapter);
+		listView.setFastScrollEnabled(true);
 
 		etSearch.addTextChangedListener(new TextWatcher() {
 

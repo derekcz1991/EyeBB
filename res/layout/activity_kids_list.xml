@@ -45,7 +45,7 @@
             android:background="@color/divider_red" />
     </LinearLayout>
 
-    <ListView
+    <com.woozzu.android.widget.IndexableListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,7 +54,7 @@
         android:divider="@null"
         android:dividerHeight="8dp"
         android:listSelector="@drawable/list_selector"
-        android:padding="8dp" >
-    </ListView>
+        android:padding="8dp" />
+   
 
 </LinearLayout>
