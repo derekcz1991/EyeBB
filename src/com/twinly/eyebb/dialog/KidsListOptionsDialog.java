@@ -49,6 +49,10 @@ public class KidsListOptionsDialog extends Activity {
 				} else {
 					isSortByName = true;
 					tvSortByName.setBackgroundResource(R.drawable.ic_selected);
+
+					isSortByLocation = false;
+					tvSortByLocation
+							.setBackgroundResource(R.drawable.ic_selected_off);
 				}
 
 			}
@@ -67,6 +71,10 @@ public class KidsListOptionsDialog extends Activity {
 							isSortByLocation = true;
 							tvSortByLocation
 									.setBackgroundResource(R.drawable.ic_selected);
+
+							isSortByLocation = false;
+							tvSortByLocation
+									.setBackgroundResource(R.drawable.ic_selected_off);
 						}
 
 					}

@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +18,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
@@ -27,7 +28,6 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
-import com.twinly.eyebb.utils.PinYin;
 import com.woozzu.android.util.StringMatcher;
 
 public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
@@ -36,7 +36,7 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 	private List<Map.Entry<Long, Child>> list;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
-	private String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private String mSections = "ABCDEFGHIJKLMNOPQRSTUVWXYZ字";
 
 	private final class ViewHolder {
 		public CircleImageView avatar;
@@ -62,8 +62,8 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 				@Override
 				public int compare(Entry<Long, Child> lhs,
 						Entry<Long, Child> rhs) {
-					return lhs.getValue().getName().charAt(0)
-							- rhs.getValue().getName().charAt(0);
+					return lhs.getValue().getName().toLowerCase().charAt(0)
+							- rhs.getValue().getName().toLowerCase().charAt(0);
 				}
 			});
 		}
@@ -138,7 +138,10 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 					.getDrawable(R.drawable.icon_avatar_dark));
 		}
 		viewHolder.name.setText(child.getName());
-		System.out.println(PinYin.getPinYin(child.getName()) + "<------");
+		// System.out.println(PinYin.getPinYin(child.getName()) + "<------");
+		// boolean a =
+		// getStringToDetectionLetters((getItem(position)).getValue()
+		// .getName().charAt(0));
 		viewHolder.locationName.setText("@ " + child.getLocationName());
 		viewHolder.phone.setText(child.getPhone());
 		if (viewHolder.phone.getText().toString().trim().length() == 0) {
@@ -164,9 +167,7 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 						System.out.println("THIS CHILD ID:"
 								+ child.getChildId() + " MACADDRESS:"
 								+ child.getMacAddress());
-					} else {
 					}
-
 				}
 			}
 		});
@@ -189,15 +190,42 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 							return j;
 					}
 				} else {
-					if (StringMatcher.match(
-							String.valueOf((getItem(j)).getValue().getName()
-									.charAt(0)),
-							String.valueOf(mSections.charAt(i))))
-						return j;
+					if (!getStringToDetectionLetters(mSections.charAt(i))) {
+						if (StringMatcher.match(
+								String.valueOf((getItem(j)).getValue()
+										.getName().charAt(0)),
+								String.valueOf(mSections.charAt(i)))) {
+							return j;
+						}
+					} else {
+						if (getStringToDetectionLetters((getItem(j)).getValue()
+								.getName().charAt(0))) {
+							return j;
+						}
+					}
+
 				}
 			}
 		}
 		return 0;
+	}
+
+	private boolean getStringToDetectionLetters(char str) {
+		// System.out.println(str);
+		String regex = "^[A-Za-z]+$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(str + "");
+		if (!matcher.find()) {
+			/**
+			 * is not letters
+			 */
+			return true;
+		} else {
+			/**
+			 * is letters
+			 */
+			return false;
+		}
 	}
 
 	@Override
