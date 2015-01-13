@@ -1,15 +1,13 @@
 package com.twinly.eyebb.utils;
 
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.twinly.eyebb.R;
+
+
 import com.twinly.eyebb.constant.BleDeviceConstants;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.widget.Toast;
+
 
 public class BLEUtils {
 	public BLEUtils() {
@@ -141,17 +139,5 @@ public class BLEUtils {
 		}
 	}
 
-	public static String getValidMacAddress(Context context, String macAddress) {
-		macAddress = macAddress.toUpperCase(Locale.US);
-		Pattern p = Pattern
-				.compile("^\\w{2}:\\w{2}:\\w{2}:\\w{2}:\\w{2}:\\w{2}$");
-		Matcher m = p.matcher(macAddress);
-		if (m.matches() == false) {
-			Toast.makeText(context, R.string.text_wrong_format,
-					Toast.LENGTH_SHORT).show();
-			return null;
-		} else {
-			return macAddress;
-		}
-	}
+	
 }

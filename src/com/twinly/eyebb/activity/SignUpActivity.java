@@ -2,8 +2,6 @@ package com.twinly.eyebb.activity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,6 +25,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.RegularExpression;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
@@ -86,7 +85,7 @@ public class SignUpActivity extends Activity {
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (ed_username.hasFocus() == false) {
 					userName = ed_username.getText().toString();
-					if (isUsername(userName)) {
+					if (RegularExpression.isUsername(userName)) {
 						new Thread(postAccNameCheckToServerRunnable).start();
 
 					} else {
@@ -145,8 +144,8 @@ public class SignUpActivity extends Activity {
 
 					if (nickname != null && nickname.length() > 0) {
 
-						if (isPassword(password)) {
-							if (isEmail(email) || phone.length() > 0) {
+						if (RegularExpression.isPassword(password)) {
+							if (RegularExpression.isEmail(email) || phone.length() > 0) {
 								if (phone != null || phone.length() > 0) {
 									if (usernameFlag) {
 										new Thread(
@@ -358,27 +357,7 @@ public class SignUpActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public static boolean isUsername(String usrname) {
-		Pattern p = Pattern.compile("^[0-9_]{8,20}$");
-		Matcher m = p.matcher(usrname);
-		System.out.println(m.matches() + "---");
-		return m.matches();
-	}
 
-	public static boolean isPassword(String password) {
-		Pattern p = Pattern.compile("^[a-zA-Z0-9]{6,20}$");
-		Matcher m = p.matcher(password);
-		System.out.println(m.matches() + "---");
-		return m.matches();
-	}
-
-	public static boolean isEmail(String email) {
-		Pattern p = Pattern
-				.compile("^[a-zA-Z][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$");
-		Matcher m = p.matcher(email);
-		System.out.println(m.matches() + "---");
-		return m.matches();
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

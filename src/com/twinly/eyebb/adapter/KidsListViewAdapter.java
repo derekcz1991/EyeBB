@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +26,7 @@ import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
+import com.twinly.eyebb.utils.RegularExpression;
 import com.woozzu.android.util.StringMatcher;
 
 public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
@@ -36,7 +35,7 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 	private List<Map.Entry<Long, Child>> list;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
-	private String mSections = "ABCDEFGHIJKLMNOPQRSTUVWXYZ字";
+
 
 	private final class ViewHolder {
 		public CircleImageView avatar;
@@ -190,15 +189,15 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 							return j;
 					}
 				} else {
-					if (!getStringToDetectionLetters(mSections.charAt(i))) {
+					if (!RegularExpression.getStringToDetectionLetters(RegularExpression.mSections.charAt(i))) {
 						if (StringMatcher.match(
 								String.valueOf((getItem(j)).getValue()
 										.getName().charAt(0)),
-								String.valueOf(mSections.charAt(i)))) {
+								String.valueOf(RegularExpression.mSections.charAt(i)))) {
 							return j;
 						}
 					} else {
-						if (getStringToDetectionLetters((getItem(j)).getValue()
+						if (RegularExpression.getStringToDetectionLetters((getItem(j)).getValue()
 								.getName().charAt(0))) {
 							return j;
 						}
@@ -210,23 +209,7 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 		return 0;
 	}
 
-	private boolean getStringToDetectionLetters(char str) {
-		// System.out.println(str);
-		String regex = "^[A-Za-z]+$";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(str + "");
-		if (!matcher.find()) {
-			/**
-			 * is not letters
-			 */
-			return true;
-		} else {
-			/**
-			 * is letters
-			 */
-			return false;
-		}
-	}
+
 
 	@Override
 	public int getSectionForPosition(int position) {
@@ -235,9 +218,9 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 
 	@Override
 	public Object[] getSections() {
-		String[] sections = new String[mSections.length()];
-		for (int i = 0; i < mSections.length(); i++)
-			sections[i] = String.valueOf(mSections.charAt(i));
+		String[] sections = new String[RegularExpression.mSections.length()];
+		for (int i = 0; i < RegularExpression.mSections.length(); i++)
+			sections[i] = String.valueOf(RegularExpression.mSections.charAt(i));
 		return sections;
 	}
 }

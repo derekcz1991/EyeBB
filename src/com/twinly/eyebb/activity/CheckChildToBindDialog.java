@@ -30,6 +30,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.RegularExpression;
 
 public class CheckChildToBindDialog extends Activity {
 	private final static int SCANNIN_GREQUEST_CODE = 1;
@@ -192,7 +193,7 @@ public class CheckChildToBindDialog extends Activity {
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
 				String macAddress = bundle.getString("result");
-				macAddress = BLEUtils.getValidMacAddress(this, macAddress);
+				macAddress = RegularExpression.getValidMacAddress(this, macAddress);
 				if (macAddress != null) {
 					Intent intent = new Intent();
 					intent.setClass(this, BindingChildMacaronActivity.class);

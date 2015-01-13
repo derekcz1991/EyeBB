@@ -41,10 +41,10 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.HoloCircularProgressBar;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.BluetoothUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
+import com.twinly.eyebb.utils.RegularExpression;
 
 public class KidProfileActivity extends Activity implements
 		BluetoothUtils.BleConnectCallback {
@@ -414,7 +414,7 @@ public class KidProfileActivity extends Activity implements
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
 				String macAddress = bundle.getString("result");
-				macAddress = BLEUtils.getValidMacAddress(this, macAddress);
+				macAddress = RegularExpression.getValidMacAddress(this, macAddress);
 				if (macAddress != null) {
 					Intent intent = new Intent();
 					intent.setClass(this, BindingChildMacaronActivity.class);

@@ -20,9 +20,10 @@ import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
+import com.woozzu.android.widget.IndexableListView;
 
 public class ChangeKidsActivity extends Activity {
-	private ListView listView;
+	private IndexableListView listView;
 	private EditText etSearch;
 	private KidsListViewSimpleAdapter adapter;
 	private ArrayList<Child> list;
@@ -38,13 +39,14 @@ public class ChangeKidsActivity extends Activity {
 		setContentView(R.layout.activity_kids_list);
 
 		etSearch = (EditText) findViewById(R.id.et_search);
-		listView = (ListView) findViewById(R.id.listView);
+		listView = (IndexableListView) findViewById(R.id.listView);
 		list = DBChildren.getChildrenList(this);
 		searchList = new ArrayList<Child>();
 
 		adapter = new KidsListViewSimpleAdapter(this, list, false);
 		listView.setAdapter(adapter);
-
+		listView.setFastScrollEnabled(true);
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {

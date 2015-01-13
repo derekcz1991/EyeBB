@@ -2,8 +2,7 @@ package com.twinly.eyebb.activity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,6 +24,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.RegularExpression;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class UpdateNicknameActivity extends Activity {
@@ -71,7 +71,7 @@ public class UpdateNicknameActivity extends Activity {
 			password = ed_password.getText().toString();
 
 			if (new_nickname.length() > 0 && password.length() > 0) {
-				if (isPassword(password)) {
+				if (RegularExpression.isPassword(password)) {
 					postUpdateNicknameToServer();
 				} else {
 					Message msg = handler.obtainMessage();
@@ -204,12 +204,7 @@ public class UpdateNicknameActivity extends Activity {
 		}
 	};
 
-	public static boolean isPassword(String password) {
-		Pattern p = Pattern.compile("^[a-zA-Z0-9]{6,20}$");
-		Matcher m = p.matcher(password);
-		System.out.println(m.matches() + "---");
-		return m.matches();
-	}
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

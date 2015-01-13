@@ -15,11 +15,12 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.SerializableChildrenList;
+import com.woozzu.android.widget.IndexableListView;
 
 public class SelectKidsActivity extends Activity {
 	public static final String EXTRA_CHILDREN_LIST = "children_list";
 
-	private ListView mListView;
+	private IndexableListView mListView;
 	private KidsListViewSimpleAdapter adapter;
 	private ArrayList<Child> mList;
 
@@ -32,11 +33,12 @@ public class SelectKidsActivity extends Activity {
 
 		setContentView(R.layout.activity_select_kids);
 
-		mListView = (ListView) findViewById(R.id.listview);
+		mListView = (IndexableListView) findViewById(R.id.listview);
 
 		mList = DBChildren.getChildrenListWithAddress(this);
 		adapter = new KidsListViewSimpleAdapter(this, mList, true);
 		mListView.setAdapter(adapter);
+		mListView.setFastScrollEnabled(true);
 	}
 
 	@Override
