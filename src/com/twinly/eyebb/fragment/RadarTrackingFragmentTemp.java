@@ -22,10 +22,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.activity.Test;
+import com.twinly.eyebb.activity.SelectKidsActivity;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapterTemp;
+import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.model.SerializableChildrenList;
 import com.twinly.eyebb.utils.BluetoothUtils;
 import com.twinly.eyebb.utils.BroadcastUtils;
 
@@ -36,7 +39,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private BluetoothUtils mBluetoothUtils;
 	private ListView listView;
 	private ScrollView radarScrollView;
-	//private ToggleButton confirmRadarBtn;
 	private TextView btnRadarSwitch;
 	private RelativeLayout btnSuperised;
 	private RelativeLayout btnMissed;
@@ -46,7 +48,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private TextView redDividerMissed;
 	private TextView blackDividerMissed;
 	private TextView tvMissed;
-	
+
 	private TextView tv_supervised_number;
 	private TextView tv_missed_number;
 	private RadarViewFragment radarViewFragment;
@@ -87,7 +89,8 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		blackDividerMissed = (TextView) v
 				.findViewById(R.id.black_divider_missed);
 		btnMissed = (RelativeLayout) v.findViewById(R.id.btn_missed);
-		tv_supervised_number = (TextView) v.findViewById(R.id.tv_supervised_number);
+		tv_supervised_number = (TextView) v
+				.findViewById(R.id.tv_supervised_number);
 		tv_missed_number = (TextView) v.findViewById(R.id.tv_missed_number);
 
 		radarViewFragment = (RadarViewFragment) getChildFragmentManager()
@@ -106,7 +109,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		macaronHashMap = DBChildren.getMacaronMap(getActivity());
+		macaronHashMap = DBChildren.getChildrenMapWithAddress(getActivity());
 		displayDeviceList = new ArrayList<Macaron>();
 		scannedDeviceList = new ArrayList<Macaron>();
 		missedDeviceList = new ArrayList<Macaron>();
@@ -168,8 +171,11 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				getActivity().startActivity(
-						new Intent(getActivity(), Test.class));
+				Intent intent = new Intent(getActivity(),
+						SelectKidsActivity.class);
+				startActivityForResult(intent, 1);
+				/*getActivity().startActivity(
+						new Intent(getActivity(), Test.class));*/
 				/*if (isAntiLostOpen) {
 					isAntiLostOpen = false;
 					openAntiTheft
@@ -243,16 +249,16 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		if (isSuperisedSection) {
 			displayDeviceList.addAll(scannedDeviceList);
 			mAdapter.setSuperisedSection(true);
-			
+
 		} else {
 			displayDeviceList.addAll(missedDeviceList);
 			mAdapter.setSuperisedSection(false);
-				
+
 		}
 
 		tv_supervised_number.setText(scannedDeviceList.size() + "");
 		tv_missed_number.setText(missedDeviceList.size() + "");
-		
+
 		mAdapter.notifyDataSetChanged();
 		setListViewHeightBasedOnChildren(listView);
 	}
@@ -312,6 +318,27 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 			}
 		});
 
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+			SerializableChildrenList serializableChildrenList = (SerializableChildrenList) data
+					.getExtras().getSerializable(
+							SelectKidsActivity.EXTRA_CHILDREN_LIST);
+			ArrayList<Child> childrenList = serializableChildrenList.getList();
+			for (int i = 0; i < childrenList.size(); i++) {
+				if (childrenList.get(i).isWithAccess()) {
+					macaronHashMap.get(childrenList.get(i).getMacAddress())
+							.setAntiLostOpen(true);
+				} else {
+					macaronHashMap.get(childrenList.get(i).getMacAddress())
+							.setAntiLostOpen(false);
+				}
+			}
+			System.out.println(macaronHashMap);
+		}
 	}
 
 	@Override

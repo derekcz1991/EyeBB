@@ -54,7 +54,6 @@ public class MainActivity extends FragmentActivity implements
 	private int timeoutCounter;
 	private View profileLabel;
 	private ImageView notification_dot;
-	private MainActivity mainActivity;
 	private HandleNotificationDot handleNotificationDot;
 
 	@Override

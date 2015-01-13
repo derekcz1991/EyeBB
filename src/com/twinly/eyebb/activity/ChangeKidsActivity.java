@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,7 +25,6 @@ public class ChangeKidsActivity extends Activity {
 	private ListView listView;
 	private EditText etSearch;
 	private KidsListViewSimpleAdapter adapter;
-	private boolean isSortByName;
 	private ArrayList<Child> list;
 	private ArrayList<Child> searchList;
 
@@ -44,7 +42,7 @@ public class ChangeKidsActivity extends Activity {
 		list = DBChildren.getChildrenList(this);
 		searchList = new ArrayList<Child>();
 
-		adapter = new KidsListViewSimpleAdapter(this, list, isSortByName);
+		adapter = new KidsListViewSimpleAdapter(this, list, false);
 		listView.setAdapter(adapter);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -81,12 +79,6 @@ public class ChangeKidsActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_kids_list, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
 	private void search(String keyword) {
 		if (!TextUtils.isEmpty(keyword)) {
 			searchList.clear();
@@ -96,11 +88,11 @@ public class ChangeKidsActivity extends Activity {
 				}
 			}
 			adapter = new KidsListViewSimpleAdapter(ChangeKidsActivity.this,
-					searchList, isSortByName);
+					searchList, false);
 			listView.setAdapter(adapter);
 		} else {
 			adapter = new KidsListViewSimpleAdapter(ChangeKidsActivity.this,
-					list, isSortByName);
+					list, false);
 			listView.setAdapter(adapter);
 		}
 	}

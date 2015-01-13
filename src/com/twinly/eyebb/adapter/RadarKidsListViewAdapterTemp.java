@@ -107,7 +107,7 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 
 				@Override
 				public void onClick(View v) {
-					System.out.println(deviceList.size() + "  " + position);
+					//System.out.println(deviceList.size() + "  " + position);
 					if (position < deviceList.size()) {
 						Toast.makeText(
 								context,

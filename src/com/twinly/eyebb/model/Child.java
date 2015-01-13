@@ -111,10 +111,6 @@ public class Child implements Serializable {
 		this.lastAppearTime = lastAppearTime;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public boolean isWithAccess() {
 		return withAccess;
 	}

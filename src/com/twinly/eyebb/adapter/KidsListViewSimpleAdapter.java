@@ -1,15 +1,16 @@
 package com.twinly.eyebb.adapter;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckedTextView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,27 +24,21 @@ public class KidsListViewSimpleAdapter extends BaseAdapter {
 	private List<Child> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
+	private boolean isSelectable;
 
 	public final class ViewHolder {
+		public RelativeLayout rootLayout;
 		public CircleImageView avatar;
 		public TextView name;
+		public CheckedTextView tvSelected;
 	}
 
 	public KidsListViewSimpleAdapter(Context context, List<Child> data,
-			boolean isSortByName) {
+			boolean isSelectable) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
-
-		if (isSortByName) {
-			Collections.sort(this.data, new Comparator<Child>() {
-
-				@Override
-				public int compare(Child lhs, Child rhs) {
-					return lhs.getName().charAt(0) - rhs.getName().charAt(0);
-				}
-			});
-		}
+		this.isSelectable = isSelectable;
 
 		imageLoader = ImageLoader.getInstance();
 	}
@@ -72,9 +67,13 @@ public class KidsListViewSimpleAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.list_item_kid_simple,
 					parent, false);
 			viewHolder = new ViewHolder();
+			viewHolder.rootLayout = (RelativeLayout) convertView
+					.findViewById(R.id.root_layout);
 			viewHolder.avatar = (CircleImageView) convertView
 					.findViewById(R.id.avatar);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
+			viewHolder.tvSelected = (CheckedTextView) convertView
+					.findViewById(R.id.tv_selected);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -83,7 +82,26 @@ public class KidsListViewSimpleAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void setUpView(ViewHolder viewHolder, int position) {
+	private void setUpView(final ViewHolder viewHolder, final int position) {
+		if (isSelectable) {
+			viewHolder.tvSelected.setVisibility(View.VISIBLE);
+			viewHolder.rootLayout.setClickable(true);
+			data.get(position).setWithAccess(true);
+			viewHolder.rootLayout.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (viewHolder.tvSelected.isChecked()) {
+						viewHolder.tvSelected.setChecked(false);
+						data.get(position).setWithAccess(false);
+					} else {
+						viewHolder.tvSelected.setChecked(true);
+						data.get(position).setWithAccess(true);
+					}
+
+				}
+			});
+		}
 		final Child child = data.get(position);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,

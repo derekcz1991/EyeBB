@@ -70,17 +70,15 @@ public class DBChildren {
 		return map;
 	}
 
-	public static HashMap<String, Macaron> getMacaronMap(Context context) {
+	public static HashMap<String, Macaron> getChildrenMapWithAddress(Context context) {
 		HashMap<String, Macaron> map = new HashMap<String, Macaron>();
 		SQLiteDatabase db = getInstance(context);
-		Cursor cursor = db.rawQuery("select * from children", null);
+		Cursor cursor = db.rawQuery(
+				"select * from children where mac_address != '" + "'", null);
 		while (cursor.moveToNext()) {
 			Child child = new Child();
 			createChild(child, cursor);
-			if (CommonUtils.isNotNull(child.getMacAddress())) {
-				map.put(child.getMacAddress(),
-						new Macaron(child.getMacAddress()));
-			}
+			map.put(child.getMacAddress(), new Macaron(child.getMacAddress()));
 		}
 		cursor.close();
 		db.close();
@@ -91,6 +89,21 @@ public class DBChildren {
 		ArrayList<Child> childList = new ArrayList<Child>();
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery("select * from children", null);
+		while (cursor.moveToNext()) {
+			Child child = new Child();
+			createChild(child, cursor);
+			childList.add(child);
+		}
+		cursor.close();
+		db.close();
+		return childList;
+	}
+
+	public static ArrayList<Child> getChildrenListWithAddress(Context context) {
+		ArrayList<Child> childList = new ArrayList<Child>();
+		SQLiteDatabase db = getInstance(context);
+		Cursor cursor = db.rawQuery(
+				"select * from children where mac_address != '" + "'", null);
 		while (cursor.moveToNext()) {
 			Child child = new Child();
 			createChild(child, cursor);

@@ -1,6 +1,12 @@
 package com.twinly.eyebb.model;
 
-public class Macaron {
+import java.io.Serializable;
+
+public class Macaron implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6L;
 	private String macAddress;
 	private int rssi;
 	private int preRssi;
@@ -8,6 +14,7 @@ public class Macaron {
 	private int axisX;
 	private int axisY;
 	private boolean isAntiLostOpen;
+	private boolean isAntiLostWriten;
 
 	public Macaron(String macAddress) {
 		this.macAddress = macAddress;
@@ -65,10 +72,19 @@ public class Macaron {
 		this.isAntiLostOpen = isAntiLostOpen;
 	}
 
+	public boolean isAntiLostWriten() {
+		return isAntiLostWriten;
+	}
+
+	public void setAntiLostWriten(boolean isAntiLostWriten) {
+		this.isAntiLostWriten = isAntiLostWriten;
+	}
+
 	@Override
 	public String toString() {
-		return "Macaron [macAddress=" + macAddress + ", axisX=" + axisX
-				+ ", axisY=" + axisY + "]";
+		return "Macaron [macAddress=" + macAddress + ", isAntiLostOpen="
+				+ isAntiLostOpen + ", isAntiLostWriten=" + isAntiLostWriten
+				+ "]";
 	}
 
 }

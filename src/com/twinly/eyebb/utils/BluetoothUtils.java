@@ -33,6 +33,8 @@ public class BluetoothUtils {
 	public final static String CHARACTERISTICS_MAJOR_UUID = "00001008-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_MINOR_UUID = "00001009-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_ANTI_LOST_PERIOD_UUID = "00001003-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_ANTI_LOST_TIMEOUT_UUID = "0000100a-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_LED_BLINK_UUID = "0000100b-0000-1000-8000-00805f9b34fb";
 
@@ -41,7 +43,9 @@ public class BluetoothUtils {
 	public final static int WRITE_MINOR = 3;
 	public final static int WRITE_BEEP = 4;
 	public final static int WRITE_LED_BLINK = 5;
-	public final static int READ_BATTERY = 6;
+	public final static int WRITE_ANTI_LOST_PERIOD = 6;
+	public final static int WRITE_ANTI_LOST_TIMEOUT = 7;
+	public final static int READ_BATTERY = 8;
 
 	private final static String TAG = BluetoothUtils.class.getSimpleName();
 
@@ -283,6 +287,19 @@ public class BluetoothUtils {
 		}
 	}
 
+	public void writeAntiLostPeroid(String mDeviceAddress, long timeout,
+			String value) {
+		this.value = value;
+		if (gattServices != null) {
+			write(SERVICE_UUID_0001, CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
+					value, true);
+		} else {
+			if (initialize()) {
+				connect(mDeviceAddress, timeout);
+			}
+		}
+	}
+
 	/**
 	 * Start scan ble device, called in onResume
 	 * @param leScanCallback Callback function to receive scanned ble device
@@ -379,10 +396,10 @@ public class BluetoothUtils {
 						Log.e(TAG, "Unable to initialize Bluetooth");
 					}
 					// Automatically connects to the device upon successful start-up initialization.
-					if(mDeviceAddress != null){
+					if (mDeviceAddress != null) {
 						mBluetoothLeService.connect(mDeviceAddress);
-					}			
-				
+					}
+
 				}
 
 				@Override
@@ -455,6 +472,15 @@ public class BluetoothUtils {
 			if (isPasswordSet) {
 				write(SERVICE_UUID_0001, CHARACTERISTICS_LED_BLINK_UUID, value,
 						true);
+			} else {
+				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
+						false);
+			}
+			break;
+		case WRITE_ANTI_LOST_PERIOD:
+			if (isPasswordSet) {
+				write(SERVICE_UUID_0001, CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
+						value, true);
 			} else {
 				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
 						false);

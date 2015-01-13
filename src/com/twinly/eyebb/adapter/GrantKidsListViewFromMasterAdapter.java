@@ -1,6 +1,5 @@
 package com.twinly.eyebb.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -23,8 +22,6 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 	private List<Child> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
-	public static ArrayList<String> grantkidId;
-	public static ArrayList<String> noAccessGrantkidId;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -37,8 +34,6 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
-		grantkidId = new ArrayList<String>();
-		noAccessGrantkidId = new ArrayList<String>();
 
 		imageLoader = ImageLoader.getInstance();
 

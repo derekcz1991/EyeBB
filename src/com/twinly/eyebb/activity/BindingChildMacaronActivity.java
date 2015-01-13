@@ -342,7 +342,6 @@ public class BindingChildMacaronActivity extends Activity implements
 
 	@Override
 	public void onResult(boolean result) {
-		System.out.println(result + "   " + bindStep);
 		if (result) {
 			if (bindStep == BIND_STEP_DISCOVERED) {
 				bindStep = BIND_STEP_MAJOR_WRITEN;

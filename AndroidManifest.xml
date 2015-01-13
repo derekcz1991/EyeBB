@@ -300,7 +300,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
-  
         <activity
             android:name="com.twinly.eyebb.activity.BindingChildMacaronActivityBackup"
             android:screenOrientation="portrait"
@@ -326,9 +325,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyDialogStyleActivity" >
         </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.SelectKidsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
 
-        
-        
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -342,23 +344,6 @@
         </receiver>
 
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
-        <!--
-        <receiver android:name="com.twinly.eyebb.fragment.RadarTrackingFragment" >
-            <intent-filter>
-                <action android:name="FINISH_BIND" />
-            </intent-filter>
-        </receiver>
-        -->
-        <!--
-             <receiver
-            android:name="com.twinly.eyebb.fragment.RadarTrackingFragment"
-            android:permission="android.permission.BLUETOOTH_ADMIN" >
-            <intent-filter>
-                <action android:name="BluetoothAdapter.STATE_TURNING_OFF" />
-                <action android:name="BluetoothAdapter.STATE_OFF" />
-            </intent-filter>
-        </receiver>
-        -->
         <service
             android:name="com.twinly.eyebb.service.BleServicesService"
             android:enabled="true" >
