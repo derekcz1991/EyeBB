@@ -11,6 +11,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +22,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.SelectKidsActivity;
@@ -35,6 +38,9 @@ import com.twinly.eyebb.utils.BroadcastUtils;
 @SuppressLint("NewApi")
 public class RadarTrackingFragmentTemp extends Fragment implements
 		BluetoothUtils.BleConnectCallback {
+	private final int TIMEOUT = 15000;
+	private final int MESSAGE_WHAT_UPDATE_VIEW = 0;
+	private final int MESSAGE_WHAT_REMOVE_CALLBACK = 1;
 
 	private BluetoothUtils mBluetoothUtils;
 	private ListView listView;
@@ -113,7 +119,19 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		displayDeviceList = new ArrayList<Macaron>();
 		scannedDeviceList = new ArrayList<Macaron>();
 		missedDeviceList = new ArrayList<Macaron>();
-		mHandler = new Handler();
+		mHandler = new Handler(Looper.getMainLooper()) {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case MESSAGE_WHAT_UPDATE_VIEW:
+					mHandler.post(updateViewRunnable);
+					break;
+				case MESSAGE_WHAT_REMOVE_CALLBACK:
+					mHandler.removeCallbacks(updateViewRunnable);
+					break;
+				}
+			}
+		};
 		mAdapter = new RadarKidsListViewAdapterTemp(getActivity(),
 				displayDeviceList, true);
 		listView.setAdapter(mAdapter);
@@ -171,9 +189,17 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(),
-						SelectKidsActivity.class);
-				startActivityForResult(intent, 1);
+				if (isAntiLostOpen) {
+					isAntiLostOpen = false;
+					openAntiTheft
+							.setBackgroundResource(R.drawable.ic_selected_off);
+					mAdapter.setAntiLostOpen(false);
+				} else {
+					Intent intent = new Intent(getActivity(),
+							SelectKidsActivity.class);
+					startActivityForResult(intent, 1);
+				}
+
 				/*getActivity().startActivity(
 						new Intent(getActivity(), Test.class));*/
 				/*if (isAntiLostOpen) {
@@ -200,15 +226,16 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		radarScrollView.setAlpha(1F);
 		mBluetoothUtils.startLeScan(leScanCallback, 500);
 		radarViewFragment.startAnimation();
-		mHandler.postDelayed(updateViewRunnable, 2000);
+		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 2000);
 		BroadcastUtils.opeanRadar(getActivity());
 	}
 
 	private void stopRadar() {
 		isRadarOpen = false;
+		isAntiLostOpen = false;
 		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_off);
 		radarScrollView.setAlpha(0.3F);
-		mHandler.removeCallbacks(updateViewRunnable);
+		mHandler.sendEmptyMessage(MESSAGE_WHAT_REMOVE_CALLBACK);
 		mBluetoothUtils.stopLeScan();
 		radarViewFragment.stopAnimation();
 		BroadcastUtils.closeRadar(getActivity());
@@ -224,13 +251,36 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 			missedDeviceList.clear();
 
 			Iterator<String> it = macaronHashMap.keySet().iterator();
-			while (it.hasNext()) {
-				macAddress = it.next();
-				if (System.currentTimeMillis()
-						- macaronHashMap.get(macAddress).getLastAppearTime() < 15000) {
-					scannedDeviceList.add(macaronHashMap.get(macAddress));
-				} else {
-					missedDeviceList.add(macaronHashMap.get(macAddress));
+			if (isAntiLostOpen) {
+				while (it.hasNext()) {
+					macAddress = it.next();
+					if (macaronHashMap.get(macAddress).isAntiLostWriten()) {
+						if (System.currentTimeMillis()
+								- macaronHashMap.get(macAddress)
+										.getLastAppearTime() < TIMEOUT) {
+							scannedDeviceList.add(macaronHashMap
+									.get(macAddress));
+						} else {
+							missedDeviceList
+									.add(macaronHashMap.get(macAddress));
+							Toast.makeText(getActivity(),
+									macAddress + " Alert", Toast.LENGTH_SHORT)
+									.show();
+						}
+					} else {
+						missedDeviceList.add(macaronHashMap.get(macAddress));
+					}
+				}
+			} else {
+				while (it.hasNext()) {
+					macAddress = it.next();
+					if (System.currentTimeMillis()
+							- macaronHashMap.get(macAddress)
+									.getLastAppearTime() < TIMEOUT) {
+						scannedDeviceList.add(macaronHashMap.get(macAddress));
+					} else {
+						missedDeviceList.add(macaronHashMap.get(macAddress));
+					}
 				}
 			}
 
@@ -238,7 +288,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 			updateListView();
 
 			if (isRadarOpen) {
-				mHandler.postDelayed(updateViewRunnable, 5000);
+				mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 5000);
 			}
 		}
 
@@ -268,15 +318,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		@Override
 		public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
 			if (macaronHashMap.get(device.getAddress()) != null) {
-				/*if (device.getAddress().contains("04:F5")) {
-					System.out.println("Wanan");
-				} else if (device.getAddress().contains("04:EB")) {
-					System.out.println("Peter");
-				} else if (device.getAddress().contains("04:DD")) {
-					System.out.println("轩仔");
-				} else if (device.getAddress().contains("04:EC")) {
-					System.out.println("Terry");
-				}*/
 				macaronHashMap.get(device.getAddress()).setPreRssi(
 						macaronHashMap.get(device.getAddress()).getRssi());
 				macaronHashMap.get(device.getAddress()).setRssi(rssi);
@@ -338,6 +379,8 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 				}
 			}
 			System.out.println(macaronHashMap);
+			isAntiLostOpen = true;
+			openAntiTheft.setBackgroundResource(R.drawable.ic_selected);
 		}
 	}
 

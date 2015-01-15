@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
@@ -40,13 +39,13 @@ public class ChangeKidsActivity extends Activity {
 
 		etSearch = (EditText) findViewById(R.id.et_search);
 		listView = (IndexableListView) findViewById(R.id.listView);
-		list = DBChildren.getChildrenList(this);
+		list = DBChildren.getChildrenListWithAddress(this);
 		searchList = new ArrayList<Child>();
 
 		adapter = new KidsListViewSimpleAdapter(this, list, false);
 		listView.setAdapter(adapter);
 		listView.setFastScrollEnabled(true);
-		
+
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
