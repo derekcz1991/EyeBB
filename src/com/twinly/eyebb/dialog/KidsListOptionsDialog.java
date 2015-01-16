@@ -42,17 +42,23 @@ public class KidsListOptionsDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				// System.out.println("isSortByNameisSortByName-?" +
+				// isSortByName);
 				if (isSortByName) {
 					isSortByName = false;
-					tvSortByName
-							.setBackgroundResource(R.drawable.ic_selected_off);
-				} else {
-					isSortByName = true;
 					tvSortByName.setBackgroundResource(R.drawable.ic_selected);
 
 					isSortByLocation = false;
 					tvSortByLocation
 							.setBackgroundResource(R.drawable.ic_selected_off);
+				} else {
+					isSortByName = true;
+					tvSortByName
+							.setBackgroundResource(R.drawable.ic_selected_off);
+					isSortByLocation = true;
+					tvSortByLocation
+							.setBackgroundResource(R.drawable.ic_selected);
+
 				}
 
 			}
@@ -63,18 +69,23 @@ public class KidsListOptionsDialog extends Activity {
 
 					@Override
 					public void onClick(View v) {
+						// System.out.println("isSortByLocation-?" +
+						// isSortByLocation);
 						if (isSortByLocation) {
+							isSortByName = false;
+							tvSortByName
+									.setBackgroundResource(R.drawable.ic_selected);
 							isSortByLocation = false;
 							tvSortByLocation
 									.setBackgroundResource(R.drawable.ic_selected_off);
+
 						} else {
+							isSortByName = true;
+							tvSortByName
+									.setBackgroundResource(R.drawable.ic_selected_off);
 							isSortByLocation = true;
 							tvSortByLocation
 									.setBackgroundResource(R.drawable.ic_selected);
-
-							isSortByLocation = false;
-							tvSortByLocation
-									.setBackgroundResource(R.drawable.ic_selected_off);
 						}
 
 					}

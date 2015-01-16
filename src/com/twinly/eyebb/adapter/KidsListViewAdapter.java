@@ -36,6 +36,8 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
+	private List<Map.Entry<Long, Child>> location_null_list;
+	private List<Map.Entry<Long, Child>> location_not_null_list;
 
 	private final class ViewHolder {
 		public CircleImageView avatar;
@@ -68,20 +70,40 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 		}
 
 		if (isSortByLocator) {
-			Collections.sort(list, new Comparator<Map.Entry<Long, Child>>() {
-
-				@Override
-				public int compare(Entry<Long, Child> lhs,
-						Entry<Long, Child> rhs) {
-					if (lhs.getValue().getLocationName().length() == 0) {
-						return 1;
-					} else if (rhs.getValue().getLocationName().length() == 0) {
-						return -1;
-					}
-					return lhs.getValue().getLocationName().charAt(0)
-							- rhs.getValue().getLocationName().charAt(0);
+			location_not_null_list = new ArrayList<Map.Entry<Long, Child>>();
+			location_null_list = new ArrayList<Map.Entry<Long, Child>>();
+			
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getValue().getLocationName() == null) {
+					location_null_list.add(list.get(i));
+				} else {
+					location_not_null_list.add(list.get(i));
 				}
-			});
+
+			}
+
+			Collections.sort(location_not_null_list,
+					new Comparator<Map.Entry<Long, Child>>() {
+
+						@Override
+						public int compare(Entry<Long, Child> lhs,
+								Entry<Long, Child> rhs) {
+							if (lhs.getValue().getLocationName().length() == 0) {
+								return 1;
+							} else if (rhs.getValue().getLocationName()
+									.length() == 0) {
+								return -1;
+							}
+							return lhs.getValue().getLocationName()
+									.toLowerCase().charAt(0)
+									- rhs.getValue().getLocationName().toLowerCase()
+											.charAt(0);
+						}
+					});
+
+			list.clear();
+			list.addAll(location_null_list);
+			list.addAll(location_not_null_list);
 		}
 
 		imageLoader = ImageLoader.getInstance();
@@ -189,16 +211,20 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 							return j;
 					}
 				} else {
-					if (!RegularExpression.getStringToDetectionLetters(RegularExpression.mSections.charAt(i))) {
-						if (StringMatcher.match(
-								String.valueOf((getItem(j)).getValue()
-										.getName().charAt(0)),
-								String.valueOf(RegularExpression.mSections.charAt(i)))) {
+					if (!RegularExpression
+							.getStringToDetectionLetters(RegularExpression.mSections
+									.charAt(i))) {
+						if (StringMatcher
+								.match(String.valueOf((getItem(j)).getValue()
+										.getName().charAt(0)), String
+										.valueOf(RegularExpression.mSections
+												.charAt(i)))) {
 							return j;
 						}
 					} else {
-						if (RegularExpression.getStringToDetectionLetters((getItem(j)).getValue()
-								.getName().charAt(0))) {
+						if (RegularExpression
+								.getStringToDetectionLetters((getItem(j))
+										.getValue().getName().charAt(0))) {
 							return j;
 						}
 					}
@@ -208,8 +234,6 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 		}
 		return 0;
 	}
-
-
 
 	@Override
 	public int getSectionForPosition(int position) {

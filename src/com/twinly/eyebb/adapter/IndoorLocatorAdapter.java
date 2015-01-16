@@ -83,7 +83,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 				});
 
-		if (isSort) {
+		if (!isSort) {
 			// remove the empty location
 			for (int i = 0; i < this.list.size(); i++) {
 				if (this.list.get(i).getValue().size() == 0) {

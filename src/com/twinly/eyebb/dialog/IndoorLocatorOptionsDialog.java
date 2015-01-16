@@ -26,7 +26,7 @@ public class IndoorLocatorOptionsDialog extends Activity {
 		setContentView(R.layout.dialog_indoor_locator_options);
 
 		isViewAllRooms = getIntent().getBooleanExtra(EXTRA_VIEW_ALL_ROOMS,
-				false);
+				true);
 
 		tvAutoRefresh = (TextView) findViewById(R.id.tv_auto_refresh);
 		tvViewAllRooms = (TextView) findViewById(R.id.tv_view_all_room);

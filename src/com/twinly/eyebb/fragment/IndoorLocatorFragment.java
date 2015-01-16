@@ -167,6 +167,7 @@ public class IndoorLocatorFragment extends Fragment implements
 						Bundle bundle = new Bundle();
 						bundle.putSerializable("childrenMap", myMap);
 						intent.putExtras(bundle);
+						if(childrenMap.size() != 0)
 						startActivity(intent);
 					}
 				});

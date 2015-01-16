@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewAdapter;
@@ -45,13 +46,14 @@ public class KidsListActivity extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		SerializableChildrenMap serializableMap = (SerializableChildrenMap) bundle
 				.get("childrenMap");
+
 		if (serializableMap != null) {
 			list = new ArrayList<Map.Entry<Long, Child>>(serializableMap
 					.getMap().entrySet());
-			 
+			
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
 					isSortByLocation);
-		}
+		} 
 
 		etSearch = (EditText) findViewById(R.id.et_search);
 		listView = (IndexableListView) findViewById(R.id.listView);
