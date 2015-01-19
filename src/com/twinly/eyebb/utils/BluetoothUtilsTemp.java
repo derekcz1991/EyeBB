@@ -23,10 +23,10 @@ import android.util.Log;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.bluetooth.BleDevicesScanner;
 import com.twinly.eyebb.dialog.ErrorDialog;
-import com.twinly.eyebb.service.BluetoothLeService;
+import com.twinly.eyebb.service.BluetoothLeServiceTemp;
 
 @SuppressLint("NewApi")
-public class BluetoothUtils {
+public class BluetoothUtilsTemp {
 	private final static String SERVICE_UUID_0001 = "00001000-0000-1000-8000-00805f9b34fb";
 	private final static String SERVICE_UUID_0002 = "00002000-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_PASSWORD = "00002005-0000-1000-8000-00805f9b34fb";
@@ -47,7 +47,7 @@ public class BluetoothUtils {
 	public final static int WRITE_ANTI_LOST_TIMEOUT = 7;
 	public final static int READ_BATTERY = 8;
 
-	private final static String TAG = BluetoothUtils.class.getSimpleName();
+	private final static String TAG = BluetoothUtilsTemp.class.getSimpleName();
 
 	private Context context;
 	private String tag = "";
@@ -57,7 +57,7 @@ public class BluetoothUtils {
 
 	private BluetoothAdapter mBluetoothAdapter;
 	private BroadcastReceiver mGattUpdateReceiver;
-	private BluetoothLeService mBluetoothLeService;
+	private BluetoothLeServiceTemp mBluetoothLeService;
 	private BleDevicesScanner scanner;
 	private ServiceConnection mServiceConnection;
 	private List<BluetoothGattService> gattServices;
@@ -106,7 +106,7 @@ public class BluetoothUtils {
 		public void onResult(boolean result, String tag, String mDeviceAddress);
 	}
 
-	public BluetoothUtils(Context context, FragmentManager manager,
+	public BluetoothUtilsTemp(Context context, FragmentManager manager,
 			final BleConnectCallback callback) {
 		this.context = context;
 		this.manager = manager;
@@ -115,32 +115,33 @@ public class BluetoothUtils {
 		mGattUpdateReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if (intent.getStringExtra(BluetoothLeService.EXTRA_TAG).equals(
-						tag)) {
+				if (intent.getStringExtra(BluetoothLeServiceTemp.EXTRA_TAG)
+						.equals(tag)) {
 					final String action = intent.getAction();
 					/*System.out.println("mGattUpdateReceiver ====>>>> " + action
 							+ " " + timer);*/
-					if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+					if (BluetoothLeServiceTemp.ACTION_GATT_CONNECTED
+							.equals(action)) {
 						timer.cancel();
 						callback.onConnected(tag, mDeviceAddress);
-					} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+					} else if (BluetoothLeServiceTemp.ACTION_GATT_DISCONNECTED
 							.equals(action)) {
 						callback.onDisConnected();
-					} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
+					} else if (BluetoothLeServiceTemp.ACTION_GATT_SERVICES_DISCOVERED
 							.equals(action)) {
 						timer.cancel();
 						callback.onDiscovered();
 						gattServices = mBluetoothLeService
 								.getSupportedGattServices();
 						onDiscovered();
-					} else if (BluetoothLeService.ACTION_GATT_READ_SUCCESS
+					} else if (BluetoothLeServiceTemp.ACTION_GATT_READ_SUCCESS
 							.equals(action)) {
 						callback.onDataAvailable(intent
-								.getStringExtra(BluetoothLeService.EXTRA_DATA));
-					} else if (BluetoothLeService.ACTION_GATT_READ_FAILURE
+								.getStringExtra(BluetoothLeServiceTemp.EXTRA_DATA));
+					} else if (BluetoothLeServiceTemp.ACTION_GATT_READ_FAILURE
 							.equals(action)) {
 						callback.onResult(false, tag, mDeviceAddress);
-					} else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS
+					} else if (BluetoothLeServiceTemp.ACTION_GATT_WRITE_SUCCESS
 							.equals(action)) {
 						if (isPasswordSet) {
 							timer.cancel();
@@ -149,7 +150,7 @@ public class BluetoothUtils {
 							isPasswordSet = true;
 							onDiscovered();
 						}
-					} else if (BluetoothLeService.ACTION_GATT_WRITE_FAILURE
+					} else if (BluetoothLeServiceTemp.ACTION_GATT_WRITE_FAILURE
 							.equals(action)) {
 						timer.cancel();
 						callback.onResult(false, tag, mDeviceAddress);
@@ -401,7 +402,7 @@ public class BluetoothUtils {
 				@Override
 				public void onServiceConnected(ComponentName componentName,
 						IBinder service) {
-					mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
+					mBluetoothLeService = ((BluetoothLeServiceTemp.LocalBinder) service)
 							.getService();
 					System.out.println(tag + " ==>> " + mBluetoothLeService);
 					if (!mBluetoothLeService.initialize()) {
@@ -429,7 +430,7 @@ public class BluetoothUtils {
 			};
 
 			Intent gattServiceIntent = new Intent(context,
-					BluetoothLeService.class);
+					BluetoothLeServiceTemp.class);
 			context.bindService(gattServiceIntent, mServiceConnection,
 					Context.BIND_AUTO_CREATE);
 		} else {
@@ -450,7 +451,7 @@ public class BluetoothUtils {
 			@Override
 			public void run() {
 				if (mBluetoothLeService != null) {
-					if (mBluetoothLeService.getmConnectionState() != BluetoothLeService.STATE_CONNECTED) {
+					if (mBluetoothLeService.getmConnectionState() != BluetoothLeServiceTemp.STATE_CONNECTED) {
 						callback.onConnectCanceled(tag, mDeviceAddress);
 						//mBluetoothLeService.disconnect();
 						//mBluetoothLeService = null;
@@ -612,14 +613,16 @@ public class BluetoothUtils {
 
 	private IntentFilter makeGattUpdateIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(BluetoothLeServiceTemp.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(BluetoothLeServiceTemp.ACTION_GATT_DISCONNECTED);
 		intentFilter
-				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_SUCCESS);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_FAILURE);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_WRITE_SUCCESS);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_WRITE_FAILURE);
+				.addAction(BluetoothLeServiceTemp.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(BluetoothLeServiceTemp.ACTION_GATT_READ_SUCCESS);
+		intentFilter.addAction(BluetoothLeServiceTemp.ACTION_GATT_READ_FAILURE);
+		intentFilter
+				.addAction(BluetoothLeServiceTemp.ACTION_GATT_WRITE_SUCCESS);
+		intentFilter
+				.addAction(BluetoothLeServiceTemp.ACTION_GATT_WRITE_FAILURE);
 		return intentFilter;
 	}
 }

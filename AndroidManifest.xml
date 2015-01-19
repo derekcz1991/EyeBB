@@ -344,25 +344,29 @@
         </receiver>
 
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
-        <service
+        <!-- <service
             android:name="com.twinly.eyebb.service.BleServicesService"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="com.twinly.eyebb.service.BLE_SERVICES_SERVICES" >
                 </action>
             </intent-filter>
-        </service>
+        </service> -->
+        
         <service
             android:name="com.twinly.eyebb.service.BluetoothLeService"
             android:enabled="true" />
         <service
+            android:name="com.twinly.eyebb.service.BluetoothLeServiceTemp"
+            android:enabled="true" />
+        <!-- <service
             android:name="com.twinly.eyebb.service.BleCharacteristicsService"
             android:enabled="true" >
             <intent-filter>
                 <action android:name="com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES" >
                 </action>
             </intent-filter>
-        </service>
+        </service> -->
     </application>
 
 </manifest>

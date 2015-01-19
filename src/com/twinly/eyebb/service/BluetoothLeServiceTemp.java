@@ -39,8 +39,8 @@ import android.util.Log;
  * hosted on a given Bluetooth LE device.
  */
 @SuppressLint("NewApi")
-public class BluetoothLeService extends Service {
-	private final static String TAG = BluetoothLeService.class.getSimpleName();
+public class BluetoothLeServiceTemp extends Service {
+	private final static String TAG = BluetoothLeServiceTemp.class.getSimpleName();
 
 	private BluetoothManager mBluetoothManager;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -150,8 +150,8 @@ public class BluetoothLeService extends Service {
 	}
 
 	public class LocalBinder extends Binder {
-		public BluetoothLeService getService() {
-			return BluetoothLeService.this;
+		public BluetoothLeServiceTemp getService() {
+			return BluetoothLeServiceTemp.this;
 		}
 	}
 

@@ -308,12 +308,12 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnectCanceled() {
+	public void onConnectCanceled(String tag, String mDeviceAddress) {
 		writeFailed();
 	}
 
 	@Override
-	public void onConnected() {
+	public void onConnected(String tag, String mDeviceAddress) {
 		// do nothing
 	}
 
@@ -341,7 +341,7 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onResult(boolean result) {
+	public void onResult(boolean result, String tag, String mDeviceAddress) {
 		if (result) {
 			if (bindStep == BIND_STEP_DISCOVERED) {
 				bindStep = BIND_STEP_MAJOR_WRITEN;

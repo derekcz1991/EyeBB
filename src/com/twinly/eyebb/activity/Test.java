@@ -114,12 +114,12 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 	}
 
 	@Override
-	public void onConnectCanceled() {
+	public void onConnectCanceled(String tag, String mDeviceAddress) {
 		mHandler.sendEmptyMessageDelayed(1, 500);
 	}
 
 	@Override
-	public void onConnected() {
+	public void onConnected(String tag, String mDeviceAddress) {
 		mHandler.sendEmptyMessageDelayed(2, 1000);
 	}
 
@@ -142,7 +142,7 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 	}
 
 	@Override
-	public void onResult(boolean result) {
+	public void onResult(boolean result, String tag, String mDeviceAddress) {
 		// TODO Auto-generated method stub
 
 	}

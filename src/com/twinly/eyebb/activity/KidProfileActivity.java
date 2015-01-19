@@ -414,7 +414,8 @@ public class KidProfileActivity extends Activity implements
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
 				String macAddress = bundle.getString("result");
-				macAddress = RegularExpression.getValidMacAddress(this, macAddress);
+				macAddress = RegularExpression.getValidMacAddress(this,
+						macAddress);
 				if (macAddress != null) {
 					Intent intent = new Intent();
 					intent.setClass(this, BindingChildMacaronActivity.class);
@@ -491,7 +492,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnectCanceled() {
+	public void onConnectCanceled(String tag, String mDeviceAddress) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -504,7 +505,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnected() {
+	public void onConnected(String tag, String mDeviceAddress) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -572,7 +573,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onResult(final boolean result) {
+	public void onResult(final boolean result, String tag, String mDeviceAddress) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
