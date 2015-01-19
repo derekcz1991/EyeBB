@@ -13,11 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
-import com.twinly.eyebb.activity.MainActivity;
-
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
-import com.twinly.eyebb.fragment.RadarTrackingFragment;
 import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.BroadcastUtils;

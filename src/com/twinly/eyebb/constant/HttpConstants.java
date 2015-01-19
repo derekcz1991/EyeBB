@@ -50,6 +50,8 @@ public class HttpConstants {
 	public static final String JSON_KEY_LOCATIONS = "locations";
 	public static final String JSON_KEY_LOCATION_ID = "locationId";
 	public static final String JSON_KEY_LOCATION_NAME = "locationName";
+	public static final String JSON_KEY_LOCATION_NAME_SC = "nameSc";
+	public static final String JSON_KEY_LOCATION_NAME_TC = "nameTc";
 	public static final String JSON_KEY_LOCATION_TYPE = "type";
 	public static final String JSON_KEY_LOCATION_ICON = "icon";
 

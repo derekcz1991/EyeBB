@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import android.bluetooth.BluetoothGattService;
 
-import com.twinly.eyebb.bluetooth.BluetoothLeService;
+import com.twinly.eyebb.service.BluetoothLeService;
 
 public class BleDeviceConstants {
 

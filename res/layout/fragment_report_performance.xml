@@ -102,6 +102,7 @@
         android:cacheColorHint="@color/transparent"
         android:divider="@null"
         android:listSelector="@drawable/list_selector"
+        android:paddingBottom="8dp"
         android:paddingTop="2dp" >
     </com.twinly.eyebb.customview.PullToRefreshListView>
 

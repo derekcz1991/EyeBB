@@ -38,7 +38,8 @@
                 style="@style/RedText_18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_options" />
+                android:text="@string/btn_options"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="@string/text_shcool_bus" />
+                android:text="school bus" />
 
             <TextView
                 android:layout_width="wrap_content"

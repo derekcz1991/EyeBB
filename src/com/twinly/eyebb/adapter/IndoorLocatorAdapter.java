@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -26,13 +25,19 @@ import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class IndoorLocatorAdapter extends BaseAdapter {
+	private final int[] backgrouds = new int[] { R.drawable.bg_home_blue01,
+			R.drawable.bg_home_green01, R.drawable.bg_home_yellow01,
+			R.drawable.bg_home_orange, R.drawable.bg_home_pink,
+			R.drawable.bg_home_purple, R.drawable.bg_home_blue02,
+			R.drawable.bg_home_green02, R.drawable.bg_home_yellow02 };
+
 	private Context context;
 	private HashMap<Long, Location> locationMap;
 	private HashMap<Long, Child> childrenMap;
 	private List<HashMap.Entry<Long, ArrayList<Long>>> list;
 
 	private LayoutInflater inflater;
-	private boolean isSort;
+	private boolean isViewAllRooms;
 	private ImageLoader imageLoader;
 
 	private final class ViewHolder {
@@ -44,46 +49,46 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	}
 
 	public IndoorLocatorAdapter(Context context,
-			HashMap<Long, ArrayList<Long>> data,
+			List<HashMap.Entry<Long, ArrayList<Long>>> list,
 			HashMap<Long, Location> locationMap,
-			HashMap<Long, Child> childrenMap, boolean isSort) {
+			HashMap<Long, Child> childrenMap, boolean isViewAllRooms) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.locationMap = locationMap;
 		this.childrenMap = childrenMap;
-		this.isSort = isSort;
-		this.list = new ArrayList<Map.Entry<Long, ArrayList<Long>>>(
-				data.entrySet());
+		this.isViewAllRooms = isViewAllRooms;
+		this.list = list;
 
 		imageLoader = ImageLoader.getInstance();
 		sort();
 	}
 
+	@Override
+	public void notifyDataSetChanged() {
+		sort();
+		super.notifyDataSetChanged();
+	}
+
+	public void setViewAllRooms(boolean isViewAllRooms) {
+		this.isViewAllRooms = isViewAllRooms;
+		sort();
+	}
+
 	private void sort() {
-		// move the entry and exit location to the bottom
-		Collections.sort(list,
-				new Comparator<HashMap.Entry<Long, ArrayList<Long>>>() {
+		if (isViewAllRooms) {
+			// sort the location by location id
+			Collections.sort(list,
+					new Comparator<HashMap.Entry<Long, ArrayList<Long>>>() {
 
-					@Override
-					public int compare(Entry<Long, ArrayList<Long>> lhs,
-							Entry<Long, ArrayList<Long>> rhs) {
-						if (locationMap.get(lhs.getKey()).getType().equals("X")
-								|| locationMap.get(lhs.getKey()).getType()
-										.equals("N")) {
-							return 1;
-						} else if (locationMap.get(rhs.getKey()).getType()
-								.equals("X")
-								|| locationMap.get(rhs.getKey()).getType()
-										.equals("N")) {
-							return -1;
-						} else {
-							return 0;
+						@Override
+						public int compare(Entry<Long, ArrayList<Long>> lhs,
+								Entry<Long, ArrayList<Long>> rhs) {
+							return (int) (locationMap.get(lhs.getKey()).getId() - locationMap
+									.get(rhs.getKey()).getId());
 						}
-					}
 
-				});
-
-		if (!isSort) {
+					});
+		} else {
 			// remove the empty location
 			for (int i = 0; i < this.list.size(); i++) {
 				if (this.list.get(i).getValue().size() == 0) {
@@ -107,20 +112,29 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 						}
 
 					});
-		} else {
-			// sort the location by location id
-			Collections.sort(list,
-					new Comparator<HashMap.Entry<Long, ArrayList<Long>>>() {
-
-						@Override
-						public int compare(Entry<Long, ArrayList<Long>> lhs,
-								Entry<Long, ArrayList<Long>> rhs) {
-							return (int) (locationMap.get(lhs.getKey()).getId() - locationMap
-									.get(rhs.getKey()).getId());
-						}
-
-					});
 		}
+		// move the entry and exit location to the bottom
+		Collections.sort(list,
+				new Comparator<HashMap.Entry<Long, ArrayList<Long>>>() {
+
+					@Override
+					public int compare(Entry<Long, ArrayList<Long>> lhs,
+							Entry<Long, ArrayList<Long>> rhs) {
+						if (locationMap.get(lhs.getKey()).getType().equals("X")
+								|| locationMap.get(lhs.getKey()).getType()
+										.equals("N")) {
+							return 1;
+						} else if (locationMap.get(rhs.getKey()).getType()
+								.equals("X")
+								|| locationMap.get(rhs.getKey()).getType()
+										.equals("N")) {
+							return -1;
+						} else {
+							return 0;
+						}
+					}
+
+				});
 	}
 
 	@Override
@@ -170,14 +184,16 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		String locationType = locationMap.get(list.get(position).getKey())
 				.getType();
 		String locationName = locationMap.get(list.get(position).getKey())
-				.getName();
+				.getDisplayName(context);
 		String locationIcon = locationMap.get(list.get(position).getKey())
 				.getIcon();
 
 		// set the area name
 		viewHolder.areaName.setText(locationName);
 
-		ArrayList<Long> childrenIds = list.get(position).getValue();
+		ArrayList<Long> childrenIds = new ArrayList<Long>();
+		childrenIds.addAll(list.get(position).getValue());
+
 		// remove the child if he showed in the EXIT area and stay more than 10 mins.
 		if (locationType.equals("X")) {
 			for (int i = 0; i < childrenIds.size(); i++) {
@@ -210,37 +226,11 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		// set the the number of children
 		viewHolder.childrenNum.setText(String.valueOf(childrenIds.size()));
 
-		if (locationType.equals("X") || locationType.equals("N")) {
-			viewHolder.icon.setBackground(null);
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_blue02);
-		} else {
-			imageLoader.displayImage(locationIcon, viewHolder.icon,
-					ImageUtils.locationIconOpitons, null);
-		}
+		// set location icon
+		imageLoader.displayImage(locationIcon, viewHolder.icon,
+				ImageUtils.locationIconOpitons, null);
+		viewHolder.contentLayout.setBackgroundResource(backgrouds[position
+				% backgrouds.length]);
 
-		if (locationName.contains("Sleeping")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_yellow01);
-		} else if (locationName.contains("Playground")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_blue01);
-		} else if (locationName.contains("Computer")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_pink);
-		} else if (locationName.contains("Study")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_purple);
-		} else if (locationName.contains("Music")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_green02);
-		} else if (locationName.contains("Mess")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_green01);
-		} else if (locationName.contains("Reading")) {
-			viewHolder.contentLayout
-					.setBackgroundResource(R.drawable.bg_home_yellow02);
-		}
 	}
-
 }

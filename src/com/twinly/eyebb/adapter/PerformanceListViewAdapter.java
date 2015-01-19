@@ -26,7 +26,6 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 	private final class ViewHolder {
 		private TextView title;
 		private RelativeLayout content;
-		//private TextView subTitle;
 		private ProgressBar progressBar;
 		private TextView time;
 	}
@@ -36,7 +35,6 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 		this.context = context;
 		this.list = new ArrayList<PerformanceListItem>();
 		this.list.addAll(list);
-		//this.list = list;
 		mInflater = LayoutInflater.from(context);
 	}
 
@@ -69,7 +67,6 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.title = (TextView) v.findViewById(R.id.title);
 			viewHolder.content = (RelativeLayout) v.findViewById(R.id.content);
-			//viewHolder.subTitle = (TextView) v.findViewById(R.id.subtitle);
 			viewHolder.progressBar = (ProgressBar) v
 					.findViewById(R.id.progressBar);
 			viewHolder.time = (TextView) v.findViewById(R.id.time);
@@ -88,13 +85,17 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		viewHolder.content.setVisibility(View.GONE);
 		viewHolder.title.setVisibility(View.GONE);
+
 		if (list.get(position).getTitle().equals("")) {
 			viewHolder.content.setVisibility(View.VISIBLE);
-			//viewHolder.subTitle.setText(list.get(position).getSubTitle());
+			// set time
 			if (list.get(position).getTime() != 0) {
 				viewHolder.time.setText(CommonUtils.minutesToHours(list.get(
 						position).getTime()));
+			} else {
+				viewHolder.time.setText("");
 			}
+			// set progress bar progress
 			viewHolder.progressBar.setMax(list.get(position).getMaxProgress());
 			viewHolder.progressBar.setProgressDrawable(context.getResources()
 					.getDrawable(list.get(position).getProgressBarstyle()));
@@ -102,36 +103,42 @@ public class PerformanceListViewAdapter extends BaseAdapter {
 			// progress bar animation
 			if (list.get(position).isFlag() == false) {
 				list.get(position).setFlag(true);
-				//viewHolder.progressBar.setProgress(list.get(position).getProgress());
-				new AsyncTask<Void, Integer, Void>() {
+				if (list.get(position).getProgress() != 0) {
+					new AsyncTask<Void, Integer, Void>() {
 
-					@Override
-					protected Void doInBackground(Void... params) {
-						int progress = 0;
-						/*try {
-							Thread.sleep(100);
-						} catch (InterruptedException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}*/
-						while (progress < list.get(position).getProgress()) {
-							progress += 10;
-							publishProgress(progress);
-							try {
-								Thread.sleep(5);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+						@Override
+						protected Void doInBackground(Void... params) {
+							int progress = 0;
+							/*try {
+								Thread.sleep(100);
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}*/
+							while (progress < list.get(position).getProgress()) {
+								progress += 10;
+								publishProgress(progress);
+								try {
+									Thread.sleep(5);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
 							}
+							return null;
 						}
-						return null;
-					}
 
-					@Override
-					protected void onProgressUpdate(Integer... values) {
-						viewHolder.progressBar.setProgress(values[0]);
-					}
+						@Override
+						protected void onProgressUpdate(Integer... values) {
+							viewHolder.progressBar.setProgress(values[0]);
+						}
 
-				}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					viewHolder.progressBar.setProgress(0);
+				}
+			} else {
+				viewHolder.progressBar.setProgress(list.get(position)
+						.getProgress());
 			}
 		} else {
 			viewHolder.title.setVisibility(View.VISIBLE);

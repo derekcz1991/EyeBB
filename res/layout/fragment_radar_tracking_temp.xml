@@ -29,11 +29,53 @@
             android:background="@drawable/btn_switch_off" />
     </RelativeLayout>
 
+    <!-- bottom -->
+
+    <LinearLayout
+        android:id="@+id/radar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.1"
+            android:src="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/radar_beep_all_btn"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:alpha="0.9"
+            android:background="@color/red"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/btn_funcbar_beep" />
+
+            <TextView
+                style="@style/WhiteText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_beep_all" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/radar_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/radar_foot_beep_btn"
+        android:layout_above="@id/radar_bottom"
         android:layout_below="@id/header" >
 
         <LinearLayout
@@ -73,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="@string/text_radar_status_start_connected" />
+                        android:text="@string/text_anti_lost_mode" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -241,47 +283,5 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <!-- footer -->
-
-    <LinearLayout
-        android:id="@+id/radar_foot_beep_btn"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:clickable="true"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.1"
-            android:src="@color/black" />
-
-        <LinearLayout
-            android:id="@+id/radar_beep_all_btn"
-            android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:alpha="0.9"
-            android:background="@color/red"
-            android:clickable="true"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/btn_funcbar_beep" />
-
-            <TextView
-                style="@style/WhiteText_18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_beep_all" >
-            </TextView>
-        </LinearLayout>
-    </LinearLayout>
 
 </RelativeLayout>

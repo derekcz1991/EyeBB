@@ -56,4 +56,12 @@ public class PerformanceListItem {
 		this.flag = flag;
 	}
 
+	@Override
+	public String toString() {
+		return "PerformanceListItem [title=" + title + ", progressBarstyle="
+				+ progressBarstyle + ", time=" + time + ", progress="
+				+ progress + ", maxProgress=" + maxProgress + ", flag=" + flag
+				+ "]";
+	}
+
 }
