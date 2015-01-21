@@ -95,7 +95,7 @@
     <string name="text_already_relationship">錯誤!這個孩子信息已經被用戶綁定</string>
     <string name="text_device_already_binded">錯誤!此寶寶安設備已經被綁定過,請更換.</string>
     <string name="text_feed_back_successful">提交成功,謝謝!</string>
-    <string name="text_search_guest_null">ohh,此用戶不存在!</string>
+    <string name="text_search_guest_null">請先邀請他安裝寶寶安，再重試。</string>
     <string name="text_unbind_device">確定解除綁定设备嗎?</string>
     <string name="text_unbind_success">寶寶安解除綁定!</string>
     <string name="text_unbind_fail">出錯!寶寶安解除綁定失敗!</string>
@@ -152,7 +152,7 @@
     <string name="text_location">區域</string>
     <string name="text_search_kid">查找孩子&#8230;</string>
     <string name="text_can_not_open_options">請先關閉雷達追踪</string>
-    <string name="text_click_to_share">(點擊分享給 </string>
+    <string name="text_click_to_share">(點擊邀請給 </string>
 
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>

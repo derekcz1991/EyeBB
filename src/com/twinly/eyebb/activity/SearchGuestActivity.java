@@ -219,8 +219,9 @@ public class SearchGuestActivity extends Activity {
 						// TODO Auto-generated method stub
 						Intent shareIntent = new Intent(Intent.ACTION_SEND);
 						shareIntent.setType("text/plain");
-						shareIntent.putExtra(Intent.EXTRA_TEXT,
-								"Welcome to call 123456789");
+						shareIntent
+								.putExtra(Intent.EXTRA_TEXT,
+										"我想授權你觀看我的孩子情況，請你在完成安裝寶寶安後通知我，我會再次授權給你。連結：play.google.com/xxxxxxxx");
 						startActivity(shareIntent);
 
 					}
