@@ -33,6 +33,7 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.woozzu.android.widget.IndexableListView;
 
 public class SearchGuestActivity extends Activity {
 	private EditText edGuestname;
