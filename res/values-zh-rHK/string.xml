@@ -152,7 +152,7 @@
     <string name="text_location">區域</string>
     <string name="text_search_kid">查找孩子&#8230;</string>
     <string name="text_can_not_open_options">請先關閉雷達追踪</string>
-    <string name="text_click_to_share">(點擊邀請給 </string>
+    <string name="text_click_to_share">(點擊邀請 </string>
 
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>

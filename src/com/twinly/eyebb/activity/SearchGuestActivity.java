@@ -62,7 +62,7 @@ public class SearchGuestActivity extends Activity {
 		btnSearchNewGuest = (TextView) findViewById(R.id.btn_search_new_guest);
 		tx_share = (TextView) findViewById(R.id.tx_share_two);
 		btn_share = (RelativeLayout) findViewById(R.id.btn_share);
-
+	
 		guestData = new ArrayList<User>();
 
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
@@ -172,7 +172,8 @@ public class SearchGuestActivity extends Activity {
 				// Toast.makeText(SearchGuestActivity.this,
 				// R.string.text_feed_back_successful, Toast.LENGTH_LONG)
 				// .show();
-
+				listView.setVisibility(View.VISIBLE);
+				btn_share.setVisibility(View.GONE);
 				adapter = new SearchGuestListViewAdapter(
 						SearchGuestActivity.this, parseJson(retStr));
 
@@ -206,7 +207,8 @@ public class SearchGuestActivity extends Activity {
 						R.string.text_click_to_share)
 						+ guestName + ")");
 				btn_share.setVisibility(View.VISIBLE);
-
+				listView.setVisibility(View.GONE);
+				
 				btn_share.setOnClickListener(new OnClickListener() {
 
 					@Override
