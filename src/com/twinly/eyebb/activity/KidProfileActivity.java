@@ -36,12 +36,12 @@ import android.widget.Toast;
 import com.example.qr_codescan.MipcaActivityCapture;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.HoloCircularProgressBar;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.utils.BluetoothUtils;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
@@ -492,7 +492,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnectCanceled(String tag, String mDeviceAddress) {
+	public void onConnectCanceled(String mDeviceAddress) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -505,7 +505,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnected(String tag, String mDeviceAddress) {
+	public void onConnected(String mDeviceAddress) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -573,7 +573,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onResult(final boolean result, String tag, String mDeviceAddress) {
+	public void onResult(final boolean result, String mDeviceAddress) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

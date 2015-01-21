@@ -27,19 +27,17 @@ import android.widget.Toast;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.SelectKidsActivity;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapterTemp;
+import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Macaron;
 import com.twinly.eyebb.model.SerializableChildrenList;
-import com.twinly.eyebb.utils.BluetoothUtils;
-import com.twinly.eyebb.utils.BluetoothUtilsTemp;
 import com.twinly.eyebb.utils.BroadcastUtils;
 
 @SuppressLint("NewApi")
 public class RadarTrackingFragmentTemp extends Fragment implements
-		BluetoothUtils.BleConnectCallback,
-		BluetoothUtilsTemp.BleConnectCallback {
+		BluetoothUtils.BleConnectCallback {
 	private final int LOST_TIMEOUT = 15000;
 	private final int WRITE_ANTI_LOST_TIMEOUT = 10000;
 	private final int CONNECT_TIMEOUT = 4000;
@@ -47,13 +45,8 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	private final int MESSAGE_WHAT_UPDATE_VIEW = 0;
 	private final int MESSAGE_WHAT_REMOVE_CALLBACK = 1;
 	private final int MESSAGE_WHAT_CONNECT_DEVICE = 2;
-	private final int MESSAGE_ARG_1_BLUETOOTHUTILS_A = 3;
-	private final int MESSAGE_ARG_1_BLUETOOTHUTILS_B = 4;
-	private final String BLUETOOTH_UTILS_A_TAG = "mBluetoothUtilsA";
-	private final String BLUETOOTH_UTILS_B_TAG = "mBluetoothUtilsB";
 
 	private BluetoothUtils mBluetoothUtilsA;
-	private BluetoothUtilsTemp mBluetoothUtilsB;
 	private ListView listView;
 	private ScrollView radarScrollView;
 	private TextView btnRadarSwitch;
@@ -88,10 +81,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 			Bundle savedInstanceState) {
 		mBluetoothUtilsA = new BluetoothUtils(getActivity(),
 				getFragmentManager(), this);
-		mBluetoothUtilsA.setTag(BLUETOOTH_UTILS_A_TAG);
-		mBluetoothUtilsB = new BluetoothUtilsTemp(getActivity(),
-				getFragmentManager(), this);
-		mBluetoothUtilsB.setTag(BLUETOOTH_UTILS_B_TAG);
 
 		View v = inflater.inflate(R.layout.fragment_radar_tracking_temp,
 				container, false);
@@ -150,35 +139,14 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 				case MESSAGE_WHAT_CONNECT_DEVICE:
 					if (macaronHashMap.get(antiLostDeviceList.get(index))
 							.isAntiLostWriten()) {
-						switch (msg.arg1) {
-						case MESSAGE_ARG_1_BLUETOOTHUTILS_A:
-							mBluetoothUtilsA.close();
-							mBluetoothUtilsA.connectOnly(
-									antiLostDeviceList.get(index),
-									CONNECT_TIMEOUT);
-							break;
-						case MESSAGE_ARG_1_BLUETOOTHUTILS_B:
-							mBluetoothUtilsB.close();
-							mBluetoothUtilsB.connectOnly(
-									antiLostDeviceList.get(index),
-									CONNECT_TIMEOUT);
-							break;
-						}
+						mBluetoothUtilsA.close();
+						mBluetoothUtilsA.connectOnly(
+								antiLostDeviceList.get(index), CONNECT_TIMEOUT);
 					} else {
-						switch (msg.arg1) {
-						case MESSAGE_ARG_1_BLUETOOTHUTILS_A:
-							mBluetoothUtilsA.close();
-							mBluetoothUtilsA.writeAntiLostPeroid(
-									antiLostDeviceList.get(index),
-									WRITE_ANTI_LOST_TIMEOUT, "FFFF");
-							break;
-						case MESSAGE_ARG_1_BLUETOOTHUTILS_B:
-							mBluetoothUtilsB.close();
-							mBluetoothUtilsB.writeAntiLostPeroid(
-									antiLostDeviceList.get(index),
-									WRITE_ANTI_LOST_TIMEOUT, "FFFF");
-							break;
-						}
+						mBluetoothUtilsA.close();
+						mBluetoothUtilsA.writeAntiLostPeroid(
+								antiLostDeviceList.get(index),
+								WRITE_ANTI_LOST_TIMEOUT, "FFFF");
 					}
 					index++;
 					index = index % antiLostDeviceList.size();
@@ -197,9 +165,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		if (mBluetoothUtilsA != null) {
 			mBluetoothUtilsA.registerReceiver();
 		}
-		if (mBluetoothUtilsB != null) {
-			mBluetoothUtilsB.registerReceiver();
-		}
 	}
 
 	@Override
@@ -208,9 +173,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		if (mBluetoothUtilsA != null) {
 			mBluetoothUtilsA.unregisterReceiver();
 		}
-		if (mBluetoothUtilsB != null) {
-			mBluetoothUtilsB.registerReceiver();
-		}
 	}
 
 	@Override
@@ -218,9 +180,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 		super.onDestroy();
 		if (mBluetoothUtilsA != null) {
 			mBluetoothUtilsA.disconnect();
-		}
-		if (mBluetoothUtilsB != null) {
-			mBluetoothUtilsB.registerReceiver();
 		}
 	}
 
@@ -287,23 +246,6 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 							SelectKidsActivity.class);
 					startActivityForResult(intent, 1);
 				}
-
-				/*getActivity().startActivity(
-						new Intent(getActivity(), Test.class));*/
-				/*if (isAntiLostOpen) {
-					isAntiLostOpen = false;
-					openAntiTheft
-							.setBackgroundResource(R.drawable.ic_selected_off);
-					mAdapter.setAntiLostOpen(false);
-				} else {
-					isAntiLostOpen = true;
-					openAntiTheft.setBackgroundResource(R.drawable.ic_selected);
-					for (int i = 0; i < scannedDeviceList.size(); i++) {
-						scannedDeviceList.get(i).setAntiLostOpen(true);
-					}
-					mAdapter.setAntiLostOpen(true);
-				}
-				updateListView();*/
 			}
 		});
 	}
@@ -473,16 +415,7 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 			System.out.println(macaronHashMap);
 			isAntiLostOpen = true;
 			openAntiTheft.setBackgroundResource(R.drawable.ic_selected);
-			Message msg = mHandler.obtainMessage();
-			msg.what = MESSAGE_WHAT_CONNECT_DEVICE;
-			msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_A;
-			mHandler.sendMessage(msg);
-			if (antiLostDeviceList.size() > 1) {
-				msg = mHandler.obtainMessage();
-				msg.what = MESSAGE_WHAT_CONNECT_DEVICE;
-				msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_B;
-				mHandler.sendMessage(msg);
-			}
+			mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_CONNECT_DEVICE, 1000);
 		}
 	}
 
@@ -493,36 +426,20 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	}
 
 	@Override
-	public void onConnectCanceled(String tag, String mDeviceAddress) {
-		System.out.println("onConnectCanceled -->> " + tag + " -->> "
-				+ mDeviceAddress);
+	public void onConnectCanceled(String mDeviceAddress) {
+		System.out.println("onConnectCanceled ==>> " + mDeviceAddress);
 		System.out.println("   ");
-		Message msg = mHandler.obtainMessage();
-		msg.what = MESSAGE_WHAT_CONNECT_DEVICE;
-		if (tag.equals(BLUETOOTH_UTILS_A_TAG)) {
-			msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_A;
-		} else if (tag.equals(BLUETOOTH_UTILS_B_TAG)) {
-			msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_B;
-		}
-		mHandler.sendMessageDelayed(msg, 1000);
+		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_CONNECT_DEVICE, 1000);
 	}
 
 	@Override
-	public void onConnected(String tag, String mDeviceAddress) {
+	public void onConnected(String mDeviceAddress) {
 		if (macaronHashMap.get(mDeviceAddress).isAntiLostWriten()) {
-			System.out.println("onConnected -->> " + tag + " -->> "
-					+ mDeviceAddress);
+			System.out.println("onConnected  ==>> " + mDeviceAddress);
 			System.out.println("   ");
 			macaronHashMap.get(mDeviceAddress).setLastAppearTime(
 					System.currentTimeMillis());
-			Message msg = mHandler.obtainMessage();
-			msg.what = MESSAGE_WHAT_CONNECT_DEVICE;
-			if (tag.equals(BLUETOOTH_UTILS_A_TAG)) {
-				msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_A;
-			} else if (tag.equals(BLUETOOTH_UTILS_B_TAG)) {
-				msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_B;
-			}
-			mHandler.sendMessageDelayed(msg, 1000);
+			mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_CONNECT_DEVICE, 1000);
 		}
 	}
 
@@ -545,24 +462,16 @@ public class RadarTrackingFragmentTemp extends Fragment implements
 	}
 
 	@Override
-	public void onResult(boolean result, String tag, String mDeviceAddress) {
-		System.out.println("onResult -->> " + result + " -->> " + tag
-				+ " -->> " + mDeviceAddress);
+	public void onResult(boolean result, String mDeviceAddress) {
+		System.out.println("onResult ==>> " + result + " ==>> "
+				+ mDeviceAddress);
 		System.out.println("   ");
 		if (result) {
 			macaronHashMap.get(mDeviceAddress).setLastAppearTime(
 					System.currentTimeMillis());
 			macaronHashMap.get(mDeviceAddress).setAntiLostWriten(true);
 		}
-		Message msg = mHandler.obtainMessage();
-		msg.what = MESSAGE_WHAT_CONNECT_DEVICE;
-		if (tag.equals(BLUETOOTH_UTILS_A_TAG)) {
-			msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_A;
-		} else if (tag.equals(BLUETOOTH_UTILS_B_TAG)) {
-			msg.arg1 = MESSAGE_ARG_1_BLUETOOTHUTILS_B;
-		}
-		mHandler.sendMessageDelayed(msg, 1000);
-
+		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_CONNECT_DEVICE, 1000);
 	}
 
 }

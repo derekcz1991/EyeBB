@@ -27,7 +27,9 @@ public class LinearLayoutForListView extends LinearLayout {
 		this.removeAllViews();
 		for (int i = 0; i < count; i++) {
 			View v = adapter.getView(i, null, null);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.WRAP_CONTENT);
 			lp.setMargins(0, DensityUtil.dip2px(getContext(), 8), 0, 0);
 			v.setLayoutParams(lp);
 			v.setOnClickListener(this.onClickListener);

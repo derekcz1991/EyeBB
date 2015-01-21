@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.twinly.eyebb.R;
@@ -29,8 +28,6 @@ public class ChildBirthdayDialog extends Activity {
 
 	private String getBirthday;
 
-	private View dataPicker;
-	private EditText dataPickerEd;
 	private boolean datePickerChangeFlag = false;
 
 	@Override
@@ -68,7 +65,7 @@ public class ChildBirthdayDialog extends Activity {
 				finish();
 			}
 		});
-		
+
 		System.out.println("birthday--child---dialog-->" + getBirthday);
 		if (getBirthday != null && getBirthday.length() > 0) {
 			String[] sGetBirthday = getBirthday.split("/");
@@ -99,12 +96,10 @@ public class ChildBirthdayDialog extends Activity {
 
 					}
 				});
-		
-		
-		if(!datePickerChangeFlag){
+
+		if (!datePickerChangeFlag) {
 			monthOfYear = monthOfYear + 1;
-			dateOfBirth = dayOfMonth + "/" + monthOfYear + "/"
-					+ year;
+			dateOfBirth = dayOfMonth + "/" + monthOfYear + "/" + year;
 			System.out.println("dateOfBirth==>" + dateOfBirth);
 		}
 

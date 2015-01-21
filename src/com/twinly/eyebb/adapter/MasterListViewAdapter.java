@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.GrantKidsActivity;
 import com.twinly.eyebb.customview.CircleImageView;
@@ -25,7 +24,6 @@ public class MasterListViewAdapter extends BaseAdapter {
 	private Context context;
 	private List<User> data;
 	private LayoutInflater inflater;
-	private ImageLoader imageLoader;
 	private ArrayList<Child> auth_from_master_children_data;
 	private ArrayList<Child> new_children_data;
 
@@ -42,7 +40,6 @@ public class MasterListViewAdapter extends BaseAdapter {
 		this.context = context;
 		this.data = data;
 		this.auth_from_master_children_data = auth_from_master_children_data;
-		imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override

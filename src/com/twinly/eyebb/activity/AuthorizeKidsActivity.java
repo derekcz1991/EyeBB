@@ -17,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +42,6 @@ public class AuthorizeKidsActivity extends Activity {
 	private ArrayList<User> auth_to_guest_data;
 	private ArrayList<User> auth_from_master_data;
 	private ArrayList<Child> auth_from_master_children_data;
-	private LinearLayout content;
 	private TextView tvHint;
 	private TextView tvHint_auth_to;
 	private TextView tvHint_auth_from;
@@ -85,7 +83,6 @@ public class AuthorizeKidsActivity extends Activity {
 		tvHint_auth_to = (TextView) findViewById(R.id.tv_hint_authorized_to_others);
 		tvHint_auth_from = (TextView) findViewById(R.id.tv_hint_authorization_from_others);
 
-		content = (LinearLayout) findViewById(R.id.view_content);
 		auth_to_guest_data = new ArrayList<User>();
 		auth_from_master_data = new ArrayList<User>();
 		auth_from_master_children_data = new ArrayList<Child>();

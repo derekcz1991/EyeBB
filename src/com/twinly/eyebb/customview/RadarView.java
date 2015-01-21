@@ -10,9 +10,8 @@ import android.graphics.Paint;
 import android.view.View;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.bluetooth.BLEUtils;
 import com.twinly.eyebb.model.Macaron;
-import com.twinly.eyebb.utils.BLEUtils;
 
 public class RadarView extends View {
 	private int radius;
@@ -53,15 +52,15 @@ public class RadarView extends View {
 			theta = (int) (Math.random() * 91);
 			r = 0;
 			switch (BLEUtils.getRssiLevel(scannedDeviceList.get(i).getRssi())) {
-			case BleDeviceConstants.RSSI_STRONG:
+			case BLEUtils.RSSI_STRONG:
 				r = (int) (normalRadius + Math.random()
 						* (largeRadius - normalRadius + 1));
 				break;
-			case BleDeviceConstants.RSSI_GOOD:
+			case BLEUtils.RSSI_GOOD:
 				r = (int) (smallRadius + Math.random()
 						* (normalRadius - smallRadius + 1));
 				break;
-			case BleDeviceConstants.RSSI_WEAK:
+			case BLEUtils.RSSI_WEAK:
 				r = (int) (Math.random() * (smallRadius + 1));
 				break;
 			}

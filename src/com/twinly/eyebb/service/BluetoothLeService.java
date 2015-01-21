@@ -48,7 +48,6 @@ public class BluetoothLeService extends Service {
 	private BluetoothGatt mBluetoothGatt;
 	private int mConnectionState = STATE_DISCONNECTED;
 	private boolean isNeedDiscoverServices = true;
-	private String tag = "";
 
 	public static final int STATE_DISCONNECTED = 0;
 	public static final int STATE_CONNECTING = 1;
@@ -62,7 +61,6 @@ public class BluetoothLeService extends Service {
 	public final static String ACTION_GATT_WRITE_SUCCESS = "bluetooth.le.ACTION_GATT_WRITE_SUCCEED";
 	public final static String ACTION_GATT_WRITE_FAILURE = "bluetooth.le.ACTION_GATT_WRITE_FAILURE";
 	public final static String EXTRA_DATA = "bluetooth.le.EXTRA_DATA";
-	public final static String EXTRA_TAG = "bluetooth.le.EXTRA_TAG";
 
 	// Implements callback methods for GATT events that the app cares about. 
 	// For example, connection change and services discovered.
@@ -76,18 +74,17 @@ public class BluetoothLeService extends Service {
 				intentAction = ACTION_GATT_CONNECTED;
 				mConnectionState = STATE_CONNECTED;
 				broadcastUpdate(intentAction);
-				Log.i(TAG, tag + " ==> Connected to GATT server.");
+				Log.i(TAG, "==> Connected to GATT server.");
 				// Attempts to discover services after successful connection.
 				if (isNeedDiscoverServices) {
-					Log.i(TAG, tag
-							+ " ==> Attempting to start service discovery:");
+					Log.i(TAG, "==> Attempting to start service discovery:");
 					mBluetoothGatt.discoverServices();
 				}
 
 			} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
 				intentAction = ACTION_GATT_DISCONNECTED;
 				mConnectionState = STATE_DISCONNECTED;
-				Log.i(TAG, tag + " ==> Disconnected from GATT server.");
+				Log.i(TAG, "==> Disconnected from GATT server.");
 				broadcastUpdate(intentAction);
 			}
 		}
@@ -131,14 +128,12 @@ public class BluetoothLeService extends Service {
 
 	private void broadcastUpdate(final String action) {
 		final Intent intent = new Intent(action);
-		intent.putExtra(EXTRA_TAG, tag);
 		sendBroadcast(intent);
 	}
 
 	private void broadcastUpdate(final String action,
 			final BluetoothGattCharacteristic characteristic) {
 		final Intent intent = new Intent(action);
-		intent.putExtra(EXTRA_TAG, tag);
 		final byte[] data = characteristic.getValue();
 		if (data != null && data.length > 0) {
 			final StringBuilder stringBuilder = new StringBuilder(data.length);
@@ -237,8 +232,7 @@ public class BluetoothLeService extends Service {
 		// autoConnect
 		// parameter to false.
 		mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
-		Log.d(TAG, tag + " ==>> Trying to create a new connection ==>> "
-				+ address);
+		Log.d(TAG, "==>> Trying to create a new connection ==>> " + address);
 		// System.out.println("Trying to create a new connection " + address);
 		// mBluetoothDeviceAddress = address;
 		mConnectionState = STATE_CONNECTING;
@@ -338,10 +332,6 @@ public class BluetoothLeService extends Service {
 
 	public void setNeedDiscoverServices(boolean isNeedDiscoverServices) {
 		this.isNeedDiscoverServices = isNeedDiscoverServices;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
 	}
 
 }

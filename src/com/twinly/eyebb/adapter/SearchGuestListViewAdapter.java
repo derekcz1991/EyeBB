@@ -9,16 +9,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.User;
 
 public class SearchGuestListViewAdapter extends BaseAdapter {
-	private Context context;
 	private List<User> data;
 	private LayoutInflater inflater;
-	private ImageLoader imageLoader;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -29,10 +26,7 @@ public class SearchGuestListViewAdapter extends BaseAdapter {
 
 	public SearchGuestListViewAdapter(Context context, List<User> data) {
 		inflater = LayoutInflater.from(context);
-		this.context = context;
 		this.data = data;
-
-		imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override
@@ -56,8 +50,8 @@ public class SearchGuestListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_search_guest, parent,
-					false);
+			convertView = inflater.inflate(R.layout.list_item_search_guest,
+					parent, false);
 			viewHolder = new ViewHolder();
 			// viewHolder.avatar = (CircleImageView) convertView
 			// .findViewById(R.id.avatar);
@@ -67,7 +61,7 @@ public class SearchGuestListViewAdapter extends BaseAdapter {
 
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.phone = (TextView) convertView.findViewById(R.id.phone);
-		
+
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -85,7 +79,6 @@ public class SearchGuestListViewAdapter extends BaseAdapter {
 		// viewHolder.avatar.setImageDrawable(context.getResources()
 		// .getDrawable(R.drawable.ic_stub));
 		// }
-	
 
 		viewHolder.phone.setText(guest.getPhoneNumber());
 		viewHolder.name.setText(guest.getName());

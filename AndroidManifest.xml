@@ -251,49 +251,9 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.RadarShowAllScanImageDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.RadarShowAllMissImageDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.RadarServicesActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.RadarCharacteristicsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.RadarSOSServicesActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.bluetooth.RadarSOSCharacteristicsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-
-        <service
-            android:name="com.twinly.eyebb.bluetooth.BluetoothLeService"
-            android:enabled="true" />
-
-        <activity
             android:name="com.twinly.eyebb.activity.KidProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.BindingChildMacaronActivityBackup"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.BindingChildMacaronActivity"
@@ -334,29 +294,9 @@
         </receiver>
 
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
-        <!-- <service
-            android:name="com.twinly.eyebb.service.BleServicesService"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.twinly.eyebb.service.BLE_SERVICES_SERVICES" >
-                </action>
-            </intent-filter>
-        </service> -->
-        
         <service
             android:name="com.twinly.eyebb.service.BluetoothLeService"
             android:enabled="true" />
-        <service
-            android:name="com.twinly.eyebb.service.BluetoothLeServiceTemp"
-            android:enabled="true" />
-        <!-- <service
-            android:name="com.twinly.eyebb.service.BleCharacteristicsService"
-            android:enabled="true" >
-            <intent-filter>
-                <action android:name="com.twinly.eyebb.service.BLE_CHARACTERISTICS_SERVICES" >
-                </action>
-            </intent-filter>
-        </service> -->
     </application>
 
 </manifest>

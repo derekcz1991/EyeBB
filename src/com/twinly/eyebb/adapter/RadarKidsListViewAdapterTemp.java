@@ -17,12 +17,11 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import com.twinly.eyebb.bluetooth.BLEUtils;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Macaron;
-import com.twinly.eyebb.utils.BLEUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class RadarKidsListViewAdapterTemp extends BaseAdapter {
@@ -166,21 +165,21 @@ public class RadarKidsListViewAdapterTemp extends BaseAdapter {
 
 		int rssi = deviceList.get(position).getRssi();
 		switch (BLEUtils.getRssiLevel(rssi)) {
-		case BleDeviceConstants.RSSI_STRONG:
+		case BLEUtils.RSSI_STRONG:
 			viewHolder.deviceRssi.setText(context.getResources().getString(
 					R.string.text_rssi_strong)
 					+ "(" + rssi + ")");
 			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
 					R.color.sky_blue));
 			break;
-		case BleDeviceConstants.RSSI_GOOD:
+		case BLEUtils.RSSI_GOOD:
 			viewHolder.deviceRssi.setText(context.getResources().getString(
 					R.string.text_rssi_good)
 					+ "(" + rssi + ")");
 			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
 					R.color.dark_grey));
 			break;
-		case BleDeviceConstants.RSSI_WEAK:
+		case BLEUtils.RSSI_WEAK:
 			viewHolder.deviceRssi.setText(context.getResources().getString(
 					R.string.text_rssi_weak)
 					+ "(" + rssi + ")");

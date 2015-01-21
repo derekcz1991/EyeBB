@@ -34,6 +34,7 @@ public class RadarViewFragment extends Fragment {
 		radarViewContainer.getViewTreeObserver().addOnGlobalLayoutListener(
 				new OnGlobalLayoutListener() {
 
+					@SuppressWarnings("deprecation")
 					@Override
 					public void onGlobalLayout() {
 						radarView.initialize(

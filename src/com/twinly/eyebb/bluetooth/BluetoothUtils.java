@@ -1,4 +1,4 @@
-package com.twinly.eyebb.utils;
+package com.twinly.eyebb.bluetooth;
 
 import java.util.List;
 import java.util.Timer;
@@ -21,7 +21,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.bluetooth.BleDevicesScanner;
 import com.twinly.eyebb.dialog.ErrorDialog;
 import com.twinly.eyebb.service.BluetoothLeService;
 
@@ -50,7 +49,6 @@ public class BluetoothUtils {
 	private final static String TAG = BluetoothUtils.class.getSimpleName();
 
 	private Context context;
-	private String tag = "";
 	private String mDeviceAddress;
 	private BleConnectCallback callback;
 	private FragmentManager manager;
@@ -76,12 +74,12 @@ public class BluetoothUtils {
 		/**
 		 * UI update when cancel connect to BLE device, always connect to device failed
 		 */
-		public void onConnectCanceled(String tag, String mDeviceAddress);
+		public void onConnectCanceled(String mDeviceAddress);
 
 		/**
 		 * UI update when connected to BLE device
 		 */
-		public void onConnected(String tag, String mDeviceAddress);
+		public void onConnected(String mDeviceAddress);
 
 		/**
 		 * UI update when disconnected to BLE device
@@ -103,7 +101,7 @@ public class BluetoothUtils {
 		 * UI update when read or write BLE device
 		 * @param result
 		 */
-		public void onResult(boolean result, String tag, String mDeviceAddress);
+		public void onResult(boolean result, String mDeviceAddress);
 	}
 
 	public BluetoothUtils(Context context, FragmentManager manager,
@@ -115,53 +113,46 @@ public class BluetoothUtils {
 		mGattUpdateReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if (intent.getStringExtra(BluetoothLeService.EXTRA_TAG).equals(
-						tag)) {
-					final String action = intent.getAction();
-					/*System.out.println("mGattUpdateReceiver ====>>>> " + action
-							+ " " + timer);*/
-					if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+				final String action = intent.getAction();
+				/*System.out.println("mGattUpdateReceiver ====>>>> " + action
+						+ " " + timer);*/
+				if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+					timer.cancel();
+					callback.onConnected(mDeviceAddress);
+				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
+						.equals(action)) {
+					callback.onDisConnected();
+				} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
+						.equals(action)) {
+					timer.cancel();
+					callback.onDiscovered();
+					gattServices = mBluetoothLeService
+							.getSupportedGattServices();
+					onDiscovered();
+				} else if (BluetoothLeService.ACTION_GATT_READ_SUCCESS
+						.equals(action)) {
+					callback.onDataAvailable(intent
+							.getStringExtra(BluetoothLeService.EXTRA_DATA));
+				} else if (BluetoothLeService.ACTION_GATT_READ_FAILURE
+						.equals(action)) {
+					callback.onResult(false, mDeviceAddress);
+				} else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS
+						.equals(action)) {
+					if (isPasswordSet) {
 						timer.cancel();
-						callback.onConnected(tag, mDeviceAddress);
-					} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-							.equals(action)) {
-						callback.onDisConnected();
-					} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
-							.equals(action)) {
-						timer.cancel();
-						callback.onDiscovered();
-						gattServices = mBluetoothLeService
-								.getSupportedGattServices();
+						callback.onResult(true, mDeviceAddress);
+					} else {
+						isPasswordSet = true;
 						onDiscovered();
-					} else if (BluetoothLeService.ACTION_GATT_READ_SUCCESS
-							.equals(action)) {
-						callback.onDataAvailable(intent
-								.getStringExtra(BluetoothLeService.EXTRA_DATA));
-					} else if (BluetoothLeService.ACTION_GATT_READ_FAILURE
-							.equals(action)) {
-						callback.onResult(false, tag, mDeviceAddress);
-					} else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS
-							.equals(action)) {
-						if (isPasswordSet) {
-							timer.cancel();
-							callback.onResult(true, tag, mDeviceAddress);
-						} else {
-							isPasswordSet = true;
-							onDiscovered();
-						}
-					} else if (BluetoothLeService.ACTION_GATT_WRITE_FAILURE
-							.equals(action)) {
-						timer.cancel();
-						callback.onResult(false, tag, mDeviceAddress);
 					}
+				} else if (BluetoothLeService.ACTION_GATT_WRITE_FAILURE
+						.equals(action)) {
+					timer.cancel();
+					callback.onResult(false, mDeviceAddress);
 				}
 
 			}
 		};
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
 	}
 
 	/**
@@ -403,7 +394,6 @@ public class BluetoothUtils {
 						IBinder service) {
 					mBluetoothLeService = ((BluetoothLeService.LocalBinder) service)
 							.getService();
-					System.out.println(tag + " ==>> " + mBluetoothLeService);
 					if (!mBluetoothLeService.initialize()) {
 						Log.e(TAG, "Unable to initialize Bluetooth");
 					}
@@ -414,7 +404,6 @@ public class BluetoothUtils {
 						} else {
 							mBluetoothLeService.setNeedDiscoverServices(true);
 						}
-						mBluetoothLeService.setTag(tag);
 						mBluetoothLeService.connect(mDeviceAddress);
 					}
 
@@ -439,7 +428,6 @@ public class BluetoothUtils {
 				} else {
 					mBluetoothLeService.setNeedDiscoverServices(true);
 				}
-				mBluetoothLeService.setTag(tag);
 				mBluetoothLeService.connect(mDeviceAddress);
 			}
 		}
@@ -451,7 +439,7 @@ public class BluetoothUtils {
 			public void run() {
 				if (mBluetoothLeService != null) {
 					if (mBluetoothLeService.getmConnectionState() != BluetoothLeService.STATE_CONNECTED) {
-						callback.onConnectCanceled(tag, mDeviceAddress);
+						callback.onConnectCanceled(mDeviceAddress);
 						//mBluetoothLeService.disconnect();
 						//mBluetoothLeService = null;
 					}
@@ -526,8 +514,8 @@ public class BluetoothUtils {
 	 */
 	private void write(String serviceUuid, String gattUuid, String value,
 			boolean needCallback) {
-		System.out.println(tag + " == >> write == >> " + gattUuid + "  "
-				+ value + "  " + mDeviceAddress);
+		System.out.println("write == >> " + gattUuid + "  " + value + "  "
+				+ mDeviceAddress);
 		for (BluetoothGattService gattService : gattServices) {
 			String uuid = gattService.getUuid().toString();
 			//System.out.println("Service == >> " + uuid);
@@ -543,7 +531,7 @@ public class BluetoothUtils {
 						if (!mBluetoothLeService
 								.writeCharacteristic(gattCharacteristic)) {
 							if (needCallback) {
-								callback.onResult(false, tag, mDeviceAddress);
+								callback.onResult(false, mDeviceAddress);
 							}
 						}
 					}
@@ -572,7 +560,7 @@ public class BluetoothUtils {
 						if (!mBluetoothLeService
 								.readCharacteristic(gattCharacteristic)) {
 							//System.out.println("Characteristic == >> false");
-							callback.onResult(false, tag, mDeviceAddress);
+							callback.onResult(false, mDeviceAddress);
 						}
 					}
 				}

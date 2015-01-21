@@ -33,7 +33,6 @@ public class GrantKidsActivity extends Activity {
 	private ListView listView;
 	private GrantKidsListViewFromGuestAdapter guest_adapter;
 	private GrantKidsListViewFromMasterAdapter master_adapter;
-	private boolean isSortByName;
 	private ArrayList<Child> returnList;
 	private ArrayList<Child> childList;
 	// private Button btnConfirm;

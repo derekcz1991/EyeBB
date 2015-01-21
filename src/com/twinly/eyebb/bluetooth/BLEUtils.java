@@ -1,17 +1,14 @@
-package com.twinly.eyebb.utils;
+package com.twinly.eyebb.bluetooth;
 
-
-
-
-import com.twinly.eyebb.constant.BleDeviceConstants;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-
 public class BLEUtils {
-	public BLEUtils() {
-	}
+	public static final int RSSI_STRONG = -50;
+	public static final int RSSI_GOOD = -70;
+	public static final int RSSI_WEAK = -100;
 
 	public static String bytesToHex(byte[] bytes, int begin, int length) {
 		StringBuilder sbuf = new StringBuilder();
@@ -19,7 +16,7 @@ public class BLEUtils {
 			int intVal = bytes[idx] & 0xff;
 			if (intVal < 0x10)
 				sbuf.append("0");
-			sbuf.append(Integer.toHexString(intVal).toUpperCase());
+			sbuf.append(Integer.toHexString(intVal).toUpperCase(Locale.US));
 		}
 		return sbuf.toString();
 	}
@@ -40,7 +37,7 @@ public class BLEUtils {
 			if (hex.length() == 1) {
 				hex = '0' + hex;
 			}
-			System.out.print(hex.toUpperCase() + " ");
+			System.out.print(hex.toUpperCase(Locale.US) + " ");
 		}
 		System.out.println("");
 	}
@@ -58,7 +55,7 @@ public class BLEUtils {
 			if (hex.length() == 1) {
 				hex = '0' + hex;
 			}
-			ret += hex.toUpperCase();
+			ret += hex.toUpperCase(Locale.US);
 		}
 		return ret;
 	}
@@ -130,14 +127,13 @@ public class BLEUtils {
 	}
 
 	public static int getRssiLevel(int rssi) {
-		if (rssi > BleDeviceConstants.RSSI_STRONG) {
-			return BleDeviceConstants.RSSI_STRONG;
-		} else if (rssi < BleDeviceConstants.RSSI_GOOD) {
-			return BleDeviceConstants.RSSI_WEAK;
+		if (rssi > RSSI_STRONG) {
+			return RSSI_STRONG;
+		} else if (rssi < RSSI_GOOD) {
+			return RSSI_WEAK;
 		} else {
-			return BleDeviceConstants.RSSI_GOOD;
+			return RSSI_GOOD;
 		}
 	}
 
-	
 }

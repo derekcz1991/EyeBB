@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.LancherActivity;
-import com.twinly.eyebb.activity.MainActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 import com.twinly.eyebb.activity.WebViewActivity;
 import com.twinly.eyebb.adapter.NotificationsListViewAdapter;

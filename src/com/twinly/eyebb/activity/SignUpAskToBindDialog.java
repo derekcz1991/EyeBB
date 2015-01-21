@@ -9,8 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.bluetooth.BLEUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.utils.BLEUtils;
 
 public class SignUpAskToBindDialog extends Activity {
 	private LinearLayout btn_skip;

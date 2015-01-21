@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TabHost;
 
 import com.twinly.eyebb.R;
@@ -50,7 +49,6 @@ public class MainActivity extends FragmentActivity implements
 	private KeepSessionAliveTask keepSessionAliveTask;
 	private int timeoutCounter;
 	private View profileLabel;
-	private ImageView notification_dot;
 	private HandleNotificationDot handleNotificationDot;
 
 	@Override
@@ -62,8 +60,6 @@ public class MainActivity extends FragmentActivity implements
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 
-	
-		
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
@@ -78,13 +74,13 @@ public class MainActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		bar.setVisibility(View.INVISIBLE);
-		
+
 		handleNotificationDot = new HandleNotificationDot();
-		registerReceiver(handleNotificationDot,
-				new IntentFilter(BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT));
-		registerReceiver(handleNotificationDot,
-				new IntentFilter(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT));
-		
+		registerReceiver(handleNotificationDot, new IntentFilter(
+				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT));
+		registerReceiver(handleNotificationDot, new IntentFilter(
+				BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT));
+
 	}
 
 	@Override
@@ -93,7 +89,7 @@ public class MainActivity extends FragmentActivity implements
 		if (keepSessionAliveTask != null) {
 			keepSessionAliveTask.cancel(true);
 		}
-		
+
 		//unregisterReceiver
 		try {
 			unregisterReceiver(handleNotificationDot);
@@ -105,7 +101,7 @@ public class MainActivity extends FragmentActivity implements
 				throw e;
 			}
 		}
-	
+
 	}
 
 	@SuppressLint("InflateParams")
@@ -114,7 +110,6 @@ public class MainActivity extends FragmentActivity implements
 		mTabHost.setup();
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		notification_dot = (ImageView) findViewById(R.id.notification_number);
 		mViewPager.setOffscreenPageLimit(3);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
@@ -166,13 +161,12 @@ public class MainActivity extends FragmentActivity implements
 				mTabHost.newTabSpec("Profile").setIndicator(profileLabel),
 				profileFragment);
 
-		if(SharePrefsUtils.isNotificationDot(MainActivity.this)){
-			
-		}else{
+		if (SharePrefsUtils.isNotificationDot(MainActivity.this)) {
+
+		} else {
 			profileLabel.findViewById(R.id.notification_number).setVisibility(
 					View.GONE);
 		}
-	
 
 		mTabHost.setCurrentTab(0);
 		if (savedInstanceState != null) {
@@ -298,7 +292,6 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	
 	/**
 	 *  broadcast notificaiton dot receiver 
 	 *  
@@ -308,16 +301,17 @@ public class MainActivity extends FragmentActivity implements
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (action.equals(BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT)) {
-				profileLabel.findViewById(R.id.notification_number).setVisibility(View.VISIBLE);
+				profileLabel.findViewById(R.id.notification_number)
+						.setVisibility(View.VISIBLE);
 				SharePrefsUtils.setNotificationDot(MainActivity.this, true);
 
-			}else if(action.equals(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT)){
-				profileLabel.findViewById(R.id.notification_number).setVisibility(View.GONE);
+			} else if (action
+					.equals(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT)) {
+				profileLabel.findViewById(R.id.notification_number)
+						.setVisibility(View.GONE);
 				SharePrefsUtils.setNotificationDot(MainActivity.this, false);
 			}
 		}
 	};
-	
-
 
 }

@@ -13,7 +13,6 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.GrantKidsActivity;
 import com.twinly.eyebb.customview.CircleImageView;
@@ -23,7 +22,6 @@ public class GuestListViewAdapter extends BaseAdapter {
 	private Context context;
 	private List<User> data;
 	private LayoutInflater inflater;
-	private ImageLoader imageLoader;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -36,8 +34,6 @@ public class GuestListViewAdapter extends BaseAdapter {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
-
-		imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override
@@ -64,12 +60,6 @@ public class GuestListViewAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.list_item_guest, parent,
 					false);
 			viewHolder = new ViewHolder();
-			// viewHolder.avatar = (CircleImageView) convertView
-			// .findViewById(R.id.avatar);
-			//
-			// //NO NEED
-			// viewHolder.avatar.setVisibility(View.GONE);
-
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.phone = (TextView) convertView.findViewById(R.id.phone);
 			viewHolder.btn_guest_view = (RelativeLayout) convertView
@@ -85,13 +75,6 @@ public class GuestListViewAdapter extends BaseAdapter {
 
 	private void setUpView(ViewHolder viewHolder, int position) {
 		final User guest = data.get(position);
-		// if (TextUtils.isEmpty(guest.getIcon()) == false) {
-		// imageLoader.displayImage(guest.getIcon(), viewHolder.avatar,
-		// CommonUtils.getDisplayImageOptions(), null);
-		// } else {
-		// viewHolder.avatar.setImageDrawable(context.getResources()
-		// .getDrawable(R.drawable.ic_stub));
-		// }
 		viewHolder.btn_guest_view.setOnClickListener(new OnClickListener() {
 
 			@Override

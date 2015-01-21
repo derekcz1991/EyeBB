@@ -2,7 +2,6 @@ package com.twinly.eyebb.activity;
 
 import android.app.Activity;
 import android.app.Service;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,7 +12,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Chronometer;
-import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -21,42 +19,24 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class BeepDialog extends Activity {
 	// record the time
 	private Chronometer timer;
-	private TextView secText;
 	// 震動頻率
 	private long pattern[] = { 1000, 800, 1000, 800 };
 	private Vibrator vibrator;
 	// sound
-	private AudioManager aManager;;
 	private MediaPlayer mPlayer;
-
-	// sharedPreferences
-//	SharedPreferences SandVpreferences;
-//	private SharedPreferences.Editor editor;
 
 	// boolean sound and vibrate
 	private Boolean isSound;
 	private Boolean isVibrate;
-	private Boolean isStart = false;
-	//public static BeepDialog instance = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.dialog_beep);
-		//SandVpreferences = getSharedPreferences("soundAndVibrate", MODE_PRIVATE);
-//		isSound = SandVpreferences.getBoolean("sound", true);
-//		isVibrate = SandVpreferences.getBoolean("vibrate", true);
 		isSound = SharePrefsUtils.isSoundOn(BeepDialog.this);
 		isVibrate = SharePrefsUtils.isVibrateOn(BeepDialog.this);
 
-		isStart = true;
-//		editor = SandVpreferences.edit();
-//		editor.putBoolean("isStartBeepDialog", isStart);
-//		editor.commit();
-		//instance = this;
-
-		// secText = (TextView) findViewById(R.id.sec_text);
 		getTime();
 		if (isVibrate) {
 			vibrate();
@@ -98,8 +78,6 @@ public class BeepDialog extends Activity {
 
 	// SOUND
 	private void sound() {
-		aManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
-
 		mPlayer = new MediaPlayer();
 		mPlayer = MediaPlayer.create(BeepDialog.this, R.raw.antibeep);
 		mPlayer.setLooping(true);

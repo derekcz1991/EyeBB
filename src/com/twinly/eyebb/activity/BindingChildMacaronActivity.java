@@ -17,11 +17,11 @@ import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.utils.BluetoothUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 
@@ -308,12 +308,12 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnectCanceled(String tag, String mDeviceAddress) {
+	public void onConnectCanceled(String mDeviceAddress) {
 		writeFailed();
 	}
 
 	@Override
-	public void onConnected(String tag, String mDeviceAddress) {
+	public void onConnected(String mDeviceAddress) {
 		// do nothing
 	}
 
@@ -341,7 +341,7 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onResult(boolean result, String tag, String mDeviceAddress) {
+	public void onResult(boolean result, String mDeviceAddress) {
 		if (result) {
 			if (bindStep == BIND_STEP_DISCOVERED) {
 				bindStep = BIND_STEP_MAJOR_WRITEN;

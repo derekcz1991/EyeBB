@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.utils.BluetoothUtils;
+import com.twinly.eyebb.bluetooth.BluetoothUtils;
 
 public class Test extends Activity implements BluetoothUtils.BleConnectCallback {
 	private ArrayList<String> list;
@@ -114,12 +114,12 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 	}
 
 	@Override
-	public void onConnectCanceled(String tag, String mDeviceAddress) {
+	public void onConnectCanceled(String mDeviceAddress) {
 		mHandler.sendEmptyMessageDelayed(1, 500);
 	}
 
 	@Override
-	public void onConnected(String tag, String mDeviceAddress) {
+	public void onConnected(String mDeviceAddress) {
 		mHandler.sendEmptyMessageDelayed(2, 1000);
 	}
 
@@ -142,7 +142,7 @@ public class Test extends Activity implements BluetoothUtils.BleConnectCallback 
 	}
 
 	@Override
-	public void onResult(boolean result, String tag, String mDeviceAddress) {
+	public void onResult(boolean result, String mDeviceAddress) {
 		// TODO Auto-generated method stub
 
 	}
