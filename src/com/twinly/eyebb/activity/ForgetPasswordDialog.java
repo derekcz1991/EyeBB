@@ -135,9 +135,8 @@ public class ForgetPasswordDialog extends Activity {
 		map.put("dob", birthday);
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(ForgetPasswordDialog.this,
-					HttpConstants.RESET_PASSWORD, map);
+			String retStr = HttpRequestUtils.post(HttpConstants.RESET_PASSWORD,
+					map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {

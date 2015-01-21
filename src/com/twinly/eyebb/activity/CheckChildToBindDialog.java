@@ -114,8 +114,7 @@ public class CheckChildToBindDialog extends Activity {
 				guardianId == -1L ? "" : String.valueOf(guardianId));
 
 		try {
-			String retStr = HttpRequestUtils.postTo(
-					CheckChildToBindDialog.this, HttpConstants.CHILD_GUA_REL,
+			String retStr = HttpRequestUtils.post(HttpConstants.CHILD_GUA_REL,
 					map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
@@ -192,7 +191,8 @@ public class CheckChildToBindDialog extends Activity {
 				System.out.println("qrcode------->"
 						+ bundle.getString("result"));
 				String macAddress = bundle.getString("result");
-				macAddress = RegularExpression.getValidMacAddress(this, macAddress);
+				macAddress = RegularExpression.getValidMacAddress(this,
+						macAddress);
 				if (macAddress != null) {
 					Intent intent = new Intent();
 					intent.setClass(this, BindingChildMacaronActivity.class);

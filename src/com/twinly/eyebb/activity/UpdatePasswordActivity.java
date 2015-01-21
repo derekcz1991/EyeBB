@@ -3,7 +3,6 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -128,9 +127,8 @@ public class UpdatePasswordActivity extends Activity {
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(
-					UpdatePasswordActivity.this, HttpConstants.UPDATE_PASSWORD,
-					map);
+			String retStr = HttpRequestUtils.post(
+					HttpConstants.UPDATE_PASSWORD, map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
@@ -239,8 +237,6 @@ public class UpdatePasswordActivity extends Activity {
 
 		}
 	};
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

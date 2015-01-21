@@ -268,7 +268,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				e.printStackTrace();
 			}
 			String result = HttpRequestUtils.get(
-					"reportService/api/childrenList", null);
+					HttpConstants.GET_CHILDREN_LIST, null);
 			if (autoUpdateFlag == false) {
 				try {
 					new JSONObject(result);
@@ -279,7 +279,7 @@ public class IndoorLocatorFragment extends Fragment implements
 						e1.printStackTrace();
 					}
 					result = HttpRequestUtils.get(
-							"reportService/api/childrenList", null);
+							HttpConstants.GET_CHILDREN_LIST, null);
 				}
 			}
 			return result;

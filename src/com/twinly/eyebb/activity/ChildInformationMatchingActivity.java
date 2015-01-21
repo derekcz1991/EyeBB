@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,9 +44,9 @@ public class ChildInformationMatchingActivity extends Activity {
 	private boolean birthdayFlag = false;
 	private boolean kindergartenFlag = false;
 
-	private TextView ic_kindergarten;
-	private TextView ic_childName;
-	private TextView ic_birthday;
+	private ImageView icKindergarten;
+	private TextView icChildName;
+	private TextView icBirthday;
 
 	public static final int CONNECT_ERROR = 1;
 	public static final int CHILD_EXIST = 2;
@@ -70,9 +71,9 @@ public class ChildInformationMatchingActivity extends Activity {
 		kindergarten = (TextView) findViewById(R.id.kindergarten);
 		childBirthday = (TextView) findViewById(R.id.birthday);
 		binding = (Button) findViewById(R.id.btn_confirm);
-		ic_kindergarten = (TextView) findViewById(R.id.ic_kindergarten);
-		ic_childName = (TextView) findViewById(R.id.ic_child_name);
-		ic_birthday = (TextView) findViewById(R.id.ic_birthday);
+		icKindergarten = (ImageView) findViewById(R.id.ic_kindergarten);
+		icChildName = (TextView) findViewById(R.id.ic_child_name);
+		icBirthday = (TextView) findViewById(R.id.ic_birthday);
 
 		kindergartenItem.setOnClickListener(new OnClickListener() {
 
@@ -122,34 +123,34 @@ public class ChildInformationMatchingActivity extends Activity {
 				childName = userName.getText().toString();
 				if (childName != null && childName.length() > 0) {
 					childNameFlag = true;
-					ic_childName.setBackground(getResources().getDrawable(
+					icChildName.setBackground(getResources().getDrawable(
 							R.drawable.ic_login_name));
 				} else {
 					childNameFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					ic_childName.setBackground(getResources().getDrawable(
+					icChildName.setBackground(getResources().getDrawable(
 							R.drawable.ic_cross));
 				}
 
 				if (birthday != null && birthday.length() > 0) {
 					birthdayFlag = true;
-					ic_birthday.setBackground(getResources().getDrawable(
+					icBirthday.setBackground(getResources().getDrawable(
 							R.drawable.ic_login_email));
 				} else {
 					birthdayFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					ic_birthday.setBackground(getResources().getDrawable(
+					icBirthday.setBackground(getResources().getDrawable(
 							R.drawable.ic_cross));
 				}
 
 				if (kindergartenId >= 0) {
 					kindergartenFlag = true;
 					//setTitle(getString(R.string.text_something_has_gone_wrong));
-					ic_kindergarten.setVisibility(View.INVISIBLE);
+					icKindergarten.setVisibility(View.INVISIBLE);
 				} else {
 					kindergartenFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					ic_kindergarten.setVisibility(View.VISIBLE);
+					icKindergarten.setVisibility(View.VISIBLE);
 
 				}
 
@@ -205,9 +206,8 @@ public class ChildInformationMatchingActivity extends Activity {
 		map.put("kId", String.valueOf(kindergartenId));
 
 		try {
-			String retStr = HttpRequestUtils.postTo(
-					ChildInformationMatchingActivity.this,
-					HttpConstants.CHILD_CHECKING, map);
+			String retStr = HttpRequestUtils.post(HttpConstants.CHILD_CHECKING,
+					map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {

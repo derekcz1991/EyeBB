@@ -66,7 +66,7 @@ public class UnbindDeviceDialog extends Activity {
 
 		map.put("childId", String.valueOf(childId));
 		try {
-			String retStr = HttpRequestUtils.postTo(UnbindDeviceDialog.this,
+			String retStr = HttpRequestUtils.post(
 					HttpConstants.UNBIND_CHILD_BEACON, map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)

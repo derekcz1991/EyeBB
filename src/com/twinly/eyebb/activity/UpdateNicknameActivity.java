@@ -3,7 +3,6 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -107,9 +106,8 @@ public class UpdateNicknameActivity extends Activity {
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(
-					UpdateNicknameActivity.this, HttpConstants.CHANGE_NICKNAME,
-					map);
+			String retStr = HttpRequestUtils.post(
+					HttpConstants.CHANGE_NICKNAME, map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
@@ -203,8 +201,6 @@ public class UpdateNicknameActivity extends Activity {
 
 		}
 	};
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

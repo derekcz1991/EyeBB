@@ -59,20 +59,16 @@ public class FeedbackDialog extends Activity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				// TODO Auto-generated method stub
 				temp = s;
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 				editStart = ed.getSelectionStart();
 				editEnd = ed.getSelectionEnd();
 				textLast.setText("(" + temp.length() + "/144)");
@@ -178,9 +174,7 @@ public class FeedbackDialog extends Activity {
 		map.put("type", type);
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(FeedbackDialog.this,
-					HttpConstants.FEED_BACK, map);
+			String retStr = HttpRequestUtils.post(HttpConstants.FEED_BACK, map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {

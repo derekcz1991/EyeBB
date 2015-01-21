@@ -70,7 +70,6 @@ public class AuthorizeKidsActivity extends Activity {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				postFindGuestsToServer();
 			}
 		};
@@ -139,37 +138,36 @@ public class AuthorizeKidsActivity extends Activity {
 					if (guests.length() > 0) {
 						for (int i = 0; i < guests.length(); i++) {
 							JSONObject guest = ((JSONObject) guests.opt(i))
-									.getJSONObject(HttpConstants.JSON_KEY_GUARDIN);
+									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User guestMode = new User();
 							System.out
 									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_GUARDIN_ID));
+											+ guest.getString(HttpConstants.JSON_KEY_USER_ID));
 
 							System.out
 									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
+											+ guest.getString(HttpConstants.JSON_KEY_USER_NAME));
 							System.out
 									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
+											+ guest.getString(HttpConstants.JSON_KEY_USER_PHONE));
 							System.out
 									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_GUARDIN_TYPE));
+											+ guest.getString(HttpConstants.JSON_KEY_USER_TYPE));
 							System.out
 									.println("--------------------------------------");
 
-							guestMode
-									.setGuardianId(guest
-											.getString(HttpConstants.JSON_KEY_GUARDIN_ID));
+							guestMode.setGuardianId(guest
+									.getString(HttpConstants.JSON_KEY_USER_ID));
 							guestMode
 									.setName(guest
-											.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
+											.getString(HttpConstants.JSON_KEY_USER_NAME));
 							guestMode
 									.setPhoneNumber(guest
-											.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
+											.getString(HttpConstants.JSON_KEY_USER_PHONE));
 							guestMode
 									.setType(guest
-											.getString(HttpConstants.JSON_KEY_GUARDIN_TYPE));
+											.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
 							auth_to_guest_data.add(guestMode);
 						}
@@ -198,37 +196,36 @@ public class AuthorizeKidsActivity extends Activity {
 					if (masters.length() > 0) {
 						for (int i = 0; i < masters.length(); i++) {
 							JSONObject master = ((JSONObject) masters.opt(i))
-									.getJSONObject(HttpConstants.JSON_KEY_GUARDIN);
+									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User masterMode = new User();
 							System.out
 									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_GUARDIN_ID));
+											+ master.getString(HttpConstants.JSON_KEY_USER_ID));
 
 							System.out
 									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
+											+ master.getString(HttpConstants.JSON_KEY_USER_NAME));
 							System.out
 									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
+											+ master.getString(HttpConstants.JSON_KEY_USER_PHONE));
 							System.out
 									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_GUARDIN_TYPE));
+											+ master.getString(HttpConstants.JSON_KEY_USER_TYPE));
 							System.out
 									.println("--------------------------------------");
 
-							masterMode
-									.setGuardianId(master
-											.getString(HttpConstants.JSON_KEY_GUARDIN_ID));
+							masterMode.setGuardianId(master
+									.getString(HttpConstants.JSON_KEY_USER_ID));
 							masterMode
 									.setName(master
-											.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
+											.getString(HttpConstants.JSON_KEY_USER_NAME));
 							masterMode
 									.setPhoneNumber(master
-											.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
+											.getString(HttpConstants.JSON_KEY_USER_PHONE));
 							masterMode
 									.setType(master
-											.getString(HttpConstants.JSON_KEY_GUARDIN_TYPE));
+											.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
 							auth_from_master_data.add(masterMode);
 
@@ -247,17 +244,17 @@ public class AuthorizeKidsActivity extends Activity {
 												.getLong(HttpConstants.JSON_KEY_CHILD_ID));
 								master_child
 										.setName(master_child_json
-												.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_NAME));
+												.getString(HttpConstants.JSON_KEY_CHILD_NAME));
 								master_child
 										.setIcon(master_child_json
-												.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ICON));
+												.getString(HttpConstants.JSON_KEY_CHILD_ICON));
 
 								/**
-								 * keep guardin id
+								 * keep USER id
 								 */
 								master_child
 										.setPhone(master
-												.getString(HttpConstants.JSON_KEY_GUARDIN_ID));
+												.getString(HttpConstants.JSON_KEY_USER_ID));
 
 								System.out
 										.println("--->"
@@ -266,11 +263,11 @@ public class AuthorizeKidsActivity extends Activity {
 								System.out
 										.println("--->"
 												+ master_child_json
-														.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_NAME));
+														.getString(HttpConstants.JSON_KEY_CHILD_NAME));
 								System.out
 										.println("--->"
 												+ master_child_json
-														.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ICON));
+														.getString(HttpConstants.JSON_KEY_CHILD_ICON));
 								System.out
 										.println("--------------------------------------");
 

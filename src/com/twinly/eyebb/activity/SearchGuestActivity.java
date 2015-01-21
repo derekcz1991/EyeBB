@@ -41,7 +41,7 @@ public class SearchGuestActivity extends Activity {
 
 	private SearchGuestListViewAdapter adapter;
 	private ListView listView;
-	private ArrayList<User> guest_data;
+	private ArrayList<User> guestData;
 	private String retStr;
 
 	private TextView tx_share;
@@ -62,7 +62,7 @@ public class SearchGuestActivity extends Activity {
 		tx_share = (TextView) findViewById(R.id.tx_share_two);
 		btn_share = (RelativeLayout) findViewById(R.id.btn_share);
 
-		guest_data = new ArrayList<User>();
+		guestData = new ArrayList<User>();
 
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
 
@@ -93,44 +93,38 @@ public class SearchGuestActivity extends Activity {
 
 	private ArrayList<User> parseJson(String getData) {
 		try {
-			if (guest_data != null && guest_data.size() > 0)
-				guest_data.clear();
+			if (guestData != null && guestData.size() > 0)
+				guestData.clear();
 			JSONArray arr = new JSONArray(getData);
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject temp = (JSONObject) arr.get(i);
 
 				User guest = new User();
 				System.out.println("--->"
-						+ temp.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
+						+ temp.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guest.setGuardianId(Long.parseLong(temp
-						.getString(HttpConstants.JSON_KEY_GUARDIN_ID)) + "");
+						.getString(HttpConstants.JSON_KEY_USER_ID)) + "");
 				guest.setName(temp
-						.getString(HttpConstants.JSON_KEY_GUARDIN_NAME));
+						.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guest.setPhoneNumber(temp
-						.getString(HttpConstants.JSON_KEY_GUARDIN_PHONE));
-				guest_data.add(guest);
-
-				// adapter.notifyDataSetChanged();
+						.getString(HttpConstants.JSON_KEY_USER_PHONE));
+				guestData.add(guest);
 			}
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return guest_data;
+		return guestData;
 	}
 
 	@SuppressLint("ShowToast")
 	private void postFeedBackRelationToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("info=>" + guestName);
 
 		map.put("guestName", guestName);
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			retStr = HttpRequestUtils.get(HttpConstants.SEARCH_GUEST, map);
 			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)

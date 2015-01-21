@@ -148,7 +148,6 @@ public class ProfileFragment extends Fragment {
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 
 		// unregisterReceiver

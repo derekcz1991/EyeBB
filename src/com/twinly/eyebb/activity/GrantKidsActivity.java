@@ -35,8 +35,6 @@ public class GrantKidsActivity extends Activity {
 	private GrantKidsListViewFromMasterAdapter master_adapter;
 	private ArrayList<Child> returnList;
 	private ArrayList<Child> childList;
-	// private Button btnConfirm;
-	// private Button btnCancel;
 	private String guestChildrenRetStr;
 
 	private String guestdId;
@@ -90,18 +88,6 @@ public class GrantKidsActivity extends Activity {
 		returnList = new ArrayList<Child>();
 		new Thread(postGuestChildrenToServerRunnable).start();
 
-		// listView.setOnItemClickListener(new OnItemClickListener() {
-		// public void onItemClick(AdapterView<?> arg0, View arg1,
-		// int position, long arg3) {
-		// // Intent data = new Intent();
-		// // Bundle bundle = new Bundle();
-		// // bundle.putSerializable("child", adapter.getItem(position));
-		// // data.putExtras(bundle);
-		// // setResult(ActivityConstants.RESULT_RESULT_OK, data);
-		// // finish();
-		// }
-		// });
-
 	}
 
 	Runnable postGuestChildrenToServerRunnable = new Runnable() {
@@ -113,9 +99,6 @@ public class GrantKidsActivity extends Activity {
 	};
 
 	private ArrayList<Child> parseChildJson(String getData) {
-		// TODO Auto-generated method stub
-		// System.out.println("getData=>" + getData);
-
 		try {
 			childList.clear();
 			if (!JSONObject.NULL.equals(getData)) {
@@ -133,14 +116,14 @@ public class GrantKidsActivity extends Activity {
 							Child ChildMode = new Child();
 							System.out
 									.println("--->"
-											+ child.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ID));
+											+ child.getString(HttpConstants.JSON_KEY_CHILD_ID));
 
 							System.out
 									.println("--->"
-											+ child.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_NAME));
+											+ child.getString(HttpConstants.JSON_KEY_CHILD_NAME));
 							System.out
 									.println("--->"
-											+ child.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ICON));
+											+ child.getString(HttpConstants.JSON_KEY_CHILD_ICON));
 
 							System.out
 									.println("--->"
@@ -160,13 +143,13 @@ public class GrantKidsActivity extends Activity {
 
 							ChildMode
 									.setChildId(Long.valueOf(child
-											.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ID)));
+											.getString(HttpConstants.JSON_KEY_CHILD_ID)));
 							ChildMode
 									.setName(child
-											.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_NAME));
+											.getString(HttpConstants.JSON_KEY_CHILD_NAME));
 							ChildMode
 									.setIcon(child
-											.getString(HttpConstants.JSON_CHECK_CHILD_CHILD_ICON));
+											.getString(HttpConstants.JSON_KEY_CHILD_ICON));
 							ChildMode
 									.setWithAccess(((JSONObject) children
 											.opt(i))
@@ -187,14 +170,7 @@ public class GrantKidsActivity extends Activity {
 			}
 
 			System.out.println("childList_data>" + childList.size());
-
-			// adapter = new GuestListViewAdapter(AuthorizeKidsActivity.this,
-			// guest_data);
-			// listView.setAdapter(adapter);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			// tvHint.setVisibility(View.VISIBLE);
-			// content.setVisibility(View.GONE);
 			e.printStackTrace();
 		}
 		return childList;
@@ -202,16 +178,13 @@ public class GrantKidsActivity extends Activity {
 
 	@SuppressLint("ShowToast")
 	private void postGuestChildrenToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 
 		map.put("guestId", guestdId);
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			guestChildrenRetStr = HttpRequestUtils.postTo(
-					GrantKidsActivity.this, HttpConstants.GUEST_CHILDREN, map);
+			guestChildrenRetStr = HttpRequestUtils.post(
+					HttpConstants.GUEST_CHILDREN, map);
 			System.out.println("guestchildren======>" + guestChildrenRetStr);
 			if (guestChildrenRetStr
 					.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
@@ -271,9 +244,8 @@ public class GrantKidsActivity extends Activity {
 		}
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.postTo(GrantKidsActivity.this,
-					HttpConstants.GRANT_GUESTS, map);
+			String retStr = HttpRequestUtils.post(HttpConstants.GRANT_GUESTS,
+					map);
 			System.out.println("grant======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
