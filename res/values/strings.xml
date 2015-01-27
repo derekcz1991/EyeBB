@@ -154,6 +154,8 @@
     <string name="text_search_kid">Search kids&#8230;</string>
     <string name="text_can_not_open_options">Please, turn off the radar function.</string>
     <string name="text_click_to_share">(Click here to share </string>
+    <string name="text_update_eyebb_device_firmware">Update the eyebb device firmware</string>
+    <string name="text_get_the_eyebb_device_qr_code">Apply for QR code</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

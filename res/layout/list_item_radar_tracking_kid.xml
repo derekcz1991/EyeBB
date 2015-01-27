@@ -41,7 +41,8 @@
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <LinearLayout
+    <!-- beep btn -->
+    <!-- <LinearLayout
         android:id="@+id/btn_beep"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -66,7 +67,7 @@
             android:layout_marginRight="8dp"
             android:text="@string/text_beep" >
         </TextView>
-    </LinearLayout>
+    </LinearLayout> -->
 
     <TextView
         android:id="@+id/btn_selected"

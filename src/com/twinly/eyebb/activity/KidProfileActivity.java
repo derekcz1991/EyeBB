@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +54,9 @@ public class KidProfileActivity extends Activity implements
 	private Child child;
 	private ImageView avatar;
 	private TextView kidName;
-	private TextView binding;
+	private RelativeLayout binding;
+	private TextView txt_binding;
+	private TextView deviceBatteryResult;
 	private ImageLoader imageLoader;
 	private LinearLayout avatarItemLayout;
 	private Uri mImageCaptureUri;
@@ -61,8 +64,7 @@ public class KidProfileActivity extends Activity implements
 	private static final int CROP_PHOTO = 200;
 	private static final int PICK_FROM_FILE = 300;
 
-	private TextView deviceAddress;
-	private TextView deviceBattery;
+
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothAdapter mBluetoothAdapter;
 
@@ -89,14 +91,16 @@ public class KidProfileActivity extends Activity implements
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
-		binding = (TextView) findViewById(R.id.btn_binding);
-		deviceAddress = (TextView) findViewById(R.id.device_address);
-		deviceBattery = (TextView) findViewById(R.id.device_battery);
+		binding = (RelativeLayout) findViewById(R.id.btn_binding);
+		txt_binding = (TextView) findViewById(R.id.device_unbind);
+		// deviceAddress = (TextView) findViewById(R.id.device_address);
+	
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
-
+		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
+		
 		mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
 				getFragmentManager(), this);
-		deviceAddress.setText(child.getMacAddress());
+		// deviceAddress.setText(child.getMacAddress());
 
 		kidName.setText(child.getName());
 		imageLoader = ImageLoader.getInstance();
@@ -108,9 +112,9 @@ public class KidProfileActivity extends Activity implements
 		}
 
 		if (CommonUtils.isNull(child.getMacAddress())) {
-			binding.setText(getString(R.string.btn_binding));
+			txt_binding.setText(getString(R.string.btn_binding));
 		} else {
-			binding.setText(getString(R.string.btn_unbind));
+			txt_binding.setText(getString(R.string.btn_unbind));
 		}
 
 		if (child.getRelationWithUser().equals("P") == false) {
@@ -129,6 +133,8 @@ public class KidProfileActivity extends Activity implements
 
 		if (CommonUtils.isNotNull(child.getMacAddress())) {
 			initToReadBattery();
+		} else {
+			bluetoothNotOpenCancelReadBattery();
 		}
 	}
 
@@ -146,7 +152,7 @@ public class KidProfileActivity extends Activity implements
 				if (child.getMacAddress() != null) {
 					mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
 				}
-				mHoloCircularProgressBar.setMarkerEnabled(true);
+				// mHoloCircularProgressBar.setMarkerEnabled(true);
 
 				// mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
 				mHoloCircularProgressBar.setMarkerEnabled(false);
@@ -164,15 +170,10 @@ public class KidProfileActivity extends Activity implements
 						.valueOf(getDeviceBattery));
 
 				if (getDeviceBattery.equals("0")) {
-					deviceBattery.setText(getResources().getString(
-							R.string.text_battery_life)
-							+ " " + "100%");
+					deviceBatteryResult.setText("100%");
 
 				} else {
-					deviceBattery.setText(getResources().getString(
-							R.string.text_battery_life)
-							+ " "
-							+ (1 - Float.valueOf(getDeviceBattery) + "")
+					deviceBatteryResult.setText((1 - Float.valueOf(getDeviceBattery) + "")
 									.substring(2, 4) + "%");
 				}
 
@@ -340,7 +341,7 @@ public class KidProfileActivity extends Activity implements
 		mHoloCircularProgressBar.setMarkerEnabled(false);
 		mHoloCircularProgressBar.setProgress(0.0f);
 
-		deviceBattery.setText(getResources().getString(
+		deviceBatteryResult.setText(getResources().getString(
 				R.string.text_no_device_nearby));
 	}
 
@@ -483,10 +484,7 @@ public class KidProfileActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				deviceBattery.setText(getResources().getString(
-						R.string.text_battery_life)
-						+ " "
-						+ getResources().getString(R.string.toast_loading));
+				deviceBatteryResult.setText(getResources().getString(R.string.toast_loading));
 			}
 		});
 	}
@@ -509,10 +507,7 @@ public class KidProfileActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				deviceBattery.setText(getResources().getString(
-						R.string.text_battery_life)
-						+ " "
-						+ getResources().getString(R.string.toast_loading));
+				deviceBatteryResult.setText(getResources().getString(R.string.toast_loading));
 			}
 		});
 	}
@@ -549,9 +544,7 @@ public class KidProfileActivity extends Activity implements
 					mHoloCircularProgressBar.setMarkerProgress((1 - Float
 							.valueOf("0." + Integer.parseInt(value, 16))));
 
-					deviceBattery.setText(getResources().getString(
-							R.string.text_battery_life)
-							+ " " + Integer.parseInt(value, 16) + "%");
+					deviceBatteryResult.setText(Integer.parseInt(value, 16) + "%");
 
 					getDeviceBattery = (1 - Float.valueOf("0."
 							+ Integer.parseInt(value, 16)))
@@ -561,9 +554,7 @@ public class KidProfileActivity extends Activity implements
 					animate(mHoloCircularProgressBar, null, 0f, 2000);
 					mHoloCircularProgressBar.setMarkerProgress(0f);
 
-					deviceBattery.setText(getResources().getString(
-							R.string.text_battery_life)
-							+ " " + Integer.parseInt(value, 16) + "%");
+					deviceBatteryResult.setText(Integer.parseInt(value, 16) + "%");
 
 					getDeviceBattery = 0 + "";
 				}

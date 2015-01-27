@@ -19,7 +19,7 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class BeepDialog extends Activity {
 	// record the time
 	private Chronometer timer;
-	// 震動頻率
+	// vibrator pattern
 	private long pattern[] = { 1000, 800, 1000, 800 };
 	private Vibrator vibrator;
 	// sound
@@ -58,19 +58,16 @@ public class BeepDialog extends Activity {
 	}
 
 	private void getTime() {
-		// 获得计时器对象
 		timer = (Chronometer) this.findViewById(R.id.chronometer);
 
-		// 将计时器清零
 		timer.setBase(SystemClock.elapsedRealtime());
 		setFlickerAnimation(timer);
-		// 开始计时
 		timer.start();
 	}
 
-	// 震動
+	// vibrate
 	private void vibrate() {
-		// 获取服务
+		// get vibrate service
 		vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
 		vibrator.vibrate(pattern, 1);
 
