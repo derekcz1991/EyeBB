@@ -63,7 +63,7 @@ public class MasterListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_master, parent,
+			convertView = inflater.inflate(R.layout.list_item_grant_kid_new, parent,
 					false);
 			viewHolder = new ViewHolder();
 			// viewHolder.avatar = (CircleImageView) convertView
@@ -71,11 +71,11 @@ public class MasterListViewAdapter extends BaseAdapter {
 			//
 			// //NO NEED
 			// viewHolder.avatar.setVisibility(View.GONE);
-
-			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
-			viewHolder.phone = (TextView) convertView.findViewById(R.id.phone);
+		
+			viewHolder.name = (TextView) convertView.findViewById(R.id.auth_nick_name);
+			viewHolder.phone = (TextView) convertView.findViewById(R.id.auth_user_name);
 			viewHolder.btn_master_view = (RelativeLayout) convertView
-					.findViewById(R.id.btn_master_view);
+					.findViewById(R.id.btn_guest_view);
 
 			convertView.setTag(viewHolder);
 		} else {

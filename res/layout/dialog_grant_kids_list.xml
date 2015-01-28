@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <ListView
+    <com.woozzu.android.widget.IndexableListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -16,7 +16,7 @@
         android:dividerHeight="8dp"
         android:listSelector="@drawable/list_selector"
         android:padding="8dp" >
-    </ListView>
+    </com.woozzu.android.widget.IndexableListView>
 
     <!--
     <LinearLayout

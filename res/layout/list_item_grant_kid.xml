@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="30dp"
         android:background="@drawable/ic_selected_off" />
 
 </RelativeLayout>

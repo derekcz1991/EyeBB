@@ -115,8 +115,8 @@
     <string name="text_tips">Tips.</string>
     <string name="text_old_password_incorrect">The original password is not correct.</string>
     <string name="text_user_do_not_exist">Sorry. This user may not exist.</string>
-    <string name="text_authorized_to_others">Authorized to others</string>
-    <string name="text_authorization_from_others">Authorization from others</string>
+    <string name="text_authorized_to_others">Authorized to</string>
+    <string name="text_authorization_from_others">Authorization from</string>
     <string name="text_avatar">Avatar</string>
     <string name="text_kindergarten">Kindergarten</string>
     <string name="text_battery_life">eyeBB Battery Usage:</string>

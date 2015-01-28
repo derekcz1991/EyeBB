@@ -1,6 +1,7 @@
 package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,9 +15,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +29,11 @@ import android.widget.Toast;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.adapter.MasterListViewAdapter;
+import com.twinly.eyebb.adapter.GuestListViewAdapter.ViewHolder;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.Child;
@@ -46,13 +53,23 @@ public class AuthorizeKidsActivity extends Activity {
 	private TextView tvHint_auth_to;
 	private TextView tvHint_auth_from;
 	private String retStr;
-
+	private GridView grid_auth_to;
+	private GridView grid_auth_from;
+	private TextView txt_num_auth_to;
+	private TextView txt_num_auth_from;
 	private boolean hasGuestFlag = false;
 	private boolean hasMasterFlag = false;
 	private ScrollView ScrollView;
 	public static final int UPDATE_VIEW = 11111;
 	private Dialog authDialog;
 	private Runnable postFindGuestsToServerRunnable;
+	public CircleImageView avatar;
+	public TextView name;
+	public TextView phone;
+	public RelativeLayout btn_guest_view;
+
+	private LayoutInflater inflater;
+	private View grid_layout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +93,28 @@ public class AuthorizeKidsActivity extends Activity {
 		new Thread(postFindGuestsToServerRunnable).start();
 
 		// btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
-		guest_listView = (LinearLayoutForListView) findViewById(R.id.listView_authorized_to_others);
-		master_listView = (LinearLayoutForListView) findViewById(R.id.listView_authorization_from_others);
+		// guest_listView = (LinearLayoutForListView)
+		// findViewById(R.id.listView_authorized_to_others);
+		// master_listView = (LinearLayoutForListView)
+		// findViewById(R.id.listView_authorization_from_others);
 		tvHint = (TextView) findViewById(R.id.tv_hint);
-		tvHint_auth_to = (TextView) findViewById(R.id.tv_hint_authorized_to_others);
-		tvHint_auth_from = (TextView) findViewById(R.id.tv_hint_authorization_from_others);
+		grid_auth_to = (GridView) findViewById(R.id.auth_to);
+		grid_auth_from = (GridView) findViewById(R.id.auth_from);
+		txt_num_auth_from = (TextView) findViewById(R.id.auth_to_children_num);
+		txt_num_auth_to = (TextView) findViewById(R.id.auth_from_children_num);
+		// tvHint_auth_to = (TextView)
+		// findViewById(R.id.tv_hint_authorized_to_others);
+		// tvHint_auth_from = (TextView)
+		// findViewById(R.id.tv_hint_authorization_from_others);
+
+		// inflater = LayoutInflater.from(AuthorizeKidsActivity.this);
+		// grid_layout = inflater.inflate(R.layout.list_item_grant_kid_new,
+		// null);
+
+		// name = (TextView) grid_layout.findViewById(R.id.auth_nick_name);
+		// phone = (TextView) grid_layout.findViewById(R.id.auth_user_name);
+
+		btn_guest_view = (RelativeLayout) findViewById(R.id.btn_guest_view);
 
 		auth_to_guest_data = new ArrayList<User>();
 		auth_from_master_data = new ArrayList<User>();
@@ -141,21 +175,25 @@ public class AuthorizeKidsActivity extends Activity {
 									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User guestMode = new User();
-							System.out
-									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_USER_ID));
-
-							System.out
-									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_USER_NAME));
-							System.out
-									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_USER_PHONE));
-							System.out
-									.println("--->"
-											+ guest.getString(HttpConstants.JSON_KEY_USER_TYPE));
-							System.out
-									.println("--------------------------------------");
+							// System.out
+							// .println("--->"
+							// +
+							// guest.getString(HttpConstants.JSON_KEY_USER_ID));
+							//
+							// System.out
+							// .println("--->"
+							// +
+							// guest.getString(HttpConstants.JSON_KEY_USER_NAME));
+							// System.out
+							// .println("--->"
+							// +
+							// guest.getString(HttpConstants.JSON_KEY_USER_PHONE));
+							// System.out
+							// .println("--->"
+							// +
+							// guest.getString(HttpConstants.JSON_KEY_USER_TYPE));
+							// System.out
+							// .println("--------------------------------------");
 
 							guestMode.setGuardianId(guest
 									.getString(HttpConstants.JSON_KEY_USER_ID));
@@ -175,7 +213,7 @@ public class AuthorizeKidsActivity extends Activity {
 				}
 			}
 
-			System.out.println("guest_data>" + auth_to_guest_data.size());
+			// System.out.println("guest_data>" + auth_to_guest_data.size());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -199,21 +237,25 @@ public class AuthorizeKidsActivity extends Activity {
 									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User masterMode = new User();
-							System.out
-									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_USER_ID));
-
-							System.out
-									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_USER_NAME));
-							System.out
-									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_USER_PHONE));
-							System.out
-									.println("--->"
-											+ master.getString(HttpConstants.JSON_KEY_USER_TYPE));
-							System.out
-									.println("--------------------------------------");
+							// System.out
+							// .println("--->"
+							// +
+							// master.getString(HttpConstants.JSON_KEY_USER_ID));
+							//
+							// System.out
+							// .println("--->"
+							// +
+							// master.getString(HttpConstants.JSON_KEY_USER_NAME));
+							// System.out
+							// .println("--->"
+							// +
+							// master.getString(HttpConstants.JSON_KEY_USER_PHONE));
+							// System.out
+							// .println("--->"
+							// +
+							// master.getString(HttpConstants.JSON_KEY_USER_TYPE));
+							// System.out
+							// .println("--------------------------------------");
 
 							masterMode.setGuardianId(master
 									.getString(HttpConstants.JSON_KEY_USER_ID));
@@ -256,20 +298,20 @@ public class AuthorizeKidsActivity extends Activity {
 										.setPhone(master
 												.getString(HttpConstants.JSON_KEY_USER_ID));
 
-								System.out
-										.println("--->"
-												+ master_child_json
-														.getLong(HttpConstants.JSON_KEY_CHILD_ID));
-								System.out
-										.println("--->"
-												+ master_child_json
-														.getString(HttpConstants.JSON_KEY_CHILD_NAME));
-								System.out
-										.println("--->"
-												+ master_child_json
-														.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-								System.out
-										.println("--------------------------------------");
+								// System.out
+								// .println("--->"
+								// + master_child_json
+								// .getLong(HttpConstants.JSON_KEY_CHILD_ID));
+								// System.out
+								// .println("--->"
+								// + master_child_json
+								// .getString(HttpConstants.JSON_KEY_CHILD_NAME));
+								// System.out
+								// .println("--->"
+								// + master_child_json
+								// .getString(HttpConstants.JSON_KEY_CHILD_ICON));
+								// System.out
+								// .println("--------------------------------------");
 
 								auth_from_master_children_data
 										.add(master_child);
@@ -325,34 +367,56 @@ public class AuthorizeKidsActivity extends Activity {
 
 				if (parseGuestJson(retStr).size() > 0) {
 					hasGuestFlag = true;
-					tvHint.setVisibility(View.GONE);
-					tvHint_auth_to.setVisibility(View.GONE);
-					tvHint_auth_from.setVisibility(View.VISIBLE);
+					System.out.println("parseGuestJson(retStr).size() --->"
+							+ parseGuestJson(retStr).size());
+					txt_num_auth_to.setText(parseGuestJson(retStr).size() + "");
+					// tvHint.setVisibility(View.GONE);
+					// tvHint_auth_to.setVisibility(View.GONE);
+					// tvHint_auth_from.setVisibility(View.VISIBLE);
 					guest_adapter = new GuestListViewAdapter(
 							AuthorizeKidsActivity.this, parseGuestJson(retStr));
-					guest_listView.setAdapter(guest_adapter);
+					grid_auth_to.setAdapter(guest_adapter);
+
+					// add view
+
+					// for (int i = 0; i < parseGuestJson(retStr).size(); i++) {
+					// name.setText(parseGuestJson(retStr).get(i).getName());
+					// phone.setText(parseGuestJson(retStr).get(i)
+					// .getPhoneNumber());
+					//
+					//
+					// grid_auth_to.setaaddView(grid_layout);
+					// }
 
 				}
 
 				if (parseMasterJson(retStr).size() > 0) {
 					hasMasterFlag = true;
-					tvHint_auth_from.setVisibility(View.GONE);
-					tvHint_auth_to.setVisibility(View.VISIBLE);
-					tvHint.setVisibility(View.GONE);
+					// tvHint_auth_from.setVisibility(View.GONE);
+					// tvHint_auth_to.setVisibility(View.VISIBLE);
+					// tvHint.setVisibility(View.GONE);
+					// master_adapter = new MasterListViewAdapter(
+					// AuthorizeKidsActivity.this,
+					// parseMasterJson(retStr),
+					// auth_from_master_children_data);
+					// master_listView.setAdapter(master_adapter);
+					txt_num_auth_from.setText(parseMasterJson(retStr).size()
+							+ "");
 					master_adapter = new MasterListViewAdapter(
 							AuthorizeKidsActivity.this,
 							parseMasterJson(retStr),
 							auth_from_master_children_data);
-					master_listView.setAdapter(master_adapter);
+					grid_auth_from.setAdapter(master_adapter);
+
 				}
 
-				if (hasMasterFlag && hasGuestFlag) {
-					tvHint_auth_from.setVisibility(View.GONE);
-					tvHint_auth_to.setVisibility(View.GONE);
-				} else if (!hasMasterFlag && !hasGuestFlag) {
-					tvHint_auth_to.setVisibility(View.VISIBLE);
-					tvHint_auth_from.setVisibility(View.VISIBLE);
-				}
+				// if (hasMasterFlag && hasGuestFlag) {
+				// tvHint_auth_from.setVisibility(View.GONE);
+				// tvHint_auth_to.setVisibility(View.GONE);
+				// } else if (!hasMasterFlag && !hasGuestFlag) {
+				// tvHint_auth_to.setVisibility(View.VISIBLE);
+				// tvHint_auth_from.setVisibility(View.VISIBLE);
+				// }
 
 				// content.setVisibility(View.VISIBLE);
 				break;
@@ -393,4 +457,5 @@ public class AuthorizeKidsActivity extends Activity {
 			}
 		}
 	}
+
 }

@@ -28,9 +28,10 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.woozzu.android.widget.IndexableListView;
 
 public class GrantKidsActivity extends Activity {
-	private ListView listView;
+	private IndexableListView listView;
 	private GrantKidsListViewFromGuestAdapter guest_adapter;
 	private GrantKidsListViewFromMasterAdapter master_adapter;
 	private ArrayList<Child> returnList;
@@ -48,11 +49,7 @@ public class GrantKidsActivity extends Activity {
 
 	/**
 	 * 
-	 * from_master_or_guest 來自第一個activity AuthorizeKidsActivity ,因為chily並沒有給我
-	 * master 給來的json 所以我要自己傳值. 來判斷來自哪裡
-	 * 
-	 * 
-	 * from_where 這個用來判斷是不是來自search activity
+	 * from_where comes form which search activity
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -82,7 +79,8 @@ public class GrantKidsActivity extends Activity {
 
 		setContentView(R.layout.dialog_grant_kids_list);
 
-		listView = (ListView) findViewById(R.id.listView);
+		listView = (IndexableListView) findViewById(R.id.listView);
+		listView.setFastScrollEnabled(true);
 		// returnList = DBChildren.getChildrenList(this);
 		childList = new ArrayList<Child>();
 		returnList = new ArrayList<Child>();

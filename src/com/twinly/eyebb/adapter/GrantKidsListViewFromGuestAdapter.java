@@ -2,6 +2,7 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -9,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -18,8 +21,11 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.ImageUtils;
+import com.twinly.eyebb.utils.RegularExpression;
+import com.woozzu.android.util.StringMatcher;
 
-public class GrantKidsListViewFromGuestAdapter extends BaseAdapter {
+public class GrantKidsListViewFromGuestAdapter extends ArrayAdapter<Child>
+		implements SectionIndexer {
 	private Context context;
 	private List<Child> data;
 	private LayoutInflater inflater;
@@ -35,6 +41,7 @@ public class GrantKidsListViewFromGuestAdapter extends BaseAdapter {
 	}
 
 	public GrantKidsListViewFromGuestAdapter(Context context, List<Child> data) {
+		super(context, android.R.layout.simple_list_item_1);
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
@@ -161,5 +168,56 @@ public class GrantKidsListViewFromGuestAdapter extends BaseAdapter {
 					.getDrawable(R.drawable.ic_stub));
 		}
 		viewHolder.name.setText(child.getName());
+	}
+
+	@Override
+	public int getPositionForSection(int section) {
+		// If there is no item for current section, previous section will be
+		// selected
+		for (int i = section; i >= 0; i--) {
+			for (int j = 0; j < getCount(); j++) {
+				if (i == 0) {
+					// For numeric section
+					for (int k = 0; k <= 9; k++) {
+						if (StringMatcher.match(String.valueOf((getItem(j))
+								.getName().charAt(0)), String.valueOf(k)))
+							return j;
+					}
+				} else {
+					if (!RegularExpression
+							.getStringToDetectionLetters(RegularExpression.mSections
+									.charAt(i))) {
+						if (StringMatcher
+								.match(String.valueOf((getItem(j)).getName()
+										.charAt(0)), String
+										.valueOf(RegularExpression.mSections
+												.charAt(i)))) {
+							return j;
+						}
+					} else {
+						if (RegularExpression
+								.getStringToDetectionLetters((getItem(j))
+										.getName().charAt(0))) {
+							return j;
+						}
+					}
+
+				}
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public int getSectionForPosition(int position) {
+		return 0;
+	}
+
+	@Override
+	public Object[] getSections() {
+		String[] sections = new String[RegularExpression.mSections.length()];
+		for (int i = 0; i < RegularExpression.mSections.length(); i++)
+			sections[i] = String.valueOf(RegularExpression.mSections.charAt(i));
+		return sections;
 	}
 }

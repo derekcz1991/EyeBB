@@ -57,11 +57,11 @@ public class GuestListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_guest, parent,
+			convertView = inflater.inflate(R.layout.list_item_grant_kid_new, parent,
 					false);
 			viewHolder = new ViewHolder();
-			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
-			viewHolder.phone = (TextView) convertView.findViewById(R.id.phone);
+			viewHolder.name = (TextView) convertView.findViewById(R.id.auth_nick_name);
+			viewHolder.phone = (TextView) convertView.findViewById(R.id.auth_user_name);
 			viewHolder.btn_guest_view = (RelativeLayout) convertView
 					.findViewById(R.id.btn_guest_view);
 
