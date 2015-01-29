@@ -55,6 +55,7 @@ public class KidProfileActivity extends Activity implements
 	private ImageView avatar;
 	private TextView kidName;
 	private RelativeLayout binding;
+	private TextView txt_device_qr;
 	private TextView txt_binding;
 	private TextView deviceBatteryResult;
 	private ImageLoader imageLoader;
@@ -64,6 +65,10 @@ public class KidProfileActivity extends Activity implements
 	private static final int CROP_PHOTO = 200;
 	private static final int PICK_FROM_FILE = 300;
 
+	private LinearLayout layout_device_beep;
+	private LinearLayout layout_device_ota;
+	private LinearLayout layout_device_require_qr_code;
+	private LinearLayout layout_device_unbind;
 
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -93,11 +98,16 @@ public class KidProfileActivity extends Activity implements
 		kidName = (TextView) findViewById(R.id.kidname);
 		binding = (RelativeLayout) findViewById(R.id.btn_binding);
 		txt_binding = (TextView) findViewById(R.id.device_unbind);
+		txt_device_qr = (TextView) findViewById(R.id.device_qr);
+		layout_device_beep = (LinearLayout) findViewById(R.id.layout_device_beep);
+		layout_device_ota = (LinearLayout) findViewById(R.id.layout_device_ota);
+		layout_device_require_qr_code = (LinearLayout) findViewById(R.id.layout_device_require_qr_code);
+		layout_device_unbind = (LinearLayout) findViewById(R.id.layout_device_unbind);
 		// deviceAddress = (TextView) findViewById(R.id.device_address);
-	
+
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
-		
+
 		mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
 				getFragmentManager(), this);
 		// deviceAddress.setText(child.getMacAddress());
@@ -113,12 +123,19 @@ public class KidProfileActivity extends Activity implements
 
 		if (CommonUtils.isNull(child.getMacAddress())) {
 			txt_binding.setText(getString(R.string.btn_binding));
+			txt_device_qr
+					.setText(getString(R.string.text_get_the_lastest_eyebb_device_qr_code));
+
 		} else {
 			txt_binding.setText(getString(R.string.btn_unbind));
 		}
 
+		// if the child belongs to other parent
 		if (child.getRelationWithUser().equals("P") == false) {
-			binding.setVisibility(View.INVISIBLE);
+			layout_device_beep.setVisibility(View.INVISIBLE);
+			layout_device_ota.setVisibility(View.INVISIBLE);
+			layout_device_require_qr_code.setVisibility(View.INVISIBLE);
+			layout_device_unbind.setVisibility(View.INVISIBLE);
 		}
 
 		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
@@ -173,8 +190,9 @@ public class KidProfileActivity extends Activity implements
 					deviceBatteryResult.setText("100%");
 
 				} else {
-					deviceBatteryResult.setText((1 - Float.valueOf(getDeviceBattery) + "")
-									.substring(2, 4) + "%");
+					deviceBatteryResult.setText((1 - Float
+							.valueOf(getDeviceBattery) + "").substring(2, 4)
+							+ "%");
 				}
 
 			}
@@ -484,7 +502,8 @@ public class KidProfileActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				deviceBatteryResult.setText(getResources().getString(R.string.toast_loading));
+				deviceBatteryResult.setText(getResources().getString(
+						R.string.toast_loading));
 			}
 		});
 	}
@@ -507,7 +526,8 @@ public class KidProfileActivity extends Activity implements
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				deviceBatteryResult.setText(getResources().getString(R.string.toast_loading));
+				deviceBatteryResult.setText(getResources().getString(
+						R.string.toast_loading));
 			}
 		});
 	}
@@ -544,7 +564,8 @@ public class KidProfileActivity extends Activity implements
 					mHoloCircularProgressBar.setMarkerProgress((1 - Float
 							.valueOf("0." + Integer.parseInt(value, 16))));
 
-					deviceBatteryResult.setText(Integer.parseInt(value, 16) + "%");
+					deviceBatteryResult.setText(Integer.parseInt(value, 16)
+							+ "%");
 
 					getDeviceBattery = (1 - Float.valueOf("0."
 							+ Integer.parseInt(value, 16)))
@@ -554,7 +575,8 @@ public class KidProfileActivity extends Activity implements
 					animate(mHoloCircularProgressBar, null, 0f, 2000);
 					mHoloCircularProgressBar.setMarkerProgress(0f);
 
-					deviceBatteryResult.setText(Integer.parseInt(value, 16) + "%");
+					deviceBatteryResult.setText(Integer.parseInt(value, 16)
+							+ "%");
 
 					getDeviceBattery = 0 + "";
 				}

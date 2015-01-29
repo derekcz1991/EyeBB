@@ -156,6 +156,7 @@
     <string name="text_click_to_share">(Click here to share </string>
     <string name="text_update_eyebb_device_firmware">Update the eyebb device firmware</string>
     <string name="text_get_the_eyebb_device_qr_code">Apply for QR code</string>
+    <string name="text_get_the_lastest_eyebb_device_qr_code">Apply for the latest QR code</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

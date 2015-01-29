@@ -155,7 +155,7 @@
     <string name="text_click_to_share">(點擊邀請 </string>
     <string name="text_update_eyebb_device_firmware">更新寶寶安設備固件</string>
     <string name="text_get_the_eyebb_device_qr_code">申請寶寶安設備二維碼</string>
-    
+    <string name="text_get_the_lastest_eyebb_device_qr_code">申請最近一次綁定的寶寶安設備二維碼</string>
     
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>
