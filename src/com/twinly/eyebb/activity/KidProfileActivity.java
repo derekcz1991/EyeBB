@@ -28,6 +28,7 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,7 +49,7 @@ import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 
 public class KidProfileActivity extends Activity implements
-		BluetoothUtils.BleConnectCallback {
+		BluetoothUtils.BleConnectCallback, OnClickListener {
 	private final static int SCANNIN_GREQUEST_CODE = 500;
 
 	private Child child;
@@ -104,7 +105,7 @@ public class KidProfileActivity extends Activity implements
 		layout_device_require_qr_code = (LinearLayout) findViewById(R.id.layout_device_require_qr_code);
 		layout_device_unbind = (LinearLayout) findViewById(R.id.layout_device_unbind);
 		// deviceAddress = (TextView) findViewById(R.id.device_address);
-
+		layout_device_require_qr_code.setOnClickListener(this);
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
 
@@ -597,6 +598,24 @@ public class KidProfileActivity extends Activity implements
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+
+		case R.id.layout_device_require_qr_code:
+			Intent intent = new Intent(KidProfileActivity.this,
+					RequireQrCodeDialog.class);
+			intent.putExtra("child_id", child.getChildId() + "");
+			
+			startActivity(intent);
+			// bindService(i1, conn1, Context.BIND_AUTO_CREATE);
+
+			break;
+
+		}
 	}
 
 }

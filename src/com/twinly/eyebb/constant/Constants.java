@@ -44,7 +44,9 @@ public class Constants {
 	public static final int NULL_FEEDBAKC_NEW_PASSWORD = 10024;
 	public static final int NULL_FEEDBAKC_REPEAT_NEW_PASSWORD = 10025;
 	public static final int FEEDBACK_DIALOG_CHOOSE_TYPE = 10026;
-
+	public static final int GET_QR_CODE_SUCCESS = 10027;
+	public static final int GET_QR_CODE_FAIL = 10028;
+	
 	public static final String EYEBB_FOLDER = Environment
 			.getExternalStorageDirectory() + "/eyebb/";
 }

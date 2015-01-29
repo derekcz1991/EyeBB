@@ -229,6 +229,7 @@ public class GrantKidsActivity extends Activity {
 		if (grantChildId.length() > 0) {
 			map.put("accessChildIds",
 					grantChildId.substring(0, grantChildId.length() - 1));
+			
 		} else {
 			map.put("accessChildIds", "");
 		}

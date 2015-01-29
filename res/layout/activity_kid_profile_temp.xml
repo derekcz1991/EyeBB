@@ -237,6 +237,7 @@
             android:id="@+id/layout_device_require_qr_code"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:onClick="true"
             android:gravity="center"
             android:orientation="vertical" >
 
