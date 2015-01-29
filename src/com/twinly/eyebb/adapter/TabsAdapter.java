@@ -15,8 +15,8 @@ import android.widget.TabWidget;
 
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
-import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.fragment.RadarFragment;
 import com.twinly.eyebb.utils.BroadcastUtils;
 
 /**
@@ -37,11 +37,9 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	// private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 	private final ArrayList<Integer> mFragments = new ArrayList<Integer>();
 	private IndoorLocatorFragment indoorLocatorFragment;
-	private RadarTrackingFragmentTemp radarTrackingFragment;
+	private RadarFragment radarFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
-
-
 
 	static class DummyTabFactory implements TabHost.TabContentFactory {
 		private final Context mContext;
@@ -77,16 +75,8 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		addTab(tabSpec);
 	}
 
-	/*public void addFragment(TabHost.TabSpec tabSpec,
-			RadarTrackingFragment radarTrackingFragment) {
-		this.radarTrackingFragment = radarTrackingFragment;
-		mFragments.add(1);
-		addTab(tabSpec);
-	}*/
-
-	public void addFragment(TabHost.TabSpec tabSpec,
-			RadarTrackingFragmentTemp radarTrackingFragment) {
-		this.radarTrackingFragment = radarTrackingFragment;
+	public void addFragment(TabHost.TabSpec tabSpec, RadarFragment radarFragment) {
+		this.radarFragment = radarFragment;
 		mFragments.add(1);
 		addTab(tabSpec);
 	}
@@ -122,7 +112,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		case 0:
 			return indoorLocatorFragment;
 		case 1:
-			return radarTrackingFragment;
+			return radarFragment;
 		case 2:
 			return reportFragment;
 		default:
@@ -160,7 +150,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		case 2:
 			reportFragment.refreshPerformanceFragment();
 			break;
-		case 3:	
+		case 3:
 			BroadcastUtils.cancelNotificationDot(mContext);
 			break;
 		}

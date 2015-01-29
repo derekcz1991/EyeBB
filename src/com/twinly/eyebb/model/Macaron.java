@@ -13,8 +13,7 @@ public class Macaron implements Serializable {
 	private long lastAppearTime;
 	private int axisX;
 	private int axisY;
-	private boolean isAntiLostOpen;
-	private boolean isAntiLostWriten;
+	private boolean isMissed;
 
 	public Macaron(String macAddress) {
 		this.macAddress = macAddress;
@@ -64,27 +63,16 @@ public class Macaron implements Serializable {
 		this.axisY = axisY;
 	}
 
-	public boolean isAntiLostOpen() {
-		return isAntiLostOpen;
+	public boolean isMissed() {
+		return isMissed;
 	}
 
-	public void setAntiLostOpen(boolean isAntiLostOpen) {
-		this.isAntiLostOpen = isAntiLostOpen;
-	}
-
-	public boolean isAntiLostWriten() {
-		return isAntiLostWriten;
-	}
-
-	public void setAntiLostWriten(boolean isAntiLostWriten) {
-		this.isAntiLostWriten = isAntiLostWriten;
+	public void setMissed(boolean isMissed) {
+		this.isMissed = isMissed;
 	}
 
 	@Override
 	public String toString() {
-		return "Macaron [macAddress=" + macAddress + ", isAntiLostOpen="
-				+ isAntiLostOpen + ", isAntiLostWriten=" + isAntiLostWriten
-				+ "]";
+		return "Macaron [macAddress=" + macAddress + "]";
 	}
-
 }

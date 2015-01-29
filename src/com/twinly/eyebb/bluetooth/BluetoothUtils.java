@@ -26,18 +26,6 @@ import com.twinly.eyebb.service.BluetoothLeService;
 
 @SuppressLint("NewApi")
 public class BluetoothUtils {
-	private final static String SERVICE_UUID_0001 = "00001000-0000-1000-8000-00805f9b34fb";
-	private final static String SERVICE_UUID_0002 = "00002000-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_PASSWORD = "00002005-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_MAJOR_UUID = "00001008-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_MINOR_UUID = "00001009-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_ANTI_LOST_PERIOD_UUID = "00001003-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_ANTI_LOST_TIMEOUT_UUID = "0000100a-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
-	public final static String CHARACTERISTICS_LED_BLINK_UUID = "0000100b-0000-1000-8000-00805f9b34fb";
-
-	public final static int CONNECT_ONLY = 1;
 	public final static int WRITE_MAJOR = 2;
 	public final static int WRITE_MINOR = 3;
 	public final static int WRITE_BEEP = 4;
@@ -84,7 +72,7 @@ public class BluetoothUtils {
 		/**
 		 * UI update when disconnected to BLE device
 		 */
-		public void onDisConnected();
+		public void onDisConnected(String mDeviceAddress);
 
 		/**
 		 * UI update when discovered the BLE services
@@ -104,40 +92,51 @@ public class BluetoothUtils {
 		public void onResult(boolean result, String mDeviceAddress);
 	}
 
+	public BluetoothUtils(Context context, FragmentManager manager) {
+		this.context = context;
+		this.manager = manager;
+		initBroadcastReceiver();
+	}
+
 	public BluetoothUtils(Context context, FragmentManager manager,
 			final BleConnectCallback callback) {
 		this.context = context;
 		this.manager = manager;
 		this.callback = callback;
+		initBroadcastReceiver();
+	}
 
+	public BluetoothUtils(Context context, final BleConnectCallback callback) {
+		this.context = context;
+		this.callback = callback;
+		initBroadcastReceiver();
+	}
+
+	private void initBroadcastReceiver() {
 		mGattUpdateReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				final String action = intent.getAction();
 				/*System.out.println("mGattUpdateReceiver ====>>>> " + action
 						+ " " + timer);*/
-				if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+				if (BLEUtils.ACTION_GATT_CONNECTED.equals(action)) {
 					timer.cancel();
 					callback.onConnected(mDeviceAddress);
-				} else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
-						.equals(action)) {
-					callback.onDisConnected();
-				} else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED
+				} else if (BLEUtils.ACTION_GATT_DISCONNECTED.equals(action)) {
+					callback.onDisConnected(mDeviceAddress);
+				} else if (BLEUtils.ACTION_GATT_SERVICES_DISCOVERED
 						.equals(action)) {
 					timer.cancel();
 					callback.onDiscovered();
 					gattServices = mBluetoothLeService
 							.getSupportedGattServices();
 					onDiscovered();
-				} else if (BluetoothLeService.ACTION_GATT_READ_SUCCESS
-						.equals(action)) {
+				} else if (BLEUtils.ACTION_GATT_READ_SUCCESS.equals(action)) {
 					callback.onDataAvailable(intent
-							.getStringExtra(BluetoothLeService.EXTRA_DATA));
-				} else if (BluetoothLeService.ACTION_GATT_READ_FAILURE
-						.equals(action)) {
+							.getStringExtra(BLEUtils.EXTRA_DATA));
+				} else if (BLEUtils.ACTION_GATT_READ_FAILURE.equals(action)) {
 					callback.onResult(false, mDeviceAddress);
-				} else if (BluetoothLeService.ACTION_GATT_WRITE_SUCCESS
-						.equals(action)) {
+				} else if (BLEUtils.ACTION_GATT_WRITE_SUCCESS.equals(action)) {
 					if (isPasswordSet) {
 						timer.cancel();
 						callback.onResult(true, mDeviceAddress);
@@ -145,8 +144,7 @@ public class BluetoothUtils {
 						isPasswordSet = true;
 						onDiscovered();
 					}
-				} else if (BluetoothLeService.ACTION_GATT_WRITE_FAILURE
-						.equals(action)) {
+				} else if (BLEUtils.ACTION_GATT_WRITE_FAILURE.equals(action)) {
 					timer.cancel();
 					callback.onResult(false, mDeviceAddress);
 				}
@@ -159,7 +157,7 @@ public class BluetoothUtils {
 	 * Initialize the Bluetooth
 	 * @return Whether initialize succeed
 	 */
-	private boolean initialize() {
+	public boolean initialize() {
 		if (!isBluetoothAndBleSupport()) {
 			return false;
 		}
@@ -186,14 +184,6 @@ public class BluetoothUtils {
 		}
 	}
 
-	public void connectOnly(String mDeviceAddress, long timeout) {
-		command = CONNECT_ONLY;
-		this.mDeviceAddress = mDeviceAddress;
-		if (initialize()) {
-			connect(timeout);
-		}
-	}
-
 	/**
 	 * Read battery from device, keep connection if not disconnect manual
 	 * @param mDeviceAddress The device mac address
@@ -203,7 +193,8 @@ public class BluetoothUtils {
 		command = READ_BATTERY;
 		this.mDeviceAddress = mDeviceAddress;
 		if (gattServices != null) {
-			read(SERVICE_UUID_0001, CHARACTERISTICS_BATTERY_UUID);
+			read(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_BATTERY_UUID);
 		} else {
 			if (initialize()) {
 				connect(timeout);
@@ -221,7 +212,8 @@ public class BluetoothUtils {
 		this.mDeviceAddress = mDeviceAddress;
 		this.value = value;
 		if (gattServices != null) {
-			write(SERVICE_UUID_0001, CHARACTERISTICS_MAJOR_UUID,
+			write(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_MAJOR_UUID,
 					BLEUtils.checkMajorMinor(value), true);
 		} else {
 			if (initialize()) {
@@ -240,7 +232,8 @@ public class BluetoothUtils {
 		this.mDeviceAddress = mDeviceAddress;
 		this.value = value;
 		if (gattServices != null) {
-			write(SERVICE_UUID_0001, CHARACTERISTICS_MINOR_UUID,
+			write(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_MINOR_UUID,
 					BLEUtils.checkMajorMinor(value), true);
 		} else {
 			if (initialize()) {
@@ -259,7 +252,8 @@ public class BluetoothUtils {
 		this.mDeviceAddress = mDeviceAddress;
 		this.value = value;
 		if (gattServices != null) {
-			write(SERVICE_UUID_0001, CHARACTERISTICS_BEEP_UUID, value, true);
+			write(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_BEEP_UUID, value, true);
 		} else {
 			if (initialize()) {
 				connect(timeout);
@@ -277,8 +271,8 @@ public class BluetoothUtils {
 		this.mDeviceAddress = mDeviceAddress;
 		this.value = value;
 		if (gattServices != null) {
-			write(SERVICE_UUID_0001, CHARACTERISTICS_LED_BLINK_UUID, value,
-					true);
+			write(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_LED_BLINK_UUID, value, true);
 		} else {
 			if (initialize()) {
 				connect(timeout);
@@ -294,8 +288,8 @@ public class BluetoothUtils {
 		this.mDeviceAddress = mDeviceAddress;
 		this.value = value;
 		if (gattServices != null) {
-			write(SERVICE_UUID_0001, CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
-					value, true);
+			write(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, value, true);
 		} else {
 			if (initialize()) {
 				connect(timeout);
@@ -338,8 +332,10 @@ public class BluetoothUtils {
 		// Then you can selectively disable BLE-related features.
 		if (context.getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_BLUETOOTH_LE) == false) {
-			ErrorDialog.newInstance(R.string.dialog_error_no_ble).show(manager,
-					ErrorDialog.TAG);
+			if (manager != null) {
+				ErrorDialog.newInstance(R.string.dialog_error_no_ble).show(
+						manager, ErrorDialog.TAG);
+			}
 			return false;
 		} else {
 			// Initializes a Bluetooth adapter. 
@@ -350,8 +346,10 @@ public class BluetoothUtils {
 
 			// Checks if Bluetooth is supported on the device.
 			if (mBluetoothAdapter == null) {
-				ErrorDialog.newInstance(R.string.dialog_error_no_bluetooth)
-						.show(manager, ErrorDialog.TAG);
+				if (manager != null) {
+					ErrorDialog.newInstance(R.string.dialog_error_no_bluetooth)
+							.show(manager, ErrorDialog.TAG);
+				}
 				return false;
 			}
 		}
@@ -399,11 +397,6 @@ public class BluetoothUtils {
 					}
 					// Automatically connects to the device upon successful start-up initialization.
 					if (mDeviceAddress != null) {
-						if (command == CONNECT_ONLY) {
-							mBluetoothLeService.setNeedDiscoverServices(false);
-						} else {
-							mBluetoothLeService.setNeedDiscoverServices(true);
-						}
 						mBluetoothLeService.connect(mDeviceAddress);
 					}
 
@@ -423,11 +416,6 @@ public class BluetoothUtils {
 					Context.BIND_AUTO_CREATE);
 		} else {
 			if (mBluetoothLeService != null) {
-				if (command == CONNECT_ONLY) {
-					mBluetoothLeService.setNeedDiscoverServices(false);
-				} else {
-					mBluetoothLeService.setNeedDiscoverServices(true);
-				}
 				mBluetoothLeService.connect(mDeviceAddress);
 			}
 		}
@@ -438,7 +426,7 @@ public class BluetoothUtils {
 			@Override
 			public void run() {
 				if (mBluetoothLeService != null) {
-					if (mBluetoothLeService.getmConnectionState() != BluetoothLeService.STATE_CONNECTED) {
+					if (mBluetoothLeService.getmConnectionState() != BLEUtils.STATE_CONNECTED) {
 						callback.onConnectCanceled(mDeviceAddress);
 						//mBluetoothLeService.disconnect();
 						//mBluetoothLeService = null;
@@ -456,50 +444,55 @@ public class BluetoothUtils {
 		switch (command) {
 		case WRITE_MAJOR:
 			if (isPasswordSet) {
-				write(SERVICE_UUID_0001, CHARACTERISTICS_MAJOR_UUID,
+				write(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_MAJOR_UUID,
 						BLEUtils.checkMajorMinor(value), true);
 			} else {
-				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
-						false);
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
 			}
 			break;
 		case WRITE_MINOR:
 			if (isPasswordSet) {
-				write(SERVICE_UUID_0001, CHARACTERISTICS_MINOR_UUID,
+				write(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_MINOR_UUID,
 						BLEUtils.checkMajorMinor(value), true);
 			} else {
-				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
-						false);
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
 			}
 			break;
 		case WRITE_BEEP:
 			if (isPasswordSet) {
-				write(SERVICE_UUID_0001, CHARACTERISTICS_BEEP_UUID, value, true);
+				write(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_BEEP_UUID, value, true);
 			} else {
-				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
-						false);
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
 			}
 			break;
 		case WRITE_LED_BLINK:
 			if (isPasswordSet) {
-				write(SERVICE_UUID_0001, CHARACTERISTICS_LED_BLINK_UUID, value,
-						true);
+				write(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_LED_BLINK_UUID, value, true);
 			} else {
-				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
-						false);
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
 			}
 			break;
 		case WRITE_ANTI_LOST_PERIOD:
 			if (isPasswordSet) {
-				write(SERVICE_UUID_0001, CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
-						value, true);
+				write(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, value,
+						true);
 			} else {
-				write(SERVICE_UUID_0002, CHARACTERISTICS_PASSWORD, "C3A60D00",
-						false);
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
 			}
 			break;
 		case READ_BATTERY:
-			read(SERVICE_UUID_0001, CHARACTERISTICS_BATTERY_UUID);
+			read(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_BATTERY_UUID);
 			break;
 		}
 
@@ -600,14 +593,13 @@ public class BluetoothUtils {
 
 	private IntentFilter makeGattUpdateIntentFilter() {
 		final IntentFilter intentFilter = new IntentFilter();
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-		intentFilter
-				.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_SUCCESS);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_READ_FAILURE);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_WRITE_SUCCESS);
-		intentFilter.addAction(BluetoothLeService.ACTION_GATT_WRITE_FAILURE);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_CONNECTED);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_DISCONNECTED);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_SERVICES_DISCOVERED);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_READ_SUCCESS);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_READ_FAILURE);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_WRITE_SUCCESS);
+		intentFilter.addAction(BLEUtils.ACTION_GATT_WRITE_FAILURE);
 		return intentFilter;
 	}
 }

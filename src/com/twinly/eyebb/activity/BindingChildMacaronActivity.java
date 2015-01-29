@@ -318,7 +318,7 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onDisConnected() {
+	public void onDisConnected(String mDeviceAddress) {
 		writeFailed();
 	}
 

@@ -533,7 +533,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onDisConnected() {
+	public void onDisConnected(String mDeviceAddress) {
 		// do nothing
 	}
 

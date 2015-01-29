@@ -88,6 +88,7 @@
 
         <activity
             android:name="com.twinly.eyebb.activity.LancherActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
             <intent-filter>
@@ -168,6 +169,7 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
@@ -297,6 +299,10 @@
         <service
             android:name="com.twinly.eyebb.service.BluetoothLeService"
             android:enabled="true" />
+        <service
+            android:name="com.twinly.eyebb.service.AntiLostService"
+            android:exported="true"
+            android:process=":remote" />
     </application>
 
 </manifest>

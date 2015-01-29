@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (RadarTrackingFragmentTemp.isRadarOpen) {
+				if (RadarFragment.isRadarOpen) {
 					Toast.makeText(
 							getActivity(),
 							getResources().getString(

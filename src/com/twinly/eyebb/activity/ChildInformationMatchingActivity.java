@@ -119,7 +119,6 @@ public class ChildInformationMatchingActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				childName = userName.getText().toString();
 				if (childName != null && childName.length() > 0) {
 					childNameFlag = true;

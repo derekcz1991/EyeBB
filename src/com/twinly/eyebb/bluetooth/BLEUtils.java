@@ -6,6 +6,30 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 public class BLEUtils {
+	public final static String SERVICE_UUID_0001 = "00001000-0000-1000-8000-00805f9b34fb";
+	public final static String SERVICE_UUID_0002 = "00002000-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_PASSWORD = "00002005-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_MAJOR_UUID = "00001008-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_MINOR_UUID = "00001009-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_BEEP_UUID = "00001001-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_ANTI_LOST_PERIOD_UUID = "00001003-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_ANTI_LOST_TIMEOUT_UUID = "0000100a-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
+	public final static String CHARACTERISTICS_LED_BLINK_UUID = "0000100b-0000-1000-8000-00805f9b34fb";
+	
+	public static final int STATE_DISCONNECTED = 0;
+	public static final int STATE_CONNECTING = 1;
+	public static final int STATE_CONNECTED = 2;
+
+	public final static String ACTION_GATT_CONNECTED = "bluetooth.le.ACTION_GATT_CONNECTED";
+	public final static String ACTION_GATT_DISCONNECTED = "bluetooth.le.ACTION_GATT_DISCONNECTED";
+	public final static String ACTION_GATT_SERVICES_DISCOVERED = "bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
+	public final static String ACTION_GATT_READ_SUCCESS = "bluetooth.le.ACTION_GATT_READ_SUCCESS";
+	public final static String ACTION_GATT_READ_FAILURE = "bluetooth.le.ACTION_GATT_READ_FAILURE";
+	public final static String ACTION_GATT_WRITE_SUCCESS = "bluetooth.le.ACTION_GATT_WRITE_SUCCEED";
+	public final static String ACTION_GATT_WRITE_FAILURE = "bluetooth.le.ACTION_GATT_WRITE_FAILURE";
+	public final static String EXTRA_DATA = "bluetooth.le.EXTRA_DATA";
+
 	public static final int RSSI_STRONG = -50;
 	public static final int RSSI_GOOD = -70;
 	public static final int RSSI_WEAK = -100;

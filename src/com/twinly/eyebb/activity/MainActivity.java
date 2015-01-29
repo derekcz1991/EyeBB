@@ -24,8 +24,8 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
-import com.twinly.eyebb.fragment.RadarTrackingFragmentTemp;
 import com.twinly.eyebb.fragment.ReportFragment;
+import com.twinly.eyebb.fragment.RadarFragment;
 import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -39,7 +39,6 @@ public class MainActivity extends FragmentActivity implements
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
 	private IndoorLocatorFragment indoorLocatorFragment;
-	private RadarTrackingFragmentTemp radarTrackingFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
@@ -65,12 +64,6 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString("tab", mTabHost.getCurrentTabTag());
-	}
-
-	@Override
 	protected void onResume() {
 		super.onResume();
 		bar.setVisibility(View.INVISIBLE);
@@ -84,8 +77,21 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		System.out.println("onCreate ==>> onSaveInstanceState");
+		outState.putString("tab", mTabHost.getCurrentTabTag());
+		//super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onStop() {
+		System.out.println("MainActivity ==>> " + "onStop");
+		super.onStop();
+	}
+
+	@Override
 	protected void onDestroy() {
-		super.onDestroy();
+		System.out.println("MainActivity ==>> " + "onDestroy");
 		if (keepSessionAliveTask != null) {
 			keepSessionAliveTask.cancel(true);
 		}
@@ -101,7 +107,7 @@ public class MainActivity extends FragmentActivity implements
 				throw e;
 			}
 		}
-
+		super.onDestroy();
 	}
 
 	@SuppressLint("InflateParams")
@@ -127,7 +133,8 @@ public class MainActivity extends FragmentActivity implements
 				indoorLocatorFragment);
 
 		// radar
-		radarTrackingFragment = new RadarTrackingFragmentTemp();
+		//radarTrackingFragment = new RadarFragment();
+		RadarFragment temp = new RadarFragment();
 		View trackingLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		trackingLabel.findViewById(R.id.label).setBackgroundResource(
@@ -135,8 +142,7 @@ public class MainActivity extends FragmentActivity implements
 		trackingLabel.findViewById(R.id.notification_number).setVisibility(
 				View.GONE);
 		mTabsAdapter.addFragment(
-				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel),
-				radarTrackingFragment);
+				mTabHost.newTabSpec("Radar").setIndicator(trackingLabel), temp);
 
 		// report
 		reportFragment = new ReportFragment();
