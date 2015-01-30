@@ -4,6 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+
+
+import com.twinly.eyebb.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -70,11 +73,11 @@ public abstract class BarcodeCreater {
 		tv.setLayoutParams(layoutParams);
 		tv.setText(contents);
 		// tv.setHeight(10);
-		tv.setTextSize(10);
+		tv.setTextAppearance(context,R.style.DarkGreyText_20);
 		tv.setGravity(Gravity.CENTER_HORIZONTAL);
 		tv.setWidth(width);
 		tv.setDrawingCacheEnabled(true);
-		tv.setTextColor(Color.BLACK);
+		//tv.setTextColor(Color.BLACK);
 		tv.setBackgroundColor(Color.WHITE);
 		tv.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));

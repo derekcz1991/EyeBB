@@ -121,7 +121,7 @@ public class RequireQrCodeDialog extends Activity {
 				if (qrCodeDialog.isShowing() && qrCodeDialog != null) {
 					qrCodeDialog.dismiss();
 				}
-				txt_qr_code_address.setText(device_address);
+				//txt_qr_code_address.setText(device_address);
 
 				btMap = BarcodeCreater.creatBarcode(RequireQrCodeDialog.this,
 						device_address,
