@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -22,44 +23,25 @@ import android.widget.ListView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
-import com.twinly.eyebb.model.Macaron;
-import com.twinly.eyebb.model.SerializableMacaronMap;
+import com.twinly.eyebb.model.Device;
+import com.twinly.eyebb.model.SerializableDeviceMap;
 import com.twinly.eyebb.service.AntiLostService;
 
 public class AntiLostFragment extends Fragment {
-	private HashMap<String, Macaron> macaronHashMap;
-	private ArrayList<Macaron> deviceList;
-	private SerializableMacaronMap serializableMacaronMap;
+	private HashMap<String, Device> macaronHashMap;
+	private ArrayList<Device> deviceList;
+	private SerializableDeviceMap serializableMacaronMap;
 	private ListView listView;
 	private RadarKidsListViewAdapter mAdapter;
 	private boolean isAntiLostOn = false;
 	private boolean isSingleMode;
 
-	/** Messenger for communicating with service. */
-	Messenger mService = null;
-	/** Flag indicating whether we have called bind on the service. */
-	boolean mIsBound;
-
-	/**
-	 * Target we publish for clients to send messages to IncomingHandler.
-	 */
-	final Messenger mMessenger = new Messenger(new IncomingHandler());
-
-	/**
-	 * Handler of incoming messages from service.
-	 */
-	class IncomingHandler extends Handler {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case AntiLostService.MSG_SET_VALUE:
-				updateView(msg);
-				break;
-			default:
-				super.handleMessage(msg);
-			}
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			
 		}
-	}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +49,7 @@ public class AntiLostFragment extends Fragment {
 		View v = inflater
 				.inflate(R.layout.fragment_anti_lost, container, false);
 		listView = (ListView) v.findViewById(R.id.listView);
-		deviceList = new ArrayList<Macaron>();
+		deviceList = new ArrayList<Device>();
 		mAdapter = new RadarKidsListViewAdapter(getActivity(), deviceList);
 		listView.setAdapter(mAdapter);
 		return v;
@@ -84,37 +66,17 @@ public class AntiLostFragment extends Fragment {
 		antiLostServiceIntent.putStringArrayListExtra(
 				AntiLostService.EXTRA_DEVICE_LIST, antiLostDeviceList);
 		getActivity().startService(antiLostServiceIntent);
-		doBindService();
 		isAntiLostOn = true;
 	}
 
 	public void stop() {
 		isAntiLostOn = false;
-		doUnbindService();
-	}
-
-	public void updateView() {
-		if (isAntiLostOn) {
-			if (mService == null)
-				return;
-
-			Message msg = Message.obtain(null,
-					AntiLostService.MSG_REGISTER_CLIENT);
-			msg = Message.obtain(null, AntiLostService.MSG_SET_VALUE,
-					this.hashCode(), 0);
-			try {
-				mService.send(msg);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private void updateView(Message msg) {
 		if (isAntiLostOn) {
-			serializableMacaronMap = (SerializableMacaronMap) msg.getData()
-					.get(AntiLostService.EXTRA_DEVICE_LIST);
+			serializableMacaronMap = (SerializableDeviceMap) msg.getData().get(
+					AntiLostService.EXTRA_DEVICE_LIST);
 			macaronHashMap = serializableMacaronMap.getMap();
 			String macAddress;
 			Iterator<String> it = macaronHashMap.keySet().iterator();
@@ -136,74 +98,4 @@ public class AntiLostFragment extends Fragment {
 		}
 	}
 
-	/**
-	 * Class for interacting with the main interface of the service.
-	 */
-	private ServiceConnection mConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			// This is called when the connection with the service has been
-			// established, giving us the service object we can use to
-			// interact with the service.  We are communicating with our
-			// service through an IDL interface, so get a client-side
-			// representation of that from the raw service object.
-			mService = new Messenger(service);
-
-			// We want to monitor the service for as long as we are connected to it.
-			try {
-				Message msg = Message.obtain(null,
-						AntiLostService.MSG_REGISTER_CLIENT);
-				msg.replyTo = mMessenger;
-				mService.send(msg);
-
-				// Give it some value as an example.
-				msg = Message.obtain(null, AntiLostService.MSG_SET_VALUE,
-						this.hashCode(), 0);
-				mService.send(msg);
-			} catch (RemoteException e) {
-				// In this case the service has crashed before we could even
-				// do anything with it; we can count on soon being
-				// disconnected (and then reconnected if it can be restarted)
-				// so there is no need to do anything here.
-			}
-
-		}
-
-		public void onServiceDisconnected(ComponentName className) {
-			// This is called when the connection with the service has been
-			// unexpectedly disconnected -- that is, its process crashed.
-			mService = null;
-		}
-	};
-
-	void doBindService() {
-		// Establish a connection with the service.  We use an explicit
-		// class name because there is no reason to be able to let other
-		// applications replace our component.
-		getActivity().bindService(
-				new Intent(getActivity(), AntiLostService.class), mConnection,
-				Context.BIND_AUTO_CREATE);
-		mIsBound = true;
-	}
-
-	void doUnbindService() {
-		if (mIsBound) {
-			// If we have received the service, and hence registered with
-			// it, then now is the time to unregister.
-			if (mService != null) {
-				try {
-					Message msg = Message.obtain(null,
-							AntiLostService.MSG_UNREGISTER_CLIENT);
-					msg.replyTo = mMessenger;
-					mService.send(msg);
-				} catch (RemoteException e) {
-					// There is nothing special we need to do if the service
-					// has crashed.
-				}
-			}
-
-			// Detach our existing connection.
-			getActivity().unbindService(mConnection);
-			mIsBound = false;
-		}
-	}
 }

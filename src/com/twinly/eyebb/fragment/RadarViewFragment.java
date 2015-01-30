@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.RadarView;
-import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.model.Device;
 
 @SuppressLint("NewApi")
 public class RadarViewFragment extends Fragment {
@@ -68,7 +68,7 @@ public class RadarViewFragment extends Fragment {
 		}
 	}
 
-	public void updateView(ArrayList<Macaron> scannedDeviceList) {
+	public void updateView(ArrayList<Device> scannedDeviceList) {
 		radarView.updateView(scannedDeviceList);
 	}
 }

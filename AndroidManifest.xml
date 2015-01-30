@@ -103,6 +103,12 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
@@ -171,12 +177,6 @@
             android:name="com.twinly.eyebb.activity.AuthorizeKidsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
-        </activity>
-        <activity
-            android:name="com.twinly.eyebb.activity.MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name="com.twinly.eyebb.dialog.ChildDialog"

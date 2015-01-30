@@ -11,14 +11,14 @@ import android.view.View;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.bluetooth.BLEUtils;
-import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.model.Device;
 
 public class RadarView extends View {
 	private int radius;
 	private int smallRadius;
 	private int normalRadius;
 	private int largeRadius;
-	private ArrayList<Macaron> scannedDeviceList;
+	private ArrayList<Device> scannedDeviceList;
 	private Bitmap bitmap;
 	private Paint paint;
 
@@ -38,7 +38,7 @@ public class RadarView extends View {
 		paint = new Paint();
 	}
 
-	public void updateView(ArrayList<Macaron> scannedDeviceList) {
+	public void updateView(ArrayList<Device> scannedDeviceList) {
 		int theta, r, x, y;
 		for (int i = 0; i < scannedDeviceList.size(); i++) {
 			if (BLEUtils.getRssiLevel(scannedDeviceList.get(i).getRssi()) == BLEUtils

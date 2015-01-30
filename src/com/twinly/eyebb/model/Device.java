@@ -2,7 +2,7 @@ package com.twinly.eyebb.model;
 
 import java.io.Serializable;
 
-public class Macaron implements Serializable {
+public class Device implements Serializable {
 	/**
 	 * 
 	 */
@@ -15,8 +15,9 @@ public class Macaron implements Serializable {
 	private int axisY;
 	private boolean isMissed;
 
-	public Macaron(String macAddress) {
+	public Device(String macAddress) {
 		this.macAddress = macAddress;
+		this.isMissed = true;
 	}
 
 	public String getMacAddress() {

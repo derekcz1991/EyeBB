@@ -145,7 +145,7 @@ public class RadarFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				startRadar();
+				startRadarTracking();
 			}
 		});
 		tvAntiLost.setOnClickListener(new OnClickListener() {
@@ -168,7 +168,7 @@ public class RadarFragment extends Fragment {
 		tvRadarTracking.setEnabled(true);
 		tvAntiLost.setEnabled(true);
 		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_on);
-		startRadar();
+		startRadarTracking();
 
 		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 2000);
 	}
@@ -180,11 +180,11 @@ public class RadarFragment extends Fragment {
 		tvRadarTracking.setEnabled(false);
 		tvAntiLost.setEnabled(false);
 		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_off);
-		stopRadar();
+		stopRadarTracking();
 		stopAntiLost();
 	}
 
-	private void startRadar() {
+	private void startRadarTracking() {
 		if (isRadarTrackingOn == false) {
 			stopAntiLost();
 			isRadarTrackingOn = true;
@@ -196,7 +196,7 @@ public class RadarFragment extends Fragment {
 		}
 	}
 
-	private void stopRadar() {
+	private void stopRadarTracking() {
 		if (isRadarTrackingOn == true) {
 			isRadarTrackingOn = false;
 			tvRadarTracking.setChecked(false);
@@ -206,7 +206,7 @@ public class RadarFragment extends Fragment {
 
 	private void startAntiLost(ArrayList<String> antiLostDeviceList) {
 		if (isAntiLostOn == false) {
-			stopRadar();
+			stopRadarTracking();
 			isAntiLostOn = true;
 			tvAntiLost.setChecked(true);
 			antiLostFragment.start(antiLostDeviceList);
@@ -243,7 +243,7 @@ public class RadarFragment extends Fragment {
 		public void run() {
 			if (isRadarOpen) {
 				radarTrackingFragment.updateView();
-				antiLostFragment.updateView();
+				//antiLostFragment.updateView();
 				mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 5000);
 			}
 

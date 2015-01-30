@@ -35,10 +35,6 @@ public class LancherActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lancher);
 
-		/*Intent intent = new Intent(this, MainActivity.class);
-		startActivity(intent);
-		finish();*/
-
 		SystemUtils.initImageLoader(getApplicationContext());
 		checkLogo();
 		setLanguage();

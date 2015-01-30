@@ -22,7 +22,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.BroadcastUtils;
 
 @SuppressLint("NewApi")
@@ -42,10 +42,10 @@ public class RadarTrackingFragment extends Fragment {
 	private TextView tvMissedNumber;
 	private RadarViewFragment radarViewFragment;
 
-	private HashMap<String, Macaron> macaronHashMap;
-	private ArrayList<Macaron> displayDeviceList;
-	private ArrayList<Macaron> scannedDeviceList;
-	private ArrayList<Macaron> missedDeviceList;
+	private HashMap<String, Device> macaronHashMap;
+	private ArrayList<Device> displayDeviceList;
+	private ArrayList<Device> scannedDeviceList;
+	private ArrayList<Device> missedDeviceList;
 	private RadarKidsListViewAdapter mAdapter;
 
 	private boolean isSuperisedSection = true;
@@ -105,9 +105,9 @@ public class RadarTrackingFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		macaronHashMap = DBChildren.getChildrenMapWithAddress(getActivity());
-		displayDeviceList = new ArrayList<Macaron>();
-		scannedDeviceList = new ArrayList<Macaron>();
-		missedDeviceList = new ArrayList<Macaron>();
+		displayDeviceList = new ArrayList<Device>();
+		scannedDeviceList = new ArrayList<Device>();
+		missedDeviceList = new ArrayList<Device>();
 		mAdapter = new RadarKidsListViewAdapter(getActivity(),
 				displayDeviceList);
 		listView.setAdapter(mAdapter);

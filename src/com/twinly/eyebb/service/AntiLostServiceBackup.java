@@ -23,11 +23,14 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -40,8 +43,38 @@ import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.model.SerializableDeviceMap;
 
 @SuppressLint("NewApi")
-public class AntiLostService extends Service {
-	private final static String TAG = AntiLostService.class.getSimpleName();
+public class AntiLostServiceBackup extends Service {
+	private final static String TAG = AntiLostServiceBackup.class.getSimpleName();
+	/**
+	 * Command to the service to register a client, receiving callbacks
+	 * from the service.  The Message's replyTo field must be a Messenger of
+	 * the client where callbacks should be sent.
+	 */
+	public static final int MSG_REGISTER_CLIENT = 1;
+
+	/**
+	 * Command to the service to unregister a client, ot stop receiving callbacks
+	 * from the service.  The Message's replyTo field must be a Messenger of
+	 * the client as previously given with MSG_REGISTER_CLIENT.
+	 */
+	public static final int MSG_UNREGISTER_CLIENT = 2;
+
+	/**
+	 * Command to service to set a new value.  This can be sent to the
+	 * service to supply a new value, and will be sent by the service to
+	 * any registered clients with the new value.
+	 */
+	public static final int MSG_SET_VALUE = 3;
+
+	/** Keeps track of all current registered clients. */
+	ArrayList<Messenger> mClients = new ArrayList<Messenger>();
+	/** Holds last value set by a client. */
+	int mValue = 0;
+
+	/**
+	 * Target we publish for clients to send messages to IncomingHandler.
+	 */
+	private final Messenger mMessenger = new Messenger(new IncomingHandler());
 
 	public static final String EXTRA_DEVICE_LIST = "DEVICE_LIST";
 	public static final int MAX_DUAL_MODE_SIZE = 3;
@@ -49,7 +82,6 @@ public class AntiLostService extends Service {
 	private final int MESSAGE_CONNECT_DEVICE = 2;
 	private final int MESSAGE_DISCONNECT_DEVICE = 3;
 	private final int MESSAGE_SCANN = 4;
-	private final int MESSAGE_UPDATE_VIEW = 5;
 
 	private final int STATUS_LANCHED = 2;
 	private final int STATUS_STOPPING = 3;
@@ -208,7 +240,6 @@ public class AntiLostService extends Service {
 							mServiceHandler
 									.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
 						}
-						mServiceHandler.sendEmptyMessage(MESSAGE_UPDATE_VIEW);
 					}
 					break;
 				case MESSAGE_SCANN:
@@ -228,11 +259,6 @@ public class AntiLostService extends Service {
 								BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
 								"0000");
 					}
-					break;
-				case MESSAGE_UPDATE_VIEW:
-					updateNotification();
-					mServiceHandler.sendEmptyMessageDelayed(
-							MESSAGE_UPDATE_VIEW, 5000);
 					break;
 				}
 			}
@@ -276,9 +302,13 @@ public class AntiLostService extends Service {
 		return START_STICKY;
 	}
 
+	/**
+	 * When binding to the service, we return an interface to our messenger
+	 * for sending messages to the service.
+	 */
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return mMessenger.getBinder();
 	}
 
 	@Override
@@ -331,6 +361,7 @@ public class AntiLostService extends Service {
 	}
 
 	private void stopLeScan() {
+		System.out.println("====>>>>>>>>> stopLeScan()");
 		if (scanner != null) {
 			scanner.stop();
 		}
@@ -438,6 +469,45 @@ public class AntiLostService extends Service {
 		gatt = null;
 	}
 
+	/**
+	 * Handler of incoming messages from clients.
+	 */
+	private final class IncomingHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MSG_REGISTER_CLIENT:
+				mClients.add(msg.replyTo);
+				break;
+			case MSG_UNREGISTER_CLIENT:
+				mClients.remove(msg.replyTo);
+				break;
+			case MSG_SET_VALUE:
+				mValue = msg.arg1;
+				serializableDeviceMap.setMap(antiLostDeviceHashMap);
+				Bundle data = new Bundle();
+				data.putSerializable(EXTRA_DEVICE_LIST, serializableDeviceMap);
+				for (int i = mClients.size() - 1; i >= 0; i--) {
+					try {
+						Message message = Message.obtain(null, MSG_SET_VALUE,
+								mValue, 0);
+						message.setData(data);
+						mClients.get(i).send(message);
+					} catch (RemoteException e) {
+						// The client is dead.  Remove it from the list;
+						// we are going through the list from back to front
+						// so this is safe to do inside the loop.
+						mClients.remove(i);
+					}
+				}
+				updateNotification();
+				break;
+			default:
+				super.handleMessage(msg);
+			}
+		}
+	}
+
 	private void updateNotification() {
 		missedCount = 0;
 		scannedCount = 0;
@@ -478,17 +548,17 @@ public class AntiLostService extends Service {
 	private void buildNotification(String content) {
 		serviceStatus = STATUS_LANCHED;
 
-		builder = new NotificationCompat.Builder(AntiLostService.this);
+		builder = new NotificationCompat.Builder(AntiLostServiceBackup.this);
 		builder.setSmallIcon(R.drawable.ic_launcher);
 		builder.setContentTitle(getString(R.string.text_anti_lost_mode));
 		builder.setContentText(content);
 
 		// Creates an explicit intent for an Activity in your app
-		Intent resultIntent = new Intent(AntiLostService.this,
+		Intent resultIntent = new Intent(AntiLostServiceBackup.this,
 				LancherActivity.class);
 		resultIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
 		TaskStackBuilder stackBuilder = TaskStackBuilder
-				.create(AntiLostService.this);
+				.create(AntiLostServiceBackup.this);
 		stackBuilder.addParentStack(LancherActivity.class);
 		stackBuilder.addNextIntent(resultIntent);
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,

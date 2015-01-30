@@ -19,14 +19,14 @@ import com.twinly.eyebb.bluetooth.BLEUtils;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class RadarKidsListViewAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
-	private ArrayList<Macaron> deviceList;
+	private ArrayList<Device> deviceList;
 	private HashMap<String, Child> childMap;
 	private ViewHolder viewHolder;
 
@@ -37,20 +37,30 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	}
 
 	public RadarKidsListViewAdapter(Context context,
-			ArrayList<Macaron> deviceList) {
+			ArrayList<Device> deviceList) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.deviceList = deviceList;
 		childMap = DBChildren.getChildrenMap(context);
 		imageLoader = ImageLoader.getInstance();
+		sort();
+	}
 
-		Collections.sort(this.deviceList, new Comparator<Macaron>() {
+	private void sort() {
+		Collections.sort(this.deviceList, new Comparator<Device>() {
 
 			@Override
-			public int compare(Macaron lhs, Macaron rhs) {
-				long left = childMap.get(lhs.getMacAddress()).getChildId();
-				long right = childMap.get(rhs.getMacAddress()).getChildId();
-				return (int) (left - right);
+			public int compare(Device lhs, Device rhs) {
+				if (lhs.isMissed() == rhs.isMissed()) {
+					long left = childMap.get(lhs.getMacAddress()).getChildId();
+					long right = childMap.get(rhs.getMacAddress()).getChildId();
+					return (int) (left - right);
+				} else if (lhs.isMissed()) {
+					return -1;
+				} else {
+					return 1;
+				}
+
 			}
 		});
 	}
@@ -68,6 +78,12 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return position;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		sort();
+		super.notifyDataSetChanged();
 	}
 
 	@Override
@@ -94,11 +110,39 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		if (deviceList.get(position).isMissed()) {
 			viewHolder.avatar.setBorderColor(context.getResources().getColor(
 					R.color.red));
-			viewHolder.deviceRssi.setVisibility(View.GONE);
+			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
+					R.color.red));
+			viewHolder.deviceRssi.setText(context
+					.getString(R.string.btn_missed));
 		} else {
 			viewHolder.avatar.setBorderColor(context.getResources().getColor(
-					R.color.white));
-			viewHolder.deviceRssi.setVisibility(View.VISIBLE);
+					R.color.green));
+			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
+					R.color.dark_grey));
+			int rssi = deviceList.get(position).getRssi();
+			switch (BLEUtils.getRssiLevel(rssi)) {
+			case BLEUtils.RSSI_STRONG:
+				viewHolder.deviceRssi.setText(context.getResources().getString(
+						R.string.text_rssi_strong)
+						+ "(" + rssi + ")");
+				/*viewHolder.deviceRssi.setTextColor(context.getResources()
+						.getColor(R.color.sky_blue));*/
+				break;
+			case BLEUtils.RSSI_GOOD:
+				viewHolder.deviceRssi.setText(context.getResources().getString(
+						R.string.text_rssi_good)
+						+ "(" + rssi + ")");
+				/*viewHolder.deviceRssi.setTextColor(context.getResources()
+						.getColor(R.color.dark_grey));*/
+				break;
+			case BLEUtils.RSSI_WEAK:
+				viewHolder.deviceRssi.setText(context.getResources().getString(
+						R.string.text_rssi_weak)
+						+ "(" + rssi + ")");
+				/*viewHolder.deviceRssi.setTextColor(context.getResources()
+						.getColor(R.color.red));*/
+				break;
+			}
 		}
 		Child child = childMap.get(deviceList.get(position).getMacAddress());
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
@@ -110,30 +154,6 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		}
 		viewHolder.name.setText(child.getName());
 
-		int rssi = deviceList.get(position).getRssi();
-		switch (BLEUtils.getRssiLevel(rssi)) {
-		case BLEUtils.RSSI_STRONG:
-			viewHolder.deviceRssi.setText(context.getResources().getString(
-					R.string.text_rssi_strong)
-					+ "(" + rssi + ")");
-			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
-					R.color.sky_blue));
-			break;
-		case BLEUtils.RSSI_GOOD:
-			viewHolder.deviceRssi.setText(context.getResources().getString(
-					R.string.text_rssi_good)
-					+ "(" + rssi + ")");
-			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
-					R.color.dark_grey));
-			break;
-		case BLEUtils.RSSI_WEAK:
-			viewHolder.deviceRssi.setText(context.getResources().getString(
-					R.string.text_rssi_weak)
-					+ "(" + rssi + ")");
-			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
-					R.color.red));
-			break;
-		}
 	}
 
 }

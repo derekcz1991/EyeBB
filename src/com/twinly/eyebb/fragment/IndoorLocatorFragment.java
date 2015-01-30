@@ -268,7 +268,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				e.printStackTrace();
 			}
 			String result = HttpRequestUtils.get(
-					HttpConstants.GET_CHILDREN_LIST, null);
+					HttpConstants.GET_CHILDREN_LOC_LIST, null);
 			if (autoUpdateFlag == false) {
 				try {
 					new JSONObject(result);
@@ -279,7 +279,7 @@ public class IndoorLocatorFragment extends Fragment implements
 						e1.printStackTrace();
 					}
 					result = HttpRequestUtils.get(
-							HttpConstants.GET_CHILDREN_LIST, null);
+							HttpConstants.GET_CHILDREN_LOC_LIST, null);
 				}
 			}
 			return result;
@@ -460,13 +460,13 @@ public class IndoorLocatorFragment extends Fragment implements
 		child.setMacAddress(childrenBeanObject
 				.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
 		// get parents' phone
-		if (CommonUtils.isNotNull(childrenBeanObject
+		/*if (CommonUtils.isNotNull(childrenBeanObject
 				.getString(HttpConstants.JSON_KEY_PARENTS))) {
 			JSONObject parentObject = childrenBeanObject
 					.getJSONObject(HttpConstants.JSON_KEY_PARENTS);
 			child.setPhone(parentObject
 					.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
-		}
+		}*/
 		child.setLastAppearTime(childrenBeanObject
 				.getLong(HttpConstants.JSON_KEY_CHILD_LAST_APPEAR_TIME));
 		DBChildren.insert(getActivity(), child);

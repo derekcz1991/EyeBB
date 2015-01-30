@@ -9,7 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.twinly.eyebb.model.Child;
-import com.twinly.eyebb.model.Macaron;
+import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 
 public class DBChildren {
@@ -70,15 +70,15 @@ public class DBChildren {
 		return map;
 	}
 
-	public static HashMap<String, Macaron> getChildrenMapWithAddress(Context context) {
-		HashMap<String, Macaron> map = new HashMap<String, Macaron>();
+	public static HashMap<String, Device> getChildrenMapWithAddress(Context context) {
+		HashMap<String, Device> map = new HashMap<String, Device>();
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery(
 				"select * from children where mac_address != '" + "'", null);
 		while (cursor.moveToNext()) {
 			Child child = new Child();
 			createChild(child, cursor);
-			map.put(child.getMacAddress(), new Macaron(child.getMacAddress()));
+			map.put(child.getMacAddress(), new Device(child.getMacAddress()));
 		}
 		cursor.close();
 		db.close();
