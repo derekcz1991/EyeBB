@@ -124,7 +124,7 @@ public class RequireQrCodeDialog extends Activity {
 				txt_qr_code_address.setText(device_address);
 
 				btMap = BarcodeCreater.creatBarcode(RequireQrCodeDialog.this,
-						"aaaaa",
+						device_address,
 						DensityUtil.dip2px(RequireQrCodeDialog.this, 250),
 						DensityUtil.dip2px(RequireQrCodeDialog.this, 250),
 						true, 2);
