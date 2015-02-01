@@ -22,7 +22,6 @@ import android.util.Log;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.dialog.ErrorDialog;
-import com.twinly.eyebb.service.BluetoothLeService;
 
 @SuppressLint("NewApi")
 public class BluetoothUtils {

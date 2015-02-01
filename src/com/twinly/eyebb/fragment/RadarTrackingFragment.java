@@ -9,6 +9,9 @@ import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +30,9 @@ import com.twinly.eyebb.utils.BroadcastUtils;
 
 @SuppressLint("NewApi")
 public class RadarTrackingFragment extends Fragment {
+	private final int MESSAGE_WHAT_UPDATE_VIEW = 0;
+	private final int MESSAGE_WHAT_REMOVE_CALLBACK = 1;
+
 	private BluetoothUtils mBluetoothUtils;
 	private ListView listView;
 	private RelativeLayout btnSuperised;
@@ -156,6 +162,8 @@ public class RadarTrackingFragment extends Fragment {
 		mBluetoothUtils.startLeScan(leScanCallback, 500);
 		radarViewFragment.startAnimation();
 		BroadcastUtils.opeanRadar(getActivity());
+
+		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 2000);
 	}
 
 	public void stop() {
@@ -163,7 +171,35 @@ public class RadarTrackingFragment extends Fragment {
 		mBluetoothUtils.stopLeScan();
 		radarViewFragment.stopAnimation();
 		BroadcastUtils.closeRadar(getActivity());
+		mHandler.removeMessages(MESSAGE_WHAT_UPDATE_VIEW);
 	}
+
+	Handler mHandler = new Handler(Looper.getMainLooper()) {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case MESSAGE_WHAT_UPDATE_VIEW:
+				mHandler.post(updateViewRunnable);
+				break;
+			case MESSAGE_WHAT_REMOVE_CALLBACK:
+				mHandler.removeCallbacks(updateViewRunnable);
+				break;
+			}
+		}
+	};
+
+	Runnable updateViewRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			if (isRadarTrackingOn) {
+				updateView();
+				mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 5000);
+			}
+
+		}
+
+	};
 
 	public void updateView() {
 		if (isRadarTrackingOn) {
@@ -194,10 +230,8 @@ public class RadarTrackingFragment extends Fragment {
 		displayDeviceList.clear();
 		if (isSuperisedSection) {
 			displayDeviceList.addAll(scannedDeviceList);
-
 		} else {
 			displayDeviceList.addAll(missedDeviceList);
-
 		}
 
 		getActivity().runOnUiThread(new Runnable() {

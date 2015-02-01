@@ -14,10 +14,12 @@ public class Device implements Serializable {
 	private int axisX;
 	private int axisY;
 	private boolean isMissed;
+	private boolean isMissing; // status after missed
 
 	public Device(String macAddress) {
 		this.macAddress = macAddress;
 		this.isMissed = true;
+		this.isMissing = true;
 	}
 
 	public String getMacAddress() {
@@ -70,6 +72,14 @@ public class Device implements Serializable {
 
 	public void setMissed(boolean isMissed) {
 		this.isMissed = isMissed;
+	}
+
+	public boolean isMissing() {
+		return isMissing;
+	}
+
+	public void setMissing(boolean isMissing) {
+		this.isMissing = isMissing;
 	}
 
 	@Override

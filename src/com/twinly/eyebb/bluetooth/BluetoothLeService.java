@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.twinly.eyebb.service;
+package com.twinly.eyebb.bluetooth;
 
 import java.util.List;
 
@@ -34,7 +34,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.twinly.eyebb.bluetooth.BLEUtils;
 
 /**
  * Service for managing connection and data communication with a GATT server

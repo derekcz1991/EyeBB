@@ -11,9 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,12 +25,11 @@ import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.SerializableChildrenList;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("NewApi")
 public class RadarFragment extends Fragment {
-	public final static int LOST_TIMEOUT = 15000;
-	private final int MESSAGE_WHAT_UPDATE_VIEW = 0;
-	private final int MESSAGE_WHAT_REMOVE_CALLBACK = 1;
+	public final static int LOST_TIMEOUT = 10000;
 
 	private RadarTrackingFragment radarTrackingFragment;
 	private AntiLostFragment antiLostFragment;
@@ -83,48 +79,41 @@ public class RadarFragment extends Fragment {
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		System.out.println("TempFragment ==>> onSaveInstanceState");
-		super.onSaveInstanceState(outState);
-	}
-
-	@Override
 	public void onDestroy() {
 		getActivity().unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
 
 	private void setUpView(View v) {
+		btnRadarSwitch = (TextView) v.findViewById(R.id.btn_radar_switch);
+		container = (RelativeLayout) v.findViewById(R.id.container);
+		tvRadarTracking = (CheckedTextView) v.findViewById(R.id.radar_tracking);
+		tvAntiLost = (CheckedTextView) v.findViewById(R.id.anti_lost);
+
 		FragmentTransaction fragmentTransaction = getChildFragmentManager()
 				.beginTransaction();
 		radarTrackingFragment = (RadarTrackingFragment) getChildFragmentManager()
 				.findFragmentByTag("radar");
 		if (radarTrackingFragment == null) {
 			radarTrackingFragment = new RadarTrackingFragment();
-
 			fragmentTransaction.add(R.id.container, radarTrackingFragment,
 					"radar");
-		} else {
-			fragmentTransaction.show(radarTrackingFragment);
 		}
 
-		antiLostFragment = new AntiLostFragment();
 		antiLostFragment = (AntiLostFragment) getChildFragmentManager()
 				.findFragmentByTag("antiLost");
 		if (antiLostFragment == null) {
 			antiLostFragment = new AntiLostFragment();
 			fragmentTransaction.add(R.id.container, antiLostFragment,
 					"antiLost");
-			fragmentTransaction.hide(antiLostFragment);
+		}
+
+		if (SharePrefsUtils.isAntiLostOn(getActivity())) {
+			start();
 		} else {
 			fragmentTransaction.hide(antiLostFragment);
 		}
 		fragmentTransaction.commit();
-
-		btnRadarSwitch = (TextView) v.findViewById(R.id.btn_radar_switch);
-		container = (RelativeLayout) v.findViewById(R.id.container);
-		tvRadarTracking = (CheckedTextView) v.findViewById(R.id.radar_tracking);
-		tvAntiLost = (CheckedTextView) v.findViewById(R.id.anti_lost);
 	}
 
 	private void setupListener() {
@@ -168,9 +157,11 @@ public class RadarFragment extends Fragment {
 		tvRadarTracking.setEnabled(true);
 		tvAntiLost.setEnabled(true);
 		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_on);
-		startRadarTracking();
-
-		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 2000);
+		if (SharePrefsUtils.isAntiLostOn(getActivity())) {
+			resumeAntiLost();
+		} else {
+			startRadarTracking();
+		}
 	}
 
 	private void stop() {
@@ -206,6 +197,7 @@ public class RadarFragment extends Fragment {
 
 	private void startAntiLost(ArrayList<String> antiLostDeviceList) {
 		if (isAntiLostOn == false) {
+			SharePrefsUtils.setAntiLostOn(getActivity(), true);
 			stopRadarTracking();
 			isAntiLostOn = true;
 			tvAntiLost.setChecked(true);
@@ -215,41 +207,22 @@ public class RadarFragment extends Fragment {
 		}
 	}
 
+	private void resumeAntiLost() {
+		isAntiLostOn = true;
+		tvAntiLost.setChecked(true);
+		antiLostFragment.resume();
+		getChildFragmentManager().beginTransaction().show(antiLostFragment)
+				.hide(radarTrackingFragment).commit();
+	}
+
 	private void stopAntiLost() {
 		if (isAntiLostOn == true) {
+			SharePrefsUtils.setAntiLostOn(getActivity(), false);
 			isAntiLostOn = false;
 			tvAntiLost.setChecked(false);
 			antiLostFragment.stop();
 		}
 	}
-
-	Handler mHandler = new Handler(Looper.getMainLooper()) {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case MESSAGE_WHAT_UPDATE_VIEW:
-				mHandler.post(updateViewRunnable);
-				break;
-			case MESSAGE_WHAT_REMOVE_CALLBACK:
-				mHandler.removeCallbacks(updateViewRunnable);
-				break;
-			}
-		}
-	};
-
-	Runnable updateViewRunnable = new Runnable() {
-
-		@Override
-		public void run() {
-			if (isRadarOpen) {
-				radarTrackingFragment.updateView();
-				//antiLostFragment.updateView();
-				mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 5000);
-			}
-
-		}
-
-	};
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

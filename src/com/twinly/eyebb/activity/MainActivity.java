@@ -55,7 +55,6 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 
@@ -74,6 +73,10 @@ public class MainActivity extends FragmentActivity implements
 		registerReceiver(handleNotificationDot, new IntentFilter(
 				BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT));
 
+		// set the current tab
+		if (SharePrefsUtils.isAntiLostOn(this)) {
+			mTabHost.setCurrentTab(1);
+		}
 	}
 
 	@Override
@@ -174,10 +177,9 @@ public class MainActivity extends FragmentActivity implements
 					View.GONE);
 		}
 
-		mTabHost.setCurrentTab(0);
-		if (savedInstanceState != null) {
+		/*if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
-		}
+		}*/
 
 	}
 

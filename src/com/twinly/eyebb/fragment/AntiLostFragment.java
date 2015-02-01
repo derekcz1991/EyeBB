@@ -6,16 +6,10 @@ import java.util.Iterator;
 
 import android.app.Fragment;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,18 +22,22 @@ import com.twinly.eyebb.model.SerializableDeviceMap;
 import com.twinly.eyebb.service.AntiLostService;
 
 public class AntiLostFragment extends Fragment {
-	private HashMap<String, Device> macaronHashMap;
+	private HashMap<String, Device> deviceHashMap;
 	private ArrayList<Device> deviceList;
 	private SerializableDeviceMap serializableMacaronMap;
 	private ListView listView;
 	private RadarKidsListViewAdapter mAdapter;
 	private boolean isAntiLostOn = false;
-	private boolean isSingleMode;
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			
+			if (AntiLostService.ACTION_DATA_CHANGED.equals(action)) {
+				Bundle bundle = intent.getExtras();
+				serializableMacaronMap = (SerializableDeviceMap) bundle
+						.get(AntiLostService.EXTRA_DEVICE_LIST);
+				updateView();
+			}
 		}
 	};
 
@@ -52,15 +50,18 @@ public class AntiLostFragment extends Fragment {
 		deviceList = new ArrayList<Device>();
 		mAdapter = new RadarKidsListViewAdapter(getActivity(), deviceList);
 		listView.setAdapter(mAdapter);
+		getActivity().registerReceiver(mReceiver,
+				new IntentFilter(AntiLostService.ACTION_DATA_CHANGED));
 		return v;
 	}
 
+	@Override
+	public void onDestroy() {
+		getActivity().unregisterReceiver(mReceiver);
+		super.onDestroy();
+	}
+
 	public void start(ArrayList<String> antiLostDeviceList) {
-		if (antiLostDeviceList.size() > AntiLostService.MAX_DUAL_MODE_SIZE) {
-			isSingleMode = true;
-		} else {
-			isSingleMode = false;
-		}
 		Intent antiLostServiceIntent = new Intent();
 		antiLostServiceIntent.setClass(getActivity(), AntiLostService.class);
 		antiLostServiceIntent.putStringArrayListExtra(
@@ -69,31 +70,36 @@ public class AntiLostFragment extends Fragment {
 		isAntiLostOn = true;
 	}
 
-	public void stop() {
-		isAntiLostOn = false;
+	public void resume() {
+		isAntiLostOn = true;
 	}
 
-	private void updateView(Message msg) {
+	public void stop() {
+		isAntiLostOn = false;
+		Intent action = new Intent(AntiLostService.ACTION_STOP_SERVICE);
+		getActivity().sendBroadcast(action);
+	}
+
+	private void updateView() {
+		System.out.println("---->>>>updateView");
 		if (isAntiLostOn) {
-			serializableMacaronMap = (SerializableDeviceMap) msg.getData().get(
-					AntiLostService.EXTRA_DEVICE_LIST);
-			macaronHashMap = serializableMacaronMap.getMap();
+			deviceHashMap = serializableMacaronMap.getMap();
 			String macAddress;
-			Iterator<String> it = macaronHashMap.keySet().iterator();
+			Iterator<String> it = deviceHashMap.keySet().iterator();
 			deviceList.clear();
 			while (it.hasNext()) {
 				macAddress = it.next();
-				if (isSingleMode) {
+				if (deviceHashMap.size() > AntiLostService.MAX_DUAL_MODE_SIZE) {
 					if (System.currentTimeMillis()
-							- macaronHashMap.get(macAddress)
-									.getLastAppearTime() < RadarFragment.LOST_TIMEOUT) {
-						macaronHashMap.get(macAddress).setMissed(false);
+							- deviceHashMap.get(macAddress).getLastAppearTime() < RadarFragment.LOST_TIMEOUT) {
+						deviceHashMap.get(macAddress).setMissed(false);
 					} else {
-						macaronHashMap.get(macAddress).setMissed(true);
+						deviceHashMap.get(macAddress).setMissed(true);
 					}
 				}
-				deviceList.add(macaronHashMap.get(macAddress));
+				deviceList.add(deviceHashMap.get(macAddress));
 			}
+			System.out.println("deviceList size = " + deviceList.size());
 			mAdapter.notifyDataSetChanged();
 		}
 	}

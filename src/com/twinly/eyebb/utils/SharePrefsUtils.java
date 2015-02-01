@@ -164,179 +164,24 @@ public class SharePrefsUtils {
 		setString(context, ActivityConstants.SHARE_PREFS_ITEM_DEVICE_ID, value);
 	}
 
-	/*public static int getKindergartenId(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID);
-	}
-
-	public static void setKindergartenId(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_ID,
-				value);
-	}*/
-
-	/*public static String getKindergartenName(Context context) {
-		int locale = SharePrefsUtils.getLanguage(context);
-		switch (locale) {
-		case BleDeviceConstants.LOCALE_CN:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC);
-		case BleDeviceConstants.LOCALE_TW:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
-		case BleDeviceConstants.LOCALE_HK:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC);
-		default:
-			return getString(context,
-					ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN);
-		}
-
-	}
-
-	public static void setKindergartenNameTc(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_TC, value);
-	}
-
-	public static void setKindergartenNameSc(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_SC, value);
-	}
-
-	public static void setKindergartenNameEn(Context context, String value) {
-		setString(context,
-				ActivityConstants.SHARE_PREFS_ITEM_KINDERGARTEN_NAME_EN, value);
-	}*/
-
-	public static boolean isInitHead(Context context) {
-		return getBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD,
-				true);
-	}
-
-	public static void setInitHead(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_INIT_HEAD, value);
-	}
-
-	public static boolean isfinishBeep(Context context) {
-		return getBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP,
-				false);
-	}
-
-	public static void setfinishBeep(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_FINISH_BEEP, value);
-	}
-
-	public static int isConnectBleService(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE);
-	}
-
-	public static void setConnectBleService(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_CONNECT_BLE_SERVICE,
-				value);
-	}
-
-	public static int bleServiceIndex(Context context) {
-		return getInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX);
-	}
-
-	public static void setBleServiceIndex(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_BLE_SERVICE_INDEX, value);
-	}
-
-	public static boolean isStartBeepDialog(Context context) {
-		return getBoolean(context,
-				ActivityConstants.SHARE_PREFS_ITEM_START_BEEP, false);
-	}
-
-	public static void setStartBeepDialog(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_BEEP_ALL_DEVICE,
-				value);
-	}
-
-	public static boolean isBeepAllDevice(Context context) {
-		return getBoolean(context,
-				ActivityConstants.SHARE_PREFS_BEEP_ALL_DEVICE, false);
-	}
-
-	public static void setBeepAllDevice(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_BINDING_DEVICE, value);
-	}
-
-	public static boolean isOpenBindingDevice(Context context) {
-		return getBoolean(context,
-				ActivityConstants.SHARE_PREFS_BINDING_DEVICE, false);
-	}
-
-	public static void setOpenBindingDevice(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_START_BEEP,
-				value);
-	}
-
 	public static boolean isNotificationDot(Context context) {
 		return getBoolean(context,
-				ActivityConstants.SHARE_PREFS_NOTIFICATION_DOT, false);
+				ActivityConstants.SHARE_PREFS_ITEM_NOTIFICATION_DOT, false);
 	}
 
 	public static void setNotificationDot(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_NOTIFICATION_DOT,
-				value);
-	}
-	
-	public static String isMacAddress(Context context) {
-		return getString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS);
-	}
-
-	public static void setMacAddress(Context context, String value) {
-		setString(context, ActivityConstants.SHARE_PREFS_MAC_ADDRESSS, value);
-	}
-
-	public static int CancelConnectBleServiceTimes(Context context) {
-		return getInt(context, ActivityConstants.SHARE_PREFS_ITEM_RUN_NUM_RADAR);
-	}
-
-	public static void setCancelConnectBleServiceTimes(Context context,
-			int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_ITEM_RUN_NUM_RADAR, value);
-	}
-
-	public static int DeviceConnectStatus(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_DEVICE_CONNECT_STATUS);
-	}
-
-	public static void setDeviceConnectStatus(Context context, int value) {
-		setInt(context, ActivityConstants.SHARE_PREFS_DEVICE_CONNECT_STATUS,
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_NOTIFICATION_DOT,
 				value);
 	}
 
-	public static String KeepDeviceConnectStatus(Context context) {
-		return getString(context,
-				ActivityConstants.SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS);
+	public static boolean isAntiLostOn(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_IS_ANTI_LOST_ON, false);
 	}
 
-	public static void setKeepDeviceConnectStatus(Context context, String value) {
-
-		setString(context,
-				ActivityConstants.SHARE_PREFS_KEEP_DEVICE_CONNECT_STATUS, value);
-	}
-
-	public static int BleServiceRunOnceFlag(Context context) {
-		return getInt(context,
-				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG);
-	}
-
-	public static void setBleServiceRunOnceFlag(Context context, int value) {
-		setInt(context,
-				ActivityConstants.SHARE_PREFS_BLE_SERVICE_RUN_ONCE_FLAG, value);
-	}
-
-	public static String deviceBattery(Context context) {
-		return getString(context, ActivityConstants.SHARE_PREFS_DEVICE_BATTERY);
-	}
-
-	public static void setdeviceBattery(Context context, String value) {
-		setString(context, ActivityConstants.SHARE_PREFS_DEVICE_BATTERY, value);
+	public static void setAntiLostOn(Context context, boolean value) {
+		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_ANTI_LOST_ON,
+				value);
 	}
 
 	/**

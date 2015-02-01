@@ -20,6 +20,7 @@ public class BLEUtils {
 	public static final int STATE_DISCONNECTED = 0;
 	public static final int STATE_CONNECTING = 1;
 	public static final int STATE_CONNECTED = 2;
+	public static final int STATE_DISCOVERED = 3;
 
 	public final static String ACTION_GATT_CONNECTED = "bluetooth.le.ACTION_GATT_CONNECTED";
 	public final static String ACTION_GATT_DISCONNECTED = "bluetooth.le.ACTION_GATT_DISCONNECTED";
