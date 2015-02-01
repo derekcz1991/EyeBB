@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/btn_guest_view"
+    android:layout_width="160dp"
+    android:layout_height="64dp"
+    android:layout_marginLeft="8dp"
+    android:background="@drawable/bg_white"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="8dp" >
+
+    <com.twinly.eyebb.customview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/icon_avatar_dark"
+        app:border_color="@color/white"
+        app:border_width="2dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_toRightOf="@id/avatar"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/auth_nick_name"
+            style="@style/BlackText_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="aaaaa"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/auth_user_name"
+            style="@style/DarkGreyText_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:singleLine="true"
+            android:text="aaaaa" />
+    </LinearLayout>
+
+</RelativeLayout>
