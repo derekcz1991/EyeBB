@@ -4,9 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_background_grey"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="8dp" >
 
-    <ExpandableListView
+    <!--
+         <ExpandableListView
         android:id="@+id/expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,5 +16,19 @@
         android:dividerHeight="8dp"
         android:padding="8dp" >
     </ExpandableListView>
+    -->
+
+     <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <com.twinly.eyebb.customview.LinearLayoutForListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+        </com.twinly.eyebb.customview.LinearLayoutForListView>
+    </ScrollView>
 
 </LinearLayout>

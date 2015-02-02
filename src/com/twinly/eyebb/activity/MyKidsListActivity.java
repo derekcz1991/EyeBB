@@ -7,22 +7,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ListView;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.adapter.KidExpandableListviewAdapter;
+import com.twinly.eyebb.adapter.MykIdsListAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
+import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 
 public class MyKidsListActivity extends Activity {
-	private ExpandableListView listView;
-	private KidExpandableListviewAdapter adapter;
-
+	private LinearLayoutForListView listView;
+	// private KidExpandableListviewAdapter adapter;
+	private MykIdsListAdapter adapter;
 	private ArrayList<ArrayList<Child>> childrenList;
 	private ArrayList<Child> allChildren;
 	private ArrayList<Child> childrenWithAddress;
@@ -39,39 +37,38 @@ public class MyKidsListActivity extends Activity {
 
 		setContentView(R.layout.activity_my_kids);
 
-		listView = (ExpandableListView) findViewById(R.id.expandableListView);
-		listView.setGroupIndicator(null);
-
-		listView.setOnGroupClickListener(new OnGroupClickListener() {
-			@Override
-			public boolean onGroupClick(ExpandableListView parent, View v,
-					int groupPosition, long id) {
-				return true;
-			}
-		});
-		listView.setOnChildClickListener(new OnChildClickListener() {
-
-			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,
-					int groupPosition, int childPosition, long id) {
-				Intent intent = new Intent(MyKidsListActivity.this,
-						KidProfileActivity.class);
-				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childrenList
-						.get(groupPosition).get(childPosition).getChildId());
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
-
-				// startActivity(intent);
-				return false;
-			}
-		});
+		listView = (LinearLayoutForListView) findViewById(R.id.listView);
+		// listView.setGroupIndicator(null);
+		//
+		// listView.setOnGroupClickListener(new OnGroupClickListener() {
+		// @Override
+		// public boolean onGroupClick(ExpandableListView parent, View v,
+		// int groupPosition, long id) {
+		// return true;
+		// }
+		// });
+		// listView.setOnChildClickListener(new OnChildClickListener() {
+		//
+		// @Override
+		// public boolean onChildClick(ExpandableListView parent, View v,
+		// int groupPosition, int childPosition, long id) {
+		// Intent intent = new Intent(MyKidsListActivity.this,
+		// KidProfileActivity.class);
+		// intent.putExtra(ActivityConstants.EXTRA_CHILD_ID, childrenList
+		// .get(groupPosition).get(childPosition).getChildId());
+		// startActivityForResult(intent,
+		// ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
+		//
+		// // startActivity(intent);
+		// return false;
+		// }
+		// });
 
 		groupList = new ArrayList<String>();
 		childrenList = new ArrayList<ArrayList<Child>>();
 
-		adapter = new KidExpandableListviewAdapter(this, groupList,
-				childrenList);
-		listView.setAdapter(adapter);
+		// adapter = new KidExpandableListviewAdapter(this, groupList,
+		// childrenList);
 
 		childrenWithAddress = new ArrayList<Child>();
 		childrenWithoutAddress = new ArrayList<Child>();
@@ -79,6 +76,7 @@ public class MyKidsListActivity extends Activity {
 
 		updateListView();
 	}
+
 
 	private void updateListView() {
 		groupList.clear();
@@ -115,11 +113,14 @@ public class MyKidsListActivity extends Activity {
 			childrenList.add(chidrenGuest);
 		}
 
-		adapter.notifyDataSetChanged();
+		adapter = new MykIdsListAdapter(this, groupList, childrenWithAddress,
+				childrenWithoutAddress, chidrenGuest);
+		listView.setAdapter(adapter);
+		// adapter.notifyDataSetChanged();
 
-		for (int i = 0; i < groupList.size(); i++) {
-			listView.expandGroup(i);
-		}
+		// for (int i = 0; i < groupList.size(); i++) {
+		// listView.expandGroup(i);
+		// }
 	}
 
 	@Override

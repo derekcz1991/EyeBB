@@ -46,22 +46,15 @@ public class AuthorizeKidsActivity extends Activity {
 	// private LinearLayoutForListView master_listView;
 	private LinearLayoutForListView listView;
 	private GuestListViewAdapter guest_adapter;
-	private MasterListViewAdapter master_adapter;
+
 	// private Button btnAddNewGuest;
 	private ArrayList<User> auth_to_guest_data;
 	private ArrayList<User> auth_from_master_data;
 	private ArrayList<Child> auth_from_master_children_data;
 
-	private TextView tvHint_auth_to;
-	private TextView tvHint_auth_from;
+
 	private String retStr;
-	private GridView grid_auth_to;
-	private GridView grid_auth_from;
-	private TextView txt_num_auth_to;
-	private TextView txt_num_auth_from;
-	private boolean hasGuestFlag = false;
-	private boolean hasMasterFlag = false;
-	private ScrollView ScrollView;
+
 	public static final int UPDATE_VIEW = 11111;
 	private Dialog authDialog;
 	private Runnable postFindGuestsToServerRunnable;
@@ -70,10 +63,6 @@ public class AuthorizeKidsActivity extends Activity {
 	public TextView phone;
 	public RelativeLayout btn_guest_view;
 
-	private LinearLayout liner_g_to_m;
-	private LinearLayout liner_m_to_g;
-
-	private ScrollView scrollview;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,39 +85,13 @@ public class AuthorizeKidsActivity extends Activity {
 		};
 		new Thread(postFindGuestsToServerRunnable).start();
 
-		// btnAddNewGuest = (Button) findViewById(R.id.btn_add_new_guest);
-		// guest_listView = (LinearLayoutForListView)
-		// findViewById(R.id.listView_authorized_to_others);
 		listView = (LinearLayoutForListView) findViewById(R.id.listView_authorization_from_others);
-		// scrollview = (ScrollView) findViewById(R.id.scrollview);
-		// tvHint = (TextView) findViewById(R.id.tv_hint);
-		// grid_auth_to = (GridView) findViewById(R.id.auth_to);
-		// grid_auth_from = (GridView) findViewById(R.id.auth_from);
-		// txt_num_auth_to = (TextView) findViewById(R.id.auth_to_children_num);
-		// txt_num_auth_from = (TextView)
-		// findViewById(R.id.auth_from_children_num);
-		// liner_g_to_m = (LinearLayout) findViewById(R.id.liner_g_to_m);
-		// liner_m_to_g = (LinearLayout) findViewById(R.id.liner_m_to_g);
-		// tvHint_auth_to = (TextView)
-		// findViewById(R.id.tv_hint_authorized_to_others);
-		// tvHint_auth_from = (TextView)
-		// findViewById(R.id.tv_hint_authorization_from_others);
 
-		// inflater = LayoutInflater.from(AuthorizeKidsActivity.this);
-		// grid_layout = inflater.inflate(R.layout.list_item_grant_kid_new,
-		// null);
-
-		// name = (TextView) grid_layout.findViewById(R.id.auth_nick_name);
-		// phone = (TextView) grid_layout.findViewById(R.id.auth_user_name);
-
-		// btn_guest_view = (RelativeLayout) findViewById(R.id.btn_guest_view);
 
 		auth_to_guest_data = new ArrayList<User>();
 		auth_from_master_data = new ArrayList<User>();
 		auth_from_master_children_data = new ArrayList<Child>();
 
-		// ScrollView = (ScrollView) findViewById(R.id.scrollview);
-		// ScrollView.smoothScrollTo(0, 0);
 
 	}
 
@@ -182,25 +145,6 @@ public class AuthorizeKidsActivity extends Activity {
 									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User guestMode = new User();
-							// System.out
-							// .println("--->"
-							// +
-							// guest.getString(HttpConstants.JSON_KEY_USER_ID));
-							//
-							// System.out
-							// .println("--->"
-							// +
-							// guest.getString(HttpConstants.JSON_KEY_USER_NAME));
-							// System.out
-							// .println("--->"
-							// +
-							// guest.getString(HttpConstants.JSON_KEY_USER_PHONE));
-							// System.out
-							// .println("--->"
-							// +
-							// guest.getString(HttpConstants.JSON_KEY_USER_TYPE));
-							// System.out
-							// .println("--------------------------------------");
 
 							guestMode.setGuardianId(guest
 									.getString(HttpConstants.JSON_KEY_USER_ID));
@@ -244,25 +188,6 @@ public class AuthorizeKidsActivity extends Activity {
 									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User masterMode = new User();
-							// System.out
-							// .println("--->"
-							// +
-							// master.getString(HttpConstants.JSON_KEY_USER_ID));
-							//
-							// System.out
-							// .println("--->"
-							// +
-							// master.getString(HttpConstants.JSON_KEY_USER_NAME));
-							// System.out
-							// .println("--->"
-							// +
-							// master.getString(HttpConstants.JSON_KEY_USER_PHONE));
-							// System.out
-							// .println("--->"
-							// +
-							// master.getString(HttpConstants.JSON_KEY_USER_TYPE));
-							// System.out
-							// .println("--------------------------------------");
 
 							masterMode.setGuardianId(master
 									.getString(HttpConstants.JSON_KEY_USER_ID));
@@ -304,21 +229,6 @@ public class AuthorizeKidsActivity extends Activity {
 								master_child
 										.setPhone(master
 												.getString(HttpConstants.JSON_KEY_USER_ID));
-
-								// System.out
-								// .println("--->"
-								// + master_child_json
-								// .getLong(HttpConstants.JSON_KEY_CHILD_ID));
-								// System.out
-								// .println("--->"
-								// + master_child_json
-								// .getString(HttpConstants.JSON_KEY_CHILD_NAME));
-								// System.out
-								// .println("--->"
-								// + master_child_json
-								// .getString(HttpConstants.JSON_KEY_CHILD_ICON));
-								// System.out
-								// .println("--------------------------------------");
 
 								auth_from_master_children_data
 										.add(master_child);
@@ -369,59 +279,13 @@ public class AuthorizeKidsActivity extends Activity {
 					authDialog.dismiss();
 				}
 
-				// txt_num_auth_to.setText(parseGuestJson(retStr).size() +
-				// "");
-				// tvHint.setVisibility(View.GONE);
-				// tvHint_auth_to.setVisibility(View.GONE);
-				// tvHint_auth_from.setVisibility(View.VISIBLE);
 
-				// liner_g_to_m.setMinimumHeight(800);
-				//
 				guest_adapter = new GuestListViewAdapter(
 						AuthorizeKidsActivity.this, parseGuestJson(retStr),
 						parseMasterJson(retStr), auth_from_master_children_data);
 				listView.setAdapter(guest_adapter);
 
-				// add view
-
-				// for (int i = 0; i < parseGuestJson(retStr).size(); i++) {
-				// name.setText(parseGuestJson(retStr).get(i).getName());
-				// phone.setText(parseGuestJson(retStr).get(i)
-				// .getPhoneNumber());
-				//
-				//
-				// grid_auth_to.setaaddView(grid_layout);
-				// }
-
-				// if (parseMasterJson(retStr).size() > 0) {
-				// hasMasterFlag = true;
-				// // tvHint_auth_from.setVisibility(View.GONE);
-				// // tvHint_auth_to.setVisibility(View.VISIBLE);
-				// // tvHint.setVisibility(View.GONE);
-				// // master_adapter = new MasterListViewAdapter(
-				// // AuthorizeKidsActivity.this,
-				// // parseMasterJson(retStr),
-				// // auth_from_master_children_data);
-				// // master_listView.setAdapter(master_adapter);
-				// // txt_num_auth_from.setText(parseMasterJson(retStr).size()
-				// // + "");
-				// // master_adapter = new MasterListViewAdapter(
-				// // AuthorizeKidsActivity.this,
-				// // parseMasterJson(retStr),
-				// // auth_from_master_children_data);
-				// // master_listView.setAdapter(master_adapter);
-				//
-				// }
-
-				// if (hasMasterFlag && hasGuestFlag) {
-				// tvHint_auth_from.setVisibility(View.GONE);
-				// tvHint_auth_to.setVisibility(View.GONE);
-				// } else if (!hasMasterFlag && !hasGuestFlag) {
-				// tvHint_auth_to.setVisibility(View.VISIBLE);
-				// tvHint_auth_from.setVisibility(View.VISIBLE);
-				// }
-
-				// content.setVisibility(View.VISIBLE);
+		
 				break;
 			}
 

@@ -71,9 +71,9 @@ public class MasterListViewAdapter extends BaseAdapter {
 			//
 			// //NO NEED
 			// viewHolder.avatar.setVisibility(View.GONE);
-		
-			viewHolder.name = (TextView) convertView.findViewById(R.id.auth_nick_name);
-			viewHolder.phone = (TextView) convertView.findViewById(R.id.auth_user_name);
+//		
+//			viewHolder.name = (TextView) convertView.findViewById(R.id.auth_nick_name);
+//			viewHolder.phone = (TextView) convertView.findViewById(R.id.auth_user_name);
 			viewHolder.btn_master_view = (RelativeLayout) convertView
 					.findViewById(R.id.btn_guest_view);
 
