@@ -10,18 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.ImageUtils;
 
 public class GridViewMissAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<Child> data;
 	private ArrayList<Child> Antidata;
 	private LayoutInflater inflater;
-	private DisplayImageOptions options;
 	private ImageLoader imageLoader;
 
 	public GridViewMissAdapter(Context context, ArrayList<Child> data,
@@ -33,12 +32,6 @@ public class GridViewMissAdapter extends BaseAdapter {
 		this.Antidata = antiData;
 
 		imageLoader = ImageLoader.getInstance();
-		options = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_stub)
-				.showImageForEmptyUri(R.drawable.ic_location_default)
-				.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
-				.cacheOnDisk(true).considerExifParams(true).build();
-
 	}
 
 	private class ViewHolder {
@@ -109,8 +102,8 @@ public class GridViewMissAdapter extends BaseAdapter {
 
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 
-			imageLoader.displayImage(child.getIcon(), viewHolder.civ, options,
-					null);
+			imageLoader.displayImage(child.getIcon(), viewHolder.civ,
+					ImageUtils.avatarOpitons, null);
 
 		} else {
 			viewHolder.civ.setImageDrawable(context.getResources().getDrawable(

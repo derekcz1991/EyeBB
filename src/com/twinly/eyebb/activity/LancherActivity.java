@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +23,9 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
+import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -41,14 +45,23 @@ public class LancherActivity extends Activity {
 		mkdir();
 		new HttpRequestUtils();
 
-		if (SharePrefsUtils.isLogin(this)) {
-			new AutoLoginTask().execute();
-		} else {
-			Intent intent = new Intent(this, WelcomeActivity.class);
-			startActivityForResult(intent,
-					ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY);
+		if (SharePrefsUtils.isAntiLostOn(this)) {
+			Intent intent = new Intent(LancherActivity.this, MainActivity.class);
+			intent.putExtra(MainActivity.EXTRA_NEED_LOGIN, true);
+			startActivity(intent);
 			finish();
+		} else {
+			if (SharePrefsUtils.isLogin(this)) {
+				new AutoLoginTask()
+						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				Intent intent = new Intent(this, WelcomeActivity.class);
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_WELCOME_ACTIVITY);
+				finish();
+			}
 		}
+
 	}
 
 	private void checkLogo() {
@@ -124,6 +137,59 @@ public class LancherActivity extends Activity {
 
 				new GCMUtils().GCMRegistration(LancherActivity.this,
 						receivedDeviceId);
+
+				new GetChildrenInfoTask()
+						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} catch (JSONException e) {
+				goBackToLogin();
+			}
+		}
+	}
+
+	private class GetChildrenInfoTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+			return HttpRequestUtils.get(HttpConstants.GET_CHILDREN_INFO_LIST,
+					null);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			System.out.println(HttpConstants.GET_CHILDREN_INFO_LIST + " ==>> "
+					+ result);
+			try {
+				JSONObject json = new JSONObject(result);
+				JSONArray childrenInfoJSONList = json
+						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_INFO);
+				for (int i = 0; i < childrenInfoJSONList.length(); i++) {
+					JSONObject childrenInfoObject = childrenInfoJSONList
+							.getJSONObject(i);
+					JSONObject childRelObject = childrenInfoObject
+							.getJSONObject(HttpConstants.JSON_KEY_CHILD_REL);
+					JSONObject childObject = childRelObject
+							.getJSONObject(HttpConstants.JSON_KEY_CHILD);
+
+					Child child = new Child(
+							childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+							childObject
+									.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+							childObject
+									.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+					child.setRelationWithUser(childRelObject
+							.getString(HttpConstants.JSON_KEY_CHILD_RELATION));
+					child.setMacAddress(childrenInfoObject
+							.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
+					// get parents' phone
+					if (CommonUtils.isNotNull(childrenInfoObject
+							.getString(HttpConstants.JSON_KEY_PARENTS))) {
+						JSONObject parentObject = childrenInfoObject
+								.getJSONObject(HttpConstants.JSON_KEY_PARENTS);
+						child.setPhone(parentObject
+								.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+					}
+					DBChildren.insert(LancherActivity.this, child);
+				}
 
 				Intent intent = new Intent(LancherActivity.this,
 						MainActivity.class);

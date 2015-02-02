@@ -158,6 +158,7 @@
     <string name="text_get_the_eyebb_device_qr_code">Apply for QR code</string>
     <string name="text_get_the_lastest_eyebb_device_qr_code">Apply for the latest QR code</string>
     <string name="text_Apply_qr_code_fail">Fail to get the QR code</string>
+    <string name="text_network_unavailable">Network unavailable</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

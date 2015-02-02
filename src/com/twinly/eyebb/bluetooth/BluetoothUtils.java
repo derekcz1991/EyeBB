@@ -448,7 +448,8 @@ public class BluetoothUtils {
 						BLEUtils.checkMajorMinor(value), true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
 			}
 			break;
 		case WRITE_MINOR:
@@ -458,7 +459,8 @@ public class BluetoothUtils {
 						BLEUtils.checkMajorMinor(value), true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
 			}
 			break;
 		case WRITE_BEEP:
@@ -467,7 +469,8 @@ public class BluetoothUtils {
 						BLEUtils.CHARACTERISTICS_BEEP_UUID, value, true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
 			}
 			break;
 		case WRITE_LED_BLINK:
@@ -476,7 +479,8 @@ public class BluetoothUtils {
 						BLEUtils.CHARACTERISTICS_LED_BLINK_UUID, value, true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
 			}
 			break;
 		case WRITE_ANTI_LOST_PERIOD:
@@ -486,7 +490,8 @@ public class BluetoothUtils {
 						true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00", false);
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
 			}
 			break;
 		case READ_BATTERY:

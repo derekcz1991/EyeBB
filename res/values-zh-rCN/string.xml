@@ -156,7 +156,7 @@
     <string name="text_update_eyebb_device_firmware">更新宝宝安设备固件</string>
     <string name="text_get_the_eyebb_device_qr_code">申请宝宝安设备二维码</string>
     <string name="text_get_the_lastest_eyebb_device_qr_code">申请最近一次绑定的宝宝安设备二维码</string>
-    
+    <string name="text_network_unavailable">无法连接到服务器</string>
     <!-- Button strings -->
     <string name="btn_sign_up">注册</string>
     <string name="btn_login">登录</string>

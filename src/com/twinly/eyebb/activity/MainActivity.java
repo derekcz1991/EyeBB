@@ -1,5 +1,11 @@
 package com.twinly.eyebb.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +22,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 import com.twinly.eyebb.R;
@@ -24,8 +32,8 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
-import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.fragment.RadarFragment;
+import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
@@ -35,6 +43,8 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 public class MainActivity extends FragmentActivity implements
 		ReportFragment.CallbackInterface,
 		IndoorLocatorFragment.CallbackInterface {
+	public static final String EXTRA_NEED_LOGIN = "NEED_LOGIN";
+
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
@@ -42,6 +52,7 @@ public class MainActivity extends FragmentActivity implements
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
+	private LinearLayout networkBar;
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
@@ -57,6 +68,7 @@ public class MainActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_main);
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
+		setUpNetworkBar();
 
 		keepSessionAliveTask = new KeepSessionAliveTask();
 		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -77,6 +89,7 @@ public class MainActivity extends FragmentActivity implements
 		if (SharePrefsUtils.isAntiLostOn(this)) {
 			mTabHost.setCurrentTab(1);
 		}
+
 	}
 
 	@Override
@@ -84,12 +97,6 @@ public class MainActivity extends FragmentActivity implements
 		System.out.println("onCreate ==>> onSaveInstanceState");
 		outState.putString("tab", mTabHost.getCurrentTabTag());
 		//super.onSaveInstanceState(outState);
-	}
-
-	@Override
-	protected void onStop() {
-		System.out.println("MainActivity ==>> " + "onStop");
-		super.onStop();
 	}
 
 	@Override
@@ -199,6 +206,57 @@ public class MainActivity extends FragmentActivity implements
 		progressBar.setVisibility(View.INVISIBLE);
 		progressBar.setProgress(0);
 		progressBar.setIndeterminate(false);
+	}
+
+	private void setUpNetworkBar() {
+		networkBar = (LinearLayout) findViewById(R.id.network_bar);
+
+		networkBar.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				new AutoLoginTask()
+						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			}
+		});
+
+		if (getIntent().getBooleanExtra(EXTRA_NEED_LOGIN, false)) {
+			new AutoLoginTask()
+					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}
+	}
+
+	private class AutoLoginTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected void onPreExecute() {
+			networkBar.setEnabled(false);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("j_username",
+					SharePrefsUtils.getLoginAccount(MainActivity.this));
+			map.put("j_password",
+					SharePrefsUtils.getPassword(MainActivity.this));
+
+			return HttpRequestUtils.post(HttpConstants.LOGIN, map);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			networkBar.setEnabled(true);
+			System.out.println("auto login result = " + result);
+			try {
+				new JSONObject(result);
+				networkBar.setVisibility(View.GONE);
+			} catch (JSONException e) {
+				networkBar.setVisibility(View.VISIBLE);
+			}
+		}
+
 	}
 
 	@Override

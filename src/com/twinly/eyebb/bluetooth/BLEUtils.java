@@ -16,7 +16,7 @@ public class BLEUtils {
 	public final static String CHARACTERISTICS_ANTI_LOST_TIMEOUT_UUID = "0000100a-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_LED_BLINK_UUID = "0000100b-0000-1000-8000-00805f9b34fb";
-	
+
 	public static final int STATE_DISCONNECTED = 0;
 	public static final int STATE_CONNECTING = 1;
 	public static final int STATE_CONNECTED = 2;
@@ -34,6 +34,8 @@ public class BLEUtils {
 	public static final int RSSI_STRONG = -50;
 	public static final int RSSI_GOOD = -70;
 	public static final int RSSI_WEAK = -100;
+
+	public static final String PASSWORD = "C3A60D00";
 
 	public static String bytesToHex(byte[] bytes, int begin, int length) {
 		StringBuilder sbuf = new StringBuilder();

@@ -34,10 +34,14 @@ public class HttpConstants {
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_SC = "nameSc";
 
+	//public static final String GET_CHILDREN_LIST = "reportService/api/childrenList";
+	public static final String GET_CHILDREN_INFO_LIST = "reportService/api/childrenInfoList";
+	public static final String JSON_KEY_CHILDREN_INFO = "childrenInfo";
+	
 	public static final String GET_CHILDREN_LOC_LIST = "reportService/api/childrenLocList";
-	public static final String GET_CHILDREN_LIST = "reportService/api/childrenList";
 	public static final String JSON_KEY_CHILDREN_BY_AREA = "childrenByArea";
 	public static final String JSON_KEY_CHILDREN_BEAN = "childrenBean";
+	
 	public static final String JSON_KEY_CHILD_REL = "childRel";
 	public static final String JSON_KEY_CHILD = "child";
 	public static final String JSON_KEY_CHILD_RELATION = "relation";

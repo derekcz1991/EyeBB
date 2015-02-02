@@ -81,7 +81,6 @@ public class AntiLostFragment extends Fragment {
 	}
 
 	private void updateView() {
-		System.out.println("---->>>>updateView");
 		if (isAntiLostOn) {
 			deviceHashMap = serializableMacaronMap.getMap();
 			String macAddress;
@@ -99,7 +98,6 @@ public class AntiLostFragment extends Fragment {
 				}
 				deviceList.add(deviceHashMap.get(macAddress));
 			}
-			System.out.println("deviceList size = " + deviceList.size());
 			mAdapter.notifyDataSetChanged();
 		}
 	}

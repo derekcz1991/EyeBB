@@ -27,10 +27,12 @@ public class GCMUtils {
 	public void GCMRegistration(Context context, String receivedDeviceId) {
 		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 		if (CommonUtils.isNull(receivedDeviceId)) {
-			new RegisterInBackground(context, gcm).execute();
+			new RegisterInBackground(context, gcm)
+					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else if (SharePrefsUtils.getDeviceId(context)
 				.equals(receivedDeviceId) == false) {
-			new RegisterInBackground(context, gcm).execute();
+			new RegisterInBackground(context, gcm)
+					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
 	}
 

@@ -15,7 +15,7 @@ public class ImageUtils {
 	public static DisplayImageOptions avatarOpitons = new DisplayImageOptions.Builder()
 			.showImageOnLoading(R.drawable.icon_avatar_dark)
 			.showImageForEmptyUri(R.drawable.icon_avatar_dark)
-			.showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+			.showImageOnFail(R.drawable.icon_avatar_dark).cacheInMemory(true)
 			.cacheOnDisk(true).considerExifParams(true).build();
 
 	public static DisplayImageOptions locationIconOpitons = new DisplayImageOptions.Builder()
