@@ -153,6 +153,10 @@ public class KidProfileActivity extends Activity implements
 		}
 	}
 
+	/**
+	 * when start this activity, we should read the battery first
+	 * 
+	 */
 	@SuppressLint("NewApi")
 	private void initToReadBattery() {
 
@@ -361,6 +365,9 @@ public class KidProfileActivity extends Activity implements
 				R.string.text_no_device_nearby));
 	}
 
+	/**
+	 *  bluetooth state broadcast
+	 */
 	BroadcastReceiver bluetoothState = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			String stateExtra = BluetoothAdapter.EXTRA_STATE;
