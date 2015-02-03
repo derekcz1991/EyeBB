@@ -2,7 +2,6 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;

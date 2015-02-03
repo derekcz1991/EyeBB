@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +54,6 @@ public class KidProfileActivity extends Activity implements
 	private Child child;
 	private ImageView avatar;
 	private TextView kidName;
-	private RelativeLayout binding;
 	private TextView txt_device_qr;
 	private TextView txt_binding;
 	private TextView deviceBatteryResult;
@@ -97,7 +95,6 @@ public class KidProfileActivity extends Activity implements
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
-		binding = (RelativeLayout) findViewById(R.id.btn_binding);
 		txt_binding = (TextView) findViewById(R.id.device_unbind);
 		txt_device_qr = (TextView) findViewById(R.id.device_qr);
 		layout_device_beep = (LinearLayout) findViewById(R.id.layout_device_beep);
@@ -609,7 +606,7 @@ public class KidProfileActivity extends Activity implements
 			Intent intent = new Intent(KidProfileActivity.this,
 					RequireQrCodeDialog.class);
 			intent.putExtra("child_id", child.getChildId() + "");
-			
+
 			startActivity(intent);
 			// bindService(i1, conn1, Context.BIND_AUTO_CREATE);
 

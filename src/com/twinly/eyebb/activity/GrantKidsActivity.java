@@ -17,7 +17,6 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.twinly.eyebb.R;

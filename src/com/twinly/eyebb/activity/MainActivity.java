@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
@@ -53,6 +54,7 @@ public class MainActivity extends FragmentActivity implements
 	private ProfileFragment profileFragment;
 
 	private LinearLayout networkBar;
+	private TextView networkState;
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
@@ -210,6 +212,7 @@ public class MainActivity extends FragmentActivity implements
 
 	private void setUpNetworkBar() {
 		networkBar = (LinearLayout) findViewById(R.id.network_bar);
+		networkState = (TextView) findViewById(R.id.network_state);
 
 		networkBar.setOnClickListener(new OnClickListener() {
 
@@ -231,6 +234,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		protected void onPreExecute() {
 			networkBar.setEnabled(false);
+			networkState.setText(getString(R.string.text_network_connecting));
 			super.onPreExecute();
 		}
 
@@ -248,6 +252,7 @@ public class MainActivity extends FragmentActivity implements
 		@Override
 		protected void onPostExecute(String result) {
 			networkBar.setEnabled(true);
+			networkState.setText(getString(R.string.text_network_unavailable));
 			System.out.println("auto login result = " + result);
 			try {
 				new JSONObject(result);

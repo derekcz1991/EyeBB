@@ -27,7 +27,8 @@
             android:visibility="gone" >
 
             <TextView
-                style="@style/DarkGreyText_18"
+                android:id="@+id/network_state"
+                style="@style/DarkGreyText_16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

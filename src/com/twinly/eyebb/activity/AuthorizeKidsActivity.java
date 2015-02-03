@@ -1,7 +1,6 @@
 package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,22 +14,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.GuestListViewAdapter;
-import com.twinly.eyebb.adapter.MasterListViewAdapter;
-import com.twinly.eyebb.adapter.GuestListViewAdapter.ViewHolder;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;

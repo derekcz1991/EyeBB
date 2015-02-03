@@ -29,7 +29,6 @@ public class MykIdsListAdapter extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
-	private ArrayList<String> groupList;
 	ArrayList<Child> childrenWithAddress;
 	ArrayList<Child> childrenWithoutAddress;
 	ArrayList<Child> chidrenGuest;
@@ -37,13 +36,12 @@ public class MykIdsListAdapter extends BaseAdapter {
 	private ViewGroup children_item;
 
 	public MykIdsListAdapter(MyKidsListActivity myKidsListActivity,
-			ArrayList<String> groupList, ArrayList<Child> childrenWithAddress,
+			ArrayList<Child> childrenWithAddress,
 			ArrayList<Child> childrenWithoutAddress,
 			ArrayList<Child> chidrenGuest) {
 		inflater = LayoutInflater.from(myKidsListActivity);
 		this.myKidsListActivity = myKidsListActivity;
 		this.context = myKidsListActivity;
-		this.groupList = groupList;
 		this.childrenWithAddress = childrenWithAddress;
 		this.childrenWithoutAddress = childrenWithoutAddress;
 		this.chidrenGuest = chidrenGuest;
