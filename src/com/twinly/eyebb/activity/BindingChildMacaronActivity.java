@@ -110,7 +110,7 @@ public class BindingChildMacaronActivity extends Activity implements
 					finish();
 					break;
 				case BIND_STEP_CONNECT_FAIL:
-					// TODO
+					mBluetoothUtils.writeMajor(mDeviceAddress, 15000L, major);
 					break;
 				case BIND_STEP_UPLOAD_FAIL:
 					new PostToServerTask().execute();
@@ -308,17 +308,17 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnectCanceled(String mDeviceAddress) {
+	public void onConnectCanceled() {
 		writeFailed();
 	}
 
 	@Override
-	public void onConnected(String mDeviceAddress) {
+	public void onConnected() {
 		// do nothing
 	}
 
 	@Override
-	public void onDisConnected(String mDeviceAddress) {
+	public void onDisConnected() {
 		writeFailed();
 	}
 
@@ -341,15 +341,14 @@ public class BindingChildMacaronActivity extends Activity implements
 	}
 
 	@Override
-	public void onResult(boolean result, String mDeviceAddress) {
+	public void onResult(boolean result) {
 		if (result) {
 			if (bindStep == BIND_STEP_DISCOVERED) {
 				bindStep = BIND_STEP_MAJOR_WRITEN;
-				mBluetoothUtils.writeMinor(mDeviceAddress, 15000L, minor);
+				mBluetoothUtils.writeMajor(mDeviceAddress, 15000L, major);
 			} else if (bindStep == BIND_STEP_MAJOR_WRITEN) {
 				bindStep = BIND_STEP_MINOR_WRITEN;
-				mBluetoothUtils.writeBleBlink(mDeviceAddress, 15000L, "40");
-				//mBluetoothUtils.writeBeep(mDeviceAddress, 15000L, "01");
+				mBluetoothUtils.writeMinor(mDeviceAddress, 15000L, minor);
 			} else {
 				new PostToServerTask().execute();
 			}

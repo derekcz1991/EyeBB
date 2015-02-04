@@ -34,7 +34,7 @@
                 android:background="@drawable/ic_login_phone" />
 
             <EditText
-                android:id="@+id/ed_phone_number"
+                android:id="@+id/et_phone_number"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 android:background="@drawable/ic_login_name" />
 
             <EditText
-                android:id="@+id/ed_nickname"
+                android:id="@+id/et_nickname"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                 android:background="@drawable/ic_login_pw" />
 
             <EditText
-                android:id="@+id/ed_password"
+                android:id="@+id/et_password"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 android:background="@drawable/ic_login_email" />
 
             <EditText
-                android:id="@+id/ed_email"
+                android:id="@+id/et_email"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

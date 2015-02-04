@@ -45,8 +45,6 @@ public class ChildBirthdayDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
 				if (dateOfBirth != null && dateOfBirth.length() > 0) {
 					Intent data = new Intent();
 					data.putExtra("childBirthday", dateOfBirth);
@@ -61,7 +59,6 @@ public class ChildBirthdayDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				finish();
 			}
 		});

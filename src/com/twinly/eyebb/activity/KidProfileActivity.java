@@ -514,7 +514,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnectCanceled(String mDeviceAddress) {
+	public void onConnectCanceled() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -527,7 +527,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onConnected(String mDeviceAddress) {
+	public void onConnected() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -538,7 +538,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onDisConnected(String mDeviceAddress) {
+	public void onDisConnected() {
 		// do nothing
 	}
 
@@ -591,7 +591,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	@Override
-	public void onResult(final boolean result, String mDeviceAddress) {
+	public void onResult(final boolean result) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

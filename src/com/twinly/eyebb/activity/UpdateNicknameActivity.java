@@ -28,19 +28,18 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 
 public class UpdateNicknameActivity extends Activity {
 
-	private EditText ed_new_nickname;
-	private EditText ed_password;
+	private EditText etNewNickname;
+	private EditText etPassword;
 
-	private Button btn_confrim;
+	private Button btnConfrim;
 
-	private String new_nickname = "";
+	private String newNickname = "";
 	private String password = "";
 
 	Toast toast = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.text_update_nickname));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,16 +47,14 @@ public class UpdateNicknameActivity extends Activity {
 
 		setContentView(R.layout.activity_update_nickname);
 
-		ed_new_nickname = (EditText) findViewById(R.id.ed_new_nickname);
-		ed_password = (EditText) findViewById(R.id.ed_password);
+		etNewNickname = (EditText) findViewById(R.id.et_new_nickname);
+		etPassword = (EditText) findViewById(R.id.et_password);
+		btnConfrim = (Button) findViewById(R.id.btn_confirm);
 
-		btn_confrim = (Button) findViewById(R.id.btn_confirm);
-
-		btn_confrim.setOnClickListener(new OnClickListener() {
+		btnConfrim.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				new Thread(postUpdateNicknameToServerRunnable).start();
 			}
 		});
@@ -66,10 +63,10 @@ public class UpdateNicknameActivity extends Activity {
 	Runnable postUpdateNicknameToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
-			new_nickname = ed_new_nickname.getText().toString();
-			password = ed_password.getText().toString();
+			newNickname = etNewNickname.getText().toString();
+			password = etPassword.getText().toString();
 
-			if (new_nickname.length() > 0 && password.length() > 0) {
+			if (newNickname.length() > 0 && password.length() > 0) {
 				if (RegularExpression.isPassword(password)) {
 					postUpdateNicknameToServer();
 				} else {
@@ -77,7 +74,7 @@ public class UpdateNicknameActivity extends Activity {
 					msg.what = Constants.PASSWORD_FORMAT_ERROR;
 					handler.sendMessage(msg);
 				}
-			} else if (new_nickname.length() > 0) {
+			} else if (newNickname.length() > 0) {
 				Message msg = handler.obtainMessage();
 				msg.what = Constants.NULL_FEEDBAKC_PASSWORD;
 				handler.sendMessage(msg);
@@ -94,18 +91,14 @@ public class UpdateNicknameActivity extends Activity {
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postUpdateNicknameToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>" + new_nickname + " " + password);
+		System.out.println("info=>" + newNickname + " " + password);
 
 		map.put("password", CommonUtils.getSHAHashValue(password));
-		map.put("newNickname", new_nickname);
+		map.put("newNickname", newNickname);
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.post(
 					HttpConstants.CHANGE_NICKNAME, map);
 			System.out.println("retStrpost======>" + retStr);
@@ -122,7 +115,7 @@ public class UpdateNicknameActivity extends Activity {
 					msg.what = Constants.UPDATE_NICKNAME_SUCCESS;
 					handler.sendMessage(msg);
 					SharePrefsUtils.setUserName(UpdateNicknameActivity.this,
-							new_nickname);
+							newNickname);
 					setResult(ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS);
 					finish();
 				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
@@ -131,11 +124,8 @@ public class UpdateNicknameActivity extends Activity {
 					handler.sendMessage(msg);
 				}
 			}
-
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
 
 	}
@@ -143,7 +133,6 @@ public class UpdateNicknameActivity extends Activity {
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			Toast toast = null;
 			switch (msg.what) {

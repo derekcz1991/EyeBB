@@ -80,7 +80,7 @@
                 android:background="@drawable/ic_login_name" />
 
             <EditText
-                android:id="@+id/ed_new_nickname"
+                android:id="@+id/et_new_nickname"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 android:background="@drawable/ic_login_pw" />
 
             <EditText
-                android:id="@+id/ed_password"
+                android:id="@+id/et_password"
                 style="@style/DarkGreyText_18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -61,17 +61,17 @@ public class BluetoothUtils {
 		/**
 		 * UI update when cancel connect to BLE device, always connect to device failed
 		 */
-		public void onConnectCanceled(String mDeviceAddress);
+		public void onConnectCanceled();
 
 		/**
 		 * UI update when connected to BLE device
 		 */
-		public void onConnected(String mDeviceAddress);
+		public void onConnected();
 
 		/**
 		 * UI update when disconnected to BLE device
 		 */
-		public void onDisConnected(String mDeviceAddress);
+		public void onDisConnected();
 
 		/**
 		 * UI update when discovered the BLE services
@@ -88,7 +88,7 @@ public class BluetoothUtils {
 		 * UI update when read or write BLE device
 		 * @param result
 		 */
-		public void onResult(boolean result, String mDeviceAddress);
+		public void onResult(boolean result);
 	}
 
 	public BluetoothUtils(Context context, FragmentManager manager) {
@@ -120,9 +120,9 @@ public class BluetoothUtils {
 						+ " " + timer);*/
 				if (BLEUtils.ACTION_GATT_CONNECTED.equals(action)) {
 					timer.cancel();
-					callback.onConnected(mDeviceAddress);
+					callback.onConnected();
 				} else if (BLEUtils.ACTION_GATT_DISCONNECTED.equals(action)) {
-					callback.onDisConnected(mDeviceAddress);
+					callback.onDisConnected();
 				} else if (BLEUtils.ACTION_GATT_SERVICES_DISCOVERED
 						.equals(action)) {
 					timer.cancel();
@@ -134,18 +134,18 @@ public class BluetoothUtils {
 					callback.onDataAvailable(intent
 							.getStringExtra(BLEUtils.EXTRA_DATA));
 				} else if (BLEUtils.ACTION_GATT_READ_FAILURE.equals(action)) {
-					callback.onResult(false, mDeviceAddress);
+					callback.onResult(false);
 				} else if (BLEUtils.ACTION_GATT_WRITE_SUCCESS.equals(action)) {
 					if (isPasswordSet) {
 						timer.cancel();
-						callback.onResult(true, mDeviceAddress);
+						callback.onResult(true);
 					} else {
 						isPasswordSet = true;
 						onDiscovered();
 					}
 				} else if (BLEUtils.ACTION_GATT_WRITE_FAILURE.equals(action)) {
 					timer.cancel();
-					callback.onResult(false, mDeviceAddress);
+					callback.onResult(false);
 				}
 
 			}
@@ -272,23 +272,6 @@ public class BluetoothUtils {
 		if (gattServices != null) {
 			write(BLEUtils.SERVICE_UUID_0001,
 					BLEUtils.CHARACTERISTICS_LED_BLINK_UUID, value, true);
-		} else {
-			if (initialize()) {
-				connect(timeout);
-			}
-		}
-	}
-
-	public void writeAntiLostPeroid(String mDeviceAddress, long timeout,
-			String value) {
-		/*System.out.println(tag + " ==>> writeAntiLostPeroid ==>> "
-				+ mDeviceAddress);*/
-		command = WRITE_ANTI_LOST_PERIOD;
-		this.mDeviceAddress = mDeviceAddress;
-		this.value = value;
-		if (gattServices != null) {
-			write(BLEUtils.SERVICE_UUID_0001,
-					BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, value, true);
 		} else {
 			if (initialize()) {
 				connect(timeout);
@@ -426,9 +409,7 @@ public class BluetoothUtils {
 			public void run() {
 				if (mBluetoothLeService != null) {
 					if (mBluetoothLeService.getmConnectionState() != BLEUtils.STATE_CONNECTED) {
-						callback.onConnectCanceled(mDeviceAddress);
-						//mBluetoothLeService.disconnect();
-						//mBluetoothLeService = null;
+						callback.onConnectCanceled();
 					}
 				}
 			}
@@ -528,7 +509,7 @@ public class BluetoothUtils {
 						if (!mBluetoothLeService
 								.writeCharacteristic(gattCharacteristic)) {
 							if (needCallback) {
-								callback.onResult(false, mDeviceAddress);
+								callback.onResult(false);
 							}
 						}
 					}
@@ -557,7 +538,7 @@ public class BluetoothUtils {
 						if (!mBluetoothLeService
 								.readCharacteristic(gattCharacteristic)) {
 							//System.out.println("Characteristic == >> false");
-							callback.onResult(false, mDeviceAddress);
+							callback.onResult(false);
 						}
 					}
 				}

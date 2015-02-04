@@ -205,11 +205,6 @@
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.BeepDialog"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyleActivity" >
-        </activity>
-        <activity
             android:name="com.twinly.eyebb.activity.SchoolBusTrackingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >

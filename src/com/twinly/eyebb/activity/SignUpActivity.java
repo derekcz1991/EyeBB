@@ -32,20 +32,20 @@ import com.twinly.eyebb.utils.SystemUtils;
 public class SignUpActivity extends Activity {
 	private Button btnSignup;
 
-	private EditText ed_username;
-	private EditText ed_email;
-	private EditText ed_password;
-	private EditText ed_nickname;
+	private EditText etUsername;
+	private EditText etEmail;
+	private EditText etPassword;
+	private EditText etNickname;
 	private String userName;
 	private String email;
 	private String password;
 	private String nickname;
 	private String phone;
 
-	private TextView tv_username;
-	private TextView tv_email;
-	private TextView tv_password;
-	private TextView tv_nickname;
+	private TextView tvUsername;
+	private TextView tvEmail;
+	private TextView tvPassword;
+	private TextView tvNickname;
 
 	private boolean usernameFlag = false;
 
@@ -67,24 +67,24 @@ public class SignUpActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 
 		// username password email
-		ed_username = (EditText) findViewById(R.id.ed_phone_number);
-		ed_email = (EditText) findViewById(R.id.ed_email);
-		ed_password = (EditText) findViewById(R.id.ed_password);
-		ed_nickname = (EditText) findViewById(R.id.ed_nickname);
+		etUsername = (EditText) findViewById(R.id.et_phone_number);
+		etEmail = (EditText) findViewById(R.id.et_email);
+		etPassword = (EditText) findViewById(R.id.et_password);
+		etNickname = (EditText) findViewById(R.id.et_nickname);
 
-		tv_username = (TextView) findViewById(R.id.ic_signup_phone);
-		tv_email = (TextView) findViewById(R.id.ic_signup_email);
-		tv_password = (TextView) findViewById(R.id.ic_signup_pw);
-		tv_nickname = (TextView) findViewById(R.id.ic_signup_nickname);
+		tvUsername = (TextView) findViewById(R.id.ic_signup_phone);
+		tvEmail = (TextView) findViewById(R.id.ic_signup_email);
+		tvPassword = (TextView) findViewById(R.id.ic_signup_pw);
+		tvNickname = (TextView) findViewById(R.id.ic_signup_nickname);
 
 		btnSignup = (Button) findViewById(R.id.btn_signup);
 
-		ed_username.setOnFocusChangeListener(new OnFocusChangeListener() {
+		etUsername.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if (ed_username.hasFocus() == false) {
-					userName = ed_username.getText().toString();
+				if (etUsername.hasFocus() == false) {
+					userName = etUsername.getText().toString();
 					if (RegularExpression.isUsername(userName)) {
 						new Thread(postAccNameCheckToServerRunnable).start();
 
@@ -98,7 +98,7 @@ public class SignUpActivity extends Activity {
 			}
 		});
 
-		ed_username.addTextChangedListener(new TextWatcher() {
+		etUsername.addTextChangedListener(new TextWatcher() {
 			private CharSequence temp;
 			private int editStart;
 			private int editEnd;
@@ -117,13 +117,13 @@ public class SignUpActivity extends Activity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				editStart = ed_username.getSelectionStart();
-				editEnd = ed_username.getSelectionEnd();
+				editStart = etUsername.getSelectionStart();
+				editEnd = etUsername.getSelectionEnd();
 				if (temp.length() > 8) {
 					s.delete(editStart - 1, editEnd);
 					int tempSelection = editStart;
-					ed_username.setText(s);
-					ed_username.setSelection(tempSelection);
+					etUsername.setText(s);
+					etUsername.setSelection(tempSelection);
 				}
 
 			}
@@ -133,19 +133,19 @@ public class SignUpActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				userName = ed_username.getText().toString();
-				email = ed_email.getText().toString();
-				password = ed_password.getText().toString();
-				nickname = ed_nickname.getText().toString();
-				phone = ed_username.getText().toString();
+				userName = etUsername.getText().toString();
+				email = etEmail.getText().toString();
+				password = etPassword.getText().toString();
+				nickname = etNickname.getText().toString();
+				phone = etUsername.getText().toString();
 
 				if (userName != null && userName.length() > 0) {
 
 					if (nickname != null && nickname.length() > 0) {
 
 						if (RegularExpression.isPassword(password)) {
-							if (RegularExpression.isEmail(email) || phone.length() > 0) {
+							if (RegularExpression.isEmail(email)
+									|| phone.length() > 0) {
 								if (phone != null || phone.length() > 0) {
 									if (usernameFlag) {
 										new Thread(
@@ -162,7 +162,7 @@ public class SignUpActivity extends Activity {
 								Toast.makeText(SignUpActivity.this,
 										R.string.text_fill_email_or_phone,
 										Toast.LENGTH_SHORT).show();
-								tv_email.setBackgroundResource(R.drawable.ic_cross);
+								tvEmail.setBackgroundResource(R.drawable.ic_cross);
 
 							}
 						} else {
@@ -170,7 +170,7 @@ public class SignUpActivity extends Activity {
 									R.string.text_error_password,
 									Toast.LENGTH_SHORT).show();
 
-							tv_password
+							tvPassword
 									.setBackgroundResource(R.drawable.ic_cross);
 						}
 
@@ -178,14 +178,14 @@ public class SignUpActivity extends Activity {
 						Toast.makeText(SignUpActivity.this,
 								R.string.text_error_nickname,
 								Toast.LENGTH_SHORT).show();
-						tv_nickname.setBackgroundResource(R.drawable.ic_cross);
+						tvNickname.setBackgroundResource(R.drawable.ic_cross);
 					}
 
 				} else {
 					Toast.makeText(SignUpActivity.this,
 							R.string.text_error_username, Toast.LENGTH_SHORT)
 							.show();
-					tv_username.setBackgroundResource(R.drawable.ic_cross);
+					tvUsername.setBackgroundResource(R.drawable.ic_cross);
 				}
 			}
 		});
@@ -316,21 +316,21 @@ public class SignUpActivity extends Activity {
 			switch (msg.what) {
 
 			case CHECK_ACC_SUCCESS:
-				tv_username.setBackgroundResource(R.drawable.ic_selected);
+				tvUsername.setBackgroundResource(R.drawable.ic_selected);
 				break;
 
 			case CHECK_ACC_FALSE:
 				Toast.makeText(SignUpActivity.this,
 						R.string.text_username_is_used, Toast.LENGTH_SHORT)
 						.show();
-				tv_username.setBackgroundResource(R.drawable.ic_cross);
+				tvUsername.setBackgroundResource(R.drawable.ic_cross);
 				break;
 
 			case CHECK_ACC_ERROR:
 				Toast.makeText(SignUpActivity.this,
 						R.string.text_error_username, Toast.LENGTH_SHORT)
 						.show();
-				tv_username.setBackgroundResource(R.drawable.ic_cross);
+				tvUsername.setBackgroundResource(R.drawable.ic_cross);
 				break;
 
 			case CONNECT_ERROR:
@@ -356,8 +356,6 @@ public class SignUpActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

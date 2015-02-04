@@ -26,11 +26,11 @@ import com.twinly.eyebb.utils.RegularExpression;
 
 public class UpdatePasswordActivity extends Activity {
 
-	private EditText ed_oldPassword;
-	private EditText ed_newPassword;
-	private EditText ed_newRepeatPassword;
+	private EditText etOldPassword;
+	private EditText etNewPassword;
+	private EditText etNewRepeatPassword;
 
-	private Button btn_confrim;
+	private Button btnConfrim;
 
 	private String oldPassword;
 	private String newPassword;
@@ -39,7 +39,6 @@ public class UpdatePasswordActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.text_update_password));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,16 +46,15 @@ public class UpdatePasswordActivity extends Activity {
 
 		setContentView(R.layout.activity_update_password);
 
-		ed_oldPassword = (EditText) findViewById(R.id.ed_old_password);
-		ed_newPassword = (EditText) findViewById(R.id.ed_new_password);
-		ed_newRepeatPassword = (EditText) findViewById(R.id.ed_repeat_new_password);
-		btn_confrim = (Button) findViewById(R.id.btn_confirm);
+		etOldPassword = (EditText) findViewById(R.id.et_old_password);
+		etNewPassword = (EditText) findViewById(R.id.et_new_password);
+		etNewRepeatPassword = (EditText) findViewById(R.id.et_repeat_new_password);
+		btnConfrim = (Button) findViewById(R.id.btn_confirm);
 
-		btn_confrim.setOnClickListener(new OnClickListener() {
+		btnConfrim.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				new Thread(postUpdatePasswordToServerRunnable).start();
 			}
 		});
@@ -65,9 +63,9 @@ public class UpdatePasswordActivity extends Activity {
 	Runnable postUpdatePasswordToServerRunnable = new Runnable() {
 		@Override
 		public void run() {
-			oldPassword = ed_oldPassword.getText().toString();
-			newPassword = ed_newPassword.getText().toString();
-			newRepeatPassword = ed_newRepeatPassword.getText().toString();
+			oldPassword = etOldPassword.getText().toString();
+			newPassword = etNewPassword.getText().toString();
+			newRepeatPassword = etNewRepeatPassword.getText().toString();
 
 			if (oldPassword.length() > 0 && newPassword.length() > 0
 					&& newRepeatPassword.length() > 0) {
@@ -114,19 +112,14 @@ public class UpdatePasswordActivity extends Activity {
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postUpdatePasswordToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("info=>" + oldPassword + " " + newPassword + " "
 				+ newRepeatPassword);
-
 		map.put("oldPassword", CommonUtils.getSHAHashValue(oldPassword));
 		map.put("newPassword", CommonUtils.getSHAHashValue(newPassword));
 
 		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
 			String retStr = HttpRequestUtils.post(
 					HttpConstants.UPDATE_PASSWORD, map);
 			System.out.println("retStrpost======>" + retStr);
@@ -152,17 +145,13 @@ public class UpdatePasswordActivity extends Activity {
 			}
 
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
 
 	}
 
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
-
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			Toast toast = null;
 			switch (msg.what) {

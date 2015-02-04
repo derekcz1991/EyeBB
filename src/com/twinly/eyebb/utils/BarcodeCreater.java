@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-
 import com.twinly.eyebb.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -25,8 +24,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 public abstract class BarcodeCreater {
-
-	private static int marginW = 20;
 
 	public static BarcodeFormat barcodeFormat = BarcodeFormat.CODE_128;
 
@@ -73,7 +70,7 @@ public abstract class BarcodeCreater {
 		tv.setLayoutParams(layoutParams);
 		tv.setText(contents);
 		// tv.setHeight(10);
-		tv.setTextAppearance(context,R.style.DarkGreyText_20);
+		tv.setTextAppearance(context, R.style.DarkGreyText_20);
 		tv.setGravity(Gravity.CENTER_HORIZONTAL);
 		tv.setWidth(width);
 		tv.setDrawingCacheEnabled(true);

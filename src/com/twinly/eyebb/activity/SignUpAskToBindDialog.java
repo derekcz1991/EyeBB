@@ -13,8 +13,8 @@ import com.twinly.eyebb.bluetooth.BLEUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
 
 public class SignUpAskToBindDialog extends Activity {
-	private LinearLayout btn_skip;
-	private LinearLayout btn_bind;
+	private LinearLayout btnSkip;
+	private LinearLayout btnBind;
 
 	private long guardianId;
 
@@ -24,14 +24,14 @@ public class SignUpAskToBindDialog extends Activity {
 
 		setContentView(R.layout.dialog_sign_up_ask_bind);
 
-		btn_skip = (LinearLayout) findViewById(R.id.btn_cancel);
-		btn_bind = (LinearLayout) findViewById(R.id.btn_confirm);
+		btnSkip = (LinearLayout) findViewById(R.id.btn_cancel);
+		btnBind = (LinearLayout) findViewById(R.id.btn_confirm);
 
 		Intent intent = getIntent();
 		guardianId = intent
 				.getLongExtra(ActivityConstants.EXTRA_GUARDIAN_ID, 0);
 
-		btn_skip.setOnClickListener(new OnClickListener() {
+		btnSkip.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -43,7 +43,7 @@ public class SignUpAskToBindDialog extends Activity {
 			}
 		});
 
-		btn_bind.setOnClickListener(new OnClickListener() {
+		btnBind.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -62,7 +62,6 @@ public class SignUpAskToBindDialog extends Activity {
 							R.string.text_ble_not_supported, Toast.LENGTH_LONG)
 							.show();
 				}
-
 			}
 		});
 
