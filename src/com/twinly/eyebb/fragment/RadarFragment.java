@@ -23,7 +23,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.SelectKidsActivity;
 import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildSelectable;
 import com.twinly.eyebb.model.SerializableChildrenList;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
@@ -233,10 +233,11 @@ public class RadarFragment extends Fragment {
 			SerializableChildrenList serializableChildrenList = (SerializableChildrenList) data
 					.getExtras().getSerializable(
 							SelectKidsActivity.EXTRA_CHILDREN_LIST);
-			ArrayList<Child> childrenList = serializableChildrenList.getList();
+			ArrayList<ChildSelectable> childrenList = serializableChildrenList
+					.getList();
 			ArrayList<String> antiLostDeviceList = new ArrayList<String>();
 			for (int i = 0; i < childrenList.size(); i++) {
-				if (childrenList.get(i).isWithAccess()) {
+				if (childrenList.get(i).isSelected()) {
 					antiLostDeviceList.add(childrenList.get(i).getMacAddress());
 				}
 			}

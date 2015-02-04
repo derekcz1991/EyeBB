@@ -18,15 +18,15 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildSelectable;
 import com.woozzu.android.widget.IndexableListView;
 
 public class ChangeKidsActivity extends Activity {
 	private IndexableListView listView;
 	private EditText etSearch;
 	private KidsListViewSimpleAdapter adapter;
-	private ArrayList<Child> list;
-	private ArrayList<Child> searchList;
+	private ArrayList<ChildSelectable> mList;
+	private ArrayList<ChildSelectable> searchList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,10 @@ public class ChangeKidsActivity extends Activity {
 
 		etSearch = (EditText) findViewById(R.id.et_search);
 		listView = (IndexableListView) findViewById(R.id.listView);
-		list = DBChildren.getChildrenListWithAddress(this);
-		searchList = new ArrayList<Child>();
+		mList = DBChildren.getChildrenListWithAddress(this);
+		searchList = new ArrayList<ChildSelectable>();
 
-		adapter = new KidsListViewSimpleAdapter(this, list, false);
+		adapter = new KidsListViewSimpleAdapter(this, mList, false);
 		listView.setAdapter(adapter);
 		listView.setFastScrollEnabled(true);
 
@@ -83,9 +83,9 @@ public class ChangeKidsActivity extends Activity {
 	private void search(String keyword) {
 		if (!TextUtils.isEmpty(keyword)) {
 			searchList.clear();
-			for (int i = 0; i < list.size(); i++) {
-				if (list.get(i).getName().contains(keyword)) {
-					searchList.add(list.get(i));
+			for (int i = 0; i < mList.size(); i++) {
+				if (mList.get(i).getName().contains(keyword)) {
+					searchList.add(mList.get(i));
 				}
 			}
 			adapter = new KidsListViewSimpleAdapter(ChangeKidsActivity.this,
@@ -93,7 +93,7 @@ public class ChangeKidsActivity extends Activity {
 			listView.setAdapter(adapter);
 		} else {
 			adapter = new KidsListViewSimpleAdapter(ChangeKidsActivity.this,
-					list, false);
+					mList, false);
 			listView.setAdapter(adapter);
 		}
 	}

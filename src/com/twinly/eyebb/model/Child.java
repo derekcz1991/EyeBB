@@ -14,23 +14,7 @@ public class Child implements Serializable {
 	private String icon;
 	private String phone;
 	private String macAddress;
-
 	private String relationWithUser;
-
-	private String locationName; // dynamic changing
-	private long lastAppearTime; // dynamic changing
-
-	private boolean withAccess;
-	private String totalQuota;
-	private String quotaLeft;
-
-	public String getQuotaLeft() {
-		return quotaLeft;
-	}
-
-	public void setQuotaLeft(String quotaLeft) {
-		this.quotaLeft = quotaLeft;
-	}
 
 	public Child() {
 
@@ -41,6 +25,16 @@ public class Child implements Serializable {
 		this.childId = childId;
 		this.name = name;
 		this.icon = icon;
+	}
+
+	public Child(long childId, String name, String icon, String phone,
+			String macAddress) {
+		super();
+		this.childId = childId;
+		this.name = name;
+		this.icon = icon;
+		this.phone = phone;
+		this.macAddress = macAddress;
 	}
 
 	public long getChildId() {
@@ -93,38 +87,6 @@ public class Child implements Serializable {
 
 	public void setRelationWithUser(String relationWithUser) {
 		this.relationWithUser = relationWithUser;
-	}
-
-	public String getLocationName() {
-		return locationName;
-	}
-
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
-
-	public long getLastAppearTime() {
-		return lastAppearTime;
-	}
-
-	public void setLastAppearTime(long lastAppearTime) {
-		this.lastAppearTime = lastAppearTime;
-	}
-
-	public boolean isWithAccess() {
-		return withAccess;
-	}
-
-	public void setWithAccess(boolean withAccess) {
-		this.withAccess = withAccess;
-	}
-
-	public String getTotalQuota() {
-		return totalQuota;
-	}
-
-	public void setTotalQuota(String totalQuota) {
-		this.totalQuota = totalQuota;
 	}
 
 	@Override

@@ -17,15 +17,15 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 import com.woozzu.android.util.StringMatcher;
 
-public class GrantKidsListViewFromGuestAdapter extends ArrayAdapter<Child>
-		implements SectionIndexer {
+public class GrantKidsListViewFromGuestAdapter extends
+		ArrayAdapter<ChildForGrant> implements SectionIndexer {
 	private Context context;
-	private List<Child> data;
+	private List<ChildForGrant> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	public static ArrayList<String> grantkidId;
@@ -38,7 +38,8 @@ public class GrantKidsListViewFromGuestAdapter extends ArrayAdapter<Child>
 		public RelativeLayout layout;
 	}
 
-	public GrantKidsListViewFromGuestAdapter(Context context, List<Child> data) {
+	public GrantKidsListViewFromGuestAdapter(Context context,
+			List<ChildForGrant> data) {
 		super(context, android.R.layout.simple_list_item_1);
 		inflater = LayoutInflater.from(context);
 		this.context = context;
@@ -63,13 +64,12 @@ public class GrantKidsListViewFromGuestAdapter extends ArrayAdapter<Child>
 
 	@Override
 	public int getCount() {
-
 		return data.size();
 
 	}
 
 	@Override
-	public Child getItem(int position) {
+	public ChildForGrant getItem(int position) {
 		return data.get(position);
 	}
 
@@ -104,7 +104,7 @@ public class GrantKidsListViewFromGuestAdapter extends ArrayAdapter<Child>
 	}
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
-		final Child child = data.get(position);
+		final ChildForGrant child = data.get(position);
 
 		// init select
 		for (int i = 0; i < data.size(); i++) {
@@ -122,8 +122,6 @@ public class GrantKidsListViewFromGuestAdapter extends ArrayAdapter<Child>
 
 				@Override
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-
 					System.out.println("child.isWithAccess()--->"
 							+ child.isWithAccess());
 					// first click

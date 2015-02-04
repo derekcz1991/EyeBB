@@ -91,8 +91,7 @@
                     android:layout_height="50dp"
                     android:layout_gravity="left"
                     android:gravity="center_vertical"
-                    android:text="@string/text_battery_life"
-                    android:textStyle="bold" />
+                    android:text="@string/text_battery_life" />
 
                 <TextView
                     android:id="@+id/device_battery_result"
@@ -162,8 +161,7 @@
                     android:layout_height="50dp"
                     android:layout_gravity="left"
                     android:gravity="center_vertical"
-                    android:text="@string/text_beep"
-                    android:textStyle="bold" />
+                    android:text="@string/text_beep" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -212,8 +210,7 @@
                     android:layout_height="50dp"
                     android:layout_gravity="left"
                     android:gravity="center_vertical"
-                    android:text="@string/text_update_eyebb_device_firmware"
-                    android:textStyle="bold" />
+                    android:text="@string/text_update_eyebb_device_firmware" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -237,8 +234,8 @@
             android:id="@+id/layout_device_require_qr_code"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:onClick="true"
             android:gravity="center"
+            android:onClick="true"
             android:orientation="vertical" >
 
             <RelativeLayout
@@ -254,8 +251,7 @@
                     android:layout_height="50dp"
                     android:layout_gravity="left"
                     android:gravity="center_vertical"
-                    android:text="@string/text_get_the_eyebb_device_qr_code"
-                    android:textStyle="bold" />
+                    android:text="@string/text_get_the_eyebb_device_qr_code" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -296,8 +292,7 @@
                     android:layout_height="50dp"
                     android:layout_gravity="left"
                     android:gravity="center_vertical"
-                    android:text="@string/btn_binding"
-                    android:textStyle="bold" />
+                    android:text="@string/btn_binding" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -316,16 +311,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout><!--
-<Button
-    android:id="@+id/btn_binding"
-    style="@style/WhiteText_18"
-    android:layout_width="180dp"
-    android:layout_height="44dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="24dp"
-    android:background="@drawable/btn_bg_red"
-    android:onClick="onBindClicked"
-    android:text="@string/btn_binding" />
-<LinearLayout>
--->
+</LinearLayout>

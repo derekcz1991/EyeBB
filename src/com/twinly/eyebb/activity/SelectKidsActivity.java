@@ -12,7 +12,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewSimpleAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildSelectable;
 import com.twinly.eyebb.model.SerializableChildrenList;
 import com.woozzu.android.widget.IndexableListView;
 
@@ -21,7 +21,7 @@ public class SelectKidsActivity extends Activity {
 
 	private IndexableListView mListView;
 	private KidsListViewSimpleAdapter adapter;
-	private ArrayList<Child> mList;
+	private ArrayList<ChildSelectable> mList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

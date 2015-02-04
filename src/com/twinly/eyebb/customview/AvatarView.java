@@ -11,19 +11,19 @@ import android.view.ViewGroup;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.dialog.ChildDialog;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class AvatarView {
 	private Context context;
-	private Child child;
+	private ChildForLocator child;
 	private CircleImageView avatar;
 	private ViewGroup avatarViewItem;
 	private boolean isOnline;
 	private ImageLoader imageLoader;
 
-	public AvatarView(Context context, Child child, ViewGroup viewGroup,
-			boolean isOnline) {
+	public AvatarView(Context context, ChildForLocator child,
+			ViewGroup viewGroup, boolean isOnline) {
 		this.context = context;
 		this.child = child;
 		this.isOnline = isOnline;

@@ -41,6 +41,7 @@ import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.dialog.IndoorLocatorOptionsDialog;
 import com.twinly.eyebb.model.Area;
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.model.SerializableChildrenMap;
 import com.twinly.eyebb.utils.CommonUtils;
@@ -66,7 +67,7 @@ public class IndoorLocatorFragment extends Fragment implements
 	// <location_id, Location>
 	private HashMap<Long, Location> locationMap;
 	// <child_id, Child>
-	private HashMap<Long, Child> childrenMap;
+	private HashMap<Long, ChildForLocator> childrenMap;
 	// <area_id, <location_id, [child_id, child_id]>>
 	private HashMap<Long, HashMap<Long, ArrayList<Long>>> areaMapLocaionMapChildren;
 	private ArrayList<HashMap.Entry<Long, Area>> areaList;
@@ -127,7 +128,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		areaMap = new HashMap<Long, Area>();
 		locationMap = new HashMap<Long, Location>();
-		childrenMap = new HashMap<Long, Child>();
+		childrenMap = new HashMap<Long, ChildForLocator>();
 		areaMapLocaionMapChildren = new HashMap<Long, HashMap<Long, ArrayList<Long>>>();
 
 		mList = new ArrayList<Map.Entry<Long, ArrayList<Long>>>();
@@ -459,19 +460,13 @@ public class IndoorLocatorFragment extends Fragment implements
 				.getString(HttpConstants.JSON_KEY_CHILD_RELATION));
 		child.setMacAddress(childrenBeanObject
 				.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
-		// get parents' phone
-		/*if (CommonUtils.isNotNull(childrenBeanObject
-				.getString(HttpConstants.JSON_KEY_PARENTS))) {
-			JSONObject parentObject = childrenBeanObject
-					.getJSONObject(HttpConstants.JSON_KEY_PARENTS);
-			child.setPhone(parentObject
-					.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
-		}*/
-		child.setLastAppearTime(childrenBeanObject
-				.getLong(HttpConstants.JSON_KEY_CHILD_LAST_APPEAR_TIME));
 		DBChildren.insert(getActivity(), child);
 
-		childrenMap.put(child.getChildId(), child);
+		ChildForLocator childForLocator = new ChildForLocator(child);
+		childForLocator.setLastAppearTime(childrenBeanObject
+				.getLong(HttpConstants.JSON_KEY_CHILD_LAST_APPEAR_TIME));
+
+		childrenMap.put(child.getChildId(), childForLocator);
 		return child.getChildId();
 	}
 

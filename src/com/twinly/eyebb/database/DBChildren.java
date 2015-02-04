@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildSelectable;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.utils.CommonUtils;
 
@@ -59,8 +60,7 @@ public class DBChildren {
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery("select * from children", null);
 		while (cursor.moveToNext()) {
-			Child child = new Child();
-			createChild(child, cursor);
+			Child child = createChild(cursor);
 			if (CommonUtils.isNotNull(child.getMacAddress())) {
 				map.put(child.getMacAddress(), child);
 			}
@@ -70,14 +70,14 @@ public class DBChildren {
 		return map;
 	}
 
-	public static HashMap<String, Device> getChildrenMapWithAddress(Context context) {
+	public static HashMap<String, Device> getChildrenMapWithAddress(
+			Context context) {
 		HashMap<String, Device> map = new HashMap<String, Device>();
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery(
 				"select * from children where mac_address != '" + "'", null);
 		while (cursor.moveToNext()) {
-			Child child = new Child();
-			createChild(child, cursor);
+			Child child = createChild(cursor);
 			map.put(child.getMacAddress(), new Device(child.getMacAddress()));
 		}
 		cursor.close();
@@ -90,8 +90,7 @@ public class DBChildren {
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery("select * from children", null);
 		while (cursor.moveToNext()) {
-			Child child = new Child();
-			createChild(child, cursor);
+			Child child = createChild(cursor);
 			childList.add(child);
 		}
 		cursor.close();
@@ -99,15 +98,16 @@ public class DBChildren {
 		return childList;
 	}
 
-	public static ArrayList<Child> getChildrenListWithAddress(Context context) {
-		ArrayList<Child> childList = new ArrayList<Child>();
+	public static ArrayList<ChildSelectable> getChildrenListWithAddress(
+			Context context) {
+		ArrayList<ChildSelectable> childList = new ArrayList<ChildSelectable>();
 		SQLiteDatabase db = getInstance(context);
 		Cursor cursor = db.rawQuery(
 				"select * from children where mac_address != '" + "'", null);
 		while (cursor.moveToNext()) {
-			Child child = new Child();
-			createChild(child, cursor);
-			childList.add(child);
+			ChildSelectable childSelectable = new ChildSelectable(
+					createChild(cursor));
+			childList.add(childSelectable);
 		}
 		cursor.close();
 		db.close();
@@ -120,8 +120,7 @@ public class DBChildren {
 		Cursor cursor = db.rawQuery("select * from children where child_id = "
 				+ childId, null);
 		if (cursor.moveToFirst()) {
-			child = new Child();
-			createChild(child, cursor);
+			child = createChild(cursor);
 		}
 		cursor.close();
 		db.close();
@@ -161,7 +160,8 @@ public class DBChildren {
 		db.close();
 	}
 
-	private static Child createChild(Child child, Cursor cursor) {
+	private static Child createChild(Cursor cursor) {
+		Child child = new Child();
 		child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
 		child.setName(cursor.getString(cursor.getColumnIndex("name")));
 		child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
@@ -170,7 +170,6 @@ public class DBChildren {
 				.getColumnIndex("mac_address")));
 		child.setRelationWithUser(cursor.getString(cursor
 				.getColumnIndex("relation_with_user")));
-		child.setLocationName("");
 		return child;
 	}
 

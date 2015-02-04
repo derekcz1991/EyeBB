@@ -17,15 +17,15 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildSelectable;
 import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 import com.woozzu.android.util.StringMatcher;
 
-public class KidsListViewSimpleAdapter extends ArrayAdapter<Child> implements
+public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable> implements
 		SectionIndexer {
 	private Context context;
-	private List<Child> data;
+	private List<ChildSelectable> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 	private boolean isSelectable;
@@ -37,7 +37,7 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<Child> implements
 		public CheckedTextView tvSelected;
 	}
 
-	public KidsListViewSimpleAdapter(Context context, List<Child> data,
+	public KidsListViewSimpleAdapter(Context context, List<ChildSelectable> data,
 			boolean isSelectable) {
 		super(context, android.R.layout.simple_list_item_1);
 
@@ -51,13 +51,11 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<Child> implements
 
 	@Override
 	public int getCount() {
-
 		return data.size();
-
 	}
 
 	@Override
-	public Child getItem(int position) {
+	public ChildSelectable getItem(int position) {
 		return data.get(position);
 	}
 
@@ -92,23 +90,23 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<Child> implements
 		if (isSelectable) {
 			viewHolder.tvSelected.setVisibility(View.VISIBLE);
 			viewHolder.rootLayout.setClickable(true);
-			data.get(position).setWithAccess(true);
+			data.get(position).setSelected(true);
 			viewHolder.rootLayout.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					if (viewHolder.tvSelected.isChecked()) {
 						viewHolder.tvSelected.setChecked(false);
-						data.get(position).setWithAccess(false);
+						data.get(position).setSelected(false);
 					} else {
 						viewHolder.tvSelected.setChecked(true);
-						data.get(position).setWithAccess(true);
+						data.get(position).setSelected(true);
 					}
 
 				}
 			});
 		}
-		final Child child = data.get(position);
+		final ChildSelectable child = data.get(position);
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);

@@ -8,13 +8,13 @@ public class SerializableChildrenList implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 6L;
-	private ArrayList<Child> list;
+	private ArrayList<ChildSelectable> list;
 
-	public ArrayList<Child> getList() {
+	public ArrayList<ChildSelectable> getList() {
 		return list;
 	}
 
-	public void setList(ArrayList<Child> list) {
+	public void setList(ArrayList<ChildSelectable> list) {
 		this.list = list;
 	}
 }

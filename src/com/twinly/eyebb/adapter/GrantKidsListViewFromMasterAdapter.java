@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 	private Context context;
-	private List<Child> data;
+	private List<ChildForGrant> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
@@ -30,7 +30,8 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 		public RelativeLayout layout;
 	}
 
-	public GrantKidsListViewFromMasterAdapter(Context context, List<Child> data) {
+	public GrantKidsListViewFromMasterAdapter(Context context,
+			List<ChildForGrant> data) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
@@ -47,7 +48,7 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Child getItem(int position) {
+	public ChildForGrant getItem(int position) {
 		return data.get(position);
 	}
 
@@ -67,9 +68,6 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 					.findViewById(R.id.avatar);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 
-			// viewHolder.layout = (RelativeLayout) convertView
-			// .findViewById(R.id.layout);
-
 			viewHolder.selected = (TextView) convertView
 					.findViewById(R.id.selected);
 			viewHolder.selected.setVisibility(View.GONE);
@@ -84,7 +82,7 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 	}
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
-		final Child child = data.get(position);
+		final ChildForGrant child = data.get(position);
 
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,

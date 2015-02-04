@@ -20,7 +20,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.utils.ImageUtils;
 
@@ -33,7 +33,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 	private Context context;
 	private HashMap<Long, Location> locationMap;
-	private HashMap<Long, Child> childrenMap;
+	private HashMap<Long, ChildForLocator> childrenMap;
 	private List<HashMap.Entry<Long, ArrayList<Long>>> list;
 
 	private LayoutInflater inflater;
@@ -51,7 +51,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	public IndoorLocatorAdapter(Context context,
 			List<HashMap.Entry<Long, ArrayList<Long>>> list,
 			HashMap<Long, Location> locationMap,
-			HashMap<Long, Child> childrenMap, boolean isViewAllRooms) {
+			HashMap<Long, ChildForLocator> childrenMap, boolean isViewAllRooms) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.locationMap = locationMap;

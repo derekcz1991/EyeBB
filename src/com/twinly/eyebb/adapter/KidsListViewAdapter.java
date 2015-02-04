@@ -23,21 +23,22 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 import com.woozzu.android.util.StringMatcher;
 
-public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
-		implements SectionIndexer {
+public class KidsListViewAdapter extends
+		ArrayAdapter<Map.Entry<Long, ChildForLocator>> implements
+		SectionIndexer {
 	private Context context;
-	private List<Map.Entry<Long, Child>> list;
+	private List<Map.Entry<Long, ChildForLocator>> list;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
-	private List<Map.Entry<Long, Child>> location_null_list;
-	private List<Map.Entry<Long, Child>> location_not_null_list;
+	private List<Map.Entry<Long, ChildForLocator>> location_null_list;
+	private List<Map.Entry<Long, ChildForLocator>> location_not_null_list;
 
 	private final class ViewHolder {
 		public CircleImageView avatar;
@@ -49,30 +50,33 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 	}
 
 	public KidsListViewAdapter(Context context,
-			List<Map.Entry<Long, Child>> data, boolean isSortByName,
+			List<Map.Entry<Long, ChildForLocator>> data, boolean isSortByName,
 			boolean isSortByLocator) {
 		super(context, android.R.layout.simple_list_item_1);
 
 		inflater = LayoutInflater.from(context);
 		this.context = context;
-		this.list = new ArrayList<Map.Entry<Long, Child>>();
+		this.list = new ArrayList<Map.Entry<Long, ChildForLocator>>();
 		this.list.addAll(data);
 		if (isSortByName) {
-			Collections.sort(list, new Comparator<Map.Entry<Long, Child>>() {
+			Collections.sort(list,
+					new Comparator<Map.Entry<Long, ChildForLocator>>() {
 
-				@Override
-				public int compare(Entry<Long, Child> lhs,
-						Entry<Long, Child> rhs) {
-					return lhs.getValue().getName().toLowerCase().charAt(0)
-							- rhs.getValue().getName().toLowerCase().charAt(0);
-				}
-			});
+						@Override
+						public int compare(Entry<Long, ChildForLocator> lhs,
+								Entry<Long, ChildForLocator> rhs) {
+							return lhs.getValue().getName().toLowerCase()
+									.charAt(0)
+									- rhs.getValue().getName().toLowerCase()
+											.charAt(0);
+						}
+					});
 		}
 
 		if (isSortByLocator) {
-			location_not_null_list = new ArrayList<Map.Entry<Long, Child>>();
-			location_null_list = new ArrayList<Map.Entry<Long, Child>>();
-			
+			location_not_null_list = new ArrayList<Map.Entry<Long, ChildForLocator>>();
+			location_null_list = new ArrayList<Map.Entry<Long, ChildForLocator>>();
+
 			for (int i = 0; i < list.size(); i++) {
 				if (list.get(i).getValue().getLocationName() == null) {
 					location_null_list.add(list.get(i));
@@ -83,11 +87,11 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 			}
 
 			Collections.sort(location_not_null_list,
-					new Comparator<Map.Entry<Long, Child>>() {
+					new Comparator<Map.Entry<Long, ChildForLocator>>() {
 
 						@Override
-						public int compare(Entry<Long, Child> lhs,
-								Entry<Long, Child> rhs) {
+						public int compare(Entry<Long, ChildForLocator> lhs,
+								Entry<Long, ChildForLocator> rhs) {
 							if (lhs.getValue().getLocationName().length() == 0) {
 								return 1;
 							} else if (rhs.getValue().getLocationName()
@@ -96,8 +100,8 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 							}
 							return lhs.getValue().getLocationName()
 									.toLowerCase().charAt(0)
-									- rhs.getValue().getLocationName().toLowerCase()
-											.charAt(0);
+									- rhs.getValue().getLocationName()
+											.toLowerCase().charAt(0);
 						}
 					});
 
@@ -115,7 +119,7 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 	}
 
 	@Override
-	public Entry<Long, Child> getItem(int position) {
+	public Entry<Long, ChildForLocator> getItem(int position) {
 		return list.get(position);
 	}
 
@@ -150,7 +154,7 @@ public class KidsListViewAdapter extends ArrayAdapter<Map.Entry<Long, Child>>
 	}
 
 	private void setUpView(ViewHolder viewHolder, int position) {
-		final Child child = list.get(position).getValue();
+		final ChildForLocator child = list.get(position).getValue();
 		if (TextUtils.isEmpty(child.getIcon()) == false) {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);

@@ -25,7 +25,7 @@ import com.twinly.eyebb.adapter.GrantKidsListViewFromMasterAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.woozzu.android.widget.IndexableListView;
 
@@ -33,8 +33,8 @@ public class GrantKidsActivity extends Activity {
 	private IndexableListView listView;
 	private GrantKidsListViewFromGuestAdapter guest_adapter;
 	private GrantKidsListViewFromMasterAdapter master_adapter;
-	private ArrayList<Child> returnList;
-	private ArrayList<Child> childList;
+	private ArrayList<ChildForGrant> returnList;
+	private ArrayList<ChildForGrant> childList;
 	private String guestChildrenRetStr;
 
 	private String guestdId;
@@ -44,7 +44,7 @@ public class GrantKidsActivity extends Activity {
 	private String noAccessGrantChildId;
 	private boolean from_where = false;
 	public static final int UPDATE_VIEW = 11111;
-	private ArrayList<Child> new_children_data;
+	private ArrayList<ChildForGrant> new_children_data;
 
 	/**
 	 * 
@@ -57,7 +57,7 @@ public class GrantKidsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
-		new_children_data = new ArrayList<Child>();
+		new_children_data = new ArrayList<ChildForGrant>();
 		guestdId = intent.getStringExtra("guestId");
 		guestName = intent.getStringExtra("guestName");
 
@@ -67,7 +67,7 @@ public class GrantKidsActivity extends Activity {
 		if (!from_where) {
 			from_master_or_guest = intent.getStringExtra("from_where");
 			if (from_master_or_guest.equals("master")) {
-				new_children_data = (ArrayList<Child>) intent
+				new_children_data = (ArrayList<ChildForGrant>) intent
 						.getSerializableExtra("child_data");
 			}
 		}
@@ -80,9 +80,8 @@ public class GrantKidsActivity extends Activity {
 
 		listView = (IndexableListView) findViewById(R.id.listView);
 		listView.setFastScrollEnabled(true);
-		// returnList = DBChildren.getChildrenList(this);
-		childList = new ArrayList<Child>();
-		returnList = new ArrayList<Child>();
+		childList = new ArrayList<ChildForGrant>();
+		returnList = new ArrayList<ChildForGrant>();
 		new Thread(postGuestChildrenToServerRunnable).start();
 
 	}
@@ -95,7 +94,7 @@ public class GrantKidsActivity extends Activity {
 		}
 	};
 
-	private ArrayList<Child> parseChildJson(String getData) {
+	private ArrayList<ChildForGrant> parseChildJson(String getData) {
 		try {
 			childList.clear();
 			if (!JSONObject.NULL.equals(getData)) {
@@ -110,11 +109,10 @@ public class GrantKidsActivity extends Activity {
 							JSONObject child = ((JSONObject) children.opt(i))
 									.getJSONObject(HttpConstants.JSON_KEY_CHILD);
 
-							Child ChildMode = new Child();
+							ChildForGrant childForGrant = new ChildForGrant();
 							System.out
 									.println("--->"
 											+ child.getString(HttpConstants.JSON_KEY_CHILD_ID));
-
 							System.out
 									.println("--->"
 											+ child.getString(HttpConstants.JSON_KEY_CHILD_NAME));
@@ -134,39 +132,36 @@ public class GrantKidsActivity extends Activity {
 									.println("--->"
 											+ ((JSONObject) children.opt(i))
 													.getString(HttpConstants.JSON_KEY_QUOTA_LEFT));
-
 							System.out
 									.println("--------------------------------------");
 
-							ChildMode
+							childForGrant
 									.setChildId(Long.valueOf(child
 											.getString(HttpConstants.JSON_KEY_CHILD_ID)));
-							ChildMode
+							childForGrant
 									.setName(child
 											.getString(HttpConstants.JSON_KEY_CHILD_NAME));
-							ChildMode
+							childForGrant
 									.setIcon(child
 											.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-							ChildMode
+							childForGrant
 									.setWithAccess(((JSONObject) children
 											.opt(i))
 											.getBoolean(HttpConstants.JSON_KEY_WITH_ACCESS));
-							ChildMode
+							childForGrant
 									.setTotalQuota(((JSONObject) children
 											.opt(i))
 											.getString(HttpConstants.JSON_KEY_TOTAL_QUOTA));
 
-							ChildMode
+							childForGrant
 									.setQuotaLeft(((JSONObject) children.opt(i))
 											.getString(HttpConstants.JSON_KEY_QUOTA_LEFT));
 
-							childList.add(ChildMode);
+							childList.add(childForGrant);
 						}
 					}
 				}
 			}
-
-			System.out.println("childList_data>" + childList.size());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -219,8 +214,6 @@ public class GrantKidsActivity extends Activity {
 
 	@SuppressLint("ShowToast")
 	private void postGrantToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("info=>" + guestdId + " ");
 
@@ -228,7 +221,7 @@ public class GrantKidsActivity extends Activity {
 		if (grantChildId.length() > 0) {
 			map.put("accessChildIds",
 					grantChildId.substring(0, grantChildId.length() - 1));
-			
+
 		} else {
 			map.put("accessChildIds", "");
 		}
@@ -292,8 +285,6 @@ public class GrantKidsActivity extends Activity {
 				Intent intent = new Intent(GrantKidsActivity.this,
 						AuthorizeKidsActivity.class);
 				startActivity(intent);
-				// AuthorizeKidsActivity.instance.finish();
-				// SearchGuestActivity.instance.finish();
 				setResult(ActivityConstants.RESULT_RESULT_OK);
 				finish();
 				break;
@@ -362,8 +353,6 @@ public class GrantKidsActivity extends Activity {
 		} else if (item.getItemId() == 0) {
 			grantChildId = "";
 			noAccessGrantChildId = "";
-			// System.out.println("SIZE==?"+GrantKidsListViewAdapter.grantkidId.size());
-
 			for (int i = 0; i < GrantKidsListViewFromGuestAdapter.grantkidId
 					.size(); i++) {
 				grantChildId += GrantKidsListViewFromGuestAdapter.grantkidId
@@ -386,10 +375,7 @@ public class GrantKidsActivity extends Activity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			// do something you want to
-
 			if (from_where) {
 				finish();
 			} else {

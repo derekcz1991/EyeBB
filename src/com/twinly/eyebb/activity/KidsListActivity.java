@@ -18,15 +18,15 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.KidsListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.dialog.KidsListOptionsDialog;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.model.SerializableChildrenMap;
 import com.woozzu.android.widget.IndexableListView;
 
 public class KidsListActivity extends Activity {
 	private IndexableListView listView;
 	private EditText etSearch;
-	private List<Map.Entry<Long, Child>> list;
-	private List<Map.Entry<Long, Child>> searchList;
+	private List<Map.Entry<Long, ChildForLocator>> list;
+	private List<Map.Entry<Long, ChildForLocator>> searchList;
 	private KidsListViewAdapter adapter;
 	private boolean isSortByName = true;
 	private boolean isSortByLocation = false;
@@ -40,13 +40,13 @@ public class KidsListActivity extends Activity {
 
 		setContentView(R.layout.activity_kids_list);
 
-		searchList = new ArrayList<Map.Entry<Long, Child>>();
+		searchList = new ArrayList<Map.Entry<Long, ChildForLocator>>();
 		Bundle bundle = getIntent().getExtras();
 		SerializableChildrenMap serializableMap = (SerializableChildrenMap) bundle
 				.get("childrenMap");
 
 		if (serializableMap != null) {
-			list = new ArrayList<Map.Entry<Long, Child>>(serializableMap
+			list = new ArrayList<Map.Entry<Long, ChildForLocator>>(serializableMap
 					.getMap().entrySet());
 			
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
