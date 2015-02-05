@@ -16,27 +16,31 @@ public class BLEUtils {
 	public final static String CHARACTERISTICS_ANTI_LOST_TIMEOUT_UUID = "0000100a-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_BATTERY_UUID = "00001004-0000-1000-8000-00805f9b34fb";
 	public final static String CHARACTERISTICS_LED_BLINK_UUID = "0000100b-0000-1000-8000-00805f9b34fb";
-
+	public static final String OAD_SERVICE_UUID = "f000ffc0-0451-4000-b000-000000000000";
+    public static final String CC_SERVICE_UUID = "f000ccc0-0451-4000-b000-000000000000";
+    
 	public static final int STATE_DISCONNECTED = 0;
 	public static final int STATE_CONNECTING = 1;
 	public static final int STATE_CONNECTED = 2;
 	public static final int STATE_DISCOVERED = 3;
-
+	
 	public final static String ACTION_GATT_CONNECTED = "bluetooth.le.ACTION_GATT_CONNECTED";
 	public final static String ACTION_GATT_DISCONNECTED = "bluetooth.le.ACTION_GATT_DISCONNECTED";
+	//public final static String ACTION_GATT_DATA_NOTIFY = "bluetooth.le.ACTION_DATA_NOTIFY";
 	public final static String ACTION_GATT_SERVICES_DISCOVERED = "bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
 	public final static String ACTION_GATT_READ_SUCCESS = "bluetooth.le.ACTION_GATT_READ_SUCCESS";
 	public final static String ACTION_GATT_READ_FAILURE = "bluetooth.le.ACTION_GATT_READ_FAILURE";
 	public final static String ACTION_GATT_WRITE_SUCCESS = "bluetooth.le.ACTION_GATT_WRITE_SUCCEED";
 	public final static String ACTION_GATT_WRITE_FAILURE = "bluetooth.le.ACTION_GATT_WRITE_FAILURE";
 	public final static String EXTRA_DATA = "bluetooth.le.EXTRA_DATA";
+	public final static String EXTRA_UUID = "bluetooth.le.EXTRA_UUID";
 
 	public static final int RSSI_STRONG = -50;
 	public static final int RSSI_GOOD = -70;
 	public static final int RSSI_WEAK = -100;
 
 	public static final String PASSWORD = "C3A60D00";
-
+	
 	public static String bytesToHex(byte[] bytes, int begin, int length) {
 		StringBuilder sbuf = new StringBuilder();
 		for (int idx = begin; idx < begin + length; idx++) {
@@ -49,7 +53,6 @@ public class BLEUtils {
 	}
 
 	/**
-	 * 将指定byte数组以16进制的形式打印到控制台
 	 * 
 	 * @param hint
 	 *            String
@@ -88,7 +91,7 @@ public class BLEUtils {
 	}
 
 	/**
-	 * 将两个ASCII字符合成一个字节； 如："EF"--> 0xEF
+	 * 灏嗕袱涓狝SCII瀛楃鍚堟垚涓�釜瀛楄妭锛�濡傦細"EF"--> 0xEF
 	 * 
 	 * @param src0
 	 *            byte
@@ -107,7 +110,7 @@ public class BLEUtils {
 	}
 
 	/**
-	 * 将指定字符串src，以每两个字符分割转换为16进制形式 如："2B44EFD9" --> byte[]{0x2B, 0x44, 0xEF,
+	 * 灏嗘寚瀹氬瓧绗︿覆src锛屼互姣忎袱涓瓧绗﹀垎鍓茶浆鎹负16杩涘埗褰㈠紡 濡傦細"2B44EFD9" --> byte[]{0x2B, 0x44, 0xEF,
 	 * 0xD9}
 	 * 
 	 * @param src
