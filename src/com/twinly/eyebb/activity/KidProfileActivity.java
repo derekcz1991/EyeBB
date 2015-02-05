@@ -115,6 +115,8 @@ public class KidProfileActivity extends Activity implements
 		layoutDeviceRequireQrCode = (LinearLayout) findViewById(R.id.layout_device_require_qr_code);
 		layoutDeviceUnbind = (LinearLayout) findViewById(R.id.layout_device_unbind);
 		layoutDeviceRequireQrCode.setOnClickListener(this);
+		layoutDeviceBeep.setOnClickListener(this);
+		layoutDeviceOta.setOnClickListener(this);
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
 
@@ -643,7 +645,12 @@ public class KidProfileActivity extends Activity implements
 			}
 			break;
 
+		case R.id.layout_device_ota:
+			Intent intentFwUpdateActivity = new Intent(KidProfileActivity.this,
+					FwUpdateActivity.class);
+			startActivity(intentFwUpdateActivity);
+			break;
+
 		}
 	}
-
 }
