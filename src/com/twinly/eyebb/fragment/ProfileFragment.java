@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -83,7 +84,8 @@ public class ProfileFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (RadarFragment.isRadarOpen) {
+				if (RadarFragment.radarState == BluetoothAdapter.STATE_ON
+						|| RadarFragment.radarState == BluetoothAdapter.STATE_TURNING_ON) {
 					Toast.makeText(
 							getActivity(),
 							getResources().getString(

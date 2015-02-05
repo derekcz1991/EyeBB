@@ -28,6 +28,7 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	private ImageLoader imageLoader;
 	private ArrayList<Device> deviceList;
 	private HashMap<String, Child> childMap;
+	private boolean isRssiDisplayed;
 	private ViewHolder viewHolder;
 
 	public final class ViewHolder {
@@ -43,7 +44,12 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 		this.deviceList = deviceList;
 		childMap = DBChildren.getChildrenMap(context);
 		imageLoader = ImageLoader.getInstance();
+		isRssiDisplayed = true;
 		sort();
+	}
+
+	public void setRssiDisplayed(boolean isRssiDisplayed) {
+		this.isRssiDisplayed = isRssiDisplayed;
 	}
 
 	private void sort() {
@@ -106,7 +112,6 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 	}
 
 	private void setUpView(final ViewHolder viewHolder, final int position) {
-
 		if (deviceList.get(position).isMissed()) {
 			viewHolder.avatar.setBorderColor(context.getResources().getColor(
 					R.color.red));
@@ -119,30 +124,40 @@ public class RadarKidsListViewAdapter extends BaseAdapter {
 					R.color.green));
 			viewHolder.deviceRssi.setTextColor(context.getResources().getColor(
 					R.color.dark_grey));
-			int rssi = deviceList.get(position).getRssi();
-			switch (BLEUtils.getRssiLevel(rssi)) {
-			case BLEUtils.RSSI_STRONG:
-				viewHolder.deviceRssi.setText(context.getResources().getString(
-						R.string.text_rssi_strong)
-						+ "(" + rssi + ")");
-				/*viewHolder.deviceRssi.setTextColor(context.getResources()
-						.getColor(R.color.sky_blue));*/
-				break;
-			case BLEUtils.RSSI_GOOD:
-				viewHolder.deviceRssi.setText(context.getResources().getString(
-						R.string.text_rssi_good)
-						+ "(" + rssi + ")");
-				/*viewHolder.deviceRssi.setTextColor(context.getResources()
-						.getColor(R.color.dark_grey));*/
-				break;
-			case BLEUtils.RSSI_WEAK:
-				viewHolder.deviceRssi.setText(context.getResources().getString(
-						R.string.text_rssi_weak)
-						+ "(" + rssi + ")");
-				/*viewHolder.deviceRssi.setTextColor(context.getResources()
-						.getColor(R.color.red));*/
-				break;
+			if (isRssiDisplayed) {
+				int rssi = deviceList.get(position).getRssi();
+				int displayedRssi = rssi + 100;
+				switch (BLEUtils.getRssiLevel(rssi)) {
+				case BLEUtils.RSSI_STRONG:
+					viewHolder.deviceRssi.setText(context.getResources()
+							.getString(R.string.text_rssi_strong)
+							+ "("
+							+ displayedRssi + ")");
+					/*viewHolder.deviceRssi.setTextColor(context.getResources()
+							.getColor(R.color.sky_blue));*/
+					break;
+				case BLEUtils.RSSI_GOOD:
+					viewHolder.deviceRssi.setText(context.getResources()
+							.getString(R.string.text_rssi_good)
+							+ "("
+							+ displayedRssi + ")");
+					/*viewHolder.deviceRssi.setTextColor(context.getResources()
+							.getColor(R.color.dark_grey));*/
+					break;
+				case BLEUtils.RSSI_WEAK:
+					viewHolder.deviceRssi.setText(context.getResources()
+							.getString(R.string.text_rssi_weak)
+							+ "("
+							+ displayedRssi + ")");
+					/*viewHolder.deviceRssi.setTextColor(context.getResources()
+							.getColor(R.color.red));*/
+					break;
+				}
+			} else {
+				viewHolder.deviceRssi.setText(context
+						.getString(R.string.btn_supervised));
 			}
+
 		}
 		Child child = childMap.get(deviceList.get(position).getMacAddress());
 		if (TextUtils.isEmpty(child.getIcon()) == false) {

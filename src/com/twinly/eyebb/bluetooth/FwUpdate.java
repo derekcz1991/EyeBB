@@ -7,19 +7,6 @@
 
 package com.twinly.eyebb.bluetooth;
 
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Environment;
-import android.text.Html;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,6 +14,12 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.content.IntentFilter;
+import android.os.Environment;
+import android.util.Log;
 
 import com.twinly.eyebb.utils.Conversion;
 

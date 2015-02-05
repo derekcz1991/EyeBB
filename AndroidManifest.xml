@@ -304,7 +304,7 @@
             android:name="com.twinly.eyebb.bluetooth.BluetoothLeService"
             android:enabled="true" />
         <service
-            android:name="com.twinly.eyebb.service.AntiLostService"
+            android:name="com.twinly.eyebb.bluetooth.AntiLostService"
             android:exported="true"
             android:process=":remote" />
     </application>

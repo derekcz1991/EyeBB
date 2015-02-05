@@ -39,7 +39,7 @@ public class RadarFragment extends Fragment {
 	private CheckedTextView tvAntiLost;
 
 	private BluetoothUtils mBluetoothUtils;
-	public static boolean isRadarOpen = false;
+	public static int radarState;
 	private boolean isRadarTrackingOn = false;
 	private boolean isAntiLostOn = false;
 
@@ -49,9 +49,12 @@ public class RadarFragment extends Fragment {
 			if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
 				switch (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1)) {
 				case BluetoothAdapter.STATE_OFF:
+					stop();
 					break;
 				case BluetoothAdapter.STATE_ON:
-					start();
+					if (radarState == BluetoothAdapter.STATE_TURNING_ON) {
+						start();
+					}
 					break;
 				}
 			}
@@ -121,11 +124,13 @@ public class RadarFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (isRadarOpen) {
+				if (radarState == BluetoothAdapter.STATE_ON) {
 					stop();
 				} else {
 					if (mBluetoothUtils.initialize()) {
 						start();
+					} else {
+						radarState = BluetoothAdapter.STATE_TURNING_ON;
 					}
 				}
 			}
@@ -151,7 +156,7 @@ public class RadarFragment extends Fragment {
 	}
 
 	private void start() {
-		isRadarOpen = true;
+		radarState = BluetoothAdapter.STATE_ON;
 		container.setAlpha(1F);
 		container.setEnabled(true);
 		tvRadarTracking.setEnabled(true);
@@ -165,14 +170,17 @@ public class RadarFragment extends Fragment {
 	}
 
 	private void stop() {
-		isRadarOpen = false;
-		container.setAlpha(0.3F);
-		container.setEnabled(false);
-		tvRadarTracking.setEnabled(false);
-		tvAntiLost.setEnabled(false);
-		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_off);
-		stopRadarTracking();
-		stopAntiLost();
+		if (radarState == BluetoothAdapter.STATE_ON
+				|| radarState == BluetoothAdapter.STATE_TURNING_ON) {
+			radarState = BluetoothAdapter.STATE_OFF;
+			container.setAlpha(0.3F);
+			container.setEnabled(false);
+			tvRadarTracking.setEnabled(false);
+			tvAntiLost.setEnabled(false);
+			btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_off);
+			stopRadarTracking();
+			stopAntiLost();
+		}
 	}
 
 	private void startRadarTracking() {

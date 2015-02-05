@@ -1,4 +1,4 @@
-package com.twinly.eyebb.service;
+package com.twinly.eyebb.bluetooth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +9,9 @@ import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
 import android.bluetooth.BluetoothDevice;
@@ -21,60 +21,34 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.LancherActivity;
-import com.twinly.eyebb.bluetooth.BLEUtils;
-import com.twinly.eyebb.bluetooth.BleDevicesScanner;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.fragment.RadarFragment;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.model.SerializableDeviceMap;
+import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("NewApi")
-public class AntiLostServiceBackup extends Service {
-	private final static String TAG = AntiLostServiceBackup.class.getSimpleName();
-	/**
-	 * Command to the service to register a client, receiving callbacks
-	 * from the service.  The Message's replyTo field must be a Messenger of
-	 * the client where callbacks should be sent.
-	 */
-	public static final int MSG_REGISTER_CLIENT = 1;
+public class AntiLostService extends Service {
+	public final static String ACTION_DATA_CHANGED = "antilost.ACTION_DATA_CHANGED";
+	public final static String ACTION_STOP_SERVICE = "antilost.ACTION_STOP_SERVICE";
 
-	/**
-	 * Command to the service to unregister a client, ot stop receiving callbacks
-	 * from the service.  The Message's replyTo field must be a Messenger of
-	 * the client as previously given with MSG_REGISTER_CLIENT.
-	 */
-	public static final int MSG_UNREGISTER_CLIENT = 2;
-
-	/**
-	 * Command to service to set a new value.  This can be sent to the
-	 * service to supply a new value, and will be sent by the service to
-	 * any registered clients with the new value.
-	 */
-	public static final int MSG_SET_VALUE = 3;
-
-	/** Keeps track of all current registered clients. */
-	ArrayList<Messenger> mClients = new ArrayList<Messenger>();
-	/** Holds last value set by a client. */
-	int mValue = 0;
-
-	/**
-	 * Target we publish for clients to send messages to IncomingHandler.
-	 */
-	private final Messenger mMessenger = new Messenger(new IncomingHandler());
+	private final static String TAG = AntiLostService.class.getSimpleName();
 
 	public static final String EXTRA_DEVICE_LIST = "DEVICE_LIST";
 	public static final int MAX_DUAL_MODE_SIZE = 3;
@@ -82,35 +56,43 @@ public class AntiLostServiceBackup extends Service {
 	private final int MESSAGE_CONNECT_DEVICE = 2;
 	private final int MESSAGE_DISCONNECT_DEVICE = 3;
 	private final int MESSAGE_SCANN = 4;
+	private final int MESSAGE_UPDATE_VIEW = 5;
 
-	private final int STATUS_LANCHED = 2;
-	private final int STATUS_STOPPING = 3;
-	private final int STATUS_STOPPED = 4;
+	private int mServiceState;
+	private final int STATE_STARTED = 2;
+	private final int STATE_STOPPING = 3;
+	private final int STATE_STOPPED = 4;
 
-	private int serviceStatus;
-
-	private Looper mServiceLooper;
 	private ServiceHandler mServiceHandler;
+	// pending device list need to be connected
 	private ArrayList<String> antiLostDeviceList;
 	private HashMap<String, Device> antiLostDeviceHashMap;
 	private SerializableDeviceMap serializableDeviceMap;
+	private HashMap<String, Child> childMap;
 
 	private BluetoothManager mBluetoothManager;
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothGatt mBluetoothGatt;
 	private List<BluetoothGatt> mBluetoothGattList;
 	private BleDevicesScanner scanner;
+	private Timer timer;
 
+	// current bluetooth connection state
 	private int mConnectionState = BLEUtils.STATE_DISCONNECTED;
 	private boolean isPasswordSet;
 	private boolean isSingleMode;
-	private Timer timer;
 	private int missedCount;
 	private int scannedCount;
 
-	private NotificationCompat.Builder builder;
-	private Notification notification;
+	private NotificationManager mNotificationManager;
+	private NotificationCompat.Builder serviceNotificationbuilder;
+	private NotificationCompat.Builder alertNotificationbuilder;
+	private Notification serviceNotification;
+	private Notification alertNotificaion;
+	private boolean isSoundOn;
+	private boolean isVirbrateOn;
 
+	// Bluetoot LE scan callback, update scanned device
 	LeScanCallback leScanCallback = new LeScanCallback() {
 
 		@Override
@@ -130,31 +112,39 @@ public class AntiLostServiceBackup extends Service {
 		@Override
 		public void onConnectionStateChange(BluetoothGatt gatt, int status,
 				int newState) {
-			if (serviceStatus == STATUS_LANCHED) {
+			if (mServiceState == STATE_STARTED) {
 				if (newState == BluetoothProfile.STATE_CONNECTED
 						&& status == BluetoothGatt.GATT_SUCCESS) {
+					mConnectionState = BLEUtils.STATE_CONNECTED;
+					Log.i(TAG,
+							"Connected to GATT server. Attempting to start service discovery.");
+					// it's new connetion, reset the password state
 					isPasswordSet = false;
 					// Attempts to discover services after successful connection.
-					Log.i(TAG,
-							"Connected to GATT server. Attempting to start service discovery:");
 					gatt.discoverServices();
 				} else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-					Log.i(TAG, "==> Disconnected from GATT server ==> "
+					mConnectionState = BLEUtils.STATE_DISCONNECTED;
+					Log.i(TAG, "Disconnected from GATT server ==> "
 							+ gatt.getDevice().getAddress());
+					// if current gatt is the disconnet gatt, cancel the timeout timer.
 					if (gatt == mBluetoothGatt) {
 						timer.cancel();
 					}
-					mConnectionState = BLEUtils.STATE_DISCONNECTED;
-					disconnect(gatt);
+					// release the gatt
+					disconnectGatt(gatt);
 					mBluetoothGattList.remove(gatt);
+					// add back the disconnect device to the antiLostDeviceList
 					if (antiLostDeviceList.contains(gatt.getDevice()
 							.getAddress()) == false) {
 						antiLostDeviceList.add(gatt.getDevice().getAddress());
 					}
+					// Only when the antiLostDeviceList has one item and send message to connect next,
+					// if not, other callback wiil send the message to connect next device.
 					if (antiLostDeviceList.size() == 1) {
 						mServiceHandler
 								.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
 					}
+					// set the device state to missed
 					antiLostDeviceHashMap.get(gatt.getDevice().getAddress())
 							.setMissed(true);
 				}
@@ -163,9 +153,10 @@ public class AntiLostServiceBackup extends Service {
 
 		@Override
 		public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+			// once discovered the service, write password firstly
 			if (status == BluetoothGatt.GATT_SUCCESS) {
 				write(gatt, BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, "C3A60D00");
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD);
 			} else {
 				Log.w(TAG, "onServicesDiscovered received: " + status);
 			}
@@ -174,8 +165,10 @@ public class AntiLostServiceBackup extends Service {
 		@Override
 		public void onCharacteristicWrite(BluetoothGatt gatt,
 				BluetoothGattCharacteristic characteristic, int status) {
-			if (serviceStatus == STATUS_LANCHED) {
+			// if the state is started, the operation is to write password and anti-lost value
+			if (mServiceState == STATE_STARTED) {
 				if (status == BluetoothGatt.GATT_SUCCESS) {
+					// if write password, write the timeout value
 					if (isPasswordSet == false) {
 						isPasswordSet = true;
 						write(gatt, BLEUtils.SERVICE_UUID_0001,
@@ -186,34 +179,36 @@ public class AntiLostServiceBackup extends Service {
 						if (gatt == mBluetoothGatt) {
 							timer.cancel();
 						}
-						mConnectionState = BLEUtils.STATE_CONNECTED;
+						mConnectionState = BLEUtils.STATE_DISCOVERED;
 						antiLostDeviceHashMap
 								.get(gatt.getDevice().getAddress()).setMissed(
 										false);
+						antiLostDeviceHashMap
+								.get(gatt.getDevice().getAddress()).setMissing(
+										false);
+						// remove the device from the pending list after setup the connection
 						antiLostDeviceList
 								.remove(gatt.getDevice().getAddress());
 						mServiceHandler
 								.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
+						updateServiceNotification();
+						broadcastUpdate();
 					}
 				} else {
 					System.out
 							.println("onCharacteristicWrite failed ==>> connect next");
+					// if setup the connection failed, connect the next device
 					connectNext(gatt);
 				}
-			} else if (serviceStatus == STATUS_STOPPING) {
-				System.out.println(status + " >>>>>>>>>> "
-						+ gatt.getDevice().getAddress());
-				gatt.close();
-				gatt = null;
-				mBluetoothGattList.remove(gatt);
-
-				if (mBluetoothGattList.size() == 0) {
-					serviceStatus = STATUS_STOPPED;
-					stopForeground(true);
-					stopSelf();
-					System.out.println("onUnbind");
-				}
-				mServiceHandler.sendEmptyMessage(MESSAGE_DISCONNECT_DEVICE);
+			}
+			// if the state is stopping, the operation is to reset the anti-lost value
+			else if (mServiceState == STATE_STOPPING) {
+				/*System.out.println(status + " >>>>>>>>>> "
+						+ gatt.getDevice().getAddress());*/
+				Message msg = Message.obtain();
+				msg.what = MESSAGE_DISCONNECT_DEVICE;
+				msg.arg1 = mBluetoothGattList.indexOf(gatt) + 1;
+				mServiceHandler.sendMessage(msg);
 			}
 
 		}
@@ -227,19 +222,22 @@ public class AntiLostServiceBackup extends Service {
 
 		@Override
 		public void handleMessage(Message msg) {
-			if (serviceStatus != STATUS_STOPPED) {
+			if (mServiceState != STATE_STOPPED) {
 				switch (msg.what) {
 				case MESSAGE_INIT_NOTIFICAION:
 					if (initialize()) {
 						buildNotification("开启中...");
 						if (antiLostDeviceList.size() > MAX_DUAL_MODE_SIZE) {
 							isSingleMode = true;
+							// single mode: scan device only
 							mServiceHandler.sendEmptyMessage(MESSAGE_SCANN);
 						} else {
 							isSingleMode = false;
+							// dual mode: keep connection with device 
 							mServiceHandler
 									.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
 						}
+						mServiceHandler.sendEmptyMessage(MESSAGE_UPDATE_VIEW);
 					}
 					break;
 				case MESSAGE_SCANN:
@@ -253,21 +251,55 @@ public class AntiLostServiceBackup extends Service {
 					}
 					break;
 				case MESSAGE_DISCONNECT_DEVICE:
-					if (mBluetoothGattList.size() > 0) {
-						write(mBluetoothGattList.get(0),
+					if (mBluetoothGattList.size() > msg.arg1) {
+						write(mBluetoothGattList.get(msg.arg1),
 								BLEUtils.SERVICE_UUID_0001,
 								BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
 								"0000");
+					} else {
+						// release all bluetooth resource
+						for (BluetoothGatt gatt : mBluetoothGattList) {
+							gatt.close();
+						}
+						mBluetoothGattList.clear();
+						mServiceState = STATE_STOPPED;
+						// stop the service after disconnect with the device
+						stopForeground(true);
+						stopSelf();
+						System.out.println("onUnbind");
 					}
+					break;
+				case MESSAGE_UPDATE_VIEW:
+					updateServiceNotification();
+					broadcastUpdate();
+					mServiceHandler.sendEmptyMessageDelayed(
+							MESSAGE_UPDATE_VIEW, 5000);
 					break;
 				}
 			}
 		}
 	}
 
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (ACTION_STOP_SERVICE.equals(action)) {
+				stop();
+			} else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+				if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
+					stop();
+				}
+			}
+		}
+	};
+
 	@Override
 	public void onCreate() {
 		System.out.println("AntiLostService ==>> onCreate");
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(ACTION_STOP_SERVICE);
+		intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+		registerReceiver(mReceiver, intentFilter);
 		// Start up the thread running the service. Note that we create a
 		// separate thread because the service normally runs in the process's
 		// main thread, which we don't want to block. We also make it
@@ -277,10 +309,11 @@ public class AntiLostServiceBackup extends Service {
 		thread.start();
 
 		// Get the HandlerThread's Looper and use it for our Handler
-		mServiceLooper = thread.getLooper();
-		mServiceHandler = new ServiceHandler(mServiceLooper);
+		mServiceHandler = new ServiceHandler(thread.getLooper());
 
 		serializableDeviceMap = new SerializableDeviceMap();
+		childMap = DBChildren.getChildrenMap(this);
+		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	@Override
@@ -302,27 +335,29 @@ public class AntiLostServiceBackup extends Service {
 		return START_STICKY;
 	}
 
-	/**
-	 * When binding to the service, we return an interface to our messenger
-	 * for sending messages to the service.
-	 */
 	@Override
 	public IBinder onBind(Intent intent) {
-		return mMessenger.getBinder();
+		return null;
 	}
 
-	@Override
-	public boolean onUnbind(Intent intent) {
+	private void stop() {
+		mServiceHandler.removeMessages(MESSAGE_UPDATE_VIEW);
+		mServiceHandler.removeMessages(MESSAGE_CONNECT_DEVICE);
+
+		mNotificationManager.cancelAll();
+		unregisterReceiver(mReceiver);
 		if (isSingleMode) {
 			stopLeScan();
 			stopSelf();
 			stopForeground(true);
 		} else {
-			serviceStatus = STATUS_STOPPING;
-			write(mBluetoothGattList.get(0), BLEUtils.SERVICE_UUID_0001,
-					BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, "0000");
+			// if it's dual mode, disconnect with device before stop the service
+			mServiceState = STATE_STOPPING;
+			Message msg = Message.obtain();
+			msg.what = MESSAGE_DISCONNECT_DEVICE;
+			msg.arg1 = 0;
+			mServiceHandler.sendMessage(msg);
 		}
-		return super.onUnbind(intent);
 	}
 
 	/**
@@ -361,7 +396,6 @@ public class AntiLostServiceBackup extends Service {
 	}
 
 	private void stopLeScan() {
-		System.out.println("====>>>>>>>>> stopLeScan()");
 		if (scanner != null) {
 			scanner.stop();
 		}
@@ -403,7 +437,7 @@ public class AntiLostServiceBackup extends Service {
 
 			@Override
 			public void run() {
-				if (mConnectionState != BLEUtils.STATE_CONNECTED) {
+				if (mConnectionState != BLEUtils.STATE_DISCOVERED) {
 					System.out.println("timeout ==>> " + address
 							+ " ==>> connect next");
 					connectNext(mBluetoothGatt);
@@ -416,14 +450,21 @@ public class AntiLostServiceBackup extends Service {
 		return true;
 	}
 
+	/**
+	 * When connect the current device failed, connect the next device from pending device list,
+	 * Move the current device to the bottom of the pending list
+	 * @param gatt Current BluetoothGatt
+	 */
 	private void connectNext(BluetoothGatt gatt) {
-		disconnect(gatt);
+		disconnectGatt(gatt);
 		mBluetoothGattList.remove(gatt);
 		antiLostDeviceList.remove(gatt.getDevice().getAddress());
 		antiLostDeviceList.add(gatt.getDevice().getAddress());
 		System.out.println("antiLostDeviceList size = "
 				+ antiLostDeviceList.size());
-		mServiceHandler.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
+		if (mServiceState == STATE_STARTED) {
+			mServiceHandler.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
+		}
 	}
 
 	/**
@@ -459,7 +500,7 @@ public class AntiLostServiceBackup extends Service {
 	 * After using a given BLE device, the app must call this method to ensure
 	 * resources are released properly.
 	 */
-	private void disconnect(BluetoothGatt gatt) {
+	private void disconnectGatt(BluetoothGatt gatt) {
 		mConnectionState = BLEUtils.STATE_DISCONNECTED;
 		if (gatt == null) {
 			return;
@@ -470,45 +511,9 @@ public class AntiLostServiceBackup extends Service {
 	}
 
 	/**
-	 * Handler of incoming messages from clients.
+	 * Update the foreground notification. Show the current state of each device 
 	 */
-	private final class IncomingHandler extends Handler {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case MSG_REGISTER_CLIENT:
-				mClients.add(msg.replyTo);
-				break;
-			case MSG_UNREGISTER_CLIENT:
-				mClients.remove(msg.replyTo);
-				break;
-			case MSG_SET_VALUE:
-				mValue = msg.arg1;
-				serializableDeviceMap.setMap(antiLostDeviceHashMap);
-				Bundle data = new Bundle();
-				data.putSerializable(EXTRA_DEVICE_LIST, serializableDeviceMap);
-				for (int i = mClients.size() - 1; i >= 0; i--) {
-					try {
-						Message message = Message.obtain(null, MSG_SET_VALUE,
-								mValue, 0);
-						message.setData(data);
-						mClients.get(i).send(message);
-					} catch (RemoteException e) {
-						// The client is dead.  Remove it from the list;
-						// we are going through the list from back to front
-						// so this is safe to do inside the loop.
-						mClients.remove(i);
-					}
-				}
-				updateNotification();
-				break;
-			default:
-				super.handleMessage(msg);
-			}
-		}
-	}
-
-	private void updateNotification() {
+	private void updateServiceNotification() {
 		missedCount = 0;
 		scannedCount = 0;
 
@@ -522,15 +527,30 @@ public class AntiLostServiceBackup extends Service {
 						- antiLostDeviceHashMap.get(macAddress)
 								.getLastAppearTime() < RadarFragment.LOST_TIMEOUT) {
 					antiLostDeviceHashMap.get(macAddress).setMissed(false);
+					antiLostDeviceHashMap.get(macAddress).setMissing(false);
+					// cancel the previous alter notification when re-find the device
+					mNotificationManager.cancel((int) childMap.get(macAddress)
+							.getChildId());
 					scannedCount++;
 				} else {
 					antiLostDeviceHashMap.get(macAddress).setMissed(true);
+					if (antiLostDeviceHashMap.get(macAddress).isMissing() == false) {
+						updateAlertNotification(macAddress);
+						antiLostDeviceHashMap.get(macAddress).setMissing(true);
+					}
 					missedCount++;
 				}
 			} else {
 				if (antiLostDeviceHashMap.get(macAddress).isMissed()) {
+					if (antiLostDeviceHashMap.get(macAddress).isMissing() == false) {
+						updateAlertNotification(macAddress);
+						antiLostDeviceHashMap.get(macAddress).setMissing(true);
+					}
 					missedCount++;
 				} else {
+					// cancel the previous alter notification when re-find the device
+					mNotificationManager.cancel((int) childMap.get(macAddress)
+							.getChildId());
 					scannedCount++;
 				}
 			}
@@ -540,32 +560,85 @@ public class AntiLostServiceBackup extends Service {
 				+ scannedCount + "      " + getString(R.string.btn_missed)
 				+ ": " + missedCount;
 
-		builder.setContentText(content);
-		notification = builder.build();
-		startForeground(1, notification);
+		serviceNotificationbuilder.setContentText(content);
+		serviceNotification = serviceNotificationbuilder.build();
+		startForeground(1, serviceNotification);
 	}
 
-	private void buildNotification(String content) {
-		serviceStatus = STATUS_LANCHED;
+	/**
+	 * Send the alter notificaion
+	 * @param macAddress The device mac address of the kid
+	 */
+	private void updateAlertNotification(String macAddress) {
+		alertNotificationbuilder.setContentText(childMap.get(macAddress)
+				.getName() + " " + getString(R.string.btn_missed));
+		alertNotificaion = alertNotificationbuilder.build();
+		alertNotificaion.defaults |= Notification.DEFAULT_LIGHTS;
+		alertNotificaion.flags = Notification.FLAG_AUTO_CANCEL;
+		if (isSoundOn) {
+			alertNotificaion.defaults |= Notification.DEFAULT_SOUND;
+		}
+		if (isVirbrateOn) {
+			alertNotificaion.defaults |= Notification.DEFAULT_VIBRATE;
+		}
+		// Issue the notification
+		mNotificationManager.notify(
+				(int) childMap.get(macAddress).getChildId(), alertNotificaion);
+	}
 
-		builder = new NotificationCompat.Builder(AntiLostServiceBackup.this);
-		builder.setSmallIcon(R.drawable.ic_launcher);
-		builder.setContentTitle(getString(R.string.text_anti_lost_mode));
-		builder.setContentText(content);
+	/**
+	 * Broadcast the newest data to AntiLost Fragment
+	 */
+	private void broadcastUpdate() {
+		Intent data = new Intent(ACTION_DATA_CHANGED);
+		Bundle bundle = new Bundle();
+		serializableDeviceMap.setMap(antiLostDeviceHashMap);
+		bundle.putSerializable(EXTRA_DEVICE_LIST, serializableDeviceMap);
+		data.putExtras(bundle);
+		sendBroadcast(data);
+	}
+
+	/**
+	 * Build the foreground notification and alert notification
+	 * @param content
+	 */
+	private void buildNotification(String content) {
+		mServiceState = STATE_STARTED;
+
+		/*
+		 *  build service foreground notification
+		 */
+		serviceNotificationbuilder = new NotificationCompat.Builder(
+				AntiLostService.this);
+		serviceNotificationbuilder.setSmallIcon(R.drawable.ic_location_default);
+		serviceNotificationbuilder
+				.setContentTitle(getString(R.string.text_anti_lost_mode));
+		serviceNotificationbuilder.setContentText(content);
 
 		// Creates an explicit intent for an Activity in your app
-		Intent resultIntent = new Intent(AntiLostServiceBackup.this,
-				LancherActivity.class);
-		resultIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
-		TaskStackBuilder stackBuilder = TaskStackBuilder
-				.create(AntiLostServiceBackup.this);
-		stackBuilder.addParentStack(LancherActivity.class);
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,
-				PendingIntent.FLAG_UPDATE_CURRENT);
+		Intent resultIntent = new Intent(this, LancherActivity.class);
+		resultIntent.setAction("android.intent.action.MAIN");
+		resultIntent.addCategory("android.intent.category.LAUNCHER");
 
-		builder.setContentIntent(resultPendingIntent);
-		notification = builder.build();
-		startForeground(1, notification);
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(
+				getApplicationContext(), 0, resultIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		serviceNotificationbuilder.setContentIntent(resultPendingIntent);
+		serviceNotification = serviceNotificationbuilder.build();
+		startForeground(1, serviceNotification);
+
+		/*
+		 *  build normal notification for notifying missed kids
+		 */
+		alertNotificationbuilder = new NotificationCompat.Builder(this);
+
+		alertNotificationbuilder.setSmallIcon(R.drawable.ic_location_default);
+		alertNotificationbuilder
+				.setContentTitle(getString(R.string.text_anti_lost_mode));
+
+		alertNotificationbuilder.setContentIntent(resultPendingIntent);
+
+		isVirbrateOn = SharePrefsUtils.isVibrateOn(this);
+		isSoundOn = SharePrefsUtils.isSoundOn(this);
 	}
 }

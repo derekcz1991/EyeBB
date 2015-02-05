@@ -18,9 +18,9 @@ import android.widget.ProgressBar;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
+import com.twinly.eyebb.bluetooth.AntiLostService;
 import com.twinly.eyebb.model.Device;
 import com.twinly.eyebb.model.SerializableDeviceMap;
-import com.twinly.eyebb.service.AntiLostService;
 
 public class AntiLostFragment extends Fragment {
 	private HashMap<String, Device> deviceHashMap;
@@ -100,6 +100,9 @@ public class AntiLostFragment extends Fragment {
 					}
 				}
 				deviceList.add(deviceHashMap.get(macAddress));
+			}
+			if (deviceList.size() < AntiLostService.MAX_DUAL_MODE_SIZE) {
+				mAdapter.setRssiDisplayed(false);
 			}
 			progressBar.setVisibility(View.INVISIBLE);
 			mAdapter.notifyDataSetChanged();
