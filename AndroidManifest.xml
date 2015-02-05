@@ -257,6 +257,11 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
+            android:name="com.twinly.eyebb.activity.FwUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
             android:name="com.twinly.eyebb.activity.BindingChildMacaronActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
