@@ -12,11 +12,18 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category AboutActivity
+ * 
+ *           this activity is in options activity (The eighth layer), changing
+ *           the password whit is its main function.
+ */
 public class AboutActivity extends Activity {
 	private ImageView logo;
 	private String version;
-	private TextView version_txt;
-	
+	private TextView versionTxt;
 
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -25,7 +32,7 @@ public class AboutActivity extends Activity {
 
 		// check logo
 		logo = (ImageView) findViewById(R.id.logo_img);
-		//version
+		// version
 		try {
 			version = getVersionName();
 		} catch (Exception e) {
@@ -33,8 +40,8 @@ public class AboutActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		version_txt = (TextView) findViewById(R.id.version);
-		version_txt.setText(version);
+		versionTxt = (TextView) findViewById(R.id.version);
+		versionTxt.setText(version);
 		setLogo();
 
 		setTitle(getString(R.string.text_about));

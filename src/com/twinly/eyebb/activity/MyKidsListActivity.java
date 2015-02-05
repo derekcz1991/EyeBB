@@ -15,7 +15,14 @@ import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
-
+/**
+ * @author eyebb team
+ * 
+ * @category MyKidsListActivity
+ * 
+ *           this activity is the main framework, which uses for four fragment activities.
+ * 
+ */
 public class MyKidsListActivity extends Activity {
 	private LinearLayoutForListView listView;
 	private MykIdsListAdapter adapter;

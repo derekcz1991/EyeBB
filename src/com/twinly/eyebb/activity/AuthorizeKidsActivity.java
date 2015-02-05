@@ -32,17 +32,26 @@ import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category AuthorizeKidsActivity
+ * 
+ *           this activity is in options activity (The fifth layer), it shows
+ *           the list of other users who are authorized by master. you also can
+ *           find which master people authorizes you on list.
+ */
+
 public class AuthorizeKidsActivity extends Activity {
 	// private LinearLayoutForListView guest_listView;
 	// private LinearLayoutForListView master_listView;
 	private LinearLayoutForListView listView;
-	private GuestListViewAdapter guest_adapter;
+	private GuestListViewAdapter guestAdapter;
 
 	// private Button btnAddNewGuest;
-	private ArrayList<User> auth_to_guest_data;
-	private ArrayList<User> auth_from_master_data;
-	private ArrayList<Child> auth_from_master_children_data;
-
+	private ArrayList<User> authToGuestData;
+	private ArrayList<User> authFromMasterData;
+	private ArrayList<Child> authFromMasterChildrenData;
 
 	private String retStr;
 
@@ -53,7 +62,6 @@ public class AuthorizeKidsActivity extends Activity {
 	public TextView name;
 	public TextView phone;
 	public RelativeLayout btn_guest_view;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +86,9 @@ public class AuthorizeKidsActivity extends Activity {
 
 		listView = (LinearLayoutForListView) findViewById(R.id.listView_authorization_from_others);
 
-
-		auth_to_guest_data = new ArrayList<User>();
-		auth_from_master_data = new ArrayList<User>();
-		auth_from_master_children_data = new ArrayList<Child>();
-
+		authToGuestData = new ArrayList<User>();
+		authFromMasterData = new ArrayList<User>();
+		authFromMasterChildrenData = new ArrayList<Child>();
 
 	}
 
@@ -122,7 +128,7 @@ public class AuthorizeKidsActivity extends Activity {
 
 	private ArrayList<User> parseGuestJson(String getData) {
 		try {
-			auth_to_guest_data.clear();
+			authToGuestData.clear();
 			if (!JSONObject.NULL.equals(getData)) {
 				// guest_data.clear();
 				boolean isGusetNull = new JSONObject(getData)
@@ -149,23 +155,23 @@ public class AuthorizeKidsActivity extends Activity {
 									.setType(guest
 											.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
-							auth_to_guest_data.add(guestMode);
+							authToGuestData.add(guestMode);
 						}
 					}
 				}
 			}
 
-			// System.out.println("guest_data>" + auth_to_guest_data.size());
+			// System.out.println("guest_data>" + authToGuestData.size());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return auth_to_guest_data;
+		return authToGuestData;
 	}
 
 	private ArrayList<User> parseMasterJson(String getData) {
 		try {
-			auth_from_master_data.clear();
-			auth_from_master_children_data.clear();
+			authFromMasterData.clear();
+			authFromMasterChildrenData.clear();
 			if (!JSONObject.NULL.equals(getData)) {
 				boolean isMasterNull = new JSONObject(getData)
 						.isNull(HttpConstants.JSON_KEY_MASTERS);
@@ -192,7 +198,7 @@ public class AuthorizeKidsActivity extends Activity {
 									.setType(master
 											.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
-							auth_from_master_data.add(masterMode);
+							authFromMasterData.add(masterMode);
 
 							JSONArray master_children = ((JSONObject) masters
 									.opt(i))
@@ -221,8 +227,7 @@ public class AuthorizeKidsActivity extends Activity {
 										.setPhone(master
 												.getString(HttpConstants.JSON_KEY_USER_ID));
 
-								auth_from_master_children_data
-										.add(master_child);
+								authFromMasterChildrenData.add(master_child);
 							}
 						}
 					}
@@ -232,7 +237,7 @@ public class AuthorizeKidsActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return auth_from_master_data;
+		return authFromMasterData;
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -270,13 +275,11 @@ public class AuthorizeKidsActivity extends Activity {
 					authDialog.dismiss();
 				}
 
-
-				guest_adapter = new GuestListViewAdapter(
+				guestAdapter = new GuestListViewAdapter(
 						AuthorizeKidsActivity.this, parseGuestJson(retStr),
-						parseMasterJson(retStr), auth_from_master_children_data);
-				listView.setAdapter(guest_adapter);
+						parseMasterJson(retStr), authFromMasterChildrenData);
+				listView.setAdapter(guestAdapter);
 
-		
 				break;
 			}
 

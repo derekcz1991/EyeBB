@@ -25,6 +25,14 @@ import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category BindingChildMacaronActivity
+ * 
+ *           this activity is used when get the qrcode and bind the device
+ *           (qrcode) to the child
+ */
 public class BindingChildMacaronActivity extends Activity implements
 		BluetoothUtils.BleConnectCallback {
 	private final static int BIND_STEP_CONNECTING = 1;
@@ -173,8 +181,9 @@ public class BindingChildMacaronActivity extends Activity implements
 
 	/**
 	 * To get major & minor from server by child_id and mac address
+	 * 
 	 * @author derek
-	 *
+	 * 
 	 */
 	private class GetMajorMinorTask extends AsyncTask<Void, Void, String> {
 		@Override
@@ -216,8 +225,9 @@ public class BindingChildMacaronActivity extends Activity implements
 
 	/**
 	 * To upload the data to server when bind target device succeed
+	 * 
 	 * @author derek
-	 *
+	 * 
 	 */
 	private class PostToServerTask extends AsyncTask<Void, Void, String> {
 

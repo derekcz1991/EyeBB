@@ -14,6 +14,17 @@ import android.widget.LinearLayout;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 
+/**
+ * @author eyebb team
+ * 
+ * @category ChildBirthdayDialog
+ * 
+ *           this activity is used when you fill in the child`s information
+ *           (during the sign-up time). you should finish 3 parts. The first is
+ *           child`s name. The second is child`s birthday. The third is child`s
+ *           kindergarten.
+ * 
+ */
 public class ChildBirthdayDialog extends Activity {
 	private DatePicker childBirthdayDatePicker;
 
@@ -78,7 +89,7 @@ public class ChildBirthdayDialog extends Activity {
 
 		childBirthdayDatePicker = (DatePicker) findViewById(R.id.datePicker);
 
-		// initial date for date
+		// initial data for date
 		dateOfBirth = dayOfMonth + "/" + monthOfYear + "/" + year;
 
 		childBirthdayDatePicker.init(year, monthOfYear, dayOfMonth,

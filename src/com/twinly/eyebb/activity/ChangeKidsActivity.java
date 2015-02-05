@@ -21,6 +21,16 @@ import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.ChildSelectable;
 import com.woozzu.android.widget.IndexableListView;
 
+/**
+ * @author eyebb team
+ * 
+ * @category BindingChildMacaronActivity
+ * 
+ *           this activity is on the third fragment activity (change button). It
+ *           can let user choose their child and show the performance and
+ *           activities
+ * 
+ */
 public class ChangeKidsActivity extends Activity {
 	private IndexableListView listView;
 	private EditText etSearch;

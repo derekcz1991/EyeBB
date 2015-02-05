@@ -22,6 +22,16 @@ import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.model.SerializableChildrenMap;
 import com.woozzu.android.widget.IndexableListView;
 
+/**
+ * @author eyebb team
+ * 
+ * @category KidsListActivity
+ * 
+ *           this activity is used for the first fragment activity. There is a
+ *           button that open it at the bottom of the screen. It shows the kids
+ *           list and also provide the search and sort functions.
+ * 
+ */
 public class KidsListActivity extends Activity {
 	private IndexableListView listView;
 	private EditText etSearch;
@@ -48,10 +58,10 @@ public class KidsListActivity extends Activity {
 		if (serializableMap != null) {
 			list = new ArrayList<Map.Entry<Long, ChildForLocator>>(serializableMap
 					.getMap().entrySet());
-			
+
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
 					isSortByLocation);
-		} 
+		}
 
 		etSearch = (EditText) findViewById(R.id.et_search);
 		listView = (IndexableListView) findViewById(R.id.listView);

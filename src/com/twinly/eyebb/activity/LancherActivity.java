@@ -31,6 +31,14 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category LancherActivity
+ * 
+ *           this activity is used to restart the activity.
+ * 
+ */
 public class LancherActivity extends Activity {
 	private ImageView logo;
 

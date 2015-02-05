@@ -28,6 +28,17 @@ import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category KindergartenListActivity
+ * 
+ *           this activity is used when you fill in the child`s information
+ *           (during the sign-up time). you should finish 3 parts. The first is
+ *           child`s name. The second is child`s birthday. The third is child`s
+ *           kindergarten.
+ * 
+ */
 public class KindergartenListActivity extends Activity {
 	private ListView listView;
 	private ArrayList<Map<String, String>> mapList;

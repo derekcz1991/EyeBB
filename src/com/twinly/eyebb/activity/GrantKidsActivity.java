@@ -47,15 +47,24 @@ public class GrantKidsActivity extends Activity {
 	private ArrayList<ChildForGrant> new_children_data;
 
 	/**
+	 * @author eyebb team
 	 * 
-	 * from_where comes form which search activity
+	 * @category GrantKidsActivity
 	 * 
+	 *           this activity is used to grant child (in options, fifth layer-
+	 *           authorization list). It shows a list that can be chosen. Then
+	 *           showing which child is be granted.
 	 */
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		/**
+		 * 
+		 * from_where comes form which search activity
+		 * 
+		 */
 		Intent intent = getIntent();
 		new_children_data = new ArrayList<ChildForGrant>();
 		guestdId = intent.getStringExtra("guestId");

@@ -25,7 +25,17 @@ import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
-
+/**
+ * @author eyebb team
+ * 
+ * @category ForgetPasswordDialog
+ * 
+ *           this activity is used when you fill in the child`s information
+ *           (during the sign-up time). you should finish 3 parts. The first is
+ *           child`s name. The second is child`s birthday. The third is child`s
+ *           kindergarten.
+ * 
+ */
 public class ForgetPasswordDialog extends Activity {
 
 	private String userAccout = "";

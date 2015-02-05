@@ -40,7 +40,14 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
-
+/**
+ * @author eyebb team
+ * 
+ * @category MainActivity
+ * 
+ *           this activity is the main framework, which uses for four fragment activities.
+ * 
+ */
 public class MainActivity extends FragmentActivity implements
 		ReportFragment.CallbackInterface,
 		IndoorLocatorFragment.CallbackInterface {

@@ -1,6 +1,7 @@
 package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,17 @@ import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 
+/**
+ * @author eyebb team
+ * 
+ * @category CheckChildToBindDialog
+ * 
+ *           this activity is used for when you sign up your account and you
+ *           want to bind a device. So you should select a child, after you fill
+ *           in the child`s information. Then, this child dialog will be
+ *           displayed
+ * 
+ */
 public class CheckChildToBindDialog extends Activity {
 	private final static int SCANNIN_GREQUEST_CODE = 1;
 	public static String EXTRA_CHILDREN_LIST = "CHILDREN_LIST";

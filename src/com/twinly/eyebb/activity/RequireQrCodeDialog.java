@@ -25,12 +25,12 @@ import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class RequireQrCodeDialog extends Activity {
-	private ImageView img_qr_code;
-	private TextView txt_qr_code_address;
-	private TextView btn_cancel;
+	private ImageView imgQrCode;
+	private TextView txtQrCodeAddress;
+	private TextView btnCancel;
 	private Dialog qrCodeDialog;
-	private String child_id;
-	private String device_address;
+	private String childId;
+	private String deviceAddress;
 
 	private Bitmap btMap = null;
 
@@ -40,19 +40,19 @@ public class RequireQrCodeDialog extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_require_qr_code);
 
-		img_qr_code = (ImageView) findViewById(R.id.device_qr_code);
-		txt_qr_code_address = (TextView) findViewById(R.id.device_address);
-		btn_cancel = (TextView) findViewById(R.id.btn_cancel);
+		imgQrCode = (ImageView) findViewById(R.id.device_qr_code);
+		txtQrCodeAddress = (TextView) findViewById(R.id.device_address);
+		btnCancel = (TextView) findViewById(R.id.btn_cancel);
 
 		Intent intent = getIntent();
-		child_id = intent.getStringExtra("child_id");
+		childId = intent.getStringExtra("childId");
 
 		qrCodeDialog = LoadingDialog.createLoadingDialog(
 				RequireQrCodeDialog.this, getString(R.string.text_loading));
 
 		new Thread(getQrCodeFromServerRunnable).start();
 
-		btn_cancel.setOnClickListener(new OnClickListener() {
+		btnCancel.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -76,9 +76,9 @@ public class RequireQrCodeDialog extends Activity {
 		try {
 
 			Map<String, String> map = new HashMap<String, String>();
-			if (child_id != null)
-				map.put("childId", child_id);
-			// System.out.println("child_id--->" + child_id);
+			if (childId != null)
+				map.put("childId", childId);
+			// System.out.println("childId--->" + childId);
 
 			String retStr = HttpRequestUtils.post(
 					HttpConstants.REQUIRE_OR_GET_QR_CODE, map);
@@ -96,9 +96,9 @@ public class RequireQrCodeDialog extends Activity {
 					msg.what = Constants.GET_QR_CODE_SUCCESS;
 					handler.sendMessage(msg);
 
-					device_address = retStr;
-					// System.out.println("device_address -- >" +
-					// device_address);
+					deviceAddress = retStr;
+					// System.out.println("deviceAddress -- >" +
+					// deviceAddress);
 				} else {
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.GET_QR_CODE_FAIL;
@@ -121,14 +121,17 @@ public class RequireQrCodeDialog extends Activity {
 				if (qrCodeDialog.isShowing() && qrCodeDialog != null) {
 					qrCodeDialog.dismiss();
 				}
-				//txt_qr_code_address.setText(device_address);
+				// txtQrCodeAddress.setText(deviceAddress);
 
-				btMap = BarcodeCreater.creatBarcode(RequireQrCodeDialog.this,
-						device_address,
-						DensityUtil.dip2px(RequireQrCodeDialog.this, 250),
-						DensityUtil.dip2px(RequireQrCodeDialog.this, 250),
-						true, 2);
-				img_qr_code.setImageBitmap(btMap);
+				if (deviceAddress != null) {
+
+					btMap = BarcodeCreater.creatBarcode(
+							RequireQrCodeDialog.this, deviceAddress,
+							DensityUtil.dip2px(RequireQrCodeDialog.this, 250),
+							DensityUtil.dip2px(RequireQrCodeDialog.this, 250),
+							true, 2);
+					imgQrCode.setImageBitmap(btMap);
+				}
 
 				break;
 
@@ -137,9 +140,9 @@ public class RequireQrCodeDialog extends Activity {
 					qrCodeDialog.dismiss();
 				}
 
-				txt_qr_code_address
+				txtQrCodeAddress
 						.setText(getString(R.string.text_Apply_qr_code_fail));
-				img_qr_code.setBackground(getResources().getDrawable(
+				imgQrCode.setBackground(getResources().getDrawable(
 						R.drawable.ic_verify_cross));
 
 				break;

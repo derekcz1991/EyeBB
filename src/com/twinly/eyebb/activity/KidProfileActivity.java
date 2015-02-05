@@ -10,6 +10,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.ActivityNotFoundException;
@@ -41,12 +42,22 @@ import com.twinly.eyebb.bluetooth.BluetoothUtils;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.HoloCircularProgressBar;
+import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 
+/**
+ * @author eyebb team
+ * 
+ * @category KidProfileActivity
+ * 
+ *           this activity is used to show one child`s detailed information.
+ *           (contains eyeBB Battery Usage, Beep, Update the eyebb device
+ *           firmware, Apply for the lastest qr code and binding(unbind))
+ */
 public class KidProfileActivity extends Activity implements
 		BluetoothUtils.BleConnectCallback, OnClickListener {
 	private final static int SCANNIN_GREQUEST_CODE = 500;
@@ -54,8 +65,8 @@ public class KidProfileActivity extends Activity implements
 	private Child child;
 	private ImageView avatar;
 	private TextView kidName;
-	private TextView txt_device_qr;
-	private TextView txt_binding;
+	private TextView txtDeviceQr;
+	private TextView txtBinding;
 	private TextView deviceBatteryResult;
 	private ImageLoader imageLoader;
 	private LinearLayout avatarItemLayout;
@@ -64,10 +75,10 @@ public class KidProfileActivity extends Activity implements
 	private static final int CROP_PHOTO = 200;
 	private static final int PICK_FROM_FILE = 300;
 
-	private LinearLayout layout_device_beep;
-	private LinearLayout layout_device_ota;
-	private LinearLayout layout_device_require_qr_code;
-	private LinearLayout layout_device_unbind;
+	private LinearLayout layoutDeviceBeep;
+	private LinearLayout layoutDeviceOta;
+	private LinearLayout layoutDeviceRequireQrCode;
+	private LinearLayout layoutDeviceUnbind;
 
 	private BluetoothUtils mBluetoothUtils;
 	private BluetoothAdapter mBluetoothAdapter;
@@ -76,6 +87,8 @@ public class KidProfileActivity extends Activity implements
 	private ObjectAnimator mProgressBarAnimator;
 
 	private String getDeviceBattery;
+
+	private Dialog dialog;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -95,14 +108,13 @@ public class KidProfileActivity extends Activity implements
 
 		avatar = (ImageView) findViewById(R.id.avatar);
 		kidName = (TextView) findViewById(R.id.kidname);
-		txt_binding = (TextView) findViewById(R.id.device_unbind);
-		txt_device_qr = (TextView) findViewById(R.id.device_qr);
-		layout_device_beep = (LinearLayout) findViewById(R.id.layout_device_beep);
-		layout_device_ota = (LinearLayout) findViewById(R.id.layout_device_ota);
-		layout_device_require_qr_code = (LinearLayout) findViewById(R.id.layout_device_require_qr_code);
-		layout_device_unbind = (LinearLayout) findViewById(R.id.layout_device_unbind);
-		// deviceAddress = (TextView) findViewById(R.id.device_address);
-		layout_device_require_qr_code.setOnClickListener(this);
+		txtBinding = (TextView) findViewById(R.id.device_unbind);
+		txtDeviceQr = (TextView) findViewById(R.id.device_qr);
+		layoutDeviceBeep = (LinearLayout) findViewById(R.id.layout_device_beep);
+		layoutDeviceOta = (LinearLayout) findViewById(R.id.layout_device_ota);
+		layoutDeviceRequireQrCode = (LinearLayout) findViewById(R.id.layout_device_require_qr_code);
+		layoutDeviceUnbind = (LinearLayout) findViewById(R.id.layout_device_unbind);
+		layoutDeviceRequireQrCode.setOnClickListener(this);
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
 
@@ -120,20 +132,20 @@ public class KidProfileActivity extends Activity implements
 		}
 
 		if (CommonUtils.isNull(child.getMacAddress())) {
-			txt_binding.setText(getString(R.string.btn_binding));
-			txt_device_qr
+			txtBinding.setText(getString(R.string.btn_binding));
+			txtDeviceQr
 					.setText(getString(R.string.text_get_the_lastest_eyebb_device_qr_code));
 
 		} else {
-			txt_binding.setText(getString(R.string.btn_unbind));
+			txtBinding.setText(getString(R.string.btn_unbind));
 		}
 
 		// if the child belongs to other parent
 		if (child.getRelationWithUser().equals("P") == false) {
-			layout_device_beep.setVisibility(View.INVISIBLE);
-			layout_device_ota.setVisibility(View.INVISIBLE);
-			layout_device_require_qr_code.setVisibility(View.INVISIBLE);
-			layout_device_unbind.setVisibility(View.INVISIBLE);
+			layoutDeviceBeep.setVisibility(View.INVISIBLE);
+			layoutDeviceOta.setVisibility(View.INVISIBLE);
+			layoutDeviceRequireQrCode.setVisibility(View.INVISIBLE);
+			layoutDeviceUnbind.setVisibility(View.INVISIBLE);
 		}
 
 		mImageCaptureUri = Uri.fromFile(new File(Constants.EYEBB_FOLDER
@@ -151,6 +163,7 @@ public class KidProfileActivity extends Activity implements
 		} else {
 			bluetoothNotOpenCancelReadBattery();
 		}
+
 	}
 
 	/**
@@ -167,7 +180,7 @@ public class KidProfileActivity extends Activity implements
 					R.color.activity_background_red));
 
 			if (getDeviceBattery == null) {
-				System.out.println("start to read battery");
+				// System.out.println("start to read battery");
 				if (child.getMacAddress() != null) {
 					mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
 				}
@@ -366,7 +379,7 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	/**
-	 *  bluetooth state broadcast
+	 * bluetooth state broadcast
 	 */
 	BroadcastReceiver bluetoothState = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
@@ -596,7 +609,9 @@ public class KidProfileActivity extends Activity implements
 			@Override
 			public void run() {
 				if (result) {
-
+					if (dialog.isShowing() && dialog != null) {
+						dialog.dismiss();
+					}
 				} else {
 					bluetoothNotOpenCancelReadBattery();
 				}
@@ -617,6 +632,15 @@ public class KidProfileActivity extends Activity implements
 			startActivity(intent);
 			// bindService(i1, conn1, Context.BIND_AUTO_CREATE);
 
+			break;
+
+		case R.id.layout_device_beep:
+			if (child.getMacAddress() != null) {
+				dialog = LoadingDialog.createLoadingDialog(
+						KidProfileActivity.this, getString(R.string.text_beep));
+				dialog.show();
+				mBluetoothUtils.writeBeep(child.getMacAddress(), 10000, "01");
+			}
 			break;
 
 		}
