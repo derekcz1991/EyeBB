@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
@@ -25,6 +26,7 @@ public class AntiLostFragment extends Fragment {
 	private HashMap<String, Device> deviceHashMap;
 	private ArrayList<Device> deviceList;
 	private SerializableDeviceMap serializableMacaronMap;
+	private ProgressBar progressBar;
 	private ListView listView;
 	private RadarKidsListViewAdapter mAdapter;
 	private boolean isAntiLostOn = false;
@@ -46,6 +48,7 @@ public class AntiLostFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater
 				.inflate(R.layout.fragment_anti_lost, container, false);
+		progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
 		listView = (ListView) v.findViewById(R.id.listView);
 		deviceList = new ArrayList<Device>();
 		mAdapter = new RadarKidsListViewAdapter(getActivity(), deviceList);
@@ -98,6 +101,7 @@ public class AntiLostFragment extends Fragment {
 				}
 				deviceList.add(deviceHashMap.get(macAddress));
 			}
+			progressBar.setVisibility(View.INVISIBLE);
 			mAdapter.notifyDataSetChanged();
 		}
 	}

@@ -1,7 +1,6 @@
 package com.twinly.eyebb.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,15 +35,7 @@ public class RefreshTimeDialog extends Activity {
 						SharePrefsUtils.setAutoUpdateTime(
 								RefreshTimeDialog.this,
 								Long.parseLong(enterMail.getText().toString()));
-						Intent intent = new Intent(RefreshTimeDialog.this,
-								SettingsActivity.class);
-
-						startActivity(intent);
-						if (SettingsActivity.instance != null) {
-							SettingsActivity.instance.finish();
-						}
 						finish();
-
 					}
 				} else {
 					enterMail.setHint(getResources().getString(

@@ -29,9 +29,7 @@ public class BluetoothUtils {
 	public final static int WRITE_MINOR = 3;
 	public final static int WRITE_BEEP = 4;
 	public final static int WRITE_LED_BLINK = 5;
-	public final static int WRITE_ANTI_LOST_PERIOD = 6;
-	public final static int WRITE_ANTI_LOST_TIMEOUT = 7;
-	public final static int READ_BATTERY = 8;
+	public final static int READ_BATTERY = 6;
 
 	private final static String TAG = BluetoothUtils.class.getSimpleName();
 
@@ -458,17 +456,6 @@ public class BluetoothUtils {
 			if (isPasswordSet) {
 				write(BLEUtils.SERVICE_UUID_0001,
 						BLEUtils.CHARACTERISTICS_LED_BLINK_UUID, value, true);
-			} else {
-				write(BLEUtils.SERVICE_UUID_0002,
-						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
-						false);
-			}
-			break;
-		case WRITE_ANTI_LOST_PERIOD:
-			if (isPasswordSet) {
-				write(BLEUtils.SERVICE_UUID_0001,
-						BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, value,
-						true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
 						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,

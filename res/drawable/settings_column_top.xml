@@ -3,10 +3,6 @@
 
     <solid android:color="@color/white" />
 
-
-
-
-
     <corners
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp" />

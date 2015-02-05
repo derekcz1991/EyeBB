@@ -25,6 +25,7 @@ public class SettingsActivity extends Activity {
 	private LinearLayout refreshTimeView;
 	private TextView englishSelected;
 	private TextView chineseSelected;
+	private TextView simplifiedChineseSelected;
 	private TextView enableSoundSelected;
 	private TextView enableVibrationSelected;
 	private View aboutBtn;
@@ -32,22 +33,20 @@ public class SettingsActivity extends Activity {
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
 	private LinearLayout updateNicknameBtn;
-	// private LinearLayout batteryLifeBtn;
 
 	private boolean isAutoUpdate;
 	private TextView refreshTimeNumber;
-	public static SettingsActivity instance = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
-		instance = this;
 		tittlebarBackBtn = this.findViewById(R.id.tittlebar_back_btn);
 		enableSoundSelected = (TextView) findViewById(R.id.enable_sound_selected);
 		enableVibrationSelected = (TextView) findViewById(R.id.enable_vibration_selected);
 		chineseSelected = (TextView) findViewById(R.id.chinese_selected);
 		englishSelected = (TextView) findViewById(R.id.english_selected);
+		simplifiedChineseSelected = (TextView) findViewById(R.id.simplified_chinese_selected);
 		aboutBtn = findViewById(R.id.about_btn);
 		refreshTimeView = (LinearLayout) findViewById(R.id.refresh_time_view);
 		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
@@ -55,7 +54,6 @@ public class SettingsActivity extends Activity {
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
 		updateNicknameBtn = (LinearLayout) findViewById(R.id.update_nickname_btn);
-		// batteryLifeBtn = (LinearLayout) findViewById(R.id.battery_life_btn);
 
 		setupView();
 
@@ -73,6 +71,8 @@ public class SettingsActivity extends Activity {
 				englishSelected.setBackgroundResource(R.drawable.ic_selected);
 				chineseSelected
 						.setBackgroundResource(R.drawable.ic_selected_off);
+				simplifiedChineseSelected
+						.setBackgroundResource(R.drawable.ic_selected_off);
 
 				setAppLanguage(Constants.LOCALE_EN);
 			}
@@ -85,8 +85,25 @@ public class SettingsActivity extends Activity {
 				englishSelected
 						.setBackgroundResource(R.drawable.ic_selected_off);
 				chineseSelected.setBackgroundResource(R.drawable.ic_selected);
+				simplifiedChineseSelected
+						.setBackgroundResource(R.drawable.ic_selected_off);
 
 				setAppLanguage(Constants.LOCALE_HK);
+			}
+		});
+
+		simplifiedChineseSelected.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				englishSelected
+						.setBackgroundResource(R.drawable.ic_selected_off);
+				chineseSelected
+						.setBackgroundResource(R.drawable.ic_selected_off);
+				simplifiedChineseSelected
+						.setBackgroundResource(R.drawable.ic_selected);
+
+				setAppLanguage(Constants.LOCALE_CN);
 			}
 		});
 
@@ -138,7 +155,6 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						RefreshTimeDialog.class);
 				startActivity(intent);
@@ -149,7 +165,6 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						MyKidsListActivity.class);
 				startActivity(intent);
@@ -171,7 +186,6 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						UpdatePasswordActivity.class);
 				startActivity(intent);
@@ -182,7 +196,6 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(SettingsActivity.this,
 						UpdateNicknameActivity.class);
 				startActivityForResult(
@@ -193,11 +206,15 @@ public class SettingsActivity extends Activity {
 
 	}
 
-	private void setupView() {
+	@Override
+	protected void onResume() {
 		// auto refresh time
 		refreshTimeNumber.setText(String.valueOf(SharePrefsUtils
 				.getAutoUpdateTime(this, 5)));
+		super.onResume();
+	}
 
+	private void setupView() {
 		// sound
 		if (SharePrefsUtils.isSoundOn(this)) {
 			enableSoundSelected.setBackgroundResource(R.drawable.ic_selected);
@@ -229,12 +246,11 @@ public class SettingsActivity extends Activity {
 			break;
 		}
 
-		// device item
-		if (SharePrefsUtils.getUserType(this).equals("P")) {
+		/*if (SharePrefsUtils.getUserType(this).equals("P")) {
 			findViewById(R.id.device_item).setVisibility(View.VISIBLE);
 		} else {
 			findViewById(R.id.device_item).setVisibility(View.VISIBLE);
-		}
+		}*/
 	}
 
 	// change the language
@@ -247,8 +263,11 @@ public class SettingsActivity extends Activity {
 		switch (language) {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
 			config.locale = Locale.TRADITIONAL_CHINESE;
+			resources.updateConfiguration(config, dm);
+			break;
+		case Constants.LOCALE_CN:
+			config.locale = Locale.SIMPLIFIED_CHINESE;
 			resources.updateConfiguration(config, dm);
 			break;
 		default:
@@ -261,6 +280,7 @@ public class SettingsActivity extends Activity {
 		Intent intent = getBaseContext().getPackageManager()
 				.getLaunchIntentForPackage(getBaseContext().getPackageName());
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 	}
 
@@ -297,12 +317,6 @@ public class SettingsActivity extends Activity {
 				setResult(ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS);
 			}
 		}
-	}
-	
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
 	}
 
 }
