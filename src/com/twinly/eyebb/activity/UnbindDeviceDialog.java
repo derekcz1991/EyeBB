@@ -20,6 +20,15 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category UnbindDeviceDialog
+ * 
+ *           UnbindDeviceDialog will ask the user to choose whether he want bind
+ *           or unbind the device.
+ * 
+ */
 public class UnbindDeviceDialog extends Activity {
 
 	private LinearLayout btnConfirm;

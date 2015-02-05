@@ -24,6 +24,15 @@ import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 
+/**
+ * @author eyebb team
+ * 
+ * @category UpdatePasswordActivity
+ * 
+ *           UpdatePasswordActivity can let the user change the password, its
+ *           position is in options activity (The eighth layer)
+ * 
+ */
 public class UpdatePasswordActivity extends Activity {
 
 	private EditText etOldPassword;

@@ -10,6 +10,14 @@ import android.widget.LinearLayout;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category RefreshTimeDialog
+ * 
+ *           this dialog lets the user fill in the auto-refresh time. its
+ *           position is in options activity (The first layer)
+ */
 public class RefreshTimeDialog extends Activity {
 
 	private EditText enterMail;

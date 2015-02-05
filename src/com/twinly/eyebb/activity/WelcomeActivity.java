@@ -13,6 +13,16 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category WelcomeActivity
+ * 
+ *           WelcomeActivity shows when you first open the eyebb app. It
+ *           contains two functions, one is for sign-up(SignUpActivity) and the other is for
+ *           login(LoginActivity).
+ * 
+ */
 public class WelcomeActivity extends Activity {
 	private ImageView logo;
 

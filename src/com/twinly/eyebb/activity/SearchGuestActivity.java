@@ -34,6 +34,18 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category SearchGuestActivity
+ * 
+ *           this activity is used in AuthorizeKidsActivity. When user click the
+ *           add button on top right corner. user will enter this activity.
+ *           Then. user should fill in the user name which want to find. At
+ *           last, the guest user will show on the list. If there is no this
+ *           guest, the activity will display a share button for user. User can
+ *           use this button to share to their guest.
+ */
 public class SearchGuestActivity extends Activity {
 	private EditText edGuestname;
 	private TextView btnSearchNewGuest;
@@ -44,8 +56,8 @@ public class SearchGuestActivity extends Activity {
 	private ArrayList<User> guestData;
 	private String retStr;
 
-	private TextView tx_share;
-	private RelativeLayout btn_share;
+	private TextView txShare;
+	private RelativeLayout btnShare;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,13 +67,12 @@ public class SearchGuestActivity extends Activity {
 		getActionBar().setIcon(android.R.color.transparent);
 
 		setContentView(R.layout.activity_search_guest_list);
-
 		listView = (ListView) findViewById(R.id.listView);
 		edGuestname = (EditText) findViewById(R.id.ed_guestname);
 		btnSearchNewGuest = (TextView) findViewById(R.id.btn_search_new_guest);
-		tx_share = (TextView) findViewById(R.id.tx_share_two);
-		btn_share = (RelativeLayout) findViewById(R.id.btn_share);
-	
+		txShare = (TextView) findViewById(R.id.tx_share_two);
+		btnShare = (RelativeLayout) findViewById(R.id.btn_share);
+
 		guestData = new ArrayList<User>();
 
 		btnSearchNewGuest.setOnClickListener(new OnClickListener() {
@@ -104,8 +115,7 @@ public class SearchGuestActivity extends Activity {
 						+ temp.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guest.setGuardianId(Long.parseLong(temp
 						.getString(HttpConstants.JSON_KEY_USER_ID)) + "");
-				guest.setName(temp
-						.getString(HttpConstants.JSON_KEY_USER_NAME));
+				guest.setName(temp.getString(HttpConstants.JSON_KEY_USER_NAME));
 				guest.setPhoneNumber(temp
 						.getString(HttpConstants.JSON_KEY_USER_PHONE));
 				guestData.add(guest);
@@ -172,7 +182,7 @@ public class SearchGuestActivity extends Activity {
 				// R.string.text_feed_back_successful, Toast.LENGTH_LONG)
 				// .show();
 				listView.setVisibility(View.VISIBLE);
-				btn_share.setVisibility(View.GONE);
+				btnShare.setVisibility(View.GONE);
 				adapter = new SearchGuestListViewAdapter(
 						SearchGuestActivity.this, parseJson(retStr));
 
@@ -202,13 +212,13 @@ public class SearchGuestActivity extends Activity {
 				// Toast.makeText(SearchGuestActivity.this,
 				// R.string.text_search_guest_null, Toast.LENGTH_LONG)
 				// .show();
-				tx_share.setText(getResources().getString(
+				txShare.setText(getResources().getString(
 						R.string.text_click_to_share)
 						+ guestName + ")");
-				btn_share.setVisibility(View.VISIBLE);
+				btnShare.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
-				
-				btn_share.setOnClickListener(new OnClickListener() {
+
+				btnShare.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
@@ -216,8 +226,9 @@ public class SearchGuestActivity extends Activity {
 						Intent shareIntent = new Intent(Intent.ACTION_SEND);
 						shareIntent.setType("text/plain");
 						shareIntent
-								.putExtra(Intent.EXTRA_TEXT,
-										"我想授權你觀看我的孩子情況，請你在完成安裝寶寶安後通知我，我會再次授權給你。連結：play.google.com/xxxxxxxx");
+								.putExtra(
+										Intent.EXTRA_TEXT,
+										getString(R.string.text_search_guset_activity_share_msg));
 						startActivity(shareIntent);
 
 					}

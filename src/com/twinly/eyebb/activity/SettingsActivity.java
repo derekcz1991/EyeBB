@@ -19,6 +19,15 @@ import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category SettingsActivity
+ * 
+ *           setting activity shows the all options, which position is on top
+ *           right conner of ProfileFragment class.
+ * 
+ */
 public class SettingsActivity extends Activity {
 
 	private View tittlebarBackBtn;
@@ -246,11 +255,11 @@ public class SettingsActivity extends Activity {
 			break;
 		}
 
-		/*if (SharePrefsUtils.getUserType(this).equals("P")) {
-			findViewById(R.id.device_item).setVisibility(View.VISIBLE);
-		} else {
-			findViewById(R.id.device_item).setVisibility(View.VISIBLE);
-		}*/
+		/*
+		 * if (SharePrefsUtils.getUserType(this).equals("P")) {
+		 * findViewById(R.id.device_item).setVisibility(View.VISIBLE); } else {
+		 * findViewById(R.id.device_item).setVisibility(View.VISIBLE); }
+		 */
 	}
 
 	// change the language

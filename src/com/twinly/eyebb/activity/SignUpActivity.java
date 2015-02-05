@@ -29,6 +29,14 @@ import com.twinly.eyebb.utils.RegularExpression;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category SignUpActivity
+ * 
+ *           SignUpActivity will let the user register their own information.
+ *           this information will post to the server.
+ */
 public class SignUpActivity extends Activity {
 	private Button btnSignup;
 

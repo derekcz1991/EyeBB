@@ -15,12 +15,15 @@ import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
+
 /**
  * @author eyebb team
  * 
  * @category MyKidsListActivity
  * 
- *           this activity is the main framework, which uses for four fragment activities.
+ *           this activity is in options activity (The fourth layer), called
+ *           children list. It displays three parts which contains binding
+ *           children, unbinding children and children has been granted.
  * 
  */
 public class MyKidsListActivity extends Activity {

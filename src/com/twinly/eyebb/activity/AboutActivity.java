@@ -17,7 +17,7 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
  * 
  * @category AboutActivity
  * 
- *           this activity is in options activity (The eighth layer), changing
+ *           this activity is in options activity (The eleventh layer), changing
  *           the password whit is its main function.
  */
 public class AboutActivity extends Activity {

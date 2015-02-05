@@ -16,6 +16,15 @@ import com.twinly.eyebb.model.ChildSelectable;
 import com.twinly.eyebb.model.SerializableChildrenList;
 import com.woozzu.android.widget.IndexableListView;
 
+/**
+ * @author eyebb team
+ * 
+ * @category SelectKidsActivity
+ * 
+ *           this activity is used to select the child in the
+ *           RadarFragment(Activity). it main function is supported to anti-thief.
+ * 
+ */
 public class SelectKidsActivity extends Activity {
 	public static final String EXTRA_CHILDREN_LIST = "children_list";
 

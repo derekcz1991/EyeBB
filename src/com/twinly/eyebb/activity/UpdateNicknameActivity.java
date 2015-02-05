@@ -26,6 +26,16 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category UpdateNicknameActivity
+ * 
+ *           UpdateNicknameActivity can let the user change the nickname after
+ *           fill in the correct password, its position is in options activity
+ *           (The ninth layer)
+ * 
+ */
 public class UpdateNicknameActivity extends Activity {
 
 	private EditText etNewNickname;

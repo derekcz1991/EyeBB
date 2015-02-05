@@ -27,6 +27,14 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.utils.DirectionsJSONParser;
 
+/**
+ * @author eyebb team
+ * 
+ * @category SchoolBusTrackingActivity
+ * 
+ *           this activity shows the lane track or the school bus.(useless
+ *           class)
+ */
 public class SchoolBusTrackingActivity extends FragmentActivity {
 
 	private GoogleMap mMap;

@@ -24,6 +24,15 @@ import com.twinly.eyebb.utils.BarcodeCreater;
 import com.twinly.eyebb.utils.DensityUtil;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category RequireQrCodeDialog
+ * 
+ *           this activity is used in the kidProfileActivity. it will show the
+ *           lastest mac-address of device. the mac-address also use
+ *           "BarcodeCreater.creatBarcode" function to become QR code
+ */
 public class RequireQrCodeDialog extends Activity {
 	private ImageView imgQrCode;
 	private TextView txtQrCodeAddress;

@@ -20,6 +20,15 @@ import com.twinly.eyebb.model.ActivityInfo;
 import com.twinly.eyebb.model.Notifications;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
+/**
+ * @author eyebb team
+ * 
+ * @category WebViewActivity
+ * 
+ *           WebViewActivity will show some web pages that comes from the
+ *           server.
+ * 
+ */
 public class WebViewActivity extends Activity {
 	private WebView webViewDetails;
 	private String webViewDetailsURL;
@@ -70,17 +79,17 @@ public class WebViewActivity extends Activity {
 
 		setTitle(actionBarTitle);
 		webViewDetails = (WebView) findViewById(R.id.webview_show);
-		// 获取当前显示的界面大小
+		// get the size of current display
 		WebSettings webSettings = webViewDetails.getSettings();
 		webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
-		// 设置可以支持缩放
+		// set the function to support zoom
 		webViewDetails.getSettings().setSupportZoom(true);
-		// 设置出现缩放工具
+		// Set Zoom tool appears
 		webViewDetails.getSettings().setBuiltInZoomControls(true);
-		// 扩大比例的缩放
+		// Expand the proportion of scaling
 		// webViewDetails.getSettings().setUseWideViewPort(true);
-		// 滾動與縮放
+		// Scrolling and zooming
 		webViewDetails.setVerticalScrollBarEnabled(false);
 		webViewDetails.setHorizontalScrollBarEnabled(false);
 		webViewDetails.getSettings().setDomStorageEnabled(true);
