@@ -133,13 +133,17 @@ public class KidProfileActivity extends Activity implements
 					ImageUtils.avatarOpitons, null);
 		}
 
+		// NO address
 		if (CommonUtils.isNull(child.getMacAddress())) {
 			txtBinding.setText(getString(R.string.btn_binding));
 			txtDeviceQr
 					.setText(getString(R.string.text_get_the_lastest_eyebb_device_qr_code));
+			layoutDeviceBeep.setVisibility(View.GONE);
+			layoutDeviceOta.setVisibility(View.GONE);
 
 		} else {
 			txtBinding.setText(getString(R.string.btn_unbind));
+			layoutDeviceBeep.setVisibility(View.GONE);
 		}
 
 		// if the child belongs to other parent
@@ -534,9 +538,13 @@ public class KidProfileActivity extends Activity implements
 			@Override
 			public void run() {
 				System.out.println("onConnectCanceled() ");
+				if (dialog != null) {
+					if (dialog.isShowing()) {
+						dialog.dismiss();
+					}
+				}
 				bluetoothNotOpenCancelReadBattery();
-				// deviceBattery.setText(getResources().getString(
-				// R.string.text_battery_life));
+
 			}
 		});
 	}
@@ -562,14 +570,20 @@ public class KidProfileActivity extends Activity implements
 		// do nothing
 	}
 
+	/**
+	 * when we read the battery life. the connection between device and phone
+	 * does not interrupt. so we let
+	 * layoutDeviceBeep.setVisibility(View.VISIBLE);
+	 */
 	@Override
 	public void onDataAvailable(final String value) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 
-				System.out.println("BATTERY-->" + Integer.parseInt(value, 16)
-						+ "%");
+				// System.out.println("BATTERY-->" + Integer.parseInt(value, 16)
+				// + "%");
+				layoutDeviceBeep.setVisibility(View.VISIBLE);
 				mHoloCircularProgressBar.setProgress(1f);
 
 				if (mProgressBarAnimator != null) {
@@ -641,6 +655,8 @@ public class KidProfileActivity extends Activity implements
 				dialog = LoadingDialog.createLoadingDialog(
 						KidProfileActivity.this, getString(R.string.text_beep));
 				dialog.show();
+				System.out.println("child.getMacAddress()---> "
+						+ child.getMacAddress());
 				mBluetoothUtils.writeBeep(child.getMacAddress(), 10000, "01");
 			}
 			break;
@@ -648,7 +664,7 @@ public class KidProfileActivity extends Activity implements
 		case R.id.layout_device_ota:
 			Intent intentFwUpdateActivity = new Intent(KidProfileActivity.this,
 					FwUpdateActivity.class);
-			startActivity(intentFwUpdateActivity);
+			// startActivity(intentFwUpdateActivity);
 			break;
 
 		}
