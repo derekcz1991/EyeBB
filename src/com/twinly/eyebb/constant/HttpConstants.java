@@ -4,14 +4,15 @@ public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
 	/**
-	 * 158.182.246.221 == test.eyebb.com (Testing)
-	 * 158.182.8.221 == srv.eyebb.com (Production)
+	 * 158.182.246.221 == test.eyebb.com (Testing) 
+	 * 158.182.8.221 == srv.eyebb.com (Production) 
 	 * 158.182.220.206 == test.eyebb.com (Testing)
 	 * 158.182.246.223 == srv.eyebb.com (Production)
 	 */
 	public static final String SERVER_URL = "http://test.eyebb.com:8089/";
-	//public static final String SERVER_URL = "http://158.182.220.206:8089/";
-	//public static final String SERVER_URL = "http://158.182.246.223:8080/";
+	// public static final String SERVER_URL = "http://158.182.220.206:8089/";
+	// public static final String SERVER_URL = "http://158.182.246.223:8080/";
+	// public static final String SERVER_URL = "http://158.182.220.203:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
@@ -34,14 +35,15 @@ public class HttpConstants {
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_SC = "nameSc";
 
-	//public static final String GET_CHILDREN_LIST = "reportService/api/childrenList";
+	// public static final String GET_CHILDREN_LIST =
+	// "reportService/api/childrenList";
 	public static final String GET_CHILDREN_INFO_LIST = "reportService/api/childrenInfoList";
 	public static final String JSON_KEY_CHILDREN_INFO = "childrenInfo";
-	
+
 	public static final String GET_CHILDREN_LOC_LIST = "reportService/api/childrenLocList";
 	public static final String JSON_KEY_CHILDREN_BY_AREA = "childrenByArea";
 	public static final String JSON_KEY_CHILDREN_BEAN = "childrenBean";
-	
+
 	public static final String JSON_KEY_CHILD_REL = "childRel";
 	public static final String JSON_KEY_CHILD = "child";
 	public static final String JSON_KEY_CHILD_RELATION = "relation";

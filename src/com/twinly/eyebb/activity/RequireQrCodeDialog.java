@@ -88,7 +88,7 @@ public class RequireQrCodeDialog extends Activity {
 			Map<String, String> map = new HashMap<String, String>();
 			if (childId != null)
 				map.put("childId", childId);
-			// System.out.println("childId--->" + childId);
+			System.out.println("childId--->" + childId);
 
 			String retStr = HttpRequestUtils.post(
 					HttpConstants.REQUIRE_OR_GET_QR_CODE, map);
@@ -101,7 +101,7 @@ public class RequireQrCodeDialog extends Activity {
 				msg.what = Constants.CONNECT_ERROR;
 				handler.sendMessage(msg);
 			} else {
-				if (retStr.length() > 4) {
+				if (retStr.length() > 4 && retStr.length() < 25) {
 					Message msg = handler.obtainMessage();
 					msg.what = Constants.GET_QR_CODE_SUCCESS;
 					handler.sendMessage(msg);

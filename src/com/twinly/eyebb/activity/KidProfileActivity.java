@@ -648,7 +648,7 @@ public class KidProfileActivity extends Activity implements
 		case R.id.layout_device_require_qr_code:
 			Intent intent = new Intent(KidProfileActivity.this,
 					RequireQrCodeDialog.class);
-			intent.putExtra("child_id", child.getChildId() + "");
+			intent.putExtra("childId", child.getChildId() + "");
 
 			startActivity(intent);
 			// bindService(i1, conn1, Context.BIND_AUTO_CREATE);
@@ -660,8 +660,8 @@ public class KidProfileActivity extends Activity implements
 				dialog = LoadingDialog.createLoadingDialog(
 						KidProfileActivity.this, getString(R.string.text_beep));
 				dialog.show();
-				System.out.println("child.getMacAddress()---> "
-						+ child.getMacAddress());
+				// System.out.println("child.getMacAddress()---> "
+				// + child.getMacAddress());
 				mBluetoothUtils.writeBeep(child.getMacAddress(), 10000, "01");
 			}
 			break;
