@@ -68,6 +68,7 @@ public class KidProfileActivity extends Activity implements
 	private TextView txtDeviceQr;
 	private TextView txtBinding;
 	private TextView deviceBatteryResult;
+	private TextView deviceOtaFirmwareRevision;
 	private ImageLoader imageLoader;
 	private LinearLayout avatarItemLayout;
 	private Uri mImageCaptureUri;
@@ -119,6 +120,7 @@ public class KidProfileActivity extends Activity implements
 		layoutDeviceOta.setOnClickListener(this);
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
+		//deviceOtaFirmwareRevision = (TextView) findViewById(R.id.device_ota_firmware_revision);
 
 		mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
 				getFragmentManager(), this);
@@ -144,12 +146,13 @@ public class KidProfileActivity extends Activity implements
 		} else {
 			txtBinding.setText(getString(R.string.btn_unbind));
 			layoutDeviceBeep.setVisibility(View.GONE);
+			// when read the battery life, showing the ota
+			layoutDeviceOta.setVisibility(View.GONE);
 		}
 
 		// if the child belongs to other parent
 		if (child.getRelationWithUser().equals("P") == false) {
 			layoutDeviceBeep.setVisibility(View.INVISIBLE);
-			layoutDeviceOta.setVisibility(View.INVISIBLE);
 			layoutDeviceRequireQrCode.setVisibility(View.INVISIBLE);
 			layoutDeviceUnbind.setVisibility(View.INVISIBLE);
 		}
@@ -586,8 +589,9 @@ public class KidProfileActivity extends Activity implements
 			@Override
 			public void run() {
 
-				// System.out.println("BATTERY-->" + Integer.parseInt(value, 16)
-				// + "%");
+				// when we get the battery life, showing the ota button.
+				layoutDeviceOta.setVisibility(View.VISIBLE);
+				// when we get the battery life, showing the beep button.
 				layoutDeviceBeep.setVisibility(View.VISIBLE);
 				mHoloCircularProgressBar.setProgress(1f);
 
@@ -633,6 +637,7 @@ public class KidProfileActivity extends Activity implements
 					if (dialog.isShowing() && dialog != null) {
 						dialog.dismiss();
 					}
+
 				} else {
 					bluetoothNotOpenCancelReadBattery();
 				}
@@ -669,7 +674,7 @@ public class KidProfileActivity extends Activity implements
 		case R.id.layout_device_ota:
 			Intent intentFwUpdateActivity = new Intent(KidProfileActivity.this,
 					FwUpdateActivity.class);
-			// startActivity(intentFwUpdateActivity);
+			startActivity(intentFwUpdateActivity);
 			break;
 
 		}

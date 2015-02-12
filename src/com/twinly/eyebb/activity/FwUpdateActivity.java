@@ -20,8 +20,9 @@ import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,6 +84,8 @@ public class FwUpdateActivity extends Activity {
 	private Timer mTimer = null;
 	private ProgInfo mProgInfo = new ProgInfo();
 	private TimerTask mTimerTask = null;
+	private LinearLayout btnCancel;
+	private LinearLayout btnConfirm;
 
 	// Housekeeping
 	private boolean mServiceOk = false;
@@ -90,56 +93,77 @@ public class FwUpdateActivity extends Activity {
 	private int mEstDuration = 0;
 	private IntentFilter mIntentFilter;
 
-	public FwUpdateActivity() {
-
-		// BLE Gatt Service
-
-		// Service information
-		// mOadService =
-		// mConnControlService = mDeviceActivity.getConnControlService();
-
-		// Characteristics list
-		mCharListOad = mOadService.getCharacteristics();
-		// mCharListCc = mConnControlService.getCharacteristics();
-
-		mServiceOk = mCharListOad.size() == 2;
-		if (mServiceOk) {
-			mCharIdentify = mCharListOad.get(0);
-			mCharBlock = mCharListOad.get(1);
-			// mCharConnReq = mCharListCc.get(1);
-		}
-	}
+	// public FwUpdateActivity() {
+	//
+	// // BLE Gatt Service
+	//
+	// // Service information
+	// // mOadService =
+	// // mConnControlService = mDeviceActivity.getConnControlService();
+	//
+	// // Characteristics list
+	// mCharListOad = mOadService.getCharacteristics();
+	// // mCharListCc = mConnControlService.getCharacteristics();
+	//
+	// mServiceOk = mCharListOad.size() == 2;
+	// if (mServiceOk) {
+	// mCharIdentify = mCharListOad.get(0);
+	// mCharBlock = mCharListOad.get(1);
+	// // mCharConnReq = mCharListCc.get(1);
+	// }
+	// }
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.d(TAG, "onCreate");
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_fwupdate);
+		setContentView(R.layout.dialog_update_device_firmwork);
 
-		// Icon padding
-		ImageView view = (ImageView) findViewById(android.R.id.home);
-		view.setPadding(10, 0, 20, 10);
+		btnCancel = (LinearLayout) findViewById(R.id.btn_cancel);
+		btnConfirm = (LinearLayout) findViewById(R.id.btn_confirm);
 
-		// Context title
-		setTitle("Firmware update (OAD)");
+		btnCancel.setOnClickListener(new OnClickListener() {
 
-		// Initialize widgets
-		mProgressInfo = (TextView) findViewById(R.id.tw_info);
-		mTargImage = (TextView) findViewById(R.id.tw_target);
-		mFileImage = (TextView) findViewById(R.id.tw_file);
-		mLog = (TextView) findViewById(R.id.tw_log);
-		mProgressBar = (ProgressBar) findViewById(R.id.pb_progress);
-		mBtnStart = (Button) findViewById(R.id.btn_start);
-		mBtnStart.setEnabled(false);
-		mBtnLoadA = (Button) findViewById(R.id.btn_load_a);
-		mBtnLoadB = (Button) findViewById(R.id.btn_load_b);
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
 
-		// Sanity check
-		mBtnLoadA.setEnabled(mServiceOk);
-		mBtnLoadB.setEnabled(mServiceOk);
-		mBtnLoadC.setEnabled(mServiceOk);
-		initIntentFilter();
+		btnConfirm.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		});
+
+		// // Icon padding
+		// ImageView view = (ImageView) findViewById(android.R.id.home);
+		// view.setPadding(10, 0, 20, 10);
+		//
+		// // Context title
+		// setTitle("Firmware update (OAD)");
+		//
+		// // Initialize widgets
+		// mProgressInfo = (TextView) findViewById(R.id.tw_info);
+		// mTargImage = (TextView) findViewById(R.id.tw_target);
+		// mFileImage = (TextView) findViewById(R.id.tw_file);
+		// mLog = (TextView) findViewById(R.id.tw_log);
+		// mProgressBar = (ProgressBar) findViewById(R.id.pb_progress);
+		// mBtnStart = (Button) findViewById(R.id.btn_start);
+		// mBtnStart.setEnabled(false);
+		// mBtnLoadA = (Button) findViewById(R.id.btn_load_a);
+		// mBtnLoadB = (Button) findViewById(R.id.btn_load_b);
+		//
+		// // Sanity check
+		// mBtnLoadA.setEnabled(mServiceOk);
+		// mBtnLoadB.setEnabled(mServiceOk);
+		// mBtnLoadC.setEnabled(mServiceOk);
+		// initIntentFilter();
 	}
 
 	@Override
@@ -160,30 +184,30 @@ public class FwUpdateActivity extends Activity {
 			super.onBackPressed();
 	}
 
-	@Override
-	protected void onResume() {
-		Log.d(TAG, "onResume");
-		super.onResume();
-		if (mServiceOk) {
-			registerReceiver(mGattUpdateReceiver, mIntentFilter);
-
-			// Read target image info
-			getTargetImageInfo();
-
-			// Change connection parameters for OAD
-			// setConnectionParameters();
-		} else {
-			Toast.makeText(this, "OAD service initialisation failed",
-					Toast.LENGTH_LONG).show();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		Log.d(TAG, "onPause");
-		super.onPause();
-		unregisterReceiver(mGattUpdateReceiver);
-	}
+	// @Override
+	// protected void onResume() {
+	// Log.d(TAG, "onResume");
+	// super.onResume();
+	// if (mServiceOk) {
+	// registerReceiver(mGattUpdateReceiver, mIntentFilter);
+	//
+	// // Read target image info
+	// getTargetImageInfo();
+	//
+	// // Change connection parameters for OAD
+	// // setConnectionParameters();
+	// } else {
+	// Toast.makeText(this, "OAD service initialisation failed",
+	// Toast.LENGTH_LONG).show();
+	// }
+	// }
+	//
+	// @Override
+	// protected void onPause() {
+	// Log.d(TAG, "onPause");
+	// super.onPause();
+	// unregisterReceiver(mGattUpdateReceiver);
+	// }
 
 	private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
 		@Override

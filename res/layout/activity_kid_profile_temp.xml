@@ -203,14 +203,28 @@
                 android:layout_height="49dp"
                 android:orientation="horizontal" >
 
-                <TextView
-                    android:id="@+id/device_ota"
-                    style="@style/DarkGreyText_16"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_gravity="left"
                     android:gravity="center_vertical"
-                    android:text="@string/text_update_eyebb_device_firmware" />
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/device_ota"
+                        style="@style/DarkGreyText_16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_update_eyebb_device_firmware" />
+
+                    <!--
+                         <TextView
+                        android:id="@+id/device_ota_firmware_revision"
+                        style="@style/RedText_14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    -->
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"

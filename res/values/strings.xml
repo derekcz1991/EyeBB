@@ -163,6 +163,7 @@
     <string name="text_network_unavailable">Network unavailable (Click to connect)</string>
     <string name="text_network_connecting">Connecting&#8230;</string>
     <string name="text_search_guset_activity_share_msg">Invite him/her?。Link：play.google.com/xxxxxxxx</string>
+    <string name="text_no_new_firmware">Sorry. There is no need to update the firmware of eyebb device.</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
