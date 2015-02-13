@@ -103,12 +103,6 @@ public class BluetoothUtils {
 		initBroadcastReceiver();
 	}
 
-	public BluetoothUtils(Context context, final BleConnectCallback callback) {
-		this.context = context;
-		this.callback = callback;
-		initBroadcastReceiver();
-	}
-
 	private void initBroadcastReceiver() {
 		mGattUpdateReceiver = new BroadcastReceiver() {
 			@Override
