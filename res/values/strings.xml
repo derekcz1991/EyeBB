@@ -2,9 +2,9 @@
 <resources>
 
     <string-array name="tt">
-        <item>This week</item>
+        <item>Last week</item>
         <item>Last 14 days</item>
-        <item>50 days</item>
+        <item>Last 50 days</item>
     </string-array>
     <!-- Text strings -->
     <string name="app_name">EyeBB</string>
@@ -15,18 +15,18 @@
     <string name="text_phone_number">Phone Number (User Name)</string>
     <string name="text_password">Password</string>
     <string name="text_login_account">User Name</string>
-    <string name="text_select_kid_kindergarten">Select your kid\&apos;s kindergarten</string>
-    <string name="text_fill_kid_name">Fill in your kid\&apos;s name</string>
-    <string name="text_kid_name">Kid\&apos;s name</string>
-    <string name="text_kid_birthday">Kid\&apos;s birthday</string>
-    <string name="text_select_kid_birthday">Select your kid\&apos;s birthday</string>
+    <string name="text_select_kid_kindergarten">Select your child\&apos;s kindergarten</string>
+    <string name="text_fill_kid_name">Fill in your child\&apos;s name</string>
+    <string name="text_kid_name">child\&apos;s name</string>
+    <string name="text_kid_birthday">child\&apos;s birthday</string>
+    <string name="text_select_kid_birthday">Select your child\&apos;s birthday</string>
     <string name="text_forgot_password">Forgot your password ?</string>
     <string name="text_indoor_locator">Indoor Locator</string>
     <string name="text_radar_tracking">Radar Tracking</string>
     <string name="text_report">Report</string>
-    <string name="text_child_information_matching">Child Information</string>
-    <string name="text_kids_list">Kids-List</string>
-    <string name="text_change_kids">Change Kids</string>
+    <string name="text_child_information_matching">child Information</string>
+    <string name="text_kids_list">child List</string>
+    <string name="text_change_kids">Change child</string>
     <string name="text_beep_all">Beep all</string>
     <string name="text_beep_all_device">Beep all devices?</string>
     <string name="text_change">Change</string>
@@ -53,17 +53,17 @@
     <string name="text_update_nickname">Update Nickname</string>
     <string name="text_privacyPolicy">Privacy Policy</string>
     <string name="text_forgetPassword">Forget Password</string>
-    <string name="text_forgetPassword_details">Please enter your user name (phone number) and child information to received details for your new password. (this is testing function. the new password is 00000000)</string>
+    <string name="text_forgetPassword_details">Please enter your user name (phone number) and child information to receive your new password. (this is testing function. the new password is 00000000)</string>
     <string name="text_forgetPassword_email">Enter your email address</string>
     <string name="text_forgetPassword_phone">Enter your user name (phone number)</string>
-    <string name="text_forgetPassword_child_name">Enter your child name</string>
-    <string name="text_forgetPassword_child_birthday">Choose your child birthday</string>
+    <string name="text_forgetPassword_child_name">Enter your child\&apos;s name</string>
+    <string name="text_forgetPassword_child_birthday">Choose your child\&apos;s birthday</string>
     <string name="text_enter_refresh_time">Enter the refresh time</string>
     <string name="text_activityDetails">Activity Details</string>
     <string name="text_sec">Sec.</string>
     <string name="text_error_bluetooth_not_supported">Bluetooth not supported</string>
     <string name="text_notificationDetails">Notification Details</string>
-    <string name="text_about_details">EyeBB is a smart kid bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，EyeBB can help you monitor the safety of kids at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your kids.</string>
+    <string name="text_about_details">EyeBB is a smart child bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，EyeBB can help you monitor the safety of childs at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your childs.</string>
     <string name="text_version">Version</string>
     <string name="text_http">Welcome to www.eyebb.com</string>
     <string name="text_invalidKindergarten">Invalid kindergarten</string>
@@ -91,21 +91,21 @@
     <string name="text_fill_in_something">Please, fill in something!!</string>
     <string name="text_contact_information">Contact information</string>
     <string name="text_user_information">User information</string>
-    <string name="text_fill_email_or_phone">Fill in the email or phone information.</string>
-    <string name="text_username_is_used">Sorry, the username is already used</string>
-    <string name="text_network_error">error! Please check your network.</string>
-    <string name="text_register_successfully">Successfully register!</string>
+    <string name="text_fill_email_or_phone">Fill in the email address or phone information.</string>
+    <string name="text_username_is_used">Sorry, the username has been used</string>
+    <string name="text_network_error">Error! Please check your network.</string>
+    <string name="text_register_successfully">Registration Successfully!</string>
     <string name="text_child_not_exist">This child does not exist</string>
     <string name="text_already_relationship">Error! This child has already binded.</string>
-    <string name="text_device_already_binded">Error! This EYEBB has already binded. Please change others.</string>
+    <string name="text_device_already_binded">Error! This EYEBB device has already binded. Please change device.</string>
     <string name="text_feed_back_successful">Successful! Thank you.</string>
     <string name="text_search_guest_null">Sorry,this guest is not exist.</string>
     <string name="text_unbind_device">Do you want to unbind the device?</string>
     <string name="text_unbind_success">Eyebb unbind successfully!</string>
     <string name="text_unbind_fail">Oops! Eyebb unbind Unsuccessfully!</string>
-    <string name="text_no_data">No data, no bind child</string>
+    <string name="text_no_data">No data, no binded child</string>
     <string name="text_no_guest">No Guest</string>
-    <string name="text_select_child">Sorry,Please select the children.</string>
+    <string name="text_select_child">Sorry,Please select the child.</string>
     <string name="text_grant_success">Grant Successfully!</string>
     <string name="text_old_password">Old Password</string>
     <string name="text_new_nickname">New Nickname</string>
@@ -123,20 +123,20 @@
     <string name="text_kindergarten">Kindergarten</string>
     <string name="text_battery_life">eyeBB Battery Usage:</string>
     <string name="text_no_device_nearby">eyebb is not connected</string>
-    <string name="text_wrong_login_for_binding">Wrong login, only parents account can register binding.</string>
+    <string name="text_wrong_login_for_binding">Wrong login, only parent account can bind the device.</string>
     <string name="text_master_of_the_child_exist_already">Master of the child already exists.</string>
-    <string name="text_scanning">Scanning Macaron</string>
-    <string name="text_connecting">Connecting Macaron</string>
-    <string name="text_scan_no_device">Cannot scan Macaron</string>
-    <string name="text_update_device_data">Update Macaron data</string>
-    <string name="text_connect_device_failed">Cannot connect Macaron</string>
+    <string name="text_scanning">Scanning device</string>
+    <string name="text_connecting">Connecting device</string>
+    <string name="text_scan_no_device">Cannot scan device</string>
+    <string name="text_update_device_data">Update device data</string>
+    <string name="text_connect_device_failed">Cannot connect device</string>
     <string name="text_update_server_data">Update server data</string>
     <string name="text_update_server_data_fail">Update server data fail</string>
     <string name="text_bind_success">Eyebb binding successfully</string>
     <string name="text_setting_user_account">User account</string>
     <string name="text_setting_update_nickname">Update nickname</string>
     <string name="text_auth_to_user">Authorize to user: </string>
-    <string name="text_account_user_do_not_have_this_child">Sorry! Account user does not have this child.</string>
+    <string name="text_account_user_do_not_have_this_child">Sorry! This user does not have this child.</string>
     <string name="text_bind_child">Binding children</string>
     <string name="text_unbind_child">unBinding children</string>
     <string name="text_granted_child">Children has been granted</string>
@@ -153,7 +153,7 @@
     <string name="text_sort_by">Sort by</string>
     <string name="text_name">Name</string>
     <string name="text_location">Location</string>
-    <string name="text_search_kid">Search kids&#8230;</string>
+    <string name="text_search_kid">Search childs&#8230;</string>
     <string name="text_can_not_open_options">Please, turn off the radar function.</string>
     <string name="text_click_to_share">(Click here to share </string>
     <string name="text_update_eyebb_device_firmware">Update the eyebb device firmware</string>
@@ -163,7 +163,7 @@
     <string name="text_network_unavailable">Network unavailable (Click to connect)</string>
     <string name="text_network_connecting">Connecting&#8230;</string>
     <string name="text_search_guset_activity_share_msg">Invite him/her?。Link：play.google.com/xxxxxxxx</string>
-    <string name="text_no_new_firmware">Sorry. There is no need to update the firmware of eyebb device.</string>
+    <string name="text_no_new_firmware">congratulation, the firmware of your eyebb device is the most updated.</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -186,7 +186,7 @@
     <string name="btn_share">Share</string>
     <string name="btn_verify">Verify</string>
     <string name="btn_search">Search</string>
-    <string name="btn_search_mac">Search mac addresss</string>
+    <string name="btn_search_mac">Search MAC addresss</string>
     <string name="btn_add">Add</string>
     <string name="btn_children_list">Children list</string>
     <string name="btn_auth_list">Authorization list</string>
@@ -204,7 +204,7 @@
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>
     <string name="toast_loading">Loading&#8230;</string>
-    <string name="toast_please_select_kindergartens">Please select your kid\&apos;s kindergarten</string>
+    <string name="toast_please_select_kindergartens">Please select your child\&apos;s kindergarten</string>
     <string name="toast_invalid_username_or_password">Invalid username and password, or check your network.</string>
     <string name="toast_login_failed">Login failed, please try again</string>
     <string name="toast_read_service">Reading Service&#8230;</string>
