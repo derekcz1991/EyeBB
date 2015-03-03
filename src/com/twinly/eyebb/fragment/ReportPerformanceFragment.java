@@ -20,12 +20,15 @@ import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.PerformanceListViewAdapter;
+import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;
 import com.twinly.eyebb.database.DBPerformance;
 import com.twinly.eyebb.model.Performance;
 import com.twinly.eyebb.model.PerformanceListItem;
+import com.twinly.eyebb.utils.SharePrefsUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 public class ReportPerformanceFragment extends Fragment implements
 		PullToRefreshListener {
@@ -110,15 +113,28 @@ public class ReportPerformanceFragment extends Fragment implements
 		if (performance != null) {
 			list.clear();
 
+			String objectName;
+			switch (SharePrefsUtils.getLanguage(getActivity())) {
+			case Constants.LOCALE_TW:
+			case Constants.LOCALE_HK:
+				objectName = HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LOC_NAME_TC;
+				break;
+			case Constants.LOCALE_CN:
+				objectName = HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LOC_NAME_SC;
+				break;
+			default:
+				objectName = HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LOC_NAME;
+				break;
+			}
 			JSONArray jsonArray;
 			try {
 				jsonArray = new JSONArray(performance.getJsonData());
 				for (int i = 0; i < jsonArray.length(); i++) {
 					JSONObject object = jsonArray.getJSONObject(i);
 					// location name
+					System.out.println(object.getString(objectName));
 					PerformanceListItem item = new PerformanceListItem(
-							object.getString(HttpConstants.JSON_KEY_REPORT_PERFORMANCE_LOC_NAME),
-							-1, 0, 0, 0);
+							object.getString(objectName), -1, 0, 0, 0);
 					list.add(item);
 					// today
 					item = new PerformanceListItem(

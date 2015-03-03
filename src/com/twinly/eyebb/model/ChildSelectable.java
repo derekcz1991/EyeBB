@@ -8,10 +8,10 @@ public class ChildSelectable extends Child {
 	private static final long serialVersionUID = 315922863765346884L;
 	private boolean isSelected;
 
-	public ChildSelectable(Child child) {
+	public ChildSelectable(Child child, boolean isSelected) {
 		super(child.getChildId(), child.getName(), child.getIcon(), child
 				.getPhone(), child.getMacAddress());
-		this.isSelected = false;
+		this.isSelected = isSelected;
 	}
 
 	public boolean isSelected() {

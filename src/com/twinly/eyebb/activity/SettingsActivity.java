@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,9 +33,9 @@ public class SettingsActivity extends Activity {
 
 	private View tittlebarBackBtn;
 	private LinearLayout refreshTimeView;
-	private TextView englishSelected;
-	private TextView chineseSelected;
-	private TextView simplifiedChineseSelected;
+	private CheckedTextView englishSelected;
+	private CheckedTextView chineseSelected;
+	private CheckedTextView simplifiedChineseSelected;
 	private TextView enableSoundSelected;
 	private TextView enableVibrationSelected;
 	private View aboutBtn;
@@ -53,9 +54,9 @@ public class SettingsActivity extends Activity {
 		tittlebarBackBtn = this.findViewById(R.id.tittlebar_back_btn);
 		enableSoundSelected = (TextView) findViewById(R.id.enable_sound_selected);
 		enableVibrationSelected = (TextView) findViewById(R.id.enable_vibration_selected);
-		chineseSelected = (TextView) findViewById(R.id.chinese_selected);
-		englishSelected = (TextView) findViewById(R.id.english_selected);
-		simplifiedChineseSelected = (TextView) findViewById(R.id.simplified_chinese_selected);
+		chineseSelected = (CheckedTextView) findViewById(R.id.chinese_selected);
+		englishSelected = (CheckedTextView) findViewById(R.id.english_selected);
+		simplifiedChineseSelected = (CheckedTextView) findViewById(R.id.simplified_chinese_selected);
 		aboutBtn = findViewById(R.id.about_btn);
 		refreshTimeView = (LinearLayout) findViewById(R.id.refresh_time_view);
 		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
@@ -77,11 +78,9 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				englishSelected.setBackgroundResource(R.drawable.ic_selected);
-				chineseSelected
-						.setBackgroundResource(R.drawable.ic_selected_off);
-				simplifiedChineseSelected
-						.setBackgroundResource(R.drawable.ic_selected_off);
+				englishSelected.setChecked(true);
+				chineseSelected.setChecked(false);
+				simplifiedChineseSelected.setChecked(false);
 
 				setAppLanguage(Constants.LOCALE_EN);
 			}
@@ -91,11 +90,9 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				englishSelected
-						.setBackgroundResource(R.drawable.ic_selected_off);
-				chineseSelected.setBackgroundResource(R.drawable.ic_selected);
-				simplifiedChineseSelected
-						.setBackgroundResource(R.drawable.ic_selected_off);
+				englishSelected.setChecked(false);
+				chineseSelected.setChecked(true);
+				simplifiedChineseSelected.setChecked(false);
 
 				setAppLanguage(Constants.LOCALE_HK);
 			}
@@ -105,12 +102,9 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				englishSelected
-						.setBackgroundResource(R.drawable.ic_selected_off);
-				chineseSelected
-						.setBackgroundResource(R.drawable.ic_selected_off);
-				simplifiedChineseSelected
-						.setBackgroundResource(R.drawable.ic_selected);
+				englishSelected.setChecked(false);
+				chineseSelected.setChecked(false);
+				simplifiedChineseSelected.setChecked(true);
 
 				setAppLanguage(Constants.LOCALE_CN);
 			}
@@ -241,25 +235,23 @@ public class SettingsActivity extends Activity {
 					.setBackgroundResource(R.drawable.ic_selected_off);
 		}
 
+		englishSelected.setChecked(false);
+		chineseSelected.setChecked(false);
+		simplifiedChineseSelected.setChecked(false);
 		// language
 		switch (SharePrefsUtils.getLanguage(this)) {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
+			chineseSelected.setChecked(true);
+			break;
 		case Constants.LOCALE_CN:
-			englishSelected.setBackgroundResource(R.drawable.ic_selected_off);
-			chineseSelected.setBackgroundResource(R.drawable.ic_selected);
+			simplifiedChineseSelected.setChecked(true);
 			break;
 		default:
-			englishSelected.setBackgroundResource(R.drawable.ic_selected);
-			chineseSelected.setBackgroundResource(R.drawable.ic_selected_off);
+			englishSelected.setChecked(true);
 			break;
 		}
 
-		/*
-		 * if (SharePrefsUtils.getUserType(this).equals("P")) {
-		 * findViewById(R.id.device_item).setVisibility(View.VISIBLE); } else {
-		 * findViewById(R.id.device_item).setVisibility(View.VISIBLE); }
-		 */
 	}
 
 	// change the language

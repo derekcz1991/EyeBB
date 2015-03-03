@@ -22,8 +22,8 @@ import com.twinly.eyebb.utils.ImageUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 import com.woozzu.android.util.StringMatcher;
 
-public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable> implements
-		SectionIndexer {
+public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable>
+		implements SectionIndexer {
 	private Context context;
 	private List<ChildSelectable> data;
 	private LayoutInflater inflater;
@@ -37,8 +37,8 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable> imp
 		public CheckedTextView tvSelected;
 	}
 
-	public KidsListViewSimpleAdapter(Context context, List<ChildSelectable> data,
-			boolean isSelectable) {
+	public KidsListViewSimpleAdapter(Context context,
+			List<ChildSelectable> data, boolean isSelectable) {
 		super(context, android.R.layout.simple_list_item_1);
 
 		inflater = LayoutInflater.from(context);
@@ -90,7 +90,12 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable> imp
 		if (isSelectable) {
 			viewHolder.tvSelected.setVisibility(View.VISIBLE);
 			viewHolder.rootLayout.setClickable(true);
-			data.get(position).setSelected(true);
+			if (data.get(position).isSelected()) {
+				viewHolder.tvSelected.setChecked(true);
+			} else {
+				viewHolder.tvSelected.setChecked(false);
+			}
+			//data.get(position).setSelected(true);
 			viewHolder.rootLayout.setOnClickListener(new OnClickListener() {
 
 				@Override

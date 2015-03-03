@@ -269,12 +269,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="right" >
 
-                        <TextView
+                        <CheckedTextView
                             android:id="@+id/english_selected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
-                            android:background="@drawable/ic_selected" />
+                            android:background="@drawable/checkable_text_selector" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -300,12 +300,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="right" >
 
-                        <TextView
+                        <CheckedTextView
                             android:id="@+id/chinese_selected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
-                            android:background="@drawable/ic_selected_off" />
+                            android:background="@drawable/checkable_text_selector" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -329,12 +329,12 @@
                         android:layout_height="wrap_content"
                         android:gravity="right" >
 
-                        <TextView
+                        <CheckedTextView
                             android:id="@+id/simplified_chinese_selected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
-                            android:background="@drawable/ic_selected_off" />
+                            android:background="@drawable/checkable_text_selector" />
                     </LinearLayout>
                 </LinearLayout>
                 <!-- Account -->

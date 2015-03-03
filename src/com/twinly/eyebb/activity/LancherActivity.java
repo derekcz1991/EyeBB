@@ -93,8 +93,11 @@ public class LancherActivity extends Activity {
 		switch (SharePrefsUtils.getLanguage(this)) {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
 			config.locale = Locale.TRADITIONAL_CHINESE;
+			resources.updateConfiguration(config, dm);
+			break;
+		case Constants.LOCALE_CN:
+			config.locale = Locale.SIMPLIFIED_CHINESE;
 			resources.updateConfiguration(config, dm);
 			break;
 		default:

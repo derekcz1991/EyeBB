@@ -73,6 +73,8 @@ public class HttpConstants {
 	public static final String GET_REPORTS = "reportService/api/stat";
 	public static final String JSON_KEY_REPORT_PERFORMANCE = "dailyAvgFigure";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_LOC_NAME = "locName";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_LOC_NAME_TC = "locNameTc";
+	public static final String JSON_KEY_REPORT_PERFORMANCE_LOC_NAME_SC = "locNameSc";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_DAILY = "daily";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_AVERAGE = "average";
 	public static final String JSON_KEY_REPORT_PERFORMANCE_LAST_UPDATE_TIME = "lastUpdateTime";
