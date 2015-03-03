@@ -52,12 +52,13 @@ public class BluetoothUtils {
 
 	public interface BleConnectCallback {
 		/**
-		 * UI update before connecting to BLE device 
+		 * UI update before connecting to BLE device
 		 */
 		public void onPreConnect();
 
 		/**
-		 * UI update when cancel connect to BLE device, always connect to device failed
+		 * UI update when cancel connect to BLE device, always connect to device
+		 * failed
 		 */
 		public void onConnectCanceled();
 
@@ -78,12 +79,15 @@ public class BluetoothUtils {
 
 		/**
 		 * UI update when read data from BLE device
-		 * @param value The data read from BLE device
+		 * 
+		 * @param value
+		 *            The data read from BLE device
 		 */
 		public void onDataAvailable(String value);
 
 		/**
 		 * UI update when read or write BLE device
+		 * 
 		 * @param result
 		 */
 		public void onResult(boolean result);
@@ -108,8 +112,10 @@ public class BluetoothUtils {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				final String action = intent.getAction();
-				/*System.out.println("mGattUpdateReceiver ====>>>> " + action
-						+ " " + timer);*/
+				/*
+				 * System.out.println("mGattUpdateReceiver ====>>>> " + action +
+				 * " " + timer);
+				 */
 				if (BLEUtils.ACTION_GATT_CONNECTED.equals(action)) {
 					timer.cancel();
 					callback.onConnected();
@@ -146,6 +152,7 @@ public class BluetoothUtils {
 
 	/**
 	 * Initialize the Bluetooth
+	 * 
 	 * @return Whether initialize succeed
 	 */
 	public boolean initialize() {
@@ -177,8 +184,11 @@ public class BluetoothUtils {
 
 	/**
 	 * Read battery from device, keep connection if not disconnect manual
-	 * @param mDeviceAddress The device mac address
-	 * @param timeout The timeout to connect to device
+	 * 
+	 * @param mDeviceAddress
+	 *            The device mac address
+	 * @param timeout
+	 *            The timeout to connect to device
 	 */
 	public void readBattery(String mDeviceAddress, long timeout) {
 		command = READ_BATTERY;
@@ -195,8 +205,11 @@ public class BluetoothUtils {
 
 	/**
 	 * Write major to device
-	 * @param timeout The timeout to connect to device
-	 * @param value The value of major
+	 * 
+	 * @param timeout
+	 *            The timeout to connect to device
+	 * @param value
+	 *            The value of major
 	 */
 	public void writeMajor(String mDeviceAddress, long timeout, String value) {
 		command = WRITE_MAJOR;
@@ -215,8 +228,11 @@ public class BluetoothUtils {
 
 	/**
 	 * Write minor to device
-	 * @param timeout The timeout to connect to device
-	 * @param value The value of minor
+	 * 
+	 * @param timeout
+	 *            The timeout to connect to device
+	 * @param value
+	 *            The value of minor
 	 */
 	public void writeMinor(String mDeviceAddress, long timeout, String value) {
 		command = WRITE_MINOR;
@@ -235,8 +251,11 @@ public class BluetoothUtils {
 
 	/**
 	 * Make device beep, disconnect device when finish writing
-	 * @param timeout The timeout to connect to device
-	 * @param value The value of to beep
+	 * 
+	 * @param timeout
+	 *            The timeout to connect to device
+	 * @param value
+	 *            The value of to beep
 	 */
 	public void writeBeep(String mDeviceAddress, long timeout, String value) {
 		command = WRITE_BEEP;
@@ -254,8 +273,11 @@ public class BluetoothUtils {
 
 	/**
 	 * Make device led blink
-	 * @param timeout The timeout to connect to device
-	 * @param value The value of to led blink
+	 * 
+	 * @param timeout
+	 *            The timeout to connect to device
+	 * @param value
+	 *            The value of to led blink
 	 */
 	public void writeBleBlink(String mDeviceAddress, long timeout, String value) {
 		command = WRITE_LED_BLINK;
@@ -273,8 +295,12 @@ public class BluetoothUtils {
 
 	/**
 	 * Start scan ble device, called in onResume
-	 * @param leScanCallback Callback function to receive scanned ble device
-	 * @param scanPeriod The period time of switch between scan off and scan on, normally set 500ms
+	 * 
+	 * @param leScanCallback
+	 *            Callback function to receive scanned ble device
+	 * @param scanPeriod
+	 *            The period time of switch between scan off and scan on,
+	 *            normally set 500ms
 	 */
 	public void startLeScan(BluetoothAdapter.LeScanCallback leScanCallback,
 			long scanPeriod) {
@@ -302,7 +328,7 @@ public class BluetoothUtils {
 	 * To check whether the phone supports the ble
 	 */
 	private boolean isBluetoothAndBleSupport() {
-		// Use this check to determine whether BLE is supported on the device.  
+		// Use this check to determine whether BLE is supported on the device.
 		// Then you can selectively disable BLE-related features.
 		if (context.getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_BLUETOOTH_LE) == false) {
@@ -312,8 +338,9 @@ public class BluetoothUtils {
 			}
 			return false;
 		} else {
-			// Initializes a Bluetooth adapter. 
-			// For API level 18 and above, get a reference to BluetoothAdapter through BluetoothManager.
+			// Initializes a Bluetooth adapter.
+			// For API level 18 and above, get a reference to BluetoothAdapter
+			// through BluetoothManager.
 			final BluetoothManager bluetoothManager = (BluetoothManager) context
 					.getSystemService(Context.BLUETOOTH_SERVICE);
 			mBluetoothAdapter = bluetoothManager.getAdapter();
@@ -332,14 +359,17 @@ public class BluetoothUtils {
 
 	/**
 	 * To check whether the Bluetooth is open, request to open it if not
+	 * 
 	 * @return whether Bluetooth opened
 	 */
 	private boolean isBluetoothOpen() {
 		if (mBluetoothAdapter == null) {
 			return false;
 		}
-		// Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
-		// fire an intent to display a dialog asking the user to grant permission to enable it.
+		// Ensures Bluetooth is enabled on the device. If Bluetooth is not
+		// currently enabled,
+		// fire an intent to display a dialog asking the user to grant
+		// permission to enable it.
 		if (!mBluetoothAdapter.isEnabled()) {
 			if (!mBluetoothAdapter.isEnabled()) {
 				Intent enableBtIntent = new Intent(
@@ -353,8 +383,11 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Connect to the device. If it is the first connection, create a new BluetoothLeService, otherwise connect to device directly
-	 * @param timeout The timeout to connect to device
+	 * Connect to the device. If it is the first connection, create a new
+	 * BluetoothLeService, otherwise connect to device directly
+	 * 
+	 * @param timeout
+	 *            The timeout to connect to device
 	 */
 	private void connect(long timeout) {
 		callback.onPreConnect();
@@ -369,7 +402,8 @@ public class BluetoothUtils {
 					if (!mBluetoothLeService.initialize()) {
 						Log.e(TAG, "Unable to initialize Bluetooth");
 					}
-					// Automatically connects to the device upon successful start-up initialization.
+					// Automatically connects to the device upon successful
+					// start-up initialization.
 					if (mDeviceAddress != null) {
 						mBluetoothLeService.connect(mDeviceAddress);
 					}
@@ -401,6 +435,7 @@ public class BluetoothUtils {
 			public void run() {
 				if (mBluetoothLeService != null) {
 					if (mBluetoothLeService.getmConnectionState() != BLEUtils.STATE_CONNECTED) {
+						System.out.println("--->>>timeout");
 						callback.onConnectCanceled();
 					}
 				}
@@ -457,8 +492,14 @@ public class BluetoothUtils {
 			}
 			break;
 		case READ_BATTERY:
-			read(BLEUtils.SERVICE_UUID_0001,
-					BLEUtils.CHARACTERISTICS_BATTERY_UUID);
+			if (isPasswordSet) {
+				read(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_BATTERY_UUID);
+			} else {
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
+			}
 			break;
 		}
 
@@ -466,10 +507,12 @@ public class BluetoothUtils {
 
 	/**
 	 * Write the value to given UUID
+	 * 
 	 * @param serviceUuid
 	 * @param gattUuid
 	 * @param value
-	 * @param needCallback whether need callback when finish write to BLE device
+	 * @param needCallback
+	 *            whether need callback when finish write to BLE device
 	 */
 	private void write(String serviceUuid, String gattUuid, String value,
 			boolean needCallback) {
@@ -477,14 +520,14 @@ public class BluetoothUtils {
 				+ mDeviceAddress);
 		for (BluetoothGattService gattService : gattServices) {
 			String uuid = gattService.getUuid().toString();
-			//System.out.println("Service == >> " + uuid);
+			// System.out.println("Service == >> " + uuid);
 			if (uuid.equals(serviceUuid)) {
 				List<BluetoothGattCharacteristic> gattCharacteristics = gattService
 						.getCharacteristics();
 				for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
 					uuid = gattCharacteristic.getUuid().toString();
 					if (uuid.equals(gattUuid)) {
-						//System.out.println("Characteristic == >> " + uuid);
+						// System.out.println("Characteristic == >> " + uuid);
 						gattCharacteristic.setValue(BLEUtils
 								.HexString2Bytes(value));
 						if (!mBluetoothLeService
@@ -502,6 +545,7 @@ public class BluetoothUtils {
 
 	/**
 	 * Read value from given UUID
+	 * 
 	 * @param serviceUuid
 	 * @param gattUuid
 	 */
@@ -518,7 +562,7 @@ public class BluetoothUtils {
 						System.out.println("Characteristic == >> " + uuid);
 						if (!mBluetoothLeService
 								.readCharacteristic(gattCharacteristic)) {
-							//System.out.println("Characteristic == >> false");
+							// System.out.println("Characteristic == >> false");
 							callback.onResult(false);
 						}
 					}
@@ -528,8 +572,8 @@ public class BluetoothUtils {
 	}
 
 	/**
-	 * Disconnects an existing connection or cancel a pending connection,
-	 * and release resources. 
+	 * Disconnects an existing connection or cancel a pending connection, and
+	 * release resources.
 	 */
 	public void close() {
 		if (mBluetoothLeService != null) {
