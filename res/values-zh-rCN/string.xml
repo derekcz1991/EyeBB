@@ -15,7 +15,7 @@
     <string name="text_login_account">用户名</string>
     <string name="text_select_kid_kindergarten">选择幼稚园</string>
     <string name="text_forgot_password">忘记密码 ?</string>
-    <string name="text_indoor_locator">室内定位</string>
+    <string name="text_indoor_locator">位置识别</string>
     <string name="text_radar_tracking">雷达追踪</string>
     <string name="text_report">简报</string>
     <string name="text_kids_list">小孩列表</string>
