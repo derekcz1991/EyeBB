@@ -1,9 +1,5 @@
 package com.twinly.eyebb.utils;
 
-import java.util.List;
-
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -72,7 +68,7 @@ public class SystemUtils {
 	/**
 	 * @return Application's version code from the {@code PackageManager}.
 	 */
-	public static int getAppVersion(Context context) {
+	public static int getAppVersionCode(Context context) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager()
 					.getPackageInfo(context.getPackageName(), 0);
@@ -83,17 +79,19 @@ public class SystemUtils {
 		}
 	}
 
-	public static boolean isRunning(Context ctx) {
-		ActivityManager activityManager = (ActivityManager) ctx
-				.getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningTaskInfo> tasks = activityManager
-				.getRunningTasks(Integer.MAX_VALUE);
-
-		for (RunningTaskInfo task : tasks) {
-			if (ctx.getPackageName().equalsIgnoreCase(
-					task.baseActivity.getPackageName()))
-				return true;
+	/**
+	 * @return Application's version string from the {@code PackageManager}.
+	 */
+	public static String getAppVersion(Context context) {
+		try {
+			PackageInfo packageInfo = context.getPackageManager()
+					.getPackageInfo(context.getPackageName(), 0);
+			return packageInfo.versionName + "(" + packageInfo.versionCode
+					+ ")";
+		} catch (NameNotFoundException e) {
+			// should never happen
+			throw new RuntimeException("Could not get package name: " + e);
 		}
-		return false;
 	}
+
 }

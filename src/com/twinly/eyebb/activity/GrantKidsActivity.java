@@ -31,8 +31,8 @@ import com.woozzu.android.widget.IndexableListView;
 
 public class GrantKidsActivity extends Activity {
 	private IndexableListView listView;
-	private GrantKidsListViewFromGuestAdapter guest_adapter;
-	private GrantKidsListViewFromMasterAdapter master_adapter;
+	private GrantKidsListViewFromGuestAdapter guestAdapter;
+	private GrantKidsListViewFromMasterAdapter masterAdapter;
 	private ArrayList<ChildForGrant> returnList;
 	private ArrayList<ChildForGrant> childList;
 	private String guestChildrenRetStr;
@@ -40,11 +40,11 @@ public class GrantKidsActivity extends Activity {
 	private String guestdId;
 	private String guestName;
 	private String grantChildId;
-	private String from_master_or_guest;
+	private String fromMasterOrGuest;
 	private String noAccessGrantChildId;
 	private boolean from_where = false;
 	public static final int UPDATE_VIEW = 11111;
-	private ArrayList<ChildForGrant> new_children_data;
+	private ArrayList<ChildForGrant> newChildrenData;
 
 	/**
 	 * @author eyebb team
@@ -66,7 +66,7 @@ public class GrantKidsActivity extends Activity {
 		 * 
 		 */
 		Intent intent = getIntent();
-		new_children_data = new ArrayList<ChildForGrant>();
+		newChildrenData = new ArrayList<ChildForGrant>();
 		guestdId = intent.getStringExtra("guestId");
 		guestName = intent.getStringExtra("guestName");
 
@@ -74,9 +74,9 @@ public class GrantKidsActivity extends Activity {
 				.getBooleanExtra("from_search_guest_activity", false);
 
 		if (!from_where) {
-			from_master_or_guest = intent.getStringExtra("from_where");
-			if (from_master_or_guest.equals("master")) {
-				new_children_data = (ArrayList<ChildForGrant>) intent
+			fromMasterOrGuest = intent.getStringExtra("from_where");
+			if (fromMasterOrGuest.equals("master")) {
+				newChildrenData = (ArrayList<ChildForGrant>) intent
 						.getSerializableExtra("child_data");
 			}
 		}
@@ -119,31 +119,6 @@ public class GrantKidsActivity extends Activity {
 									.getJSONObject(HttpConstants.JSON_KEY_CHILD);
 
 							ChildForGrant childForGrant = new ChildForGrant();
-							System.out
-									.println("--->"
-											+ child.getString(HttpConstants.JSON_KEY_CHILD_ID));
-							System.out
-									.println("--->"
-											+ child.getString(HttpConstants.JSON_KEY_CHILD_NAME));
-							System.out
-									.println("--->"
-											+ child.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-
-							System.out
-									.println("--->"
-											+ ((JSONObject) children.opt(i))
-													.getBoolean(HttpConstants.JSON_KEY_WITH_ACCESS));
-							System.out
-									.println("--->"
-											+ ((JSONObject) children.opt(i))
-													.getString(HttpConstants.JSON_KEY_TOTAL_QUOTA));
-							System.out
-									.println("--->"
-											+ ((JSONObject) children.opt(i))
-													.getString(HttpConstants.JSON_KEY_QUOTA_LEFT));
-							System.out
-									.println("--------------------------------------");
-
 							childForGrant
 									.setChildId(Long.valueOf(child
 											.getString(HttpConstants.JSON_KEY_CHILD_ID)));
@@ -306,21 +281,21 @@ public class GrantKidsActivity extends Activity {
 
 			case UPDATE_VIEW:
 				if (!from_where) {
-					if (from_master_or_guest.equals("master")) {
-						master_adapter = new GrantKidsListViewFromMasterAdapter(
-								GrantKidsActivity.this, new_children_data);
-						listView.setAdapter(master_adapter);
-					} else if (from_master_or_guest.equals("guest")) {
+					if (fromMasterOrGuest.equals("master")) {
+						masterAdapter = new GrantKidsListViewFromMasterAdapter(
+								GrantKidsActivity.this, newChildrenData);
+						listView.setAdapter(masterAdapter);
+					} else if (fromMasterOrGuest.equals("guest")) {
 						returnList = parseChildJson(guestChildrenRetStr);
-						guest_adapter = new GrantKidsListViewFromGuestAdapter(
+						guestAdapter = new GrantKidsListViewFromGuestAdapter(
 								GrantKidsActivity.this, returnList);
-						listView.setAdapter(guest_adapter);
+						listView.setAdapter(guestAdapter);
 					}
 				} else {
 					returnList = parseChildJson(guestChildrenRetStr);
-					guest_adapter = new GrantKidsListViewFromGuestAdapter(
+					guestAdapter = new GrantKidsListViewFromGuestAdapter(
 							GrantKidsActivity.this, returnList);
-					listView.setAdapter(guest_adapter);
+					listView.setAdapter(guestAdapter);
 				}
 
 				break;
@@ -333,7 +308,7 @@ public class GrantKidsActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (!from_where) {
-			if (from_master_or_guest.equals("guest")) {
+			if (fromMasterOrGuest.equals("guest")) {
 				menu.add(0, 0, 0, R.string.btn_confirm).setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

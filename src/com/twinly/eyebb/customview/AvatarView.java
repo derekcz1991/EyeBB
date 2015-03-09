@@ -2,6 +2,7 @@ package com.twinly.eyebb.customview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +17,16 @@ import com.twinly.eyebb.utils.ImageUtils;
 
 public class AvatarView {
 	private Context context;
-	private ChildForLocator child;
+	private ChildForLocator childForLocator;
 	private CircleImageView avatar;
 	private ViewGroup avatarViewItem;
 	private boolean isOnline;
 	private ImageLoader imageLoader;
 
-	public AvatarView(Context context, ChildForLocator child,
+	public AvatarView(Context context, ChildForLocator childForLocator,
 			ViewGroup viewGroup, boolean isOnline) {
 		this.context = context;
-		this.child = child;
+		this.childForLocator = childForLocator;
 		this.isOnline = isOnline;
 
 		imageLoader = ImageLoader.getInstance();
@@ -44,12 +45,12 @@ public class AvatarView {
 		if (isOnline == false) {
 			avatar.setAlpha(0.4f);
 		}
-		if (TextUtils.isEmpty(child.getIcon()) == false) {
-			if (ImageUtils.isLocalImage(child.getIcon())) {
-				avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child
-						.getIcon()));
+		if (TextUtils.isEmpty(childForLocator.getIcon()) == false) {
+			if (ImageUtils.isLocalImage(childForLocator.getIcon())) {
+				avatar.setImageBitmap(ImageUtils
+						.getBitmapFromLocal(childForLocator.getIcon()));
 			} else {
-				imageLoader.displayImage(child.getIcon(), avatar,
+				imageLoader.displayImage(childForLocator.getIcon(), avatar,
 						ImageUtils.avatarOpitons, null);
 			}
 		}
@@ -60,12 +61,9 @@ public class AvatarView {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(context, ChildDialog.class);
-				intent.putExtra("macAddress", child.getMacAddress());
-				intent.putExtra("id", child.getChildId());
-				intent.putExtra("phone", child.getPhone());
-				intent.putExtra("location", child.getLocationName());
-				intent.putExtra("name", child.getName());
-				intent.putExtra("icon", child.getIcon());
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(ChildDialog.EXTRA_CHILD, childForLocator);
+				intent.putExtras(bundle);
 				context.startActivity(intent);
 			}
 		});

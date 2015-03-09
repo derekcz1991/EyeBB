@@ -123,7 +123,7 @@ public class GCMUtils {
 	 */
 	private void storeRegistrationId(Context context, String regId) {
 		SharePrefsUtils.setDeviceId(context, regId);
-		int appVersion = SystemUtils.getAppVersion(context);
+		int appVersion = SystemUtils.getAppVersionCode(context);
 		SharePrefsUtils.setAppVersion(context, appVersion);
 		Log.i(TAG, "Saving regId on app version " + appVersion);
 	}

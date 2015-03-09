@@ -28,7 +28,6 @@ import com.twinly.eyebb.database.DBPerformance;
 import com.twinly.eyebb.model.Performance;
 import com.twinly.eyebb.model.PerformanceListItem;
 import com.twinly.eyebb.utils.SharePrefsUtils;
-import com.twinly.eyebb.utils.SystemUtils;
 
 public class ReportPerformanceFragment extends Fragment implements
 		PullToRefreshListener {

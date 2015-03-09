@@ -28,7 +28,7 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.customview.LoadingDialog;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.model.User;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
@@ -43,15 +43,12 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
  */
 
 public class AuthorizeKidsActivity extends Activity {
-	// private LinearLayoutForListView guest_listView;
-	// private LinearLayoutForListView master_listView;
 	private LinearLayoutForListView listView;
 	private GuestListViewAdapter guestAdapter;
 
-	// private Button btnAddNewGuest;
 	private ArrayList<User> authToGuestData;
 	private ArrayList<User> authFromMasterData;
-	private ArrayList<Child> authFromMasterChildrenData;
+	private ArrayList<ChildForGrant> authFromMasterChildrenData;
 
 	private String retStr;
 
@@ -88,7 +85,7 @@ public class AuthorizeKidsActivity extends Activity {
 
 		authToGuestData = new ArrayList<User>();
 		authFromMasterData = new ArrayList<User>();
-		authFromMasterChildrenData = new ArrayList<Child>();
+		authFromMasterChildrenData = new ArrayList<ChildForGrant>();
 
 	}
 
@@ -208,7 +205,7 @@ public class AuthorizeKidsActivity extends Activity {
 								JSONObject master_child_json = master_children
 										.getJSONObject(j);
 
-								Child master_child = new Child();
+								ChildForGrant master_child = new ChildForGrant();
 
 								master_child
 										.setChildId(master_child_json

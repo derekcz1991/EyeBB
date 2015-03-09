@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.GrantKidsActivity;
 import com.twinly.eyebb.customview.CircleImageView;
-import com.twinly.eyebb.model.Child;
+import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.model.User;
 
 public class GuestListViewAdapter extends BaseAdapter {
@@ -28,8 +28,8 @@ public class GuestListViewAdapter extends BaseAdapter {
 
 	private List<User> master_data;
 
-	private ArrayList<Child> auth_from_master_children_data;
-	private ArrayList<Child> new_children_data;
+	private ArrayList<ChildForGrant> auth_from_master_children_data;
+	private ArrayList<ChildForGrant> new_children_data;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -52,7 +52,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 
 	public GuestListViewAdapter(Context context, List<User> data,
 			List<User> master_data,
-			ArrayList<Child> auth_from_master_children_data) {
+			ArrayList<ChildForGrant> auth_from_master_children_data) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
@@ -98,9 +98,8 @@ public class GuestListViewAdapter extends BaseAdapter {
 			viewHolder.tv_authorized_to_others = (TextView) convertView
 					.findViewById(R.id.tv_authorized_to_others);
 			if (position == 1) {
-				convertView.findViewById(R.id.liner_g_to_m).setBackground(
-						context.getResources().getDrawable(
-								R.drawable.bg_home_blue01));
+				convertView.findViewById(R.id.liner_g_to_m)
+						.setBackgroundResource(R.drawable.bg_home_blue01);
 			}
 
 			convertView.setTag(viewHolder);
@@ -124,7 +123,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 			viewHolder.tv_authorized_to_others.setText(context
 					.getString(R.string.text_authorization_from_others));
 
-			new_children_data = new ArrayList<Child>();
+			new_children_data = new ArrayList<ChildForGrant>();
 
 			for (int i = 0; i < master_data.size(); i++) {
 

@@ -152,7 +152,7 @@ public class SharePrefsUtils {
 		// since the existing regID is not guaranteed to work with the new
 		// app version.
 		int registeredVersion = getAppVersion(context);
-		int currentVersion = SystemUtils.getAppVersion(context);
+		int currentVersion = SystemUtils.getAppVersionCode(context);
 		if (registeredVersion != currentVersion) {
 			return "";
 		}

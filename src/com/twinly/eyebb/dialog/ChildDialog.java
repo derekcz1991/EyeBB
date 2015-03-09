@@ -28,20 +28,21 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LoadingDialog;
+import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class ChildDialog extends Activity {
+	public static String EXTRA_CHILD = "EXTRA_CHILD";
 
 	private TextView phone;
 	private TextView name;
 	private TextView locationName;
+	private TextView lastAppearTime;
 	private LinearLayout phoneBtn;
 	private CircleImageView avatar;
-	private String icon;
-	private long childId;
-	private String macAddress;
+	private ChildForLocator childForLoator;
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -54,32 +55,37 @@ public class ChildDialog extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.dialog_child);
 
+		childForLoator = (ChildForLocator) getIntent().getExtras()
+				.getSerializable(EXTRA_CHILD);
+		System.out.println();
+		
 		phone = (TextView) findViewById(R.id.phone);
 		phoneBtn = (LinearLayout) findViewById(R.id.phone_btn);
 		name = (TextView) findViewById(R.id.name);
 		locationName = (TextView) findViewById(R.id.area_name);
+		lastAppearTime = (TextView) findViewById(R.id.last_appear_time);
 		avatar = (CircleImageView) findViewById(R.id.avatar);
 
-		phone.setText(getIntent().getStringExtra("phone"));
-		name.setText(getIntent().getStringExtra("name"));
-		locationName.setText("@ " + getIntent().getStringExtra("location"));
-		icon = getIntent().getStringExtra("icon");
-		childId = getIntent().getLongExtra("id", -1L);
-		macAddress = getIntent().getStringExtra("macAddress");
+		phone.setText(childForLoator.getPhone());
+		name.setText(childForLoator.getName());
+		locationName.setText("@ " + childForLoator.getLocationName());
+		lastAppearTime.setText(CommonUtils
+				.ConvertTimestampToDateFormat(childForLoator
+						.getLastAppearTime()));
 
 		if (phone.getText().toString().trim().length() == 0) {
 			phoneBtn.setVisibility(View.GONE);
 		}
 
 		imageLoader = ImageLoader.getInstance();
-		if (ImageUtils.isLocalImage(icon)) {
-			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(icon));
+		if (ImageUtils.isLocalImage(childForLoator.getIcon())) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childForLoator
+					.getIcon()));
 		} else {
-			imageLoader.displayImage(icon, avatar, ImageUtils.avatarOpitons,
-					animateFirstListener);
+			imageLoader.displayImage(childForLoator.getIcon(), avatar,
+					ImageUtils.avatarOpitons, animateFirstListener);
 		}
 
 		phoneBtn.setOnClickListener(new OnClickListener() {
@@ -108,10 +114,7 @@ public class ChildDialog extends Activity {
 						if (CommonUtils.isFastDoubleClick()) {
 							return;
 						} else {
-							//							Intent intent = new Intent(ChildDialog.this,
-							//									BeepDialog.class);
 							new Thread(postToServerRunnable).start();
-							//							startActivity(intent);
 						}
 					}
 				});
@@ -151,11 +154,9 @@ public class ChildDialog extends Activity {
 	};
 
 	private void postToServer() {
-		// TODO Auto-generated method stub
-
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("childId", childId + "");
-		map.put("macAddress", macAddress);
+		map.put("childId", childForLoator.getChildId() + "");
+		map.put("macAddress", childForLoator.getMacAddress());
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);

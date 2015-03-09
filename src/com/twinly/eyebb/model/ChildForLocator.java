@@ -1,6 +1,8 @@
 package com.twinly.eyebb.model;
 
-public class ChildForLocator extends Child {
+import java.io.Serializable;
+
+public class ChildForLocator extends Child implements Serializable {
 	/**
 	 * 
 	 */

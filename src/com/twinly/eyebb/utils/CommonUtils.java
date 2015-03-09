@@ -2,6 +2,8 @@ package com.twinly.eyebb.utils;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -78,5 +80,12 @@ public class CommonUtils {
 		InputMethodManager imm = (InputMethodManager) activity
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+	}
+
+	public static String ConvertTimestampToDateFormat(long timestamp) {
+		Date date = new Date(timestamp);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
+				Locale.CHINA);
+		return sdf.format(date);
 	}
 }
