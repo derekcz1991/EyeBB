@@ -122,24 +122,28 @@ public class ChildInformationMatchingActivity extends Activity {
 				childName = userName.getText().toString();
 				if (childName != null && childName.length() > 0) {
 					childNameFlag = true;
-					icChildName.setBackground(getResources().getDrawable(
-							R.drawable.ic_login_name));
+//					icChildName.setBackground(getResources().getDrawable(
+//							R.drawable.ic_login_name));
+					icChildName.setBackgroundResource(R.drawable.ic_login_name);
 				} else {
 					childNameFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					icChildName.setBackground(getResources().getDrawable(
-							R.drawable.ic_cross));
+//					icChildName.setBackground(getResources().getDrawable(
+//							R.drawable.ic_cross));
+					icChildName.setBackgroundResource(R.drawable.ic_cross);
 				}
 
 				if (birthday != null && birthday.length() > 0) {
 					birthdayFlag = true;
-					icBirthday.setBackground(getResources().getDrawable(
-							R.drawable.ic_login_email));
+//					icBirthday.setBackground(getResources().getDrawable(
+//							R.drawable.ic_login_email));
+					icBirthday.setBackgroundResource(R.drawable.ic_login_email);
 				} else {
 					birthdayFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					icBirthday.setBackground(getResources().getDrawable(
-							R.drawable.ic_cross));
+//					icBirthday.setBackground(getResources().getDrawable(
+//							R.drawable.ic_cross));
+					icBirthday.setBackgroundResource(R.drawable.ic_cross);
 				}
 
 				if (kindergartenId >= 0) {
