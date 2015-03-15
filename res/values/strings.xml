@@ -200,6 +200,7 @@
     <string name="btn_missed">Missed</string>
     <string name="btn_disconnect">Disconnect</string>
     <string name="btn_options">Setting</string>
+    <string name="btn_select_all">全选</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

@@ -27,10 +27,12 @@ import com.woozzu.android.widget.IndexableListView;
  */
 public class SelectKidsActivity extends Activity {
 	public static final String EXTRA_CHILDREN_LIST = "children_list";
-
+	public static final String EXTRA_SCANNED_DEVICE = "scanned_device";
 	private IndexableListView mListView;
 	private KidsListViewSimpleAdapter adapter;
 	private ArrayList<ChildSelectable> mList;
+	private String scannedDevice;
+	private boolean isSelectAll;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +43,15 @@ public class SelectKidsActivity extends Activity {
 
 		setContentView(R.layout.activity_select_kids);
 
+		scannedDevice = getIntent().getStringExtra(EXTRA_SCANNED_DEVICE);
 		mListView = (IndexableListView) findViewById(R.id.listview);
 
 		mList = DBChildren.getChildrenListWithAddress(this);
+		for (int i = 0; i < mList.size(); i++) {
+			if (scannedDevice.contains(mList.get(i).getMacAddress())) {
+				mList.get(i).setSelected(true);
+			}
+		}
 		adapter = new KidsListViewSimpleAdapter(this, mList, true);
 		mListView.setAdapter(adapter);
 		mListView.setFastScrollEnabled(true);
@@ -51,7 +59,10 @@ public class SelectKidsActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(0, 0, 0, R.string.btn_confirm).setShowAsAction(
+		menu.add(0, 0, 10, R.string.btn_confirm).setShowAsAction(
+				MenuItem.SHOW_AS_ACTION_IF_ROOM
+						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		menu.add(0, 1, 1, R.string.btn_select_all).setShowAsAction(
 				MenuItem.SHOW_AS_ACTION_IF_ROOM
 						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		return true;
@@ -61,17 +72,38 @@ public class SelectKidsActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
 			finish();
-			return true;
 		} else if (item.getItemId() == 0) {
-			Intent data = new Intent();
-			SerializableChildrenList serializableChildrenList = new SerializableChildrenList();
-			serializableChildrenList.setList(mList);
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(EXTRA_CHILDREN_LIST,
-					serializableChildrenList);
-			data.putExtras(bundle);
-			setResult(ActivityConstants.RESULT_RESULT_OK, data);
-			finish();
+			boolean isValid = false;
+			for (ChildSelectable childSelectable : mList) {
+				if (childSelectable.isSelected()) {
+					isValid = true;
+					break;
+				}
+			}
+			if (isValid) {
+				Intent data = new Intent();
+				SerializableChildrenList serializableChildrenList = new SerializableChildrenList();
+				serializableChildrenList.setList(mList);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(EXTRA_CHILDREN_LIST,
+						serializableChildrenList);
+				data.putExtras(bundle);
+				setResult(ActivityConstants.RESULT_RESULT_OK, data);
+				finish();
+			}
+		} else if (item.getItemId() == 1) {
+			if (isSelectAll) {
+				isSelectAll = false;
+				for (ChildSelectable childSelectable : mList) {
+					childSelectable.setSelected(false);
+				}
+			} else {
+				isSelectAll = true;
+				for (ChildSelectable childSelectable : mList) {
+					childSelectable.setSelected(true);
+				}
+			}
+			adapter.notifyDataSetChanged();
 		}
 		return super.onOptionsItemSelected(item);
 	}

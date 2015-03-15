@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.twinly.eyebb"
-    android:versionCode="8"
+    android:versionCode="9"
     android:versionName="1.0" >
 
     <uses-sdk
@@ -103,7 +103,6 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.MainActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>

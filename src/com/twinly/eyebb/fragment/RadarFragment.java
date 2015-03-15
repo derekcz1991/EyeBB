@@ -71,7 +71,6 @@ public class RadarFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		System.out.println("onCreateView");
 		mBluetoothUtils = new BluetoothUtils(getActivity(),
 				getFragmentManager());
 
@@ -149,6 +148,9 @@ public class RadarFragment extends Fragment {
 				if (isAntiLostOn == false) {
 					Intent intent = new Intent(getActivity(),
 							SelectKidsActivity.class);
+					intent.putExtra(SelectKidsActivity.EXTRA_SCANNED_DEVICE,
+							radarTrackingFragment.getScannedDeviceList()
+									.toString());
 					startActivityForResult(intent, 1);
 				}
 			}

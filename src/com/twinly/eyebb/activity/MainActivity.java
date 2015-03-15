@@ -40,6 +40,7 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
+
 /**
  * @author eyebb team
  * 
@@ -93,11 +94,6 @@ public class MainActivity extends FragmentActivity implements
 				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT));
 		registerReceiver(handleNotificationDot, new IntentFilter(
 				BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT));
-
-		// set the current tab
-		if (SharePrefsUtils.isAntiLostOn(this)) {
-			mTabHost.setCurrentTab(1);
-		}
 
 	}
 
@@ -231,6 +227,11 @@ public class MainActivity extends FragmentActivity implements
 		});
 
 		if (getIntent().getBooleanExtra(EXTRA_NEED_LOGIN, false)) {
+			// set the current tab
+			if (SharePrefsUtils.isAntiLostOn(this)) {
+				mTabHost.setCurrentTab(1);
+			}
+
 			new AutoLoginTask()
 					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}

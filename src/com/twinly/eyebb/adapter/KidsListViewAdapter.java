@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -37,13 +38,14 @@ public class KidsListViewAdapter extends
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
 
-	private List<Map.Entry<Long, ChildForLocator>> location_null_list;
-	private List<Map.Entry<Long, ChildForLocator>> location_not_null_list;
+	private List<Map.Entry<Long, ChildForLocator>> locationNullList;
+	private List<Map.Entry<Long, ChildForLocator>> locationNotNullList;
 
 	private final class ViewHolder {
 		public CircleImageView avatar;
 		public TextView name;
 		public TextView locationName;
+		public TextView lastAppearTime;
 		public TextView phone;
 		public LinearLayout phoneBtn;
 		public LinearLayout btnBeep;
@@ -65,28 +67,28 @@ public class KidsListViewAdapter extends
 						@Override
 						public int compare(Entry<Long, ChildForLocator> lhs,
 								Entry<Long, ChildForLocator> rhs) {
-							return lhs.getValue().getName().toLowerCase()
-									.charAt(0)
-									- rhs.getValue().getName().toLowerCase()
-											.charAt(0);
+							return lhs.getValue().getName()
+									.toLowerCase(Locale.US).charAt(0)
+									- rhs.getValue().getName()
+											.toLowerCase(Locale.US).charAt(0);
 						}
 					});
 		}
 
 		if (isSortByLocator) {
-			location_not_null_list = new ArrayList<Map.Entry<Long, ChildForLocator>>();
-			location_null_list = new ArrayList<Map.Entry<Long, ChildForLocator>>();
+			locationNotNullList = new ArrayList<Map.Entry<Long, ChildForLocator>>();
+			locationNullList = new ArrayList<Map.Entry<Long, ChildForLocator>>();
 
 			for (int i = 0; i < list.size(); i++) {
 				if (list.get(i).getValue().getLocationName() == null) {
-					location_null_list.add(list.get(i));
+					locationNullList.add(list.get(i));
 				} else {
-					location_not_null_list.add(list.get(i));
+					locationNotNullList.add(list.get(i));
 				}
 
 			}
 
-			Collections.sort(location_not_null_list,
+			Collections.sort(locationNotNullList,
 					new Comparator<Map.Entry<Long, ChildForLocator>>() {
 
 						@Override
@@ -99,15 +101,15 @@ public class KidsListViewAdapter extends
 								return -1;
 							}
 							return lhs.getValue().getLocationName()
-									.toLowerCase().charAt(0)
+									.toLowerCase(Locale.US).charAt(0)
 									- rhs.getValue().getLocationName()
-											.toLowerCase().charAt(0);
+											.toLowerCase(Locale.US).charAt(0);
 						}
 					});
 
 			list.clear();
-			list.addAll(location_null_list);
-			list.addAll(location_not_null_list);
+			list.addAll(locationNullList);
+			list.addAll(locationNotNullList);
 		}
 
 		imageLoader = ImageLoader.getInstance();
@@ -140,6 +142,8 @@ public class KidsListViewAdapter extends
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.locationName = (TextView) convertView
 					.findViewById(R.id.area_name);
+			viewHolder.lastAppearTime = (TextView) convertView
+					.findViewById(R.id.last_appear_time);
 			viewHolder.phone = (TextView) convertView.findViewById(R.id.phone);
 			viewHolder.phoneBtn = (LinearLayout) convertView
 					.findViewById(R.id.phone_btn);
@@ -163,11 +167,9 @@ public class KidsListViewAdapter extends
 					.getDrawable(R.drawable.icon_avatar_dark));
 		}
 		viewHolder.name.setText(child.getName());
-		// System.out.println(PinYin.getPinYin(child.getName()) + "<------");
-		// boolean a =
-		// getStringToDetectionLetters((getItem(position)).getValue()
-		// .getName().charAt(0));
 		viewHolder.locationName.setText("@ " + child.getLocationName());
+		viewHolder.lastAppearTime.setText(CommonUtils
+				.ConvertTimestampToDateFormat(child.getLastAppearTime()));
 		viewHolder.phone.setText(child.getPhone());
 		if (viewHolder.phone.getText().toString().trim().length() == 0) {
 			viewHolder.phoneBtn.setVisibility(View.GONE);

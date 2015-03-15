@@ -246,6 +246,10 @@ public class RadarTrackingFragment extends Fragment {
 		});
 	}
 
+	public ArrayList<Device> getScannedDeviceList() {
+		return scannedDeviceList;
+	}
+
 	/**
 	 * 动态设置ListView的高度
 	 * @param listView

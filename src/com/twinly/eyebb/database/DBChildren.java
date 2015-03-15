@@ -106,7 +106,7 @@ public class DBChildren {
 				"select * from children where mac_address != '" + "'", null);
 		while (cursor.moveToNext()) {
 			ChildSelectable childSelectable = new ChildSelectable(
-					createChild(cursor), true);
+					createChild(cursor), false);
 			childList.add(childSelectable);
 		}
 		cursor.close();
