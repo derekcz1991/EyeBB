@@ -221,7 +221,7 @@ public class GrantKidsActivity extends Activity {
 		try {
 			String retStr = HttpRequestUtils.post(HttpConstants.GRANT_GUESTS,
 					map);
-			System.out.println("grant======>" + retStr);
+			//System.out.println("grant======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");

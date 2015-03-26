@@ -102,7 +102,7 @@ public class AuthorizeKidsActivity extends Activity {
 	private void postFindGuestsToServer() {
 		try {
 			retStr = HttpRequestUtils.get(HttpConstants.AUTH_FIND_GUESTS, null);
-			// System.out.println("retStrpost======>" + retStr);
+			System.out.println("retStrpost======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
