@@ -60,10 +60,10 @@ public class SelectKidsActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, 0, 10, R.string.btn_confirm).setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_IF_ROOM
+				MenuItem.SHOW_AS_ACTION_ALWAYS
 						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		menu.add(0, 1, 1, R.string.btn_select_all).setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_IF_ROOM
+				MenuItem.SHOW_AS_ACTION_ALWAYS
 						| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		return true;
 	}

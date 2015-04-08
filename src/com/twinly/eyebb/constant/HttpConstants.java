@@ -9,7 +9,7 @@ public class HttpConstants {
 	 * 158.182.220.206 == test.eyebb.com (Testing)
 	 * 158.182.246.223 == srv.eyebb.com (Production)
 	 */
-	public static final String SERVER_URL = "http://test.eyebb.com:8089/";
+	public static final String SERVER_URL = "http://test.eyebb.com/";
 	// public static final String SERVER_URL = "http://158.182.220.206:8089/";
 	// public static final String SERVER_URL = "http://158.182.246.223:8080/";
 	// public static final String SERVER_URL = "http://158.182.220.203:8080/";
