@@ -6,12 +6,11 @@ import java.util.Iterator;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.bluetooth.BluetoothAdapter.LeScanCallback;
-import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,17 +22,15 @@ import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
-import com.twinly.eyebb.bluetooth.BluetoothUtils;
-import com.twinly.eyebb.database.DBChildren;
+import com.twinly.eyebb.bluetooth.AntiLostService;
+import com.twinly.eyebb.bluetooth.RadarTrackingService;
 import com.twinly.eyebb.model.Device;
+import com.twinly.eyebb.model.SerializableDeviceMap;
 import com.twinly.eyebb.utils.BroadcastUtils;
 
 @SuppressLint("NewApi")
 public class RadarTrackingFragment extends Fragment {
-	private final int MESSAGE_WHAT_UPDATE_VIEW = 0;
-	private final int MESSAGE_WHAT_REMOVE_CALLBACK = 1;
 
-	private BluetoothUtils mBluetoothUtils;
 	private ListView listView;
 	private RelativeLayout btnSuperised;
 	private RelativeLayout btnMissed;
@@ -48,7 +45,8 @@ public class RadarTrackingFragment extends Fragment {
 	private TextView tvMissedNumber;
 	private RadarViewFragment radarViewFragment;
 
-	private HashMap<String, Device> macaronHashMap;
+	private SerializableDeviceMap serializableMacaronMap;
+	private HashMap<String, Device> deviceHashMap;
 	private ArrayList<Device> displayDeviceList;
 	private ArrayList<Device> scannedDeviceList;
 	private ArrayList<Device> missedDeviceList;
@@ -57,25 +55,21 @@ public class RadarTrackingFragment extends Fragment {
 	private boolean isSuperisedSection = true;
 	private boolean isRadarTrackingOn = false;
 
-	LeScanCallback leScanCallback = new LeScanCallback() {
-
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
-		public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-			if (macaronHashMap.get(device.getAddress()) != null) {
-				macaronHashMap.get(device.getAddress()).setPreRssi(
-						macaronHashMap.get(device.getAddress()).getRssi());
-				macaronHashMap.get(device.getAddress()).setRssi(rssi);
-				macaronHashMap.get(device.getAddress()).setLastAppearTime(
-						System.currentTimeMillis());
+		public void onReceive(Context context, Intent intent) {
+			final String action = intent.getAction();
+			if (RadarTrackingService.ACTION_DATA_CHANGED.equals(action)) {
+				Bundle bundle = intent.getExtras();
+				serializableMacaronMap = (SerializableDeviceMap) bundle
+						.get(RadarTrackingService.EXTRA_DEVICE_LIST);
+				updateView();
 			}
 		}
 	};
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mBluetoothUtils = new BluetoothUtils(getActivity(),
-				getFragmentManager());
-
 		View v = inflater.inflate(R.layout.fragment_radar_tracking, container,
 				false);
 		listView = (ListView) v.findViewById(R.id.listView);
@@ -103,6 +97,8 @@ public class RadarTrackingFragment extends Fragment {
 					.commit();
 		}
 
+		getActivity().registerReceiver(mReceiver,
+				new IntentFilter(RadarTrackingService.ACTION_DATA_CHANGED));
 		setupListener();
 		return v;
 	}
@@ -110,13 +106,18 @@ public class RadarTrackingFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		macaronHashMap = DBChildren.getChildrenMapWithAddress(getActivity());
 		displayDeviceList = new ArrayList<Device>();
 		scannedDeviceList = new ArrayList<Device>();
 		missedDeviceList = new ArrayList<Device>();
 		mAdapter = new RadarKidsListViewAdapter(getActivity(),
 				displayDeviceList);
 		listView.setAdapter(mAdapter);
+	}
+
+	@Override
+	public void onDestroy() {
+		getActivity().unregisterReceiver(mReceiver);
+		super.onDestroy();
 	}
 
 	private void setupListener() {
@@ -159,47 +160,28 @@ public class RadarTrackingFragment extends Fragment {
 
 	public void start() {
 		isRadarTrackingOn = true;
-		mBluetoothUtils.startLeScan(leScanCallback, 500);
 		radarViewFragment.startAnimation();
 		BroadcastUtils.opeanRadar(getActivity());
 
-		mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 2000);
+		// start service
+		Intent radarTrackingServiceIntent = new Intent();
+		radarTrackingServiceIntent.setClass(getActivity(),
+				RadarTrackingService.class);
+		getActivity().startService(radarTrackingServiceIntent);
+	}
+
+	public void resume() {
+		isRadarTrackingOn = true;
 	}
 
 	public void stop() {
 		isRadarTrackingOn = false;
-		mBluetoothUtils.stopLeScan();
 		radarViewFragment.stopAnimation();
 		BroadcastUtils.closeRadar(getActivity());
-		mHandler.removeMessages(MESSAGE_WHAT_UPDATE_VIEW);
+
+		Intent action = new Intent(RadarTrackingService.ACTION_STOP_SERVICE);
+		getActivity().sendBroadcast(action);
 	}
-
-	Handler mHandler = new Handler(Looper.getMainLooper()) {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case MESSAGE_WHAT_UPDATE_VIEW:
-				mHandler.post(updateViewRunnable);
-				break;
-			case MESSAGE_WHAT_REMOVE_CALLBACK:
-				mHandler.removeCallbacks(updateViewRunnable);
-				break;
-			}
-		}
-	};
-
-	Runnable updateViewRunnable = new Runnable() {
-
-		@Override
-		public void run() {
-			if (isRadarTrackingOn) {
-				updateView();
-				mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT_UPDATE_VIEW, 5000);
-			}
-
-		}
-
-	};
 
 	public void updateView() {
 		if (isRadarTrackingOn) {
@@ -208,16 +190,17 @@ public class RadarTrackingFragment extends Fragment {
 			scannedDeviceList.clear();
 			missedDeviceList.clear();
 
-			Iterator<String> it = macaronHashMap.keySet().iterator();
+			deviceHashMap = serializableMacaronMap.getMap();
+			Iterator<String> it = deviceHashMap.keySet().iterator();
 			while (it.hasNext()) {
 				macAddress = it.next();
 				if (System.currentTimeMillis()
-						- macaronHashMap.get(macAddress).getLastAppearTime() < RadarFragment.LOST_TIMEOUT) {
-					macaronHashMap.get(macAddress).setMissed(false);
-					scannedDeviceList.add(macaronHashMap.get(macAddress));
+						- deviceHashMap.get(macAddress).getLastAppearTime() < RadarFragment.LOST_TIMEOUT) {
+					deviceHashMap.get(macAddress).setMissed(false);
+					scannedDeviceList.add(deviceHashMap.get(macAddress));
 				} else {
-					macaronHashMap.get(macAddress).setMissed(true);
-					missedDeviceList.add(macaronHashMap.get(macAddress));
+					deviceHashMap.get(macAddress).setMissed(true);
+					missedDeviceList.add(deviceHashMap.get(macAddress));
 				}
 			}
 
@@ -278,4 +261,5 @@ public class RadarTrackingFragment extends Fragment {
 		listView.setLayoutParams(params);
 
 	}
+
 }

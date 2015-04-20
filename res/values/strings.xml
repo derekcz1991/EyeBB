@@ -164,6 +164,7 @@
     <string name="text_network_connecting">Connecting&#8230;</string>
     <string name="text_search_guset_activity_share_msg">Invite him/her?。Link：play.google.com/xxxxxxxx</string>
     <string name="text_no_new_firmware">congratulation, the firmware of your eyebb device is the most updated.</string>
+    <string name="text_is_runnig">Running&#8230;</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

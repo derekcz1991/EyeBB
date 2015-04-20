@@ -22,6 +22,7 @@ public class ActivityConstants {
 	public static final String SHARE_PREFS_ITEM_NOTIFICATION_DOT = "notification_dot";
 	public static final String SHARE_PREFS_ITEM_REPORT_CHILD_ID = "report_child_id";
 	public static final String SHARE_PREFS_ITEM_IS_ANTI_LOST_ON = "is_anti_lost_on";
+	public static final String SHARE_PREFS_ITEM_IS_RADAR_TRACKING_ON = "is_radar_tracking_on";
 
 	public static final int REQUEST_GO_TO_WELCOME_ACTIVITY = 100;
 	public static final int REQUEST_GO_TO_LOGIN_ACTIVITY = 101;

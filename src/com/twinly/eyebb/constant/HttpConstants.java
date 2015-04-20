@@ -129,7 +129,8 @@ public class HttpConstants {
 	public static final String GET_MASTER_CHILDREN = "masterService/api/masterChildren";
 	public static final String CHANGE_NICKNAME = "accSetting/api/changeNickname";
 	public static final String REQUIRE_OR_GET_QR_CODE = "masterService/api/childMacAddressAvailable";
-
+	public static final String UPLOAD_LOCATION = "appBgService/api/radar";
+	
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
 	public static final String SERVER_RETURN_false = "false";

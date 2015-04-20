@@ -32,18 +32,16 @@ public class RegularExpression {
 			return false;
 		}
 	}
-	
+
 	public static boolean isUsername(String usrname) {
 		Pattern p = Pattern.compile("^[0-9_]{8,20}$");
 		Matcher m = p.matcher(usrname);
-		System.out.println(m.matches() + "---");
 		return m.matches();
 	}
 
 	public static boolean isPassword(String password) {
 		Pattern p = Pattern.compile("^[a-zA-Z0-9]{6,20}$");
 		Matcher m = p.matcher(password);
-		System.out.println(m.matches() + "---");
 		return m.matches();
 	}
 
@@ -51,10 +49,9 @@ public class RegularExpression {
 		Pattern p = Pattern
 				.compile("^[a-zA-Z][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$");
 		Matcher m = p.matcher(email);
-		System.out.println(m.matches() + "---");
 		return m.matches();
 	}
-	
+
 	public static String getValidMacAddress(Context context, String macAddress) {
 		macAddress = macAddress.toUpperCase(Locale.US);
 		Pattern p = Pattern

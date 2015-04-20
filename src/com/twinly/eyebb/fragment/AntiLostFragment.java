@@ -25,7 +25,7 @@ import com.twinly.eyebb.model.SerializableDeviceMap;
 public class AntiLostFragment extends Fragment {
 	private HashMap<String, Device> deviceHashMap;
 	private ArrayList<Device> deviceList;
-	private SerializableDeviceMap serializableMacaronMap;
+	private SerializableDeviceMap serializableDeviceMap;
 	private ProgressBar progressBar;
 	private ListView listView;
 	private RadarKidsListViewAdapter mAdapter;
@@ -36,7 +36,7 @@ public class AntiLostFragment extends Fragment {
 			String action = intent.getAction();
 			if (AntiLostService.ACTION_DATA_CHANGED.equals(action)) {
 				Bundle bundle = intent.getExtras();
-				serializableMacaronMap = (SerializableDeviceMap) bundle
+				serializableDeviceMap = (SerializableDeviceMap) bundle
 						.get(AntiLostService.EXTRA_DEVICE_LIST);
 				updateView();
 			}
@@ -85,7 +85,7 @@ public class AntiLostFragment extends Fragment {
 
 	private void updateView() {
 		if (isAntiLostOn) {
-			deviceHashMap = serializableMacaronMap.getMap();
+			deviceHashMap = serializableDeviceMap.getMap();
 			String macAddress;
 			Iterator<String> it = deviceHashMap.keySet().iterator();
 			deviceList.clear();

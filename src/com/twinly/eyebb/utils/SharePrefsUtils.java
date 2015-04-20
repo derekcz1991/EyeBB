@@ -170,8 +170,8 @@ public class SharePrefsUtils {
 	}
 
 	public static void setNotificationDot(Context context, boolean value) {
-		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_NOTIFICATION_DOT,
-				value);
+		setBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_NOTIFICATION_DOT, value);
 	}
 
 	public static boolean isAntiLostOn(Context context) {
@@ -179,9 +179,19 @@ public class SharePrefsUtils {
 				ActivityConstants.SHARE_PREFS_ITEM_IS_ANTI_LOST_ON, false);
 	}
 
-	public static void setAntiLostOn(Context context, boolean value) {
+	public static void setAntiLost(Context context, boolean value) {
 		setBoolean(context, ActivityConstants.SHARE_PREFS_ITEM_IS_ANTI_LOST_ON,
 				value);
+	}
+
+	public static boolean isRadarTrackingOn(Context context) {
+		return getBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_IS_RADAR_TRACKING_ON, false);
+	}
+
+	public static void setRadarTracking(Context context, boolean value) {
+		setBoolean(context,
+				ActivityConstants.SHARE_PREFS_ITEM_IS_RADAR_TRACKING_ON, value);
 	}
 
 	/**

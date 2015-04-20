@@ -306,6 +306,10 @@
             android:name="com.twinly.eyebb.bluetooth.AntiLostService"
             android:exported="true"
             android:process=":remote" />
+        <service
+            android:name="com.twinly.eyebb.bluetooth.RadarTrackingService"
+            android:exported="true"
+            android:process=":remote" />
     </application>
 
 </manifest>

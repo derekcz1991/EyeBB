@@ -51,9 +51,10 @@ public class LancherActivity extends Activity {
 		checkLogo();
 		setLanguage();
 		mkdir();
-		new HttpRequestUtils();
+		//new HttpRequestUtils();
 
-		if (SharePrefsUtils.isAntiLostOn(this)) {
+		if (SharePrefsUtils.isAntiLostOn(this)
+				|| SharePrefsUtils.isRadarTrackingOn(this)) {
 			Intent intent = new Intent(LancherActivity.this, MainActivity.class);
 			intent.putExtra(MainActivity.EXTRA_NEED_LOGIN, true);
 			startActivity(intent);

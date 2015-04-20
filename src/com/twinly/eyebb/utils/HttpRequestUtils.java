@@ -29,7 +29,21 @@ import com.twinly.eyebb.constant.HttpConstants;
 public class HttpRequestUtils {
 	static HttpClient httpClient;
 
-	public HttpRequestUtils() {
+	private HttpRequestUtils() {
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		// The default value is zero, that means the timeout is not used.
+		int timeoutConnection = 3000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters,
+				timeoutConnection);
+		// Set the default socket timeout (SO_TIMEOUT)
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 3000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		httpClient = new DefaultHttpClient(httpParameters);
+	}
+
+	private static void initializeHttpClient() {
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
 		// The default value is zero, that means the timeout is not used.
@@ -113,10 +127,9 @@ public class HttpRequestUtils {
 		HttpGet get = new HttpGet(url);
 		get.setHeader("Content-Type", "application/json");
 		try {
-			/*
-			 * HttpResponse httpResponse = httpClient.execute(targetHost, get,
-			 * localContext);
-			 */
+			if (httpClient == null) {
+				initializeHttpClient();
+			}
 			HttpResponse httpResponse = httpClient.execute(get);
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
@@ -136,9 +149,13 @@ public class HttpRequestUtils {
 			e1.printStackTrace();
 		}
 		try {
+			if (httpClient == null) {
+				initializeHttpClient();
+			}
 			HttpResponse httpResponse = httpClient.execute(post);
 			return getResponse(httpResponse.getEntity());
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("error = " + e.getMessage());
 			return HttpConstants.HTTP_POST_RESPONSE_EXCEPTION;
 		}

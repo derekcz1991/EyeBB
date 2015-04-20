@@ -110,7 +110,8 @@ public class RadarFragment extends Fragment {
 					"antiLost");
 		}
 
-		if (SharePrefsUtils.isAntiLostOn(getActivity())) {
+		if (SharePrefsUtils.isAntiLostOn(getActivity())
+				|| SharePrefsUtils.isRadarTrackingOn(getActivity())) {
 			start();
 		} else {
 			fragmentTransaction.hide(antiLostFragment);
@@ -164,7 +165,10 @@ public class RadarFragment extends Fragment {
 		tvRadarTracking.setEnabled(true);
 		tvAntiLost.setEnabled(true);
 		btnRadarSwitch.setBackgroundResource(R.drawable.btn_switch_on);
-		if (SharePrefsUtils.isAntiLostOn(getActivity())) {
+
+		if (SharePrefsUtils.isRadarTrackingOn(getActivity())) {
+			resumeRadarTracking();
+		} else if (SharePrefsUtils.isAntiLostOn(getActivity())) {
 			resumeAntiLost();
 		} else {
 			startRadarTracking();
@@ -187,6 +191,7 @@ public class RadarFragment extends Fragment {
 
 	private void startRadarTracking() {
 		if (isRadarTrackingOn == false) {
+			SharePrefsUtils.setRadarTracking(getActivity(), true);
 			stopAntiLost();
 			isRadarTrackingOn = true;
 			tvRadarTracking.setChecked(true);
@@ -197,8 +202,17 @@ public class RadarFragment extends Fragment {
 		}
 	}
 
+	private void resumeRadarTracking() {
+		isRadarTrackingOn = true;
+		tvRadarTracking.setChecked(true);
+		radarTrackingFragment.resume();
+		getChildFragmentManager().beginTransaction()
+				.show(radarTrackingFragment).hide(antiLostFragment).commit();
+	}
+
 	private void stopRadarTracking() {
 		if (isRadarTrackingOn == true) {
+			SharePrefsUtils.setRadarTracking(getActivity(), false);
 			isRadarTrackingOn = false;
 			tvRadarTracking.setChecked(false);
 			radarTrackingFragment.stop();
@@ -207,7 +221,7 @@ public class RadarFragment extends Fragment {
 
 	private void startAntiLost(ArrayList<String> antiLostDeviceList) {
 		if (isAntiLostOn == false) {
-			SharePrefsUtils.setAntiLostOn(getActivity(), true);
+			SharePrefsUtils.setAntiLost(getActivity(), true);
 			stopRadarTracking();
 			isAntiLostOn = true;
 			tvAntiLost.setChecked(true);
@@ -227,7 +241,7 @@ public class RadarFragment extends Fragment {
 
 	private void stopAntiLost() {
 		if (isAntiLostOn == true) {
-			SharePrefsUtils.setAntiLostOn(getActivity(), false);
+			SharePrefsUtils.setAntiLost(getActivity(), false);
 			isAntiLostOn = false;
 			tvAntiLost.setChecked(false);
 			antiLostFragment.stop();

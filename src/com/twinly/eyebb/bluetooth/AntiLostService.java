@@ -47,10 +47,10 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 public class AntiLostService extends Service {
 	public final static String ACTION_DATA_CHANGED = "antilost.ACTION_DATA_CHANGED";
 	public final static String ACTION_STOP_SERVICE = "antilost.ACTION_STOP_SERVICE";
-
+	public static final String EXTRA_DEVICE_LIST = "DEVICE_LIST";
+	
 	private final static String TAG = AntiLostService.class.getSimpleName();
 
-	public static final String EXTRA_DEVICE_LIST = "DEVICE_LIST";
 	public static final int MAX_DUAL_MODE_SIZE = 3;
 	private final int MESSAGE_INIT_NOTIFICAION = 1;
 	private final int MESSAGE_CONNECT_DEVICE = 2;
@@ -340,26 +340,6 @@ public class AntiLostService extends Service {
 		return null;
 	}
 
-	private void stop() {
-		mServiceHandler.removeMessages(MESSAGE_UPDATE_VIEW);
-		mServiceHandler.removeMessages(MESSAGE_CONNECT_DEVICE);
-
-		mNotificationManager.cancelAll();
-		unregisterReceiver(mReceiver);
-		if (isSingleMode) {
-			stopLeScan();
-			stopSelf();
-			stopForeground(true);
-		} else {
-			// if it's dual mode, disconnect with device before stop the service
-			mServiceState = STATE_STOPPING;
-			Message msg = Message.obtain();
-			msg.what = MESSAGE_DISCONNECT_DEVICE;
-			msg.arg1 = 0;
-			mServiceHandler.sendMessage(msg);
-		}
-	}
-
 	/**
 	 * Initializes a reference to the local Bluetooth adapter.
 	 * 
@@ -398,6 +378,26 @@ public class AntiLostService extends Service {
 	private void stopLeScan() {
 		if (scanner != null) {
 			scanner.stop();
+		}
+	}
+	
+	private void stop() {
+		mServiceHandler.removeMessages(MESSAGE_UPDATE_VIEW);
+		mServiceHandler.removeMessages(MESSAGE_CONNECT_DEVICE);
+
+		mNotificationManager.cancelAll();
+		unregisterReceiver(mReceiver);
+		if (isSingleMode) {
+			stopLeScan();
+			stopSelf();
+			stopForeground(true);
+		} else {
+			// if it's dual mode, disconnect with device before stop the service
+			mServiceState = STATE_STOPPING;
+			Message msg = Message.obtain();
+			msg.what = MESSAGE_DISCONNECT_DEVICE;
+			msg.arg1 = 0;
+			mServiceHandler.sendMessage(msg);
 		}
 	}
 
