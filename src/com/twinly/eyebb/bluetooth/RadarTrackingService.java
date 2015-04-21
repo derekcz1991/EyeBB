@@ -56,8 +56,15 @@ public class RadarTrackingService extends Service implements
 			.getSimpleName();
 
 	private final int MESSAGE_INIT_NOTIFICAION = 1;
-	private final int MESSAGE_SCANN = 2;
-	private final int MESSAGE_UPDATE_VIEW = 3;
+	private final int MESSAGE_SCAN = 2;
+	private final int MESSAGE_STOP_SCAN = 3;
+	private final int MESSAGE_START_LOCATING = 4;
+	private final int MESSAGE_STOP_LOCATING = 5;
+
+	private final long TIMEMILLS_SCAN_INTERVAL = 10000;
+	private final long TIMEMILLS_TO_START_LOCATING = 11000;
+	private final int TIME_TO_START = 1;
+	private final int TIME_TO_RESET = 4;
 
 	private HashMap<String, Device> deviceHashMap;
 	private SerializableDeviceMap serializableDeviceMap;
@@ -74,6 +81,8 @@ public class RadarTrackingService extends Service implements
 
 	private LocationClient mLocationClient;
 	private double latitude, longitude;
+	private boolean isFirstTime = true;
+	private int timeTickerCounter;
 
 	// These settings are the same as the settings for the map. They will in fact give you updates
 	// at the maximal rates currently possible.
@@ -106,8 +115,23 @@ public class RadarTrackingService extends Service implements
 					stop();
 				}
 			} else if (Intent.ACTION_TIME_TICK.equals(action)) {
-				new UploadLocationTask()
-						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				timeTickerCounter++;
+				switch (timeTickerCounter) {
+				case TIME_TO_START:
+					if (isFirstTime == true) {
+						mServiceHandler.sendEmptyMessage(MESSAGE_SCAN);
+						mServiceHandler.sendEmptyMessageDelayed(
+								MESSAGE_STOP_SCAN, TIMEMILLS_SCAN_INTERVAL);
+						mServiceHandler.sendEmptyMessageDelayed(
+								MESSAGE_START_LOCATING,
+								TIMEMILLS_TO_START_LOCATING);
+					}
+					break;
+				case TIME_TO_RESET:
+					timeTickerCounter = 0;
+					mServiceHandler.sendEmptyMessage(MESSAGE_STOP_LOCATING);
+					break;
+				}
 			}
 		}
 	};
@@ -121,19 +145,50 @@ public class RadarTrackingService extends Service implements
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MESSAGE_INIT_NOTIFICAION:
+				System.out.println("MESSAGE_INIT_NOTIFICAION");
 				if (initialize()) {
 					buildNotification(getString(R.string.text_is_runnig));
-					mServiceHandler.sendEmptyMessage(MESSAGE_SCANN);
-					mServiceHandler.sendEmptyMessage(MESSAGE_UPDATE_VIEW);
+					if (isFirstTime == true) {
+						isFirstTime = false;
+						mServiceHandler.sendEmptyMessage(MESSAGE_SCAN);
+						mServiceHandler.sendEmptyMessageDelayed(
+								MESSAGE_STOP_SCAN, TIMEMILLS_SCAN_INTERVAL);
+						mServiceHandler.sendEmptyMessageDelayed(
+								MESSAGE_START_LOCATING,
+								TIMEMILLS_TO_START_LOCATING);
+					}
 				}
 				break;
-			case MESSAGE_SCANN:
+			case MESSAGE_SCAN:
+				System.out.println("MESSAGE_SCAN");
+				Toast.makeText(getApplicationContext(), "start scan",
+						Toast.LENGTH_SHORT).show();
 				startLeScan(leScanCallback, 500);
 				break;
-			case MESSAGE_UPDATE_VIEW:
+			case MESSAGE_STOP_SCAN:
+				System.out.println("MESSAGE_STOP_SCAN");
+				Toast.makeText(getApplicationContext(), "stop scan",
+						Toast.LENGTH_SHORT).show();
+				stopLeScan();
+				// once stop scan, send broadcast to update view
 				broadcastUpdate();
-				mServiceHandler.sendEmptyMessageDelayed(MESSAGE_UPDATE_VIEW,
-						5000);
+				break;
+			case MESSAGE_START_LOCATING:
+				System.out.println("MESSAGE_START_LOCATING");
+				Toast.makeText(getApplicationContext(), "start locating",
+						Toast.LENGTH_SHORT).show();
+				if (mLocationClient != null)
+					mLocationClient.connect();
+				break;
+			case MESSAGE_STOP_LOCATING:
+				System.out.println("MESSAGE_STOP_LOCATING");
+				Toast.makeText(getApplicationContext(), "stop locating",
+						Toast.LENGTH_SHORT).show();
+				if (mLocationClient != null)
+					mLocationClient.disconnect();
+				// once stop locating, upload the data to server
+				new UploadLocationTask()
+						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				break;
 			}
 		}
@@ -158,8 +213,6 @@ public class RadarTrackingService extends Service implements
 		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		setUpLocationClientIfNeeded();
-		mLocationClient.connect();
-		//new HttpRequestUtils();
 	}
 
 	@Override
@@ -222,8 +275,6 @@ public class RadarTrackingService extends Service implements
 	}
 
 	private void stop() {
-		mServiceHandler.removeMessages(MESSAGE_UPDATE_VIEW);
-
 		mNotificationManager.cancelAll();
 		unregisterReceiver(mReceiver);
 		stopLeScan();
@@ -329,6 +380,7 @@ public class RadarTrackingService extends Service implements
 		latitude = location.getLatitude();
 		longitude = location.getLongitude();
 		System.out.println(latitude + "--" + longitude);
+		mServiceHandler.sendEmptyMessage(MESSAGE_STOP_LOCATING);
 	}
 
 	@Override

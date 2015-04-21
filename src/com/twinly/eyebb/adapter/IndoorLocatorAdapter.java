@@ -181,8 +181,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		// clear the view
 		viewHolder.avatarContainer.removeAllViews();
 
-		String locationType = locationMap.get(list.get(position).getKey())
-				.getType();
+		//String locationType = locationMap.get(list.get(position).getKey()).getType();
 		String locationName = locationMap.get(list.get(position).getKey())
 				.getDisplayName(context);
 		String locationIcon = locationMap.get(list.get(position).getKey())

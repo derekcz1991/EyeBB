@@ -463,8 +463,11 @@ public class IndoorLocatorFragment extends Fragment implements
 		DBChildren.insert(getActivity(), child);
 
 		ChildForLocator childForLocator = new ChildForLocator(child);
-		childForLocator.setLastAppearTime(childrenBeanObject
-				.getLong(HttpConstants.JSON_KEY_CHILD_LAST_APPEAR_TIME));
+		childForLocator
+				.setLastAppearTime(CommonUtils.isNull(childrenBeanObject
+						.getString(HttpConstants.JSON_KEY_CHILD_LAST_APPEAR_TIME)) ? 0
+						: childrenBeanObject
+								.getLong(HttpConstants.JSON_KEY_CHILD_LAST_APPEAR_TIME));
 
 		childrenMap.put(child.getChildId(), childForLocator);
 		return child.getChildId();
