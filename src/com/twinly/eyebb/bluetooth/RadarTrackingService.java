@@ -61,10 +61,10 @@ public class RadarTrackingService extends Service implements
 	private final int MESSAGE_START_LOCATING = 4;
 	private final int MESSAGE_STOP_LOCATING = 5;
 
-	private final long TIMEMILLS_SCAN_INTERVAL = 10000;
-	private final long TIMEMILLS_TO_START_LOCATING = 11000;
+	private final long TIMEMILLS_SCAN_INTERVAL = 15000;
+	private final long TIMEMILLS_TO_START_LOCATING = 16000;
 	private final int TIME_TO_START = 1;
-	private final int TIME_TO_RESET = 4;
+	private final int TIME_TO_RESET = 6;
 
 	private HashMap<String, Device> deviceHashMap;
 	private SerializableDeviceMap serializableDeviceMap;
@@ -81,7 +81,9 @@ public class RadarTrackingService extends Service implements
 
 	private LocationClient mLocationClient;
 	private double latitude, longitude;
+	private int radius;
 	private boolean isFirstTime = true;
+	private boolean isLocatingWorking = false;
 	private int timeTickerCounter;
 
 	// These settings are the same as the settings for the map. They will in fact give you updates
@@ -118,7 +120,7 @@ public class RadarTrackingService extends Service implements
 				timeTickerCounter++;
 				switch (timeTickerCounter) {
 				case TIME_TO_START:
-					if (isFirstTime == true) {
+					if (isFirstTime == false) {
 						mServiceHandler.sendEmptyMessage(MESSAGE_SCAN);
 						mServiceHandler.sendEmptyMessageDelayed(
 								MESSAGE_STOP_SCAN, TIMEMILLS_SCAN_INTERVAL);
@@ -161,34 +163,33 @@ public class RadarTrackingService extends Service implements
 				break;
 			case MESSAGE_SCAN:
 				System.out.println("MESSAGE_SCAN");
-				Toast.makeText(getApplicationContext(), "start scan",
-						Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), "start scan", Toast.LENGTH_SHORT).show();
 				startLeScan(leScanCallback, 500);
 				break;
 			case MESSAGE_STOP_SCAN:
 				System.out.println("MESSAGE_STOP_SCAN");
-				Toast.makeText(getApplicationContext(), "stop scan",
-						Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), "stop scan", Toast.LENGTH_SHORT).show();
 				stopLeScan();
 				// once stop scan, send broadcast to update view
 				broadcastUpdate();
 				break;
 			case MESSAGE_START_LOCATING:
 				System.out.println("MESSAGE_START_LOCATING");
-				Toast.makeText(getApplicationContext(), "start locating",
-						Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), "start locating", Toast.LENGTH_SHORT).show();
 				if (mLocationClient != null)
 					mLocationClient.connect();
 				break;
 			case MESSAGE_STOP_LOCATING:
-				System.out.println("MESSAGE_STOP_LOCATING");
-				Toast.makeText(getApplicationContext(), "stop locating",
-						Toast.LENGTH_SHORT).show();
-				if (mLocationClient != null)
-					mLocationClient.disconnect();
-				// once stop locating, upload the data to server
-				new UploadLocationTask()
-						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				if (isLocatingWorking) {
+					isLocatingWorking = false;
+					System.out.println("MESSAGE_STOP_LOCATING");
+					//Toast.makeText(getApplicationContext(), "stop locating", Toast.LENGTH_SHORT).show();
+					if (mLocationClient != null)
+						mLocationClient.disconnect();
+					// once stop locating, upload the data to server
+					new UploadLocationTask()
+							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				}
 				break;
 			}
 		}
@@ -330,6 +331,7 @@ public class RadarTrackingService extends Service implements
 		serviceNotification = serviceNotificationbuilder.build();
 		startForeground(1, serviceNotification);
 	}
+	
 
 	private class UploadLocationTask extends AsyncTask<Void, Void, String> {
 
@@ -355,6 +357,7 @@ public class RadarTrackingService extends Service implements
 						RadarTrackingService.this, 0)));
 				map.put("latitude", String.valueOf(latitude));
 				map.put("longitude", String.valueOf(longitude));
+				map.put("radius", String.valueOf(radius));
 				map.put("macAddressList",
 						sb.toString().substring(0, sb.length() - 1));
 				System.out.println(map);
@@ -366,9 +369,9 @@ public class RadarTrackingService extends Service implements
 
 		@Override
 		protected void onPostExecute(String result) {
-			Toast.makeText(RadarTrackingService.this,
+			/*Toast.makeText(RadarTrackingService.this,
 					HttpConstants.UPLOAD_LOCATION + " ==>> " + result,
-					Toast.LENGTH_SHORT).show();
+					Toast.LENGTH_SHORT).show();*/
 			System.out.println(HttpConstants.UPLOAD_LOCATION + " ==>> "
 					+ result);
 		}
@@ -379,7 +382,8 @@ public class RadarTrackingService extends Service implements
 	public void onLocationChanged(Location location) {
 		latitude = location.getLatitude();
 		longitude = location.getLongitude();
-		System.out.println(latitude + "--" + longitude);
+		radius = (int) location.getAccuracy();
+		System.out.println(latitude + "--" + longitude + "--" + radius);
 		mServiceHandler.sendEmptyMessage(MESSAGE_STOP_LOCATING);
 	}
 
@@ -391,6 +395,7 @@ public class RadarTrackingService extends Service implements
 
 	@Override
 	public void onConnected(Bundle arg0) {
+		isLocatingWorking = true;
 		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
 	}
 

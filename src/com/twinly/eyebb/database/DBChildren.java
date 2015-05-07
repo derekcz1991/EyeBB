@@ -38,9 +38,10 @@ public class DBChildren {
 		SQLiteDatabase db = getInstance(context);
 		// if exist the friend, update his information
 		ContentValues values = new ContentValues();
+		System.out.println(child.getName() + ": " + child.getIcon());
 		values.put("child_id", child.getChildId());
 		values.put("name", child.getName());
-		//values.put("icon", child.getIcon());
+		values.put("icon", child.getIcon());
 		values.put("phone", child.getPhone());
 		values.put("mac_address", child.getMacAddress());
 		values.put("relation_with_user", child.getRelationWithUser());

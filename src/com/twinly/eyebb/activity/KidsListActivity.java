@@ -56,8 +56,8 @@ public class KidsListActivity extends Activity {
 				.get("childrenMap");
 
 		if (serializableMap != null) {
-			list = new ArrayList<Map.Entry<Long, ChildForLocator>>(serializableMap
-					.getMap().entrySet());
+			list = new ArrayList<Map.Entry<Long, ChildForLocator>>(
+					serializableMap.getMap().entrySet());
 
 			adapter = new KidsListViewAdapter(this, list, isSortByName,
 					isSortByLocation);

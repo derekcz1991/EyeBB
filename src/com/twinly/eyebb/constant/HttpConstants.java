@@ -111,6 +111,13 @@ public class HttpConstants {
 	public static final String JSON_KEY_NOTICES_ICON = "icon";
 	public static final String JSON_KEY_NOTICES_VALID_UNTIL = "validUntil";
 
+	public static final String GET_GPS_LOCATIONS = "/masterService/api/gpsLocationsByChild";
+	public static final String JSON_KEY_GPS_LOCATION_LIST = "gpsLocationList";
+	public static final String JSON_KEY_GPS_LATITUDE = "latitude";
+	public static final String JSON_KEY_GPS_LONGITUDE = "longitude";
+	public static final String JSON_KEY_GPS_RADIUS = "radius";
+	public static final String JSON_KEY_GPS_TIMESTAMP = "time";
+
 	public static final String SEARCH_GUEST = "masterService/api/searchGuest";
 	public static final String UPDATE_REGISTRATION_ID = "/accSetting/api/updateDeviceId";
 	public static final String ACC_NAME_CHECK = "regService/api/accNameCheck";
@@ -130,7 +137,7 @@ public class HttpConstants {
 	public static final String CHANGE_NICKNAME = "accSetting/api/changeNickname";
 	public static final String REQUIRE_OR_GET_QR_CODE = "masterService/api/childMacAddressAvailable";
 	public static final String UPLOAD_LOCATION = "appBgService/api/radar";
-	
+
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
 	public static final String SERVER_RETURN_false = "false";

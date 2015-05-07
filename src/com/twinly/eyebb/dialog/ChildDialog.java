@@ -25,6 +25,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.twinly.eyebb.R;
+import com.twinly.eyebb.activity.DisplayLocationActivity;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LoadingDialog;
@@ -42,7 +43,7 @@ public class ChildDialog extends Activity {
 	private TextView lastAppearTime;
 	private LinearLayout phoneBtn;
 	private CircleImageView avatar;
-	private ChildForLocator childForLoator;
+	private ChildForLocator childForLocator;
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
@@ -57,10 +58,9 @@ public class ChildDialog extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_child);
 
-		childForLoator = (ChildForLocator) getIntent().getExtras()
+		childForLocator = (ChildForLocator) getIntent().getExtras()
 				.getSerializable(EXTRA_CHILD);
-		System.out.println();
-		
+
 		phone = (TextView) findViewById(R.id.phone);
 		phoneBtn = (LinearLayout) findViewById(R.id.phone_btn);
 		name = (TextView) findViewById(R.id.name);
@@ -68,11 +68,11 @@ public class ChildDialog extends Activity {
 		lastAppearTime = (TextView) findViewById(R.id.last_appear_time);
 		avatar = (CircleImageView) findViewById(R.id.avatar);
 
-		phone.setText(childForLoator.getPhone());
-		name.setText(childForLoator.getName());
-		locationName.setText("@ " + childForLoator.getLocationName());
+		phone.setText(childForLocator.getPhone());
+		name.setText(childForLocator.getName());
+		locationName.setText("@ " + childForLocator.getLocationName());
 		lastAppearTime.setText(CommonUtils
-				.ConvertTimestampToDateFormat(childForLoator
+				.ConvertTimestampToDateFormat(childForLocator
 						.getLastAppearTime()));
 
 		if (phone.getText().toString().trim().length() == 0) {
@@ -80,11 +80,11 @@ public class ChildDialog extends Activity {
 		}
 
 		imageLoader = ImageLoader.getInstance();
-		if (ImageUtils.isLocalImage(childForLoator.getIcon())) {
-			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childForLoator
+		if (ImageUtils.isLocalImage(childForLocator.getIcon())) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childForLocator
 					.getIcon()));
 		} else {
-			imageLoader.displayImage(childForLoator.getIcon(), avatar,
+			imageLoader.displayImage(childForLocator.getIcon(), avatar,
 					ImageUtils.avatarOpitons, animateFirstListener);
 		}
 
@@ -118,7 +118,19 @@ public class ChildDialog extends Activity {
 						}
 					}
 				});
+		findViewById(R.id.btn_map).setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(ChildDialog.this,
+						DisplayLocationActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(ChildDialog.EXTRA_CHILD, childForLocator);
+				intent.putExtras(bundle);
+				startActivity(intent);
+				finish();
+			}
+		});
 	}
 
 	private class AnimateFirstDisplayListener extends
@@ -155,8 +167,8 @@ public class ChildDialog extends Activity {
 
 	private void postToServer() {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("childId", childForLoator.getChildId() + "");
-		map.put("macAddress", childForLoator.getMacAddress());
+		map.put("childId", childForLocator.getChildId() + "");
+		map.put("macAddress", childForLocator.getMacAddress());
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);

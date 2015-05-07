@@ -201,6 +201,8 @@
     <string name="btn_disconnect">解除配對</string>
     <string name="btn_options">設定</string>
     <string name="btn_select_all">全选</string>
+    <string name="btn_cur_location">當前位置</string>
+    <string name="btn_trajectory">軌跡</string>
     <!-- Toast strings -->
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>
