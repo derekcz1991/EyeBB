@@ -16,12 +16,12 @@
 
 package com.twinly.eyebb.utils;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * An object to convert Chinese character to its corresponding pinyin string. For characters with

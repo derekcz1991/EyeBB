@@ -115,11 +115,14 @@ public class DisplayLocationActivity extends FragmentActivity {
 						.strokeWidth(1).strokeColor(0xFF88b5dc)
 						.fillColor(1409351437));
 			}
-			mMap.addMarker(new MarkerOptions().position(
-					new LatLng(gpsLocationList.get(i).getLatitude(),
-							gpsLocationList.get(i).getLongitude())).title(
-					CommonUtils.ConvertTimestampToDateFormat(gpsLocationList
-							.get(i).getTimestamp())));
+			mMap.addMarker(new MarkerOptions()
+					.alpha(1 - (i / 20))
+					.position(
+							new LatLng(gpsLocationList.get(i).getLatitude(),
+									gpsLocationList.get(i).getLongitude()))
+					.title(CommonUtils
+							.ConvertTimestampToDateFormat(gpsLocationList
+									.get(i).getTimestamp())));
 		}
 	}
 
@@ -148,6 +151,7 @@ public class DisplayLocationActivity extends FragmentActivity {
 		protected String doInBackground(Void... params) {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(childForLoator.getChildId()));
+			map.put("hoursBefore", "6");
 			return HttpRequestUtils.post(HttpConstants.GET_GPS_LOCATIONS, map);
 		}
 

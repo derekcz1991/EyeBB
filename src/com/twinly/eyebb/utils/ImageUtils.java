@@ -5,11 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.twinly.eyebb.R;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.twinly.eyebb.R;
 
 public class ImageUtils {
 	public static DisplayImageOptions avatarOpitons = new DisplayImageOptions.Builder()

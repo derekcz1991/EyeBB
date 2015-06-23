@@ -15,8 +15,8 @@ import android.widget.TabWidget;
 
 import com.twinly.eyebb.fragment.IndoorLocatorFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
-import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.fragment.RadarFragment;
+import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.BroadcastUtils;
 
 /**

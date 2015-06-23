@@ -139,6 +139,7 @@ public class GCMUtils {
 			protected String doInBackground(Void... params) {
 				Map<String, String> map = new HashMap<String, String>();
 				map.put("deviceId", SharePrefsUtils.getDeviceId(context));
+				map.put("type", "A");
 				System.out.println("map = " + map);
 				return HttpRequestUtils.post(
 						HttpConstants.UPDATE_REGISTRATION_ID, map);

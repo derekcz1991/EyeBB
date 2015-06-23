@@ -67,22 +67,36 @@ public class MainActivity extends FragmentActivity implements
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
 	private KeepSessionAliveTask keepSessionAliveTask;
-	private int timeoutCounter;
 	private View profileLabel;
 	private HandleNotificationDot handleNotificationDot;
+
+	private int timeTickerCounter;
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (Intent.ACTION_TIME_TICK.equals(action)) {
+				timeTickerCounter++;
+				if (timeTickerCounter == 10) {
+					keepSessionAliveTask = new KeepSessionAliveTask();
+					keepSessionAliveTask
+							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				}
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		System.out.println("---->>>");
 		setContentView(R.layout.activity_main);
 		setUpTab(savedInstanceState);
 		setUpProgressBar();
 		setUpNetworkBar();
 
-		keepSessionAliveTask = new KeepSessionAliveTask();
-		keepSessionAliveTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Intent.ACTION_TIME_TICK);
+		registerReceiver(mReceiver, intentFilter);
 	}
 
 	@Override
@@ -123,6 +137,7 @@ public class MainActivity extends FragmentActivity implements
 				throw e;
 			}
 		}
+		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
 
@@ -321,6 +336,7 @@ public class MainActivity extends FragmentActivity implements
 	public void cancelProgressBar() {
 		if (isRefreshing == false) {
 			progressBar.setProgress(0);
+			progressBar.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -332,34 +348,16 @@ public class MainActivity extends FragmentActivity implements
 		// reportFragment.setRefreshing(false);
 	}
 
-	private class KeepSessionAliveTask extends AsyncTask<Void, String, Void> {
+	private class KeepSessionAliveTask extends AsyncTask<Void, String, String> {
 
 		@Override
-		protected Void doInBackground(Void... params) {
-			while (true) {
-				try {
-					Thread.sleep(600000); // 10min = 600000s
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				System.out.println("KeepSessionAliveTask runs once --->>>");
-				this.publishProgress(HttpRequestUtils.get(
-						"reportService/api/refreshSession", null));
-			}
+		protected String doInBackground(Void... params) {
+			timeTickerCounter = 0;
+			System.out.println("KeepSessionAliveTask runs once --->>>");
+			return HttpRequestUtils.get("reportService/api/refreshSession",
+					null);
 		}
 
-		@Override
-		protected void onProgressUpdate(String... values) {
-			super.onProgressUpdate(values);
-			if (values[0].equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
-				timeoutCounter++;
-				if (timeoutCounter == 2) {
-					finish();
-				}
-			} else {
-				timeoutCounter = 0;
-			}
-		}
 	}
 
 	@Override
