@@ -191,14 +191,13 @@ public class BindingChildMacaronActivity extends Activity implements
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(childId));
 			map.put("macAddress", mDeviceAddress);
-
+			System.out.println(HttpConstants.CHECK_BEACON + " map = " + map);
 			return HttpRequestUtils.post(HttpConstants.CHECK_BEACON, map);
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			System.out.println(HttpConstants.CHECK_BEACON + " = " + result);
-
 			if (result.length() > 0) {
 				if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)) {
 					return;

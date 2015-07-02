@@ -60,5 +60,4 @@ public class NotificationUtils {
 		// Issue the notification
 		mNotificationManager.notify(index, notification);
 	}
-
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="tt">
         <item>本星期</item>
         <item>最近14天</item>
@@ -165,6 +166,8 @@
     <string name="text_network_connecting">連接中&#8230;</string>
     <string name="text_search_guset_activity_share_msg">我想授權你觀看我的孩子情況，請你在完成安裝寶寶安後通知我，我會再次授權給你。連結：play.google.com/xxxxxxxx</string>
     <string name="text_no_new_firmware">恭喜您,您的寶寶安固件已是最新的.</string>
+    <string name="text_leave">離開</string>
+    <string name="text_enter">進入</string>
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -200,7 +203,7 @@
     <string name="btn_missed">未連接</string>
     <string name="btn_disconnect">解除配對</string>
     <string name="btn_options">設定</string>
-    <string name="btn_select_all">全选</string>
+    <string name="btn_select_all">全選</string>
     <string name="btn_map">地图</string>
     <string name="btn_cur_location">當前位置</string>
     <string name="btn_trajectory">軌跡</string>

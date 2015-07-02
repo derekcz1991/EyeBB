@@ -51,7 +51,6 @@ public class LancherActivity extends Activity {
 		checkLogo();
 		setLanguage();
 		mkdir();
-		//new HttpRequestUtils();
 
 		if (SharePrefsUtils.isAntiLostOn(this)
 				|| SharePrefsUtils.isRadarTrackingOn(this)) {

@@ -193,35 +193,27 @@ public class KidProfileActivity extends Activity implements
 				if (child.getMacAddress() != null) {
 					mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
 				}
-				// mHoloCircularProgressBar.setMarkerEnabled(true);
 
-				// mBluetoothUtils.readBattery(child.getMacAddress(), 10000);
 				mHoloCircularProgressBar.setMarkerEnabled(false);
 				mHoloCircularProgressBar.setProgress(1.0f);
 			} else {
 				mHoloCircularProgressBar.setProgress(1f);
-
 				if (mProgressBarAnimator != null) {
 					mProgressBarAnimator.cancel();
 				}
-
 				animate(mHoloCircularProgressBar, null,
 						Float.valueOf(getDeviceBattery), 2000);
 				mHoloCircularProgressBar.setMarkerProgress(Float
 						.valueOf(getDeviceBattery));
-
 				if (getDeviceBattery.equals("0")) {
 					deviceBatteryResult.setText("100%");
-
 				} else {
 					deviceBatteryResult.setText((1 - Float
 							.valueOf(getDeviceBattery) + "").substring(2, 4)
 							+ "%");
 				}
-
 			}
 		}
-
 	}
 
 	@Override

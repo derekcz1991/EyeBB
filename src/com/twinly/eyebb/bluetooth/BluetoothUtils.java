@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.dialog.ErrorDialog;
+import com.twinly.eyebb.utils.CommonUtils;
 
 @SuppressLint("NewApi")
 public class BluetoothUtils {
@@ -404,10 +405,9 @@ public class BluetoothUtils {
 					}
 					// Automatically connects to the device upon successful
 					// start-up initialization.
-					if (mDeviceAddress != null) {
+					if (CommonUtils.isNotNull(mDeviceAddress)) {
 						mBluetoothLeService.connect(mDeviceAddress);
 					}
-
 				}
 
 				@Override

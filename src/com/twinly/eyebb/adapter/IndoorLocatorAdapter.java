@@ -10,9 +10,10 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
+import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.model.Location;
 import com.twinly.eyebb.utils.ImageUtils;
@@ -35,14 +37,22 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	private HashMap<Long, Location> locationMap;
 	private HashMap<Long, ChildForLocator> childrenMap;
 	private List<HashMap.Entry<Long, ArrayList<Long>>> list;
+	private List<Long> locMonitoringList;
 
 	private LayoutInflater inflater;
 	private boolean isViewAllRooms;
 	private ImageLoader imageLoader;
 
+	public IndoorLocatorAdapterCallback mCallback;
+
+	public interface IndoorLocatorAdapterCallback {
+		public void onMonitoringSwitch(boolean checked, long locId);
+	}
+
 	private final class ViewHolder {
 		public LinearLayout contentLayout;
-		public ImageView icon;
+		public CircleImageView icon;
+		public CheckedTextView monitorSwitch;
 		public TextView areaName;
 		public TextView childrenNum;
 		public ViewGroup avatarContainer;
@@ -51,13 +61,16 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	public IndoorLocatorAdapter(Context context,
 			List<HashMap.Entry<Long, ArrayList<Long>>> list,
 			HashMap<Long, Location> locationMap,
-			HashMap<Long, ChildForLocator> childrenMap, boolean isViewAllRooms) {
+			HashMap<Long, ChildForLocator> childrenMap, boolean isViewAllRooms,
+			List<Long> locMonitoringList, IndoorLocatorAdapterCallback mCallback) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.locationMap = locationMap;
 		this.childrenMap = childrenMap;
 		this.isViewAllRooms = isViewAllRooms;
 		this.list = list;
+		this.locMonitoringList = locMonitoringList;
+		this.mCallback = mCallback;
 
 		imageLoader = ImageLoader.getInstance();
 		sort();
@@ -161,7 +174,10 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.contentLayout = (LinearLayout) convertView
 					.findViewById(R.id.content);
-			viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
+			viewHolder.icon = (CircleImageView) convertView
+					.findViewById(R.id.loc_icon);
+			viewHolder.monitorSwitch = (CheckedTextView) convertView
+					.findViewById(R.id.btn_monitor_switch);
 			viewHolder.areaName = (TextView) convertView
 					.findViewById(R.id.area_name);
 			viewHolder.childrenNum = (TextView) convertView
@@ -177,7 +193,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void setUpView(ViewHolder viewHolder, int position) {
+	private void setUpView(final ViewHolder viewHolder, final int position) {
 		// clear the view
 		viewHolder.avatarContainer.removeAllViews();
 
@@ -219,7 +235,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 						childrenMap.get(childrenIds.get(i)),
 						viewHolder.avatarContainer, false);
 			}
-			viewHolder.avatarContainer.addView(avatarView.getInstance(), 0);
+			viewHolder.avatarContainer.addView(avatarView.getInstance());
 		}
 
 		// set the the number of children
@@ -231,5 +247,26 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		viewHolder.contentLayout.setBackgroundResource(backgrouds[position
 				% backgrouds.length]);
 
+		if (locMonitoringList.contains(list.get(position).getKey())) {
+			viewHolder.monitorSwitch.setChecked(true);
+		} else {
+			viewHolder.monitorSwitch.setChecked(false);
+		}
+		viewHolder.monitorSwitch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (viewHolder.monitorSwitch.isChecked()) {
+					viewHolder.monitorSwitch.setChecked(false);
+					mCallback.onMonitoringSwitch(false, list.get(position)
+							.getKey());
+				} else {
+					viewHolder.monitorSwitch.setChecked(true);
+					mCallback.onMonitoringSwitch(true, list.get(position)
+							.getKey());
+				}
+
+			}
+		});
 	}
 }

@@ -13,10 +13,15 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +36,7 @@ import android.widget.TextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.KidsListActivity;
+import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.SchoolBusTrackingActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -50,7 +56,11 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("UseSparseArrays")
 public class IndoorLocatorFragment extends Fragment implements
-		PullToRefreshListener {
+		PullToRefreshListener,
+		IndoorLocatorAdapter.IndoorLocatorAdapterCallback {
+	private final int TYPE_ENTER = 1;
+	private final int TYPE_LEAVE = 2;
+
 	private PullToRefreshListView listView;
 	private ProgressBar progressBar;
 	private LinearLayout secondMenu;
@@ -69,14 +79,22 @@ public class IndoorLocatorFragment extends Fragment implements
 	// <child_id, Child>
 	private HashMap<Long, ChildForLocator> childrenMap;
 	// <area_id, <location_id, [child_id, child_id]>>
-	private HashMap<Long, HashMap<Long, ArrayList<Long>>> areaMapLocaionMapChildren;
+	private HashMap<Long, HashMap<Long, ArrayList<Long>>> curAreaMapLocaionMapChildren;
+	private HashMap<Long, HashMap<Long, ArrayList<Long>>> preAreaMapLocaionMapChildren;
 	private ArrayList<HashMap.Entry<Long, Area>> areaList;
 	private List<HashMap.Entry<Long, ArrayList<Long>>> mList;
+	private List<Long> locMonitoringList;
 
 	private boolean autoUpdateFlag;
 	private AutoUpdateTask autoUpdateTask;
 	private boolean isViewAllRooms = false;
 	private boolean isFirstUpdate = true;
+
+	private NotificationManager mNotificationManager;
+	private NotificationCompat.Builder alertNotificationbuilder;
+	private Notification alertNotificaion;
+	private boolean isSoundOn;
+	private boolean isVirbrateOn;
 
 	public interface CallbackInterface {
 		/**
@@ -120,6 +138,7 @@ public class IndoorLocatorFragment extends Fragment implements
 
 		myMap = new SerializableChildrenMap();
 		setUpListener(v);
+		buildNotification();
 		return v;
 	}
 
@@ -129,11 +148,14 @@ public class IndoorLocatorFragment extends Fragment implements
 		areaMap = new HashMap<Long, Area>();
 		locationMap = new HashMap<Long, Location>();
 		childrenMap = new HashMap<Long, ChildForLocator>();
-		areaMapLocaionMapChildren = new HashMap<Long, HashMap<Long, ArrayList<Long>>>();
+		locMonitoringList = new ArrayList<Long>();
+		curAreaMapLocaionMapChildren = new HashMap<Long, HashMap<Long, ArrayList<Long>>>();
+		preAreaMapLocaionMapChildren = new HashMap<Long, HashMap<Long, ArrayList<Long>>>();
 
 		mList = new ArrayList<Map.Entry<Long, ArrayList<Long>>>();
 		mIndoorLocatorAdapter = new IndoorLocatorAdapter(getActivity(), mList,
-				locationMap, childrenMap, isViewAllRooms);
+				locationMap, childrenMap, isViewAllRooms, locMonitoringList,
+				this);
 		listView.setAdapter(mIndoorLocatorAdapter);
 
 		if (SharePrefsUtils.isAutoUpdate(getActivity())) {
@@ -204,7 +226,7 @@ public class IndoorLocatorFragment extends Fragment implements
 					int position, long id) {
 				currentAreaId = areaList.get(position).getKey();
 				mList.clear();
-				Iterator<Entry<Long, ArrayList<Long>>> it = areaMapLocaionMapChildren
+				Iterator<Entry<Long, ArrayList<Long>>> it = curAreaMapLocaionMapChildren
 						.get(currentAreaId).entrySet().iterator();
 				while (it.hasNext()) {
 					mList.add(it.next());
@@ -288,14 +310,20 @@ public class IndoorLocatorFragment extends Fragment implements
 
 		@Override
 		protected void onPostExecute(String result) {
-			System.out.println("childrenList = " + result);
+			//System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
 				getAllAreaLocation(json);
 				getAllChild(json);
-
+				checkMonitroingLoc();
+				// copy curAreaMapLocaionMapChildren
+				preAreaMapLocaionMapChildren
+						.put(currentAreaId,
+								new HashMap<Long, ArrayList<Long>>(
+										curAreaMapLocaionMapChildren
+												.get(currentAreaId)));
 				mList.clear();
-				Iterator<Entry<Long, ArrayList<Long>>> it = areaMapLocaionMapChildren
+				Iterator<Entry<Long, ArrayList<Long>>> it = curAreaMapLocaionMapChildren
 						.get(currentAreaId).entrySet().iterator();
 				while (it.hasNext()) {
 					mList.add(it.next());
@@ -311,11 +339,11 @@ public class IndoorLocatorFragment extends Fragment implements
 				}
 
 			} catch (JSONException e) {
-				System.out.println("reportService/api/childrenList ---->> "
-						+ e.getMessage());
+				System.out.println(HttpConstants.GET_CHILDREN_LOC_LIST
+						+ " ---->> " + e.getMessage());
 			}
 			progressBar.setVisibility(View.INVISIBLE);
-			if (areaMapLocaionMapChildren.size() == 0) {
+			if (curAreaMapLocaionMapChildren.size() == 0) {
 				hint.setVisibility(View.VISIBLE);
 			} else {
 				hint.setVisibility(View.INVISIBLE);
@@ -364,8 +392,9 @@ public class IndoorLocatorFragment extends Fragment implements
 			areaMap.put(area.getAreaId(), area);
 
 			HashMap<Long, ArrayList<Long>> locationMapChildren;
-			if (areaMapLocaionMapChildren.keySet().contains(area.getAreaId())) {
-				locationMapChildren = areaMapLocaionMapChildren.get(area
+			if (curAreaMapLocaionMapChildren.keySet()
+					.contains(area.getAreaId())) {
+				locationMapChildren = curAreaMapLocaionMapChildren.get(area
 						.getAreaId());
 			} else {
 				locationMapChildren = new HashMap<Long, ArrayList<Long>>();
@@ -395,8 +424,8 @@ public class IndoorLocatorFragment extends Fragment implements
 				locationMapChildren
 						.put(location.getId(), new ArrayList<Long>());
 			}
-			areaMapLocaionMapChildren
-					.put(area.getAreaId(), locationMapChildren);
+			curAreaMapLocaionMapChildren.put(area.getAreaId(),
+					locationMapChildren);
 		}
 	}
 
@@ -410,7 +439,6 @@ public class IndoorLocatorFragment extends Fragment implements
 		if (childrenMap != null) {
 			childrenMap.clear();
 		}
-
 		JSONArray childrenByAreaJSONList = json
 				.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_BY_AREA);
 		for (int i = 0; i < childrenByAreaJSONList.length(); i++) {
@@ -418,7 +446,7 @@ public class IndoorLocatorFragment extends Fragment implements
 
 			long areaId = object
 					.getLong(HttpConstants.JSON_KEY_LOCATION_AREA_ID);
-			HashMap<Long, ArrayList<Long>> locationMapChildren = areaMapLocaionMapChildren
+			HashMap<Long, ArrayList<Long>> locationMapChildren = curAreaMapLocaionMapChildren
 					.get(areaId);
 
 			JSONArray childrenBeanJSONList = object
@@ -473,6 +501,40 @@ public class IndoorLocatorFragment extends Fragment implements
 		return child.getChildId();
 	}
 
+	private void checkMonitroingLoc() {
+		if (preAreaMapLocaionMapChildren.size() > 0) {
+
+			Iterator<Entry<Long, ArrayList<Long>>> it = curAreaMapLocaionMapChildren
+					.get(currentAreaId).entrySet().iterator();
+			//ArrayList<Long> enterChildren = new ArrayList<Long>();
+			//ArrayList<Long> exitChildren = new ArrayList<Long>();
+			while (it.hasNext()) {
+				Entry<Long, ArrayList<Long>> entry = it.next();
+				ArrayList<Long> curChildren = entry.getValue();
+				ArrayList<Long> preChildren = new ArrayList<Long>(
+						preAreaMapLocaionMapChildren.get(currentAreaId).get(
+								entry.getKey()));
+				if (locMonitoringList.contains(entry.getKey())) {
+					for (int i = 0; i < curChildren.size(); i++) {
+						if (preChildren.remove(curChildren.get(i)) == false) {
+							// new children show in this location
+							//enterChildren.add(curChildren.get(i));
+							updateAlertNotification(entry.getKey(),
+									curChildren.get(i), TYPE_ENTER);
+						}
+					}
+					//exitChildren.addAll(preChildren);
+					for (int i = 0; i < preChildren.size(); i++) {
+						updateAlertNotification(entry.getKey(),
+								preChildren.get(i), TYPE_LEAVE);
+					}
+				}
+			}
+			//System.out.println("enterChildren = " + enterChildren.size());
+			//System.out.println("exitChildren = " + exitChildren.size());
+		}
+	}
+
 	/**
 	 * Set aera spinner
 	 */
@@ -487,6 +549,55 @@ public class IndoorLocatorFragment extends Fragment implements
 				getActivity(), R.layout.item_spinner, choices);
 		adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
 		mSpinner.setAdapter(adapter);
+	}
+
+	private void updateAlertNotification(long locId, long childId, int type) {
+		if (type == TYPE_ENTER) {
+			alertNotificationbuilder.setContentText(childrenMap.get(childId)
+					.getName()
+					+ getString(R.string.text_enter)
+					+ locationMap.get(locId).getDisplayName(getActivity()));
+		} else if (type == TYPE_LEAVE) {
+			alertNotificationbuilder.setContentText(childrenMap.get(childId)
+					.getName()
+					+ getString(R.string.text_leave)
+					+ locationMap.get(locId).getDisplayName(getActivity()));
+		}
+
+		alertNotificaion = alertNotificationbuilder.build();
+		alertNotificaion.defaults |= Notification.DEFAULT_LIGHTS;
+		alertNotificaion.flags = Notification.FLAG_AUTO_CANCEL;
+		if (isSoundOn) {
+			alertNotificaion.defaults |= Notification.DEFAULT_SOUND;
+		}
+		if (isVirbrateOn) {
+			alertNotificaion.defaults |= Notification.DEFAULT_VIBRATE;
+		}
+		// Issue the notification
+		mNotificationManager.notify(Integer.parseInt(String.valueOf(
+				System.currentTimeMillis()).substring(5)), alertNotificaion);
+	}
+
+	private void buildNotification() {
+		mNotificationManager = (NotificationManager) getActivity()
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		alertNotificationbuilder = new NotificationCompat.Builder(getActivity());
+		alertNotificationbuilder.setSmallIcon(R.drawable.ic_location_default);
+		alertNotificationbuilder
+				.setContentTitle(getString(R.string.text_indoor_locator));
+
+		// Creates an explicit intent for an Activity in your app
+		Intent resultIntent = new Intent(getActivity(), LancherActivity.class);
+		resultIntent.setAction("android.intent.action.MAIN");
+		resultIntent.addCategory("android.intent.category.LAUNCHER");
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(
+				getActivity(), 0, resultIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		alertNotificationbuilder.setContentIntent(resultPendingIntent);
+
+		isSoundOn = SharePrefsUtils.isSoundOn(getActivity());
+		isVirbrateOn = SharePrefsUtils.isVibrateOn(getActivity());
 	}
 
 	@Override
@@ -515,7 +626,7 @@ public class IndoorLocatorFragment extends Fragment implements
 					isViewAllRooms = !isViewAllRooms;
 
 					mList.clear();
-					Iterator<Entry<Long, ArrayList<Long>>> it = areaMapLocaionMapChildren
+					Iterator<Entry<Long, ArrayList<Long>>> it = curAreaMapLocaionMapChildren
 							.get(currentAreaId).entrySet().iterator();
 					while (it.hasNext()) {
 						mList.add(it.next());
@@ -526,4 +637,16 @@ public class IndoorLocatorFragment extends Fragment implements
 			}
 		}
 	}
+
+	@Override
+	public void onMonitoringSwitch(boolean checked, long locId) {
+		if (checked) {
+			if (!locMonitoringList.contains(locId)) {
+				locMonitoringList.add(locId);
+			}
+		} else {
+			locMonitoringList.remove(locId);
+		}
+	}
+
 }

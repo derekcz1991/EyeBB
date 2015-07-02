@@ -87,7 +87,7 @@
     <string name="text_feedback_bug">bug</string>
     <string name="text_feedback_idea">idea</string>
     <string name="text_feedback_question">question</string>
-    <string name="text_no_content">No content...</string>
+    <string name="text_no_content">No content&#8230;</string>
     <string name="text_fill_in_something">Please, fill in something!!</string>
     <string name="text_contact_information">Contact information</string>
     <string name="text_user_information">User information</string>
@@ -165,6 +165,8 @@
     <string name="text_search_guset_activity_share_msg">Invite him/her?。Link：play.google.com/xxxxxxxx</string>
     <string name="text_no_new_firmware">congratulation, the firmware of your eyebb device is the most updated.</string>
     <string name="text_is_runnig">Running&#8230;</string>
+    <string name="text_leave">&#160;leave&#160;</string>
+    <string name="text_enter">&#160;enter&#160;</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -201,7 +203,7 @@
     <string name="btn_missed">Missed</string>
     <string name="btn_disconnect">Disconnect</string>
     <string name="btn_options">Setting</string>
-    <string name="btn_select_all">全选</string>
+    <string name="btn_select_all">All</string>
     <string name="btn_map">Map</string>
     <string name="btn_cur_location">Current Location</string>
     <string name="btn_trajectory">Trajectory</string>
