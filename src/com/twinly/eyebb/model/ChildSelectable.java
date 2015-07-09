@@ -10,7 +10,7 @@ public class ChildSelectable extends Child {
 
 	public ChildSelectable(Child child, boolean isSelected) {
 		super(child.getChildId(), child.getName(), child.getIcon(), child
-				.getPhone(), child.getMacAddress());
+				.getLocalIcon(), child.getPhone(), child.getMacAddress());
 		this.isSelected = isSelected;
 	}
 

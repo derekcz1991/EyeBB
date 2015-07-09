@@ -12,6 +12,7 @@ public class Child implements Serializable {
 	private long childId;
 	private String name;
 	private String icon;
+	private String localIcon;
 	private String phone;
 	private String macAddress;
 	private String relationWithUser;
@@ -27,12 +28,13 @@ public class Child implements Serializable {
 		this.icon = icon;
 	}
 
-	public Child(long childId, String name, String icon, String phone,
-			String macAddress) {
+	public Child(long childId, String name, String icon, String localIcon,
+			String phone, String macAddress) {
 		super();
 		this.childId = childId;
 		this.name = name;
 		this.icon = icon;
+		this.localIcon = localIcon;
 		this.phone = phone;
 		this.macAddress = macAddress;
 	}
@@ -87,6 +89,14 @@ public class Child implements Serializable {
 
 	public void setRelationWithUser(String relationWithUser) {
 		this.relationWithUser = relationWithUser;
+	}
+
+	public String getLocalIcon() {
+		return localIcon;
+	}
+
+	public void setLocalIcon(String localIcon) {
+		this.localIcon = localIcon;
 	}
 
 	@Override

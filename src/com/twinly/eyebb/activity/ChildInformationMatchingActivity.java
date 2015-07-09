@@ -31,12 +31,12 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 public class ChildInformationMatchingActivity extends Activity {
 	private EditText userName;
 	private LinearLayout childBirthdayLayout;
-	private RelativeLayout kindergartenItem;
+	private RelativeLayout areaItem;
 	private TextView childBirthday;
-	private TextView kindergarten;
+	private TextView area;
 	private Button binding;
 
-	private int kindergartenId = -1;
+	private int areaId = -1;
 	private String childName;
 	private String birthday;
 
@@ -44,9 +44,9 @@ public class ChildInformationMatchingActivity extends Activity {
 	private boolean birthdayFlag = false;
 	private boolean kindergartenFlag = false;
 
-	private ImageView icKindergarten;
-	private TextView icChildName;
-	private TextView icBirthday;
+	private ImageView icArea;
+	private ImageView icChildName;
+	private ImageView icBirthday;
 
 	public static final int CONNECT_ERROR = 1;
 	public static final int CHILD_EXIST = 2;
@@ -67,21 +67,21 @@ public class ChildInformationMatchingActivity extends Activity {
 	private void initView() {
 		userName = (EditText) findViewById(R.id.ed_username);
 		childBirthdayLayout = (LinearLayout) findViewById(R.id.child_birthday_layout);
-		kindergartenItem = (RelativeLayout) findViewById(R.id.kindergartenItem);
-		kindergarten = (TextView) findViewById(R.id.kindergarten);
+		areaItem = (RelativeLayout) findViewById(R.id.areaItem);
+		area = (TextView) findViewById(R.id.area);
 		childBirthday = (TextView) findViewById(R.id.birthday);
 		binding = (Button) findViewById(R.id.btn_confirm);
-		icKindergarten = (ImageView) findViewById(R.id.ic_kindergarten);
-		icChildName = (TextView) findViewById(R.id.ic_child_name);
-		icBirthday = (TextView) findViewById(R.id.ic_birthday);
+		icArea = (ImageView) findViewById(R.id.ic_kindergarten);
+		icChildName = (ImageView) findViewById(R.id.ic_child_name);
+		icBirthday = (ImageView) findViewById(R.id.ic_birthday);
 
-		kindergartenItem.setOnClickListener(new OnClickListener() {
+		areaItem.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(
 						ChildInformationMatchingActivity.this,
-						KindergartenListActivity.class);
+						AreaListActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY);
 			}
@@ -122,38 +122,38 @@ public class ChildInformationMatchingActivity extends Activity {
 				childName = userName.getText().toString();
 				if (childName != null && childName.length() > 0) {
 					childNameFlag = true;
-//					icChildName.setBackground(getResources().getDrawable(
-//							R.drawable.ic_login_name));
+					//					icChildName.setBackground(getResources().getDrawable(
+					//							R.drawable.ic_login_name));
 					icChildName.setBackgroundResource(R.drawable.ic_login_name);
 				} else {
 					childNameFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-//					icChildName.setBackground(getResources().getDrawable(
-//							R.drawable.ic_cross));
+					//					icChildName.setBackground(getResources().getDrawable(
+					//							R.drawable.ic_cross));
 					icChildName.setBackgroundResource(R.drawable.ic_cross);
 				}
 
 				if (birthday != null && birthday.length() > 0) {
 					birthdayFlag = true;
-//					icBirthday.setBackground(getResources().getDrawable(
-//							R.drawable.ic_login_email));
+					//					icBirthday.setBackground(getResources().getDrawable(
+					//							R.drawable.ic_login_email));
 					icBirthday.setBackgroundResource(R.drawable.ic_login_email);
 				} else {
 					birthdayFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-//					icBirthday.setBackground(getResources().getDrawable(
-//							R.drawable.ic_cross));
+					//					icBirthday.setBackground(getResources().getDrawable(
+					//							R.drawable.ic_cross));
 					icBirthday.setBackgroundResource(R.drawable.ic_cross);
 				}
 
-				if (kindergartenId >= 0) {
+				if (areaId >= 0) {
 					kindergartenFlag = true;
 					//setTitle(getString(R.string.text_something_has_gone_wrong));
-					icKindergarten.setVisibility(View.INVISIBLE);
+					icArea.setVisibility(View.INVISIBLE);
 				} else {
 					kindergartenFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					icKindergarten.setVisibility(View.VISIBLE);
+					icArea.setVisibility(View.VISIBLE);
 
 				}
 
@@ -180,8 +180,10 @@ public class ChildInformationMatchingActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY) {
 			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
-				kindergarten.setText(data.getStringExtra("displayName"));
-				kindergartenId = data.getIntExtra("kindergartenId", -1);
+				area.setText(data
+						.getStringExtra(AreaListActivity.EXTRA_AREA_DISPLAY_NAME));
+				areaId = data.getIntExtra(
+						AreaListActivity.EXTRA_AREA_ID, -1);
 			}
 		}
 		if (requestCode == ActivityConstants.REQUEST_GO_TO_BIRTHDAY_ACTIVITY) {
@@ -202,11 +204,11 @@ public class ChildInformationMatchingActivity extends Activity {
 	private void postChildInformationToServer() {
 		Map<String, String> map = new HashMap<String, String>();
 		System.out.println("username=>" + childName + " " + birthday + " "
-				+ kindergartenId);
+				+ areaId);
 
 		map.put("childName", childName);
 		map.put("dateOfBirth", birthday);
-		map.put("kId", String.valueOf(kindergartenId));
+		map.put("kId", String.valueOf(areaId));
 
 		try {
 			String retStr = HttpRequestUtils.post(HttpConstants.CHILD_CHECKING,

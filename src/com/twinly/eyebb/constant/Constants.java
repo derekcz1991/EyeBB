@@ -7,7 +7,7 @@ public class Constants {
 
 	public static final String DB_NAME = "eyebb.db";
 	public static final String DEVICE_NAME = "Macaron";
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 2;
 	public static final int REQUEST_ENABLE_BT = 1;
 
 	public static final int LOCALE_EN = 0;

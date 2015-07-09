@@ -49,10 +49,9 @@ public class ImageUtils {
 	}
 
 	public static boolean isLocalImage(String path) {
-		if (path.contains("http")) {
-			return false;
-		} else {
+		if (CommonUtils.isNotNull(path))
 			return true;
-		}
+		else
+			return false;
 	}
 }

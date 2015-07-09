@@ -95,7 +95,7 @@ public class KidProfileActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_kid_profile_temp);
+		setContentView(R.layout.activity_kid_profile);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 		registerForContextMenu(findViewById(R.id.avatarItem));
@@ -128,8 +128,10 @@ public class KidProfileActivity extends Activity implements
 
 		kidName.setText(child.getName());
 		imageLoader = ImageLoader.getInstance();
-		if (ImageUtils.isLocalImage(child.getIcon())) {
-			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child.getIcon()));
+
+		if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child
+					.getLocalIcon()));
 		} else {
 			imageLoader.displayImage(child.getIcon(), avatar,
 					ImageUtils.avatarOpitons, null);
@@ -162,8 +164,6 @@ public class KidProfileActivity extends Activity implements
 
 		mHoloCircularProgressBar = (HoloCircularProgressBar) findViewById(R.id.holoCircularProgressBar);
 
-		// deviceBattery.setText(getResources().getString(
-		// R.string.text_check_battery_life));
 		final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
 		mBluetoothAdapter = bluetoothManager.getAdapter();
 
@@ -173,13 +173,25 @@ public class KidProfileActivity extends Activity implements
 			bluetoothNotOpenCancelReadBattery();
 		}
 
+		kidName.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(KidProfileActivity.this,
+						ChangeKidNameActivity.class);
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_NAME,
+						child.getName());
+				intent.putExtra(ActivityConstants.EXTRA_CHILD_ID,
+						child.getChildId());
+				startActivity(intent);
+			}
+		});
 	}
 
 	/**
 	 * when start this activity, we should read the battery first
 	 * 
 	 */
-	@SuppressLint("NewApi")
 	private void initToReadBattery() {
 
 		if (!mBluetoothAdapter.isEnabled()) {
@@ -226,6 +238,13 @@ public class KidProfileActivity extends Activity implements
 		registerReceiver(bluetoothState, new IntentFilter(
 				BluetoothAdapter.ACTION_STATE_CHANGED));
 
+		child = DBChildren
+				.getChildById(
+						this,
+						getIntent().getLongExtra(
+								ActivityConstants.EXTRA_CHILD_ID, -1L));
+		setTitle(child.getName());
+		kidName.setText(child.getName());
 	}
 
 	@Override
@@ -364,7 +383,7 @@ public class KidProfileActivity extends Activity implements
 				+ ".jpg";
 		if (ImageUtils.saveBitmap(bitmap, path)) {
 			child.setIcon(path);
-			DBChildren.updateIconByChildId(this, child.getChildId(), path);
+			DBChildren.updateLocalIconByChildId(this, child.getChildId(), path);
 			avatar.setImageBitmap(BitmapFactory.decodeFile(path));
 		}
 	}

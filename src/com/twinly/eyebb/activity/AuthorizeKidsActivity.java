@@ -25,7 +25,6 @@ import com.twinly.eyebb.adapter.GuestListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LinearLayoutForListView;
 import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.model.ChildForGrant;
@@ -55,7 +54,6 @@ public class AuthorizeKidsActivity extends Activity {
 	public static final int UPDATE_VIEW = 11111;
 	private Dialog authDialog;
 	private Runnable postFindGuestsToServerRunnable;
-	public CircleImageView avatar;
 	public TextView name;
 	public TextView phone;
 	public RelativeLayout btn_guest_view;
@@ -93,7 +91,6 @@ public class AuthorizeKidsActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			finish();
-			System.out.println("=========>onKeyDown");
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -127,7 +124,6 @@ public class AuthorizeKidsActivity extends Activity {
 		try {
 			authToGuestData.clear();
 			if (!JSONObject.NULL.equals(getData)) {
-				// guest_data.clear();
 				boolean isGusetNull = new JSONObject(getData)
 						.isNull(HttpConstants.JSON_KEY_GUESTS);
 				if (!isGusetNull) {
@@ -158,7 +154,6 @@ public class AuthorizeKidsActivity extends Activity {
 				}
 			}
 
-			// System.out.println("guest_data>" + authToGuestData.size());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -206,7 +201,6 @@ public class AuthorizeKidsActivity extends Activity {
 										.getJSONObject(j);
 
 								ChildForGrant master_child = new ChildForGrant();
-
 								master_child
 										.setChildId(master_child_json
 												.getLong(HttpConstants.JSON_KEY_CHILD_ID));
@@ -256,22 +250,16 @@ public class AuthorizeKidsActivity extends Activity {
 			case Constants.UNBIND_SUCCESS:
 				Toast.makeText(AuthorizeKidsActivity.this,
 						R.string.text_unbind_success, Toast.LENGTH_LONG).show();
-
 				break;
-
 			case Constants.UNBIND_FAIL:
-
 				Toast.makeText(AuthorizeKidsActivity.this,
 						R.string.text_unbind_fail, Toast.LENGTH_LONG).show();
-
-				// parseJson(getData).clear();
 				break;
 
 			case UPDATE_VIEW:
 				if (authDialog.isShowing() && authDialog != null) {
 					authDialog.dismiss();
 				}
-
 				guestAdapter = new GuestListViewAdapter(
 						AuthorizeKidsActivity.this, parseGuestJson(retStr),
 						parseMasterJson(retStr), authFromMasterChildrenData);
@@ -297,7 +285,6 @@ public class AuthorizeKidsActivity extends Activity {
 			finish();
 			return true;
 		} else if (item.getItemId() == 0) {
-			// Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
 			Intent intent = new Intent(AuthorizeKidsActivity.this,
 					SearchGuestActivity.class);
 			startActivityForResult(intent,

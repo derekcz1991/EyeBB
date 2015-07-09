@@ -31,7 +31,7 @@ import com.twinly.eyebb.utils.SystemUtils;
 /**
  * @author eyebb team
  * 
- * @category KindergartenListActivity
+ * @category AreaListActivity
  * 
  *           this activity is used when you fill in the child`s information
  *           (during the sign-up time). you should finish 3 parts. The first is
@@ -39,7 +39,10 @@ import com.twinly.eyebb.utils.SystemUtils;
  *           kindergarten.
  * 
  */
-public class KindergartenListActivity extends Activity {
+public class AreaListActivity extends Activity {
+	public static final String EXTRA_AREA_ID = "AREA_ID";
+	public static final String EXTRA_AREA_DISPLAY_NAME = "AREA_DISPLAY_NAME";
+
 	private ListView listView;
 	private ArrayList<Map<String, String>> mapList;
 
@@ -62,14 +65,15 @@ public class KindergartenListActivity extends Activity {
 				Intent data = new Intent();
 				Map<String, String> map = mapList.get(position);
 
-				data.putExtra("kindergartenId",
-						Integer.parseInt(map.get("kindergartenId")));
-				data.putExtra("displayName", map.get("displayName"));
+				data.putExtra(EXTRA_AREA_ID,
+						Integer.parseInt(map.get(EXTRA_AREA_ID)));
+				data.putExtra(EXTRA_AREA_DISPLAY_NAME,
+						map.get(EXTRA_AREA_DISPLAY_NAME));
 				setResult(ActivityConstants.RESULT_RESULT_OK, data);
 				finish();
 			}
 		});
-		new GetKindergartenList().execute();
+		new GetAreaList().execute();
 	}
 
 	@Override
@@ -81,14 +85,13 @@ public class KindergartenListActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	class GetKindergartenList extends AsyncTask<Void, Void, String> {
+	class GetAreaList extends AsyncTask<Void, Void, String> {
 		Dialog dialog;
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			dialog = LoadingDialog.createLoadingDialog(
-					KindergartenListActivity.this,
+			dialog = LoadingDialog.createLoadingDialog(AreaListActivity.this,
 					getString(R.string.text_loading));
 			dialog.show();
 		}
@@ -96,8 +99,7 @@ public class KindergartenListActivity extends Activity {
 		@Override
 		protected String doInBackground(Void... params) {
 			dialog.dismiss();
-			return HttpRequestUtils.get(HttpConstants.GET_KINDERGARTEN_LIST,
-					null);
+			return HttpRequestUtils.get(HttpConstants.GET_AREA_LIST, null);
 		}
 
 		@Override
@@ -116,25 +118,25 @@ public class KindergartenListActivity extends Activity {
 						JSONObject object = (JSONObject) list.get(i);
 
 						Map<String, String> map = new HashMap<String, String>();
-						map.put("kindergartenId", object
+						map.put(EXTRA_AREA_ID, object
 								.getString(HttpConstants.JSON_KEY_AREAS_id));
 						int locale = SystemUtils
-								.getLocale(KindergartenListActivity.this);
+								.getLocale(AreaListActivity.this);
 						switch (locale) {
 						case Constants.LOCALE_CN:
-							map.put("displayName",
+							map.put(EXTRA_AREA_DISPLAY_NAME,
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_SC));
 							break;
 						case Constants.LOCALE_TW:
-							map.put("displayName",
+							map.put(EXTRA_AREA_DISPLAY_NAME,
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
 							break;
 						case Constants.LOCALE_HK:
-							map.put("displayName",
+							map.put(EXTRA_AREA_DISPLAY_NAME,
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_TC));
 							break;
 						default:
-							map.put("displayName",
+							map.put(EXTRA_AREA_DISPLAY_NAME,
 									object.getString(HttpConstants.JSON_KEY_KINDERGARTEN_NAME_EN));
 							break;
 						}
@@ -142,9 +144,9 @@ public class KindergartenListActivity extends Activity {
 					}
 
 					SimpleAdapter adapter = new SimpleAdapter(
-							KindergartenListActivity.this, mapList,
+							AreaListActivity.this, mapList,
 							R.layout.list_item_kindergarten,
-							new String[] { "displayName" },
+							new String[] { EXTRA_AREA_DISPLAY_NAME },
 							new int[] { R.id.name });
 					listView.setAdapter(adapter);
 				}

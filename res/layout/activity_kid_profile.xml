@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.twinly.eyebb.activity.KidProfileActivityTemp" >
+    tools:context="com.twinly.eyebb.activity.KidProfileActivity" >
 
     <LinearLayout
         android:id="@+id/avatarItem"
@@ -48,8 +48,7 @@
             style="@style/WhiteText_18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="Sally Li" />
+            android:padding="8dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -90,8 +89,7 @@
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:gravity="center_vertical"
-                    android:text="x" />
+                    android:gravity="center_vertical" />
             </RelativeLayout>
 
             <LinearLayout

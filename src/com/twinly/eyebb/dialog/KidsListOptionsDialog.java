@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
+import android.widget.CheckedTextView;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
@@ -14,8 +14,8 @@ public class KidsListOptionsDialog extends Activity {
 	public static final String EXTRA_SORT_BY_NAME = "SORT_BY_NAME ";
 	public static final String EXTRA_SORT_BY_LOCATION = "SORT_BY_LOCATION";
 
-	private TextView tvSortByName;
-	private TextView tvSortByLocation;
+	private CheckedTextView tvSortByName;
+	private CheckedTextView tvSortByLocation;
 	private boolean isSortByName;
 	private boolean isSortByLocation;
 
@@ -28,39 +28,24 @@ public class KidsListOptionsDialog extends Activity {
 		isSortByLocation = getIntent().getBooleanExtra(EXTRA_SORT_BY_LOCATION,
 				false);
 
-		tvSortByName = (TextView) findViewById(R.id.tv_name);
-		tvSortByLocation = (TextView) findViewById(R.id.tv_location);
+		tvSortByName = (CheckedTextView) findViewById(R.id.tv_name);
+		tvSortByLocation = (CheckedTextView) findViewById(R.id.tv_location);
 
-		if (isSortByName) {
-			tvSortByName.setBackgroundResource(R.drawable.ic_selected);
-		}
-		if (isSortByLocation) {
-			tvSortByLocation.setBackgroundResource(R.drawable.ic_selected);
-		}
+		tvSortByName.setChecked(isSortByName);
+		tvSortByLocation.setChecked(isSortByLocation);
 
 		findViewById(R.id.item_name).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// System.out.println("isSortByNameisSortByName-?" +
-				// isSortByName);
 				if (isSortByName) {
 					isSortByName = false;
-					tvSortByName.setBackgroundResource(R.drawable.ic_selected);
-
-					isSortByLocation = false;
-					tvSortByLocation
-							.setBackgroundResource(R.drawable.ic_selected_off);
 				} else {
 					isSortByName = true;
-					tvSortByName
-							.setBackgroundResource(R.drawable.ic_selected_off);
-					isSortByLocation = true;
-					tvSortByLocation
-							.setBackgroundResource(R.drawable.ic_selected);
-
+					isSortByLocation = false;
 				}
-
+				tvSortByName.setChecked(isSortByName);
+				tvSortByLocation.setChecked(isSortByLocation);
 			}
 		});
 
@@ -69,25 +54,14 @@ public class KidsListOptionsDialog extends Activity {
 
 					@Override
 					public void onClick(View v) {
-						// System.out.println("isSortByLocation-?" +
-						// isSortByLocation);
 						if (isSortByLocation) {
-							isSortByName = false;
-							tvSortByName
-									.setBackgroundResource(R.drawable.ic_selected);
 							isSortByLocation = false;
-							tvSortByLocation
-									.setBackgroundResource(R.drawable.ic_selected_off);
-
 						} else {
-							isSortByName = true;
-							tvSortByName
-									.setBackgroundResource(R.drawable.ic_selected_off);
 							isSortByLocation = true;
-							tvSortByLocation
-									.setBackgroundResource(R.drawable.ic_selected);
+							isSortByName = false;
 						}
-
+						tvSortByName.setChecked(isSortByName);
+						tvSortByLocation.setChecked(isSortByLocation);
 					}
 				});
 		findViewById(R.id.btn_confirm).setOnClickListener(

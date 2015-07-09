@@ -33,12 +33,12 @@
             android:layout_height="wrap_content"
             android:text="@string/text_name" />
 
-        <TextView
+        <CheckedTextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_selected_off" />
+            android:background="@drawable/checkable_text_selector" />
     </RelativeLayout>
 
     <TextView
@@ -58,12 +58,12 @@
             android:layout_height="wrap_content"
             android:text="@string/text_location" />
 
-        <TextView
+        <CheckedTextView
             android:id="@+id/tv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_selected_off" />
+            android:background="@drawable/checkable_text_selector" />
     </RelativeLayout>
 
     <TextView

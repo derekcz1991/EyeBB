@@ -24,29 +24,27 @@ public class GuestListViewAdapter extends BaseAdapter {
 	private Context context;
 	private List<User> data;
 	private LayoutInflater inflater;
-	private ViewGroup child_item;
+	private ViewGroup childItem;
 
 	private List<User> master_data;
 
-	private ArrayList<ChildForGrant> auth_from_master_children_data;
-	private ArrayList<ChildForGrant> new_children_data;
+	private ArrayList<ChildForGrant> authFromMasterChildrenData;
+	private ArrayList<ChildForGrant> newChildrenData;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
-		public TextView name_left;
-		public TextView phone_left;
+		public TextView nameLeft;
+		public TextView phoneLeft;
 
-		public TextView name_right;
-		public TextView phone_right;
+		public TextView nameRight;
+		public TextView phoneRight;
 
-		public LinearLayout re_layout_left;
-		public LinearLayout re_layout_right;
+		public LinearLayout reLayoutLeft;
+		public LinearLayout reLayoutRight;
 
 		public ViewGroup avatarContainer;
-
-		public TextView auth_to_children_num;
-
-		public TextView tv_authorized_to_others;
+		public TextView authToChildrenNum;
+		public TextView tvAuthorizedToOthers;
 
 	}
 
@@ -58,7 +56,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 		this.data = data;
 
 		this.master_data = master_data;
-		this.auth_from_master_children_data = auth_from_master_children_data;
+		this.authFromMasterChildrenData = auth_from_master_children_data;
 	}
 
 	/**
@@ -66,14 +64,11 @@ public class GuestListViewAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		System.out.println("data.size()-->" + data.size());
-		// start from 0
 		return 2;
 	}
 
 	@Override
 	public User getItem(int position) {
-		// return data.get(position);
 		return null;
 	}
 
@@ -93,15 +88,14 @@ public class GuestListViewAdapter extends BaseAdapter {
 
 			viewHolder.avatarContainer = (ViewGroup) convertView
 					.findViewById(R.id.avatarContainer);
-			viewHolder.auth_to_children_num = (TextView) convertView
+			viewHolder.authToChildrenNum = (TextView) convertView
 					.findViewById(R.id.auth_to_children_num);
-			viewHolder.tv_authorized_to_others = (TextView) convertView
+			viewHolder.tvAuthorizedToOthers = (TextView) convertView
 					.findViewById(R.id.tv_authorized_to_others);
 			if (position == 1) {
 				convertView.findViewById(R.id.liner_g_to_m)
 						.setBackgroundResource(R.drawable.bg_home_blue01);
 			}
-
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -120,21 +114,20 @@ public class GuestListViewAdapter extends BaseAdapter {
 		 */
 		if (position == 1) {
 
-			viewHolder.tv_authorized_to_others.setText(context
+			viewHolder.tvAuthorizedToOthers.setText(context
 					.getString(R.string.text_authorization_from_others));
 
-			new_children_data = new ArrayList<ChildForGrant>();
+			newChildrenData = new ArrayList<ChildForGrant>();
 
 			for (int i = 0; i < master_data.size(); i++) {
 
-				for (int y = 0; y < auth_from_master_children_data.size(); y++) {
+				for (int y = 0; y < authFromMasterChildrenData.size(); y++) {
 					if (master_data
 							.get(i)
 							.getGuardianId()
-							.equals(auth_from_master_children_data.get(y)
+							.equals(authFromMasterChildrenData.get(y)
 									.getPhone())) {
-						new_children_data.add(auth_from_master_children_data
-								.get(y));
+						newChildrenData.add(authFromMasterChildrenData.get(y));
 						break;
 					}
 				}
@@ -142,41 +135,35 @@ public class GuestListViewAdapter extends BaseAdapter {
 			}
 			for (int i = 0; i < master_data.size();) {
 
-				/**
-				 * 
-				 * this view has two sides (left and right)
-				 * and we get two data at once, so i = 1 + 2;
-				 * 
-				 */
-				child_item = (ViewGroup) LayoutInflater.from(context).inflate(
+				// this view has two sides (left and right) and we get two data at once, so i = 1 + 2
+				childItem = (ViewGroup) LayoutInflater.from(context).inflate(
 						R.layout.list_item_grant_kid_new_child_item,
 						viewHolder.avatarContainer, false);
 
-				viewHolder.name_left = (TextView) child_item
+				viewHolder.nameLeft = (TextView) childItem
 						.findViewById(R.id.auth_nick_name_left);
-				viewHolder.phone_left = (TextView) child_item
+				viewHolder.phoneLeft = (TextView) childItem
 						.findViewById(R.id.auth_user_name_left);
-				viewHolder.re_layout_left = (LinearLayout) child_item
+				viewHolder.reLayoutLeft = (LinearLayout) childItem
 						.findViewById(R.id.re_layout_left);
 
-				viewHolder.name_right = (TextView) child_item
+				viewHolder.nameRight = (TextView) childItem
 						.findViewById(R.id.auth_nick_name_right);
-				viewHolder.phone_right = (TextView) child_item
+				viewHolder.phoneRight = (TextView) childItem
 						.findViewById(R.id.auth_user_name_right);
-				viewHolder.re_layout_right = (LinearLayout) child_item
+				viewHolder.reLayoutRight = (LinearLayout) childItem
 						.findViewById(R.id.re_layout_right);
 
-				viewHolder.name_left.setText(master_data.get(i).getName());
-				viewHolder.phone_left.setText(master_data.get(i)
+				viewHolder.nameLeft.setText(master_data.get(i).getName());
+				viewHolder.phoneLeft.setText(master_data.get(i)
 						.getPhoneNumber());
 				final User guest_left = master_data.get(i);
 
-				viewHolder.re_layout_left
+				viewHolder.reLayoutLeft
 						.setOnClickListener(new OnClickListener() {
 
 							@Override
 							public void onClick(View v) {
-
 								Intent intent = new Intent(context,
 										GrantKidsActivity.class);
 								intent.putExtra("guestId",
@@ -184,7 +171,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 								intent.putExtra("guestName",
 										guest_left.getName());
 								intent.putExtra("from_where", "master");
-								intent.putExtra("child_data", new_children_data);
+								intent.putExtra("child_data", newChildrenData);
 								context.startActivity(intent);
 								((Activity) context).finish();
 
@@ -192,15 +179,15 @@ public class GuestListViewAdapter extends BaseAdapter {
 						});
 
 				if (i + 1 > master_data.size() - 1) {
-					viewHolder.re_layout_right.setVisibility(View.INVISIBLE);
+					viewHolder.reLayoutRight.setVisibility(View.INVISIBLE);
 				} else {
-					viewHolder.name_right.setText(master_data.get(i + 1)
+					viewHolder.nameRight.setText(master_data.get(i + 1)
 							.getName());
-					viewHolder.phone_right.setText(master_data.get(i + 1)
+					viewHolder.phoneRight.setText(master_data.get(i + 1)
 							.getPhoneNumber());
 					final User guest_right = master_data.get(i + 1);
 
-					viewHolder.re_layout_right
+					viewHolder.reLayoutRight
 							.setOnClickListener(new OnClickListener() {
 
 								@Override
@@ -214,7 +201,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 											guest_right.getName());
 									intent.putExtra("from_where", "master");
 									intent.putExtra("child_data",
-											new_children_data);
+											newChildrenData);
 									context.startActivity(intent);
 									((Activity) context).finish();
 
@@ -224,42 +211,39 @@ public class GuestListViewAdapter extends BaseAdapter {
 				}
 
 				i = i + 2;
-				viewHolder.avatarContainer.addView(child_item, 0);
+				viewHolder.avatarContainer.addView(childItem, 0);
 			}
-			viewHolder.auth_to_children_num.setText(master_data.size() + "");
+			viewHolder.authToChildrenNum.setText(master_data.size() + "");
 		} else {
 
 			for (int i = 0; i < data.size();) {
 
-				child_item = (ViewGroup) LayoutInflater.from(context).inflate(
+				childItem = (ViewGroup) LayoutInflater.from(context).inflate(
 						R.layout.list_item_grant_kid_new_child_item,
 						viewHolder.avatarContainer, false);
 
-				viewHolder.name_left = (TextView) child_item
+				viewHolder.nameLeft = (TextView) childItem
 						.findViewById(R.id.auth_nick_name_left);
-				viewHolder.phone_left = (TextView) child_item
+				viewHolder.phoneLeft = (TextView) childItem
 						.findViewById(R.id.auth_user_name_left);
-				viewHolder.re_layout_left = (LinearLayout) child_item
+				viewHolder.reLayoutLeft = (LinearLayout) childItem
 						.findViewById(R.id.re_layout_left);
 
-				viewHolder.name_right = (TextView) child_item
+				viewHolder.nameRight = (TextView) childItem
 						.findViewById(R.id.auth_nick_name_right);
-				viewHolder.phone_right = (TextView) child_item
+				viewHolder.phoneRight = (TextView) childItem
 						.findViewById(R.id.auth_user_name_right);
-				viewHolder.re_layout_right = (LinearLayout) child_item
+				viewHolder.reLayoutRight = (LinearLayout) childItem
 						.findViewById(R.id.re_layout_right);
 
-				viewHolder.name_left.setText(data.get(i).getName());
-				viewHolder.phone_left.setText(data.get(i).getPhoneNumber());
+				viewHolder.nameLeft.setText(data.get(i).getName());
+				viewHolder.phoneLeft.setText(data.get(i).getPhoneNumber());
 				final User guest_left = data.get(i);
 
-				viewHolder.re_layout_left
+				viewHolder.reLayoutLeft
 						.setOnClickListener(new OnClickListener() {
-
 							@Override
 							public void onClick(View v) {
-								// TODO Auto-generated method stub
-
 								Intent intent = new Intent(context,
 										GrantKidsActivity.class);
 								intent.putExtra("guestId",
@@ -273,45 +257,34 @@ public class GuestListViewAdapter extends BaseAdapter {
 						});
 
 				if (i + 1 > data.size() - 1) {
-					viewHolder.re_layout_right.setVisibility(View.INVISIBLE);
+					viewHolder.reLayoutRight.setVisibility(View.INVISIBLE);
 				} else {
-					viewHolder.name_right.setText(data.get(i + 1).getName());
-					viewHolder.phone_right.setText(data.get(i + 1)
+					viewHolder.nameRight.setText(data.get(i + 1).getName());
+					viewHolder.phoneRight.setText(data.get(i + 1)
 							.getPhoneNumber());
-					final User guest_right = data.get(i + 1);
+					final User guestRight = data.get(i + 1);
 
-					viewHolder.re_layout_right
+					viewHolder.reLayoutRight
 							.setOnClickListener(new OnClickListener() {
-
 								@Override
 								public void onClick(View v) {
-
 									Intent intent = new Intent(context,
 											GrantKidsActivity.class);
 									intent.putExtra("guestId",
-											guest_right.getGuardianId());
+											guestRight.getGuardianId());
 									intent.putExtra("guestName",
-											guest_right.getName());
+											guestRight.getName());
 									intent.putExtra("from_where", "guest");
 									context.startActivity(intent);
 									((Activity) context).finish();
 								}
 							});
-
 				}
-
 				i = i + 2;
-				viewHolder.avatarContainer.addView(child_item, 0);
-
+				viewHolder.avatarContainer.addView(childItem, 0);
 			}
-
-			viewHolder.auth_to_children_num.setText(data.size() + "");
+			viewHolder.authToChildrenNum.setText(data.size() + "");
 		}
-
-		// final User guest = data.get(position);
-
-		// viewHolder.phone.setText(guest.getPhoneNumber());
-		// viewHolder.name.setText(guest.getName());
 	}
 
 }

@@ -153,8 +153,13 @@ public class ReportFragment extends Fragment implements
 		avatar = (CircleImageView) v.findViewById(R.id.avatar);
 
 		if (child != null) {
-			imageLoader.displayImage(child.getIcon(), avatar,
-					ImageUtils.avatarOpitons, null);
+			if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+				avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child
+						.getLocalIcon()));
+			} else {
+				imageLoader.displayImage(child.getIcon(), avatar,
+						ImageUtils.avatarOpitons, null);
+			}
 		}
 
 	}
@@ -391,8 +396,13 @@ public class ReportFragment extends Fragment implements
 					&& data != null) {
 				// change a child to display
 				child = (Child) data.getSerializableExtra("child");
-				imageLoader.displayImage(child.getIcon(), avatar,
-						ImageUtils.avatarOpitons, null);
+				if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+					avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(child
+							.getLocalIcon()));
+				} else {
+					imageLoader.displayImage(child.getIcon(), avatar,
+							ImageUtils.avatarOpitons, null);
+				}
 				SharePrefsUtils.setReportChildId(getActivity(),
 						child.getChildId());
 				updateView();

@@ -480,10 +480,14 @@ public class IndoorLocatorFragment extends Fragment implements
 		JSONObject childObject = childRelObject
 				.getJSONObject(HttpConstants.JSON_KEY_CHILD);
 
-		Child child = new Child(
-				childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID),
-				childObject.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-				childObject.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+		Child child = DBChildren.getChildById(getActivity(),
+				childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID));
+		if (child == null) {
+			child = new Child(
+					childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+					childObject.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+					childObject.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+		}
 		child.setRelationWithUser(childRelObject
 				.getString(HttpConstants.JSON_KEY_CHILD_RELATION));
 		child.setMacAddress(childrenBeanObject

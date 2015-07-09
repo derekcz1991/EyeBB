@@ -3,7 +3,6 @@ package com.twinly.eyebb.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import com.twinly.eyebb.utils.ImageUtils;
 
 public class CheckChildToBindAdapter extends BaseAdapter {
 
-	private Context context;
 	private ArrayList<Child> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
@@ -31,10 +29,7 @@ public class CheckChildToBindAdapter extends BaseAdapter {
 
 	public CheckChildToBindAdapter(Context context,
 			ArrayList<Child> childrenList) {
-		// TODO Auto-generated constructor stub
 		inflater = LayoutInflater.from(context);
-		this.context = context;
-		System.out.println("childrenList>" + childrenList.get(0).getIcon());
 		this.data = childrenList;
 
 		imageLoader = ImageLoader.getInstance();
@@ -80,13 +75,12 @@ public class CheckChildToBindAdapter extends BaseAdapter {
 
 	private void setUpView(ViewHolder viewHolder, int position) {
 		final Child child = data.get(position);
-		if (TextUtils.isEmpty(child.getIcon()) == false
-				&& !child.getIcon().equals("null")) {
+		if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+			viewHolder.avatar.setImageBitmap(ImageUtils
+					.getBitmapFromLocal(child.getLocalIcon()));
+		} else {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);
-		} else {
-			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.ic_stub));
 		}
 		viewHolder.name.setText(child.getName());
 	}

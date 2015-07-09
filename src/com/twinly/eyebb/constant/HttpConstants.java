@@ -10,7 +10,7 @@ public class HttpConstants {
 	 * 158.182.246.223 == srv.eyebb.com (Production)
 	 */
 	public static final String SERVER_URL = "http://test.eyebb.com/";
-	// public static final String SERVER_URL = "http://158.182.220.206:8089/";
+	//public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
 	// public static final String SERVER_URL = "http://158.182.246.223:8080/";
 	// public static final String SERVER_URL = "http://158.182.220.203:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
@@ -28,7 +28,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_USER_TYPE = "type";
 	public static final String JSON_KEY_REGISTRATION_ID = "registrationId";
 
-	public static final String GET_KINDERGARTEN_LIST = "kindergartenList";
+	public static final String GET_AREA_LIST = "kindergartenList";
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
 	public static final String JSON_KEY_AREAS_id = "areaId";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";

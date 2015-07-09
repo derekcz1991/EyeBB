@@ -1,16 +1,12 @@
 package com.twinly.eyebb.dialog;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,9 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.DisplayLocationActivity;
 import com.twinly.eyebb.constant.HttpConstants;
@@ -46,7 +39,6 @@ public class ChildDialog extends Activity {
 	private ChildForLocator childForLocator;
 
 	private ImageLoader imageLoader = ImageLoader.getInstance();
-	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 	final static int START_PROGRASSS_BAR = 1;
 	final static int STOP_PROGRASSS_BAR = 2;
@@ -80,12 +72,12 @@ public class ChildDialog extends Activity {
 		}
 
 		imageLoader = ImageLoader.getInstance();
-		if (ImageUtils.isLocalImage(childForLocator.getIcon())) {
+		if (ImageUtils.isLocalImage(childForLocator.getLocalIcon())) {
 			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childForLocator
-					.getIcon()));
+					.getLocalIcon()));
 		} else {
 			imageLoader.displayImage(childForLocator.getIcon(), avatar,
-					ImageUtils.avatarOpitons, animateFirstListener);
+					ImageUtils.avatarOpitons, null);
 		}
 
 		phoneBtn.setOnClickListener(new OnClickListener() {
@@ -131,26 +123,6 @@ public class ChildDialog extends Activity {
 				finish();
 			}
 		});
-	}
-
-	private class AnimateFirstDisplayListener extends
-			SimpleImageLoadingListener {
-
-		final List<String> displayedImages = Collections
-				.synchronizedList(new LinkedList<String>());
-
-		@Override
-		public void onLoadingComplete(String imageUri, View view,
-				Bitmap loadedImage) {
-			if (loadedImage != null) {
-				CircleImageView imageView = (CircleImageView) view;
-				boolean firstDisplay = !displayedImages.contains(imageUri);
-				if (firstDisplay) {
-					FadeInBitmapDisplayer.animate(imageView, 500);
-					displayedImages.add(imageUri);
-				}
-			}
-		}
 	}
 
 	Runnable postToServerRunnable = new Runnable() {

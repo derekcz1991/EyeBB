@@ -59,8 +59,7 @@
                         style="@style/WhiteText_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="0" />
+                        android:layout_gravity="center_vertical" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -78,19 +77,6 @@
                 app:horizontalSpacing="8dp"
                 app:verticalSpacing="8dp" >
             </com.twinly.eyebb.customview.FlowLayout>
-            <!--
-                         <GridView
-                        android:id="@+id/auth_to"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"
-                        android:horizontalSpacing="6dp"
-                        android:numColumns="2"
-                        android:padding="6dp"
-                         android:scrollbars="none"
-                         
-                        android:verticalSpacing="6dp" >
-                    </GridView>
-            -->
         </LinearLayout>
     </LinearLayout>
 

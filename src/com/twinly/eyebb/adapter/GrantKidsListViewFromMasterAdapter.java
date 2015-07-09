@@ -3,7 +3,6 @@ package com.twinly.eyebb.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.utils.ImageUtils;
 
 public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
-	private Context context;
 	private List<ChildForGrant> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
@@ -33,7 +31,6 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 	public GrantKidsListViewFromMasterAdapter(Context context,
 			List<ChildForGrant> data) {
 		inflater = LayoutInflater.from(context);
-		this.context = context;
 		this.data = data;
 
 		imageLoader = ImageLoader.getInstance();
@@ -84,12 +81,12 @@ public class GrantKidsListViewFromMasterAdapter extends BaseAdapter {
 	private void setUpView(final ViewHolder viewHolder, final int position) {
 		final ChildForGrant child = data.get(position);
 
-		if (TextUtils.isEmpty(child.getIcon()) == false) {
+		if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+			viewHolder.avatar.setImageBitmap(ImageUtils
+					.getBitmapFromLocal(child.getLocalIcon()));
+		} else {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);
-		} else {
-			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.ic_stub));
 		}
 		viewHolder.name.setText(child.getName());
 	}

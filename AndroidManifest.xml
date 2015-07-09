@@ -236,7 +236,7 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.KindergartenListActivity"
+            android:name="com.twinly.eyebb.activity.AreaListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
@@ -287,6 +287,11 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.DisplayLocationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.ChangeKidNameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

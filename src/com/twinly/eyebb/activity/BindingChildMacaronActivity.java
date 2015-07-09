@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -63,6 +62,7 @@ public class BindingChildMacaronActivity extends Activity implements
 	private String mDeviceAddress;
 	private long childId;
 	private String childIcon;
+	private String childLocalIcon;
 	private long guardianId;
 	private String major;
 	private String minor;
@@ -83,7 +83,8 @@ public class BindingChildMacaronActivity extends Activity implements
 		childId = getIntent().getLongExtra(ActivityConstants.EXTRA_CHILD_ID, 0);
 		childIcon = getIntent().getStringExtra(
 				ActivityConstants.EXTRA_CHILD_ICON);
-
+		childLocalIcon = getIntent().getStringExtra(
+				ActivityConstants.EXTRA_CHILD_LOCAL_ICON);
 		avatar = (CircleImageView) findViewById(R.id.avatar);
 		tvAnimation = (TextView) findViewById(R.id.tv_animation);
 		tvMessage = (TextView) findViewById(R.id.message);
@@ -92,14 +93,11 @@ public class BindingChildMacaronActivity extends Activity implements
 
 		tvAddress.setText(mDeviceAddress);
 
-		if (TextUtils.isEmpty(childIcon) == false) {
-			if (ImageUtils.isLocalImage(childIcon)) {
-				avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childIcon));
-			} else {
-				imageLoader = ImageLoader.getInstance();
-				imageLoader.displayImage(childIcon, avatar,
-						ImageUtils.avatarOpitons, null);
-			}
+		if (ImageUtils.isLocalImage(childLocalIcon)) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childLocalIcon));
+		} else {
+			imageLoader.displayImage(childIcon, avatar,
+					ImageUtils.avatarOpitons, null);
 		}
 
 		mHandler = new Handler();

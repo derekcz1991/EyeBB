@@ -3,7 +3,6 @@ package com.twinly.eyebb.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +23,6 @@ import com.woozzu.android.util.StringMatcher;
 
 public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable>
 		implements SectionIndexer {
-	private Context context;
 	private List<ChildSelectable> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
@@ -42,7 +40,6 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable>
 		super(context, android.R.layout.simple_list_item_1);
 
 		inflater = LayoutInflater.from(context);
-		this.context = context;
 		this.data = data;
 		this.isSelectable = isSelectable;
 
@@ -112,12 +109,12 @@ public class KidsListViewSimpleAdapter extends ArrayAdapter<ChildSelectable>
 			});
 		}
 		final ChildSelectable child = data.get(position);
-		if (TextUtils.isEmpty(child.getIcon()) == false) {
+		if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+			viewHolder.avatar.setImageBitmap(ImageUtils
+					.getBitmapFromLocal(child.getLocalIcon()));
+		} else {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);
-		} else {
-			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.icon_avatar_dark));
 		}
 		viewHolder.name.setText(child.getName());
 	}

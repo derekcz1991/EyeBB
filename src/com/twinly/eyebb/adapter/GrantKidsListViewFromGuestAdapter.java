@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +23,6 @@ import com.woozzu.android.util.StringMatcher;
 
 public class GrantKidsListViewFromGuestAdapter extends
 		ArrayAdapter<ChildForGrant> implements SectionIndexer {
-	private Context context;
 	private List<ChildForGrant> data;
 	private LayoutInflater inflater;
 	private ImageLoader imageLoader;
@@ -42,7 +40,6 @@ public class GrantKidsListViewFromGuestAdapter extends
 			List<ChildForGrant> data) {
 		super(context, android.R.layout.simple_list_item_1);
 		inflater = LayoutInflater.from(context);
-		this.context = context;
 		this.data = data;
 		grantkidId = new ArrayList<String>();
 		noAccessGrantkidId = new ArrayList<String>();
@@ -109,12 +106,12 @@ public class GrantKidsListViewFromGuestAdapter extends
 		// init select
 		for (int i = 0; i < data.size(); i++) {
 			if (child.isWithAccess()) {
-				viewHolder.selected.setBackground(context.getResources()
-						.getDrawable(R.drawable.ic_selected));
+				viewHolder.selected
+						.setBackgroundResource(R.drawable.ic_selected);
 
 			} else {
-				viewHolder.selected.setBackground(context.getResources()
-						.getDrawable(R.drawable.ic_selected_off));
+				viewHolder.selected
+						.setBackgroundResource(R.drawable.ic_selected_off);
 
 			}
 
@@ -122,13 +119,10 @@ public class GrantKidsListViewFromGuestAdapter extends
 
 				@Override
 				public void onClick(View v) {
-					System.out.println("child.isWithAccess()--->"
-							+ child.isWithAccess());
 					// first click
 					if (child.isWithAccess()) {
-						viewHolder.selected.setBackground(context
-								.getResources().getDrawable(
-										R.drawable.ic_selected_off));
+						viewHolder.selected
+								.setBackgroundResource(R.drawable.ic_selected_off);
 						child.setWithAccess(false);
 						for (int i = 0; i < grantkidId.size(); i++) {
 							if (grantkidId.get(i).toString()
@@ -136,12 +130,10 @@ public class GrantKidsListViewFromGuestAdapter extends
 								grantkidId.remove(i);
 							}
 						}
-
 						noAccessGrantkidId.add(child.getChildId() + "");
 					} else {
-						viewHolder.selected.setBackground(context
-								.getResources().getDrawable(
-										R.drawable.ic_selected));
+						viewHolder.selected
+								.setBackgroundResource(R.drawable.ic_selected);
 						grantkidId.add(child.getChildId() + "");
 						for (int i = 0; i < noAccessGrantkidId.size(); i++) {
 							if (noAccessGrantkidId.get(i).toString()
@@ -155,13 +147,12 @@ public class GrantKidsListViewFromGuestAdapter extends
 
 			});
 		}
-
-		if (TextUtils.isEmpty(child.getIcon()) == false) {
+		if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+			viewHolder.avatar.setImageBitmap(ImageUtils
+					.getBitmapFromLocal(child.getLocalIcon()));
+		} else {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);
-		} else {
-			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.ic_stub));
 		}
 		viewHolder.name.setText(child.getName());
 	}

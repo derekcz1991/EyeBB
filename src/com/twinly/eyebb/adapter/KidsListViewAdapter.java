@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,9 +67,7 @@ public class KidsListViewAdapter extends
 						public int compare(Entry<Long, ChildForLocator> lhs,
 								Entry<Long, ChildForLocator> rhs) {
 							return lhs.getValue().getName()
-									.toLowerCase(Locale.US).charAt(0)
-									- rhs.getValue().getName()
-											.toLowerCase(Locale.US).charAt(0);
+									.compareTo(rhs.getValue().getName());
 						}
 					});
 		}
@@ -159,13 +156,14 @@ public class KidsListViewAdapter extends
 
 	private void setUpView(ViewHolder viewHolder, int position) {
 		final ChildForLocator child = list.get(position).getValue();
-		if (TextUtils.isEmpty(child.getIcon()) == false) {
+		if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+			viewHolder.avatar.setImageBitmap(ImageUtils
+					.getBitmapFromLocal(child.getLocalIcon()));
+		} else {
 			imageLoader.displayImage(child.getIcon(), viewHolder.avatar,
 					ImageUtils.avatarOpitons, null);
-		} else {
-			viewHolder.avatar.setImageDrawable(context.getResources()
-					.getDrawable(R.drawable.icon_avatar_dark));
 		}
+
 		viewHolder.name.setText(child.getName());
 		viewHolder.locationName.setText("@ " + child.getLocationName());
 		viewHolder.lastAppearTime.setText(CommonUtils

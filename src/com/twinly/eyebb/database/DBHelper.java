@@ -36,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
 				.append("child_id integer,")
 				.append("name text,")
 				.append("icon text,")
+				.append("local_icon text,")
 				.append("phone text,")
 				.append("relation_with_user text,")
 				.append("mac_address text)");
@@ -75,11 +76,15 @@ public class DBHelper extends SQLiteOpenHelper {
 				.append("date text,")
 				.append("icon text)");
 		db.execSQL(tableCreate.toString());
-		
+
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		if(oldVersion == 1 && newVersion == 2) {
+			String sql = "drop table if exists children";
+			db.execSQL(sql);
+		}
 		onCreate(db);
 	}
 

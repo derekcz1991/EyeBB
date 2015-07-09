@@ -27,6 +27,7 @@ public class DBChildren {
 		values.put("child_id", child.getChildId());
 		values.put("name", child.getName());
 		values.put("icon", child.getIcon());
+		values.put("local_icon", child.getLocalIcon());
 		values.put("phone", child.getPhone());
 		values.put("mac_address", child.getMacAddress());
 		values.put("relation_with_user", child.getRelationWithUser());
@@ -39,7 +40,7 @@ public class DBChildren {
 		// if exist the friend, update his information
 		ContentValues values = new ContentValues();
 		values.put("child_id", child.getChildId());
-		values.put("name", child.getName());
+		//values.put("name", child.getName());
 		values.put("icon", child.getIcon());
 		values.put("phone", child.getPhone());
 		values.put("mac_address", child.getMacAddress());
@@ -150,11 +151,21 @@ public class DBChildren {
 		db.close();
 	}
 
-	public static void updateIconByChildId(Context context, long childId,
+	public static void updateLocalIconByChildId(Context context, long childId,
 			String icon) {
 		SQLiteDatabase db = getInstance(context);
 		ContentValues values = new ContentValues();
-		values.put("icon", icon);
+		values.put("local_icon", icon);
+		db.update("children", values, "child_id=?",
+				new String[] { String.valueOf(childId) });
+		db.close();
+	}
+
+	public static void updateNameByChildId(Context context, long childId,
+			String name) {
+		SQLiteDatabase db = getInstance(context);
+		ContentValues values = new ContentValues();
+		values.put("name", name);
 		db.update("children", values, "child_id=?",
 				new String[] { String.valueOf(childId) });
 		db.close();
@@ -165,6 +176,7 @@ public class DBChildren {
 		child.setChildId(cursor.getLong(cursor.getColumnIndex("child_id")));
 		child.setName(cursor.getString(cursor.getColumnIndex("name")));
 		child.setIcon(cursor.getString(cursor.getColumnIndex("icon")));
+		child.setLocalIcon(cursor.getString(cursor.getColumnIndex("local_icon")));
 		child.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
 		child.setMacAddress(cursor.getString(cursor
 				.getColumnIndex("mac_address")));

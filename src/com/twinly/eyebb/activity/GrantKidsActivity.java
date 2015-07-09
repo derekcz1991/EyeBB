@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -107,7 +106,6 @@ public class GrantKidsActivity extends Activity {
 		try {
 			childList.clear();
 			if (!JSONObject.NULL.equals(getData)) {
-				// guest_data.clear();
 				boolean isChildNull = new JSONObject(getData)
 						.isNull(HttpConstants.JSON_KEY_CHILDREN_QUOTA);
 				if (!isChildNull) {
@@ -152,12 +150,9 @@ public class GrantKidsActivity extends Activity {
 		return childList;
 	}
 
-	@SuppressLint("ShowToast")
 	private void postGuestChildrenToServer() {
 		Map<String, String> map = new HashMap<String, String>();
-
 		map.put("guestId", guestdId);
-
 		try {
 			guestChildrenRetStr = HttpRequestUtils.post(
 					HttpConstants.GUEST_CHILDREN, map);
@@ -179,11 +174,8 @@ public class GrantKidsActivity extends Activity {
 
 				}
 			}
-
 		} catch (Exception e) {
-
 			e.printStackTrace();
-
 		}
 
 	}
@@ -192,15 +184,11 @@ public class GrantKidsActivity extends Activity {
 		@Override
 		public void run() {
 			postGrantToServer();
-
 		}
 	};
 
-	@SuppressLint("ShowToast")
 	private void postGrantToServer() {
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("info=>" + guestdId + " ");
-
 		map.put("guestId", guestdId);
 		if (grantChildId.length() > 0) {
 			map.put("accessChildIds",
@@ -221,7 +209,6 @@ public class GrantKidsActivity extends Activity {
 		try {
 			String retStr = HttpRequestUtils.post(HttpConstants.GRANT_GUESTS,
 					map);
-			//System.out.println("grant======>" + retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
@@ -250,10 +237,8 @@ public class GrantKidsActivity extends Activity {
 
 	}
 
-	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
@@ -347,9 +332,6 @@ public class GrantKidsActivity extends Activity {
 				noAccessGrantChildId += GrantKidsListViewFromGuestAdapter.noAccessGrantkidId
 						.get(i).toString() + ",";
 			}
-
-			System.out.println("grantChildId-->" + grantChildId
-					+ "    nograntChildId--->" + noAccessGrantChildId);
 
 			new Thread(postGrantToServerRunnable).start();
 

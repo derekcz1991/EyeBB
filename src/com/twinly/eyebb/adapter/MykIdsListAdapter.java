@@ -46,11 +46,6 @@ public class MykIdsListAdapter extends BaseAdapter {
 		this.childrenWithoutAddress = childrenWithoutAddress;
 		this.chidrenGuest = chidrenGuest;
 
-		System.out
-				.println("childrenWithAddress->" + childrenWithAddress.size());
-		System.out.println("childrenWithoutAddress->"
-				+ childrenWithoutAddress.size());
-		System.out.println("chidrenGuest->" + chidrenGuest.size());
 		imageLoader = ImageLoader.getInstance();
 	}
 
@@ -66,25 +61,21 @@ public class MykIdsListAdapter extends BaseAdapter {
 	 */
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return 3;
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
 
@@ -101,21 +92,20 @@ public class MykIdsListAdapter extends BaseAdapter {
 			case 0:
 				viewHolder.tv_title.setText(context
 						.getString(R.string.text_bind_child));
-				convertView.findViewById(R.id.liner_g_to_m).setBackground(
-						context.getResources().getDrawable(backgrouds[0]));
+				convertView.findViewById(R.id.liner_g_to_m)
+						.setBackgroundResource(backgrouds[0]);
 				break;
-
 			case 1:
 				viewHolder.tv_title.setText(context
 						.getString(R.string.text_unbind_child));
-				convertView.findViewById(R.id.liner_g_to_m).setBackground(
-						context.getResources().getDrawable(backgrouds[1]));
+				convertView.findViewById(R.id.liner_g_to_m)
+						.setBackgroundResource(backgrouds[1]);
 				break;
 			case 2:
 				viewHolder.tv_title.setText(context
 						.getString(R.string.text_granted_child));
-				convertView.findViewById(R.id.liner_g_to_m).setBackground(
-						context.getResources().getDrawable(backgrouds[2]));
+				convertView.findViewById(R.id.liner_g_to_m)
+						.setBackgroundResource(backgrouds[2]);
 				break;
 			}
 
@@ -128,10 +118,7 @@ public class MykIdsListAdapter extends BaseAdapter {
 	}
 
 	private void setUpView(ViewHolder viewHolder, int position) {
-		// TODO Auto-generated method stub
-
 		viewHolder.avatarContainer.removeAllViews();
-
 		switch (position) {
 		case 0:
 			for (int i = 0; i < childrenWithAddress.size(); i++) {
@@ -141,22 +128,19 @@ public class MykIdsListAdapter extends BaseAdapter {
 				viewHolder.avatar = (CircleImageView) children_item
 						.findViewById(R.id.avatar);
 
-				if (TextUtils.isEmpty(childrenWithAddress.get(i).getIcon()) == false) {
-					imageLoader.displayImage(childrenWithAddress.get(i)
-							.getIcon(), viewHolder.avatar,
-							ImageUtils.avatarOpitons, null);
-				} else {
-					viewHolder.avatar.setImageDrawable(context.getResources()
-							.getDrawable(R.drawable.icon_avatar_dark));
-				}
-
 				final Child child = childrenWithAddress.get(i);
 
-				viewHolder.avatar.setOnClickListener(new OnClickListener() {
+				if (ImageUtils.isLocalImage(child.getLocalIcon())) {
+					viewHolder.avatar.setImageBitmap(ImageUtils
+							.getBitmapFromLocal(child.getLocalIcon()));
+				} else {
+					imageLoader.displayImage(child.getIcon(),
+							viewHolder.avatar, ImageUtils.avatarOpitons, null);
+				}
 
+				viewHolder.avatar.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-
 						Intent intent_rewrite = new Intent(context,
 								KidProfileActivity.class);
 						intent_rewrite.putExtra(
@@ -167,7 +151,6 @@ public class MykIdsListAdapter extends BaseAdapter {
 								.startActivityForResult(
 										intent_rewrite,
 										ActivityConstants.REQUEST_GO_TO_KID_PROFILE_ACTIVITY);
-
 					}
 				});
 

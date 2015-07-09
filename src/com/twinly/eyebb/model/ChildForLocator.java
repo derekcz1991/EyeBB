@@ -12,7 +12,7 @@ public class ChildForLocator extends Child implements Serializable {
 
 	public ChildForLocator(Child child) {
 		super(child.getChildId(), child.getName(), child.getIcon(), child
-				.getPhone(), child.getMacAddress());
+				.getLocalIcon(), child.getPhone(), child.getMacAddress());
 		this.locationName = "";
 		this.lastAppearTime = 0;
 	}

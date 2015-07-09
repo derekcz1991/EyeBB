@@ -3,7 +3,6 @@ package com.twinly.eyebb.customview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,14 +44,13 @@ public class AvatarView {
 		if (isOnline == false) {
 			avatar.setAlpha(0.4f);
 		}
-		if (TextUtils.isEmpty(childForLocator.getIcon()) == false) {
-			if (ImageUtils.isLocalImage(childForLocator.getIcon())) {
-				avatar.setImageBitmap(ImageUtils
-						.getBitmapFromLocal(childForLocator.getIcon()));
-			} else {
-				imageLoader.displayImage(childForLocator.getIcon(), avatar,
-						ImageUtils.avatarOpitons, null);
-			}
+
+		if (ImageUtils.isLocalImage(childForLocator.getLocalIcon())) {
+			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childForLocator
+					.getLocalIcon()));
+		} else {
+			imageLoader.displayImage(childForLocator.getIcon(), avatar,
+					ImageUtils.avatarOpitons, null);
 		}
 
 		avatar.setOnClickListener(new OnClickListener() {
