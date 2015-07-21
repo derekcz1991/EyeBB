@@ -126,7 +126,7 @@ public class AntiLostService extends Service {
 					mConnectionState = BLEUtils.STATE_DISCONNECTED;
 					Log.i(TAG, "Disconnected from GATT server ==> "
 							+ gatt.getDevice().getAddress());
-					// if current gatt is the disconnet gatt, cancel the timeout timer.
+					//  GATT (attempting to connect) equal to the disconnecting GATT, cancel the timeout timer.
 					if (gatt == mBluetoothGatt) {
 						timer.cancel();
 					}
@@ -140,7 +140,7 @@ public class AntiLostService extends Service {
 					}
 					// Only when the antiLostDeviceList has one item and send message to connect next,
 					// if not, other callback wiil send the message to connect next device.
-					if (antiLostDeviceList.size() == 1) {
+					if (antiLostDeviceList.size() == 1) {				//reboot connecting cycle
 						mServiceHandler
 								.sendEmptyMessage(MESSAGE_CONNECT_DEVICE);
 					}
@@ -207,7 +207,7 @@ public class AntiLostService extends Service {
 						+ gatt.getDevice().getAddress());*/
 				Message msg = Message.obtain();
 				msg.what = MESSAGE_DISCONNECT_DEVICE;
-				msg.arg1 = mBluetoothGattList.indexOf(gatt) + 1;
+				msg.arg1 = mBluetoothGattList.indexOf(gatt) + 1;		//close next device
 				mServiceHandler.sendMessage(msg);
 			}
 
@@ -255,7 +255,7 @@ public class AntiLostService extends Service {
 						write(mBluetoothGattList.get(msg.arg1),
 								BLEUtils.SERVICE_UUID_0001,
 								BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID,
-								"0000");
+								"0000");				//shut down anti-lost
 					} else {
 						// release all bluetooth resource
 						for (BluetoothGatt gatt : mBluetoothGattList) {
@@ -489,6 +489,8 @@ public class AntiLostService extends Service {
 						gattCharacteristic.setValue(BLEUtils
 								.HexString2Bytes(value));
 						gatt.writeCharacteristic(gattCharacteristic);
+						//TODO write with false response
+						
 					}
 				}
 				break;

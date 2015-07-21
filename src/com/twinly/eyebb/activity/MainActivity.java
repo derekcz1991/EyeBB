@@ -97,6 +97,7 @@ public class MainActivity extends FragmentActivity implements
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Intent.ACTION_TIME_TICK);
 		registerReceiver(mReceiver, intentFilter);
+		
 	}
 
 	@Override
@@ -141,6 +142,12 @@ public class MainActivity extends FragmentActivity implements
 		super.onDestroy();
 	}
 
+	@Override
+	protected void onPause(){
+		unregisterReceiver(mReceiver);
+		super.onPause();
+	}
+	
 	@SuppressLint("InflateParams")
 	private void setUpTab(Bundle savedInstanceState) {
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);

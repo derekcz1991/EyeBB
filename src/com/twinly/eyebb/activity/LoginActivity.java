@@ -38,7 +38,7 @@ import com.twinly.eyebb.utils.SystemUtils;
  * @category LoginActivity
  * 
  *           this activity is used to login. you should fill in the password and
- *           account name. the password that is be hashed to post to the server.
+ *           account name. the password that is hashed to post to the server.
  * 
  */
 public class LoginActivity extends Activity {
