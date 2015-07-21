@@ -57,8 +57,9 @@ public class ActivityConstants {
 
 	public static final int FRAGMENT_REPORT_ACTIVITY = 1;
 	public static final int FRAGMENT_PROFILE = 2;
-	public static final int ACTIVITY_CHECK_CHILD_TO_BIND = 3;
-	public static final int ACTIVITY_KID_PROFILE = 4;
+	public static final int ACTIVITY_SETTING = 3;
+	public static final int ACTIVITY_CHECK_CHILD_TO_BIND = 4;
+	public static final int ACTIVITY_KID_PROFILE = 5;
 
 	public static final String EXTRA_FROM = "FROM";
 	public static final String EXTRA_USER_NAME = "USER_NAME";

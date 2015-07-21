@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
+import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 /**
@@ -43,6 +44,10 @@ public class SettingsActivity extends Activity {
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
 	private LinearLayout updateNicknameBtn;
+	private LinearLayout termsOfServiceBtn;
+	private TextView termsOfService;
+	private LinearLayout privacyPolicyBtn;
+	private TextView privacyPolicy;
 
 	private boolean isAutoUpdate;
 	private TextView refreshTimeNumber;
@@ -64,6 +69,10 @@ public class SettingsActivity extends Activity {
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
 		updateNicknameBtn = (LinearLayout) findViewById(R.id.update_nickname_btn);
+		termsOfServiceBtn = (LinearLayout) findViewById(R.id.termsOfService_btn);
+		termsOfService = (TextView) findViewById(R.id.termsOfService);
+		privacyPolicyBtn = (LinearLayout) findViewById(R.id.privacyPolicy_btn);
+		privacyPolicy = (TextView) findViewById(R.id.privacyPolicy);
 
 		setupView();
 
@@ -204,6 +213,36 @@ public class SettingsActivity extends Activity {
 				startActivityForResult(
 						intent,
 						ActivityConstants.REQUEST_GO_TO_UPDATE_NICKNAME_ACTIVITY);
+			}
+		});
+
+		termsOfServiceBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SettingsActivity.this,
+						WebViewActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("from", ActivityConstants.ACTIVITY_SETTING);
+				bundle.putString("url", HttpConstants.SERVER_URL + "disclaimer");
+				bundle.putString("title", termsOfService.getText().toString());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+		});
+
+		privacyPolicyBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SettingsActivity.this,
+						WebViewActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putInt("from", ActivityConstants.ACTIVITY_SETTING);
+				bundle.putString("url", HttpConstants.SERVER_URL + "privacy");
+				bundle.putString("title", privacyPolicy.getText().toString());
+				intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 
