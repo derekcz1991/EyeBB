@@ -6,8 +6,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
-
+Icon
 # Thumbnails
 ._*
 
@@ -67,6 +66,7 @@ local.properties
 .loadpath
 proguard-project.txt
 project.properties
+.classpath
 
 # External tool builders
 .externalToolBuilders/

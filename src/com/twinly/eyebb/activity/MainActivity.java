@@ -106,11 +106,10 @@ public class MainActivity extends FragmentActivity implements
 		bar.setVisibility(View.INVISIBLE);
 
 		handleNotificationDot = new HandleNotificationDot();
-		registerReceiver(handleNotificationDot, new IntentFilter(
-				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT));
-		registerReceiver(handleNotificationDot, new IntentFilter(
-				BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT));
-
+		IntentFilter intentFilter = new IntentFilter(
+				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT); 
+		intentFilter.addAction(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT);
+		registerReceiver(handleNotificationDot, intentFilter);
 	}
 
 	@Override
@@ -119,7 +118,13 @@ public class MainActivity extends FragmentActivity implements
 		outState.putString("tab", mTabHost.getCurrentTabTag());
 		//super.onSaveInstanceState(outState);
 	}
-
+	
+	@Override
+	protected void onPause(){
+		unregisterReceiver(handleNotificationDot);
+		super.onPause();
+	}
+	
 	@Override
 	protected void onDestroy() {
 		System.out.println("MainActivity ==>> " + "onDestroy");
@@ -128,16 +133,8 @@ public class MainActivity extends FragmentActivity implements
 		}
 
 		//unregisterReceiver
-		try {
-			unregisterReceiver(handleNotificationDot);
-		} catch (IllegalArgumentException e) {
-			if (e.getMessage().contains("Receiver not registered")) {
-				// Ignore this exception. This is exactly what is desired
-			} else {
-				// unexpected, re-throw
-				throw e;
-			}
-		}
+
+		unregisterReceiver(handleNotificationDot);
 		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
@@ -221,7 +218,7 @@ public class MainActivity extends FragmentActivity implements
 	private void setUpProgressBar() {
 		bar = (SmoothProgressBar) findViewById(R.id.bar);
 		bar.setVisibility(View.INVISIBLE);
-
+		
 		progressBar = (SmoothProgressBar) findViewById(R.id.progressBar);
 		ShapeDrawable shape = new ShapeDrawable();
 		shape.setShape(new RectShape());
