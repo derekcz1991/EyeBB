@@ -138,12 +138,6 @@ public class MainActivity extends FragmentActivity implements
 		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
-
-	@Override
-	protected void onPause(){
-		unregisterReceiver(mReceiver);
-		super.onPause();
-	}
 	
 	@SuppressLint("InflateParams")
 	private void setUpTab(Bundle savedInstanceState) {
@@ -212,7 +206,6 @@ public class MainActivity extends FragmentActivity implements
 		/*if (savedInstanceState != null) {
 			mTabHost.setCurrentTabByTag(savedInstanceState.getString("tab"));
 		}*/
-
 	}
 
 	private void setUpProgressBar() {
