@@ -79,7 +79,7 @@ public class GrantKidsActivity extends Activity {
 						.getSerializableExtra("child_data");
 			}
 		}
-
+		System.out.println(newChildrenData.size());
 		setTitle(getString(R.string.text_auth_to_user) + guestName);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
@@ -156,7 +156,8 @@ public class GrantKidsActivity extends Activity {
 		try {
 			guestChildrenRetStr = HttpRequestUtils.post(
 					HttpConstants.GUEST_CHILDREN, map);
-			System.out.println("guestchildren======>" + guestChildrenRetStr);
+			System.out.println(HttpConstants.GUEST_CHILDREN + " ==>> "
+					+ guestChildrenRetStr);
 			if (guestChildrenRetStr
 					.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| guestChildrenRetStr.equals("")

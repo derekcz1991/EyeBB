@@ -93,6 +93,7 @@ public class BindingChildMacaronActivity extends Activity implements
 
 		tvAddress.setText(mDeviceAddress);
 
+		imageLoader = ImageLoader.getInstance();
 		if (ImageUtils.isLocalImage(childLocalIcon)) {
 			avatar.setImageBitmap(ImageUtils.getBitmapFromLocal(childLocalIcon));
 		} else {

@@ -134,7 +134,7 @@ public class MainActivity extends FragmentActivity implements
 
 		//unregisterReceiver
 
-		unregisterReceiver(handleNotificationDot);
+		//unregisterReceiver(handleNotificationDot);
 		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}

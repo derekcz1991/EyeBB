@@ -1,6 +1,7 @@
 package com.twinly.eyebb.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +48,8 @@ public class AuthorizeKidsActivity extends Activity {
 
 	private ArrayList<User> authToGuestData;
 	private ArrayList<User> authFromMasterData;
-	private ArrayList<ChildForGrant> authFromMasterChildrenData;
+	//private ArrayList<ChildForGrant> authFromMasterChildrenData;
+	private HashMap<String, ArrayList<ChildForGrant>> authMap;
 
 	private String retStr;
 
@@ -83,8 +85,7 @@ public class AuthorizeKidsActivity extends Activity {
 
 		authToGuestData = new ArrayList<User>();
 		authFromMasterData = new ArrayList<User>();
-		authFromMasterChildrenData = new ArrayList<ChildForGrant>();
-
+		authMap = new HashMap<String, ArrayList<ChildForGrant>>();
 	}
 
 	@Override
@@ -99,7 +100,8 @@ public class AuthorizeKidsActivity extends Activity {
 	private void postFindGuestsToServer() {
 		try {
 			retStr = HttpRequestUtils.get(HttpConstants.AUTH_FIND_GUESTS, null);
-			System.out.println("retStrpost======>" + retStr);
+			System.out.println(HttpConstants.AUTH_FIND_GUESTS + " ==>>"
+					+ retStr);
 			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
 					|| retStr.equals("") || retStr.length() == 0) {
 				System.out.println("connect error");
@@ -135,7 +137,6 @@ public class AuthorizeKidsActivity extends Activity {
 									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User guestMode = new User();
-
 							guestMode.setGuardianId(guest
 									.getString(HttpConstants.JSON_KEY_USER_ID));
 							guestMode
@@ -163,21 +164,20 @@ public class AuthorizeKidsActivity extends Activity {
 	private ArrayList<User> parseMasterJson(String getData) {
 		try {
 			authFromMasterData.clear();
-			authFromMasterChildrenData.clear();
 			if (!JSONObject.NULL.equals(getData)) {
 				boolean isMasterNull = new JSONObject(getData)
 						.isNull(HttpConstants.JSON_KEY_MASTERS);
 				if (!isMasterNull) {
 					JSONArray masters = new JSONObject(getData)
 							.getJSONArray(HttpConstants.JSON_KEY_MASTERS);
-
 					if (masters.length() > 0) {
 						for (int i = 0; i < masters.length(); i++) {
+							ArrayList<ChildForGrant> authFromMasterChildrenData = new ArrayList<ChildForGrant>();
+
 							JSONObject master = ((JSONObject) masters.opt(i))
 									.getJSONObject(HttpConstants.JSON_KEY_USER);
 
 							User masterMode = new User();
-
 							masterMode.setGuardianId(master
 									.getString(HttpConstants.JSON_KEY_USER_ID));
 							masterMode
@@ -189,37 +189,35 @@ public class AuthorizeKidsActivity extends Activity {
 							masterMode
 									.setType(master
 											.getString(HttpConstants.JSON_KEY_USER_TYPE));
-
 							authFromMasterData.add(masterMode);
 
-							JSONArray master_children = ((JSONObject) masters
+							JSONArray masterChildren = ((JSONObject) masters
 									.opt(i))
 									.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_BY_GUARDIAN);
 
-							for (int j = 0; j < master_children.length(); j++) {
-								JSONObject master_child_json = master_children
+							for (int j = 0; j < masterChildren.length(); j++) {
+								JSONObject masterChildJson = masterChildren
 										.getJSONObject(j);
 
-								ChildForGrant master_child = new ChildForGrant();
-								master_child
-										.setChildId(master_child_json
+								ChildForGrant masterChild = new ChildForGrant();
+								masterChild
+										.setChildId(masterChildJson
 												.getLong(HttpConstants.JSON_KEY_CHILD_ID));
-								master_child
-										.setName(master_child_json
+								masterChild
+										.setName(masterChildJson
 												.getString(HttpConstants.JSON_KEY_CHILD_NAME));
-								master_child
-										.setIcon(master_child_json
+								masterChild
+										.setIcon(masterChildJson
 												.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-
-								/**
-								 * keep USER id
-								 */
-								master_child
+								masterChild
 										.setPhone(master
 												.getString(HttpConstants.JSON_KEY_USER_ID));
 
-								authFromMasterChildrenData.add(master_child);
+								authFromMasterChildrenData.add(masterChild);
 							}
+
+							authMap.put(masterMode.getGuardianId(),
+									authFromMasterChildrenData);
 						}
 					}
 				}
@@ -234,7 +232,6 @@ public class AuthorizeKidsActivity extends Activity {
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 
@@ -262,7 +259,7 @@ public class AuthorizeKidsActivity extends Activity {
 				}
 				guestAdapter = new GuestListViewAdapter(
 						AuthorizeKidsActivity.this, parseGuestJson(retStr),
-						parseMasterJson(retStr), authFromMasterChildrenData);
+						parseMasterJson(retStr), authMap);
 				listView.setAdapter(guestAdapter);
 
 				break;

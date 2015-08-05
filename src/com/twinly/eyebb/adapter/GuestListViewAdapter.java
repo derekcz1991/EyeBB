@@ -1,6 +1,7 @@
 package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -26,10 +27,8 @@ public class GuestListViewAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private ViewGroup childItem;
 
-	private List<User> master_data;
-
-	private ArrayList<ChildForGrant> authFromMasterChildrenData;
-	private ArrayList<ChildForGrant> newChildrenData;
+	private List<User> masterData;
+	private HashMap<String, ArrayList<ChildForGrant>> authMap;
 
 	public final class ViewHolder {
 		public CircleImageView avatar;
@@ -49,14 +48,14 @@ public class GuestListViewAdapter extends BaseAdapter {
 	}
 
 	public GuestListViewAdapter(Context context, List<User> data,
-			List<User> master_data,
-			ArrayList<ChildForGrant> auth_from_master_children_data) {
+			List<User> masterData,
+			HashMap<String, ArrayList<ChildForGrant>> authMap) {
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.data = data;
 
-		this.master_data = master_data;
-		this.authFromMasterChildrenData = auth_from_master_children_data;
+		this.masterData = masterData;
+		this.authMap = authMap;
 	}
 
 	/**
@@ -113,27 +112,9 @@ public class GuestListViewAdapter extends BaseAdapter {
 		 * 
 		 */
 		if (position == 1) {
-
 			viewHolder.tvAuthorizedToOthers.setText(context
 					.getString(R.string.text_authorization_from_others));
-
-			newChildrenData = new ArrayList<ChildForGrant>();
-
-			for (int i = 0; i < master_data.size(); i++) {
-
-				for (int y = 0; y < authFromMasterChildrenData.size(); y++) {
-					if (master_data
-							.get(i)
-							.getGuardianId()
-							.equals(authFromMasterChildrenData.get(y)
-									.getPhone())) {
-						newChildrenData.add(authFromMasterChildrenData.get(y));
-						break;
-					}
-				}
-
-			}
-			for (int i = 0; i < master_data.size();) {
+			for (int i = 0; i < masterData.size();) {
 
 				// this view has two sides (left and right) and we get two data at once, so i = 1 + 2
 				childItem = (ViewGroup) LayoutInflater.from(context).inflate(
@@ -154,10 +135,10 @@ public class GuestListViewAdapter extends BaseAdapter {
 				viewHolder.reLayoutRight = (LinearLayout) childItem
 						.findViewById(R.id.re_layout_right);
 
-				viewHolder.nameLeft.setText(master_data.get(i).getName());
-				viewHolder.phoneLeft.setText(master_data.get(i)
-						.getPhoneNumber());
-				final User guest_left = master_data.get(i);
+				viewHolder.nameLeft.setText(masterData.get(i).getName());
+				viewHolder.phoneLeft
+						.setText(masterData.get(i).getPhoneNumber());
+				final User guestLeft = masterData.get(i);
 
 				viewHolder.reLayoutLeft
 						.setOnClickListener(new OnClickListener() {
@@ -167,25 +148,26 @@ public class GuestListViewAdapter extends BaseAdapter {
 								Intent intent = new Intent(context,
 										GrantKidsActivity.class);
 								intent.putExtra("guestId",
-										guest_left.getGuardianId());
+										guestLeft.getGuardianId());
 								intent.putExtra("guestName",
-										guest_left.getName());
+										guestLeft.getName());
 								intent.putExtra("from_where", "master");
-								intent.putExtra("child_data", newChildrenData);
+								intent.putExtra("child_data",
+										authMap.get(guestLeft.getGuardianId()));
 								context.startActivity(intent);
 								((Activity) context).finish();
 
 							}
 						});
 
-				if (i + 1 > master_data.size() - 1) {
+				if (i + 1 > masterData.size() - 1) {
 					viewHolder.reLayoutRight.setVisibility(View.INVISIBLE);
 				} else {
-					viewHolder.nameRight.setText(master_data.get(i + 1)
+					viewHolder.nameRight.setText(masterData.get(i + 1)
 							.getName());
-					viewHolder.phoneRight.setText(master_data.get(i + 1)
+					viewHolder.phoneRight.setText(masterData.get(i + 1)
 							.getPhoneNumber());
-					final User guest_right = master_data.get(i + 1);
+					final User guestRight = masterData.get(i + 1);
 
 					viewHolder.reLayoutRight
 							.setOnClickListener(new OnClickListener() {
@@ -196,12 +178,12 @@ public class GuestListViewAdapter extends BaseAdapter {
 									Intent intent = new Intent(context,
 											GrantKidsActivity.class);
 									intent.putExtra("guestId",
-											guest_right.getGuardianId());
+											guestRight.getGuardianId());
 									intent.putExtra("guestName",
-											guest_right.getName());
+											guestRight.getName());
 									intent.putExtra("from_where", "master");
-									intent.putExtra("child_data",
-											newChildrenData);
+									intent.putExtra("child_data", authMap
+											.get(guestRight.getGuardianId()));
 									context.startActivity(intent);
 									((Activity) context).finish();
 
@@ -213,7 +195,7 @@ public class GuestListViewAdapter extends BaseAdapter {
 				i = i + 2;
 				viewHolder.avatarContainer.addView(childItem, 0);
 			}
-			viewHolder.authToChildrenNum.setText(master_data.size() + "");
+			viewHolder.authToChildrenNum.setText(masterData.size() + "");
 		} else {
 
 			for (int i = 0; i < data.size();) {

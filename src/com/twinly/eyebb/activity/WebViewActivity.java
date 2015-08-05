@@ -77,7 +77,6 @@ public class WebViewActivity extends Activity {
 			break;
 		case ActivityConstants.ACTIVITY_SETTING:
 			webViewDetailsURL = bundle.getString("url");
-			System.out.println(webViewDetailsURL);
 			actionBarTitle = bundle.getString("title");
 			break;
 		}

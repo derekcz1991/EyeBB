@@ -40,6 +40,7 @@ public class SettingsActivity extends Activity {
 	private TextView enableSoundSelected;
 	private TextView enableVibrationSelected;
 	private View aboutBtn;
+	private LinearLayout deviceItem;
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
 	private LinearLayout updatePswBtn;
@@ -65,6 +66,7 @@ public class SettingsActivity extends Activity {
 		aboutBtn = findViewById(R.id.about_btn);
 		refreshTimeView = (LinearLayout) findViewById(R.id.refresh_time_view);
 		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
+		deviceItem = (LinearLayout) findViewById(R.id.device_item);
 		bindingBtn = (LinearLayout) findViewById(R.id.binding_btn);
 		authorizationBtn = (LinearLayout) findViewById(R.id.authorization_btn);
 		updatePswBtn = (LinearLayout) findViewById(R.id.update_psw_btn);
@@ -291,6 +293,9 @@ public class SettingsActivity extends Activity {
 			break;
 		}
 
+		if (SharePrefsUtils.getUserType(this).equals("T")) {
+			authorizationBtn.setVisibility(View.GONE);
+		}
 	}
 
 	// change the language

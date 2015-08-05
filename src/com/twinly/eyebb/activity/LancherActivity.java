@@ -171,44 +171,46 @@ public class LancherActivity extends Activity {
 					+ result);
 			try {
 				JSONObject json = new JSONObject(result);
-				JSONArray childrenInfoJSONList = json
-						.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_INFO);
-				for (int i = 0; i < childrenInfoJSONList.length(); i++) {
-					JSONObject childrenInfoObject = childrenInfoJSONList
-							.getJSONObject(i);
-					JSONObject childRelObject = childrenInfoObject
-							.getJSONObject(HttpConstants.JSON_KEY_CHILD_REL);
-					JSONObject childObject = childRelObject
-							.getJSONObject(HttpConstants.JSON_KEY_CHILD);
+				if (CommonUtils.isNotNull(json
+						.getString(HttpConstants.JSON_KEY_CHILDREN_INFO))) {
+					JSONArray childrenInfoJSONList = json
+							.getJSONArray(HttpConstants.JSON_KEY_CHILDREN_INFO);
+					for (int i = 0; i < childrenInfoJSONList.length(); i++) {
+						JSONObject childrenInfoObject = childrenInfoJSONList
+								.getJSONObject(i);
+						JSONObject childRelObject = childrenInfoObject
+								.getJSONObject(HttpConstants.JSON_KEY_CHILD_REL);
+						JSONObject childObject = childRelObject
+								.getJSONObject(HttpConstants.JSON_KEY_CHILD);
 
-					Child child = new Child(
-							childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID),
-							childObject
-									.getString(HttpConstants.JSON_KEY_CHILD_NAME),
-							childObject
-									.getString(HttpConstants.JSON_KEY_CHILD_ICON));
-					child.setRelationWithUser(childRelObject
-							.getString(HttpConstants.JSON_KEY_CHILD_RELATION));
-					child.setMacAddress(childrenInfoObject
-							.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
-					// get parents' phone
-					if (CommonUtils.isNotNull(childrenInfoObject
-							.getString(HttpConstants.JSON_KEY_PARENTS))) {
-						JSONObject parentObject = childrenInfoObject
-								.getJSONObject(HttpConstants.JSON_KEY_PARENTS);
-						child.setPhone(parentObject
-								.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+						Child child = new Child(
+								childObject
+										.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+								childObject
+										.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+								childObject
+										.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+						child.setRelationWithUser(childRelObject
+								.getString(HttpConstants.JSON_KEY_CHILD_RELATION));
+						child.setMacAddress(childrenInfoObject
+								.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
+						// get parents' phone
+						if (CommonUtils.isNotNull(childrenInfoObject
+								.getString(HttpConstants.JSON_KEY_PARENTS))) {
+							JSONObject parentObject = childrenInfoObject
+									.getJSONObject(HttpConstants.JSON_KEY_PARENTS);
+							child.setPhone(parentObject
+									.getString(HttpConstants.JSON_KEY_PARENTS_PHONE));
+						}
+						DBChildren.insert(LancherActivity.this, child);
 					}
-					DBChildren.insert(LancherActivity.this, child);
 				}
-
-				Intent intent = new Intent(LancherActivity.this,
-						MainActivity.class);
-				startActivity(intent);
-				finish();
 			} catch (JSONException e) {
 				goBackToLogin();
 			}
+			Intent intent = new Intent(LancherActivity.this, MainActivity.class);
+			startActivity(intent);
+			finish();
 		}
 	}
 
