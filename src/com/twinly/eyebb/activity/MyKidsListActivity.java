@@ -62,7 +62,6 @@ public class MyKidsListActivity extends Activity {
 		chidrenGuest.clear();
 
 		allChildren = DBChildren.getChildrenList(this);
-		System.out.println("allChildren = " + allChildren.size());
 		Child child;
 		for (int i = 0; i < allChildren.size(); i++) {
 			child = allChildren.get(i);

@@ -79,7 +79,6 @@ public class GrantKidsActivity extends Activity {
 						.getSerializableExtra("child_data");
 			}
 		}
-		System.out.println(newChildrenData.size());
 		setTitle(getString(R.string.text_auth_to_user) + guestName);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);

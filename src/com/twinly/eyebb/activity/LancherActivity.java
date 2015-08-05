@@ -19,6 +19,8 @@ import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;

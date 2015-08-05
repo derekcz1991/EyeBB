@@ -190,7 +190,6 @@ public class BindingChildMacaronActivity extends Activity implements
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("childId", String.valueOf(childId));
 			map.put("macAddress", mDeviceAddress);
-			System.out.println(HttpConstants.CHECK_BEACON + " map = " + map);
 			return HttpRequestUtils.post(HttpConstants.CHECK_BEACON, map);
 		}
 
@@ -213,8 +212,6 @@ public class BindingChildMacaronActivity extends Activity implements
 					major = result.substring(0, result.indexOf(":"));
 					minor = result.substring(result.indexOf(":") + 1,
 							result.length());
-					System.out.println("major = " + major + "  minor = "
-							+ minor);
 					mBluetoothUtils.writeMajor(mDeviceAddress, 15000L, major);
 				}
 			}
