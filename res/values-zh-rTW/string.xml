@@ -11,7 +11,10 @@
     <string name="text_policy">下一步前，請接受我們的 <u>服務條款</u> 和 <u>隱私政策</u>。</string>
     <string name="text_user_name">用戶名</string>
     <string name="text_email">電郵 (可選)</string>
-    <string name="text_phone_number">電話 (用戶名)</string>
+    <string name="text_phone_number">電話</string>
+    <string name="text_country">國家/地區</string>
+    <string name="text_china">中國</string>
+    <string name="text_hk">中國香港特別行政區</string>
     <string name="text_password">密碼</string>
     <string name="text_login_account">用戶名</string>
     <string name="text_select_kid_kindergarten">選擇幼稚園</string>
@@ -20,8 +23,6 @@
     <string name="text_radar_tracking">雷達追蹤</string>
     <string name="text_report">簡報</string>
     <string name="text_kids_list">小孩列表</string>
-    <string name="text_beep_all">呼喚全部</string>
-    <string name="text_beep_all_device">呼喚全部設備?</string>
     <string name="text_change">修改</string>
     <string name="text_today">本日</string>
     <string name="text_customized">比較的時間:\&#160;</string>

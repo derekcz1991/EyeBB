@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,10 @@ import com.twinly.eyebb.utils.SystemUtils;
 public class LoginActivity extends Activity {
 	private TextView forgetPasswordBtn;
 
+	private LinearLayout llCountry;
+	private TextView tvCountry;
+	private TextView country;
+
 	private EditText loginAccount;
 	private EditText password;
 	private String hashPassword;
@@ -57,6 +62,10 @@ public class LoginActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
+
+		llCountry = (LinearLayout) findViewById(R.id.ll_country);
+		tvCountry = (TextView) findViewById(R.id.tv_country);
+		country = (TextView) findViewById(R.id.country);
 
 		loginAccount = (EditText) findViewById(R.id.login_account);
 		loginAccount.setText(SharePrefsUtils
@@ -75,6 +84,17 @@ public class LoginActivity extends Activity {
 						ForgetPasswordDialog.class);
 				startActivity(intent);
 
+			}
+		});
+
+		llCountry.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(LoginActivity.this,
+						SelectRegionActivity.class);
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_SELECT_REGION);
 			}
 		});
 
@@ -226,4 +246,24 @@ public class LoginActivity extends Activity {
 			}
 		}
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case ActivityConstants.REQUEST_GO_TO_SELECT_REGION:
+			switch (resultCode) {
+			case SelectRegionActivity.RESULT_CODE_CHINA:
+				tvCountry.setText(getString(R.string.text_china));
+				country.setText("+86");
+				break;
+			case SelectRegionActivity.RESULT_CODE_HK:
+				tvCountry.setText(getString(R.string.text_hk));
+				country.setText("+852");
+				break;
+			}
+			break;
+		}
+	}
+
 }

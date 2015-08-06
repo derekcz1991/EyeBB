@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,11 @@ import com.twinly.eyebb.utils.SystemUtils;
  */
 public class SignUpActivity extends Activity {
 	private Button btnSignup;
+
+	private LinearLayout llCountry;
+	private TextView tvCountry;
+	private TextView country;
+	private int phoneLength = 100;
 
 	private EditText etUsername;
 	private EditText etEmail;
@@ -74,6 +80,10 @@ public class SignUpActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
+		llCountry = (LinearLayout) findViewById(R.id.ll_country);
+		tvCountry = (TextView) findViewById(R.id.tv_country);
+		country = (TextView) findViewById(R.id.country);
+
 		// username password email
 		etUsername = (EditText) findViewById(R.id.et_phone_number);
 		etEmail = (EditText) findViewById(R.id.et_email);
@@ -87,15 +97,25 @@ public class SignUpActivity extends Activity {
 
 		btnSignup = (Button) findViewById(R.id.btn_signup);
 
+		llCountry.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SignUpActivity.this,
+						SelectRegionActivity.class);
+				startActivityForResult(intent,
+						ActivityConstants.REQUEST_GO_TO_SELECT_REGION);
+			}
+		});
+
 		etUsername.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (etUsername.hasFocus() == false) {
 					userName = etUsername.getText().toString();
-					if (RegularExpression.isUsername(userName)) {
+					if (RegularExpression.isUsername(userName, phoneLength)) {
 						new Thread(postAccNameCheckToServerRunnable).start();
-
 					} else {
 						Message msg = handler.obtainMessage();
 						msg.what = CHECK_ACC_ERROR;
@@ -127,7 +147,7 @@ public class SignUpActivity extends Activity {
 			public void afterTextChanged(Editable s) {
 				editStart = etUsername.getSelectionStart();
 				editEnd = etUsername.getSelectionEnd();
-				if (temp.length() > 8) {
+				if (temp.length() > phoneLength) {
 					s.delete(editStart - 1, editEnd);
 					int tempSelection = editStart;
 					etUsername.setText(s);
@@ -208,7 +228,6 @@ public class SignUpActivity extends Activity {
 
 	private void postCheckAccToServer() {
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("username=>" + userName);
 		map.put("accName", userName);
 		try {
 			String retStr = HttpRequestUtils.post(HttpConstants.ACC_NAME_CHECK,
@@ -291,6 +310,8 @@ public class SignUpActivity extends Activity {
 
 					Intent intent = new Intent(SignUpActivity.this,
 							SignUpAskToBindDialog.class);
+					intent.putExtra(ActivityConstants.EXTRA_REGION_CODE,
+							country.getText().toString());
 					intent.putExtra(ActivityConstants.EXTRA_USER_NAME, userName);
 					intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
 							hashPassword);
@@ -372,6 +393,20 @@ public class SignUpActivity extends Activity {
 		case ActivityConstants.REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG:
 			setResult(ActivityConstants.RESULT_RESULT_OK);
 			finish();
+			break;
+		case ActivityConstants.REQUEST_GO_TO_SELECT_REGION:
+			switch (resultCode) {
+			case SelectRegionActivity.RESULT_CODE_CHINA:
+				tvCountry.setText(getString(R.string.text_china));
+				country.setText("+86");
+				phoneLength = 11;
+				break;
+			case SelectRegionActivity.RESULT_CODE_HK:
+				tvCountry.setText(getString(R.string.text_hk));
+				country.setText("+852");
+				phoneLength = 8;
+				break;
+			}
 			break;
 		}
 	}

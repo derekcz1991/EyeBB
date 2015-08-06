@@ -11,7 +11,10 @@
     <string name="text_policy">下一步前，请接受我们的 <u>服务条款</u> 和 <u>隐私政策</u>。</string>
     <string name="text_user_name">用户名</string>
     <string name="text_email">电邮 (可选)</string>
-    <string name="text_phone_number">电话 (用户名)</string>
+    <string name="text_phone_number">电话</string>
+    <string name="text_country">国家/地区</string>
+    <string name="text_china">中国</string>
+    <string name="text_hk">中国香港特别行政区</string>
     <string name="text_password">密码</string>
     <string name="text_login_account">用户名</string>
     <string name="text_select_kid_kindergarten">选择幼稚园</string>
@@ -20,8 +23,6 @@
     <string name="text_radar_tracking">雷达追踪</string>
     <string name="text_report">简报</string>
     <string name="text_kids_list">小孩列表</string>
-    <string name="text_beep_all">全部蜂鸣</string>
-    <string name="text_beep_all_device">蜂鸣全部的设备?</string>
     <string name="text_change">修改</string>
     <string name="text_today">本日</string>
     <string name="text_customized">比较的时间:\&#160;</string>

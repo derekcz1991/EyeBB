@@ -305,6 +305,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.SelectRegionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
 
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"

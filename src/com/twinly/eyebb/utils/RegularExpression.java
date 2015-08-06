@@ -16,7 +16,6 @@ public class RegularExpression {
 	public static String mSections = "ABCDEFGHIJKLMNOPQRSTUVWXYZ字";
 
 	public static boolean getStringToDetectionLetters(char str) {
-		// System.out.println(str);
 		String regex = "^[A-Za-z]+$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(str + "");
@@ -33,8 +32,9 @@ public class RegularExpression {
 		}
 	}
 
-	public static boolean isUsername(String usrname) {
-		Pattern p = Pattern.compile("^[0-9_]{8,20}$");
+	public static boolean isUsername(String usrname, int length) {
+		String s = "^[0-9_]{" + length + ",200}$";
+		Pattern p = Pattern.compile(s);
 		Matcher m = p.matcher(usrname);
 		return m.matches();
 	}
