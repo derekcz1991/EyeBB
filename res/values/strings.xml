@@ -208,6 +208,7 @@
     <string name="btn_map">Map</string>
     <string name="btn_cur_location">Current Location</string>
     <string name="btn_trajectory">Trajectory</string>
+    <string name="btn_stop_beep">Stop Beep</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

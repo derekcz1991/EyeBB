@@ -148,6 +148,44 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- device_beep -->
+
+        <LinearLayout
+            android:id="@+id/layout_device_stop_beep"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    style="@style/DarkGreyText_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="left"
+                    android:gravity="center_vertical"
+                    android:text="@string/btn_stop_beep" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/btn_arrow_go_big" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" >
+            </LinearLayout>
+        </LinearLayout>
+
         <!-- device_ota -->
 
         <LinearLayout

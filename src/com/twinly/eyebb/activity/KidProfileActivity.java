@@ -77,6 +77,7 @@ public class KidProfileActivity extends Activity implements
 	private static final int PICK_FROM_FILE = 300;
 
 	private LinearLayout layoutDeviceBeep;
+	private LinearLayout laytouDeviceStopBeep;
 	private LinearLayout layoutDeviceOta;
 	private LinearLayout layoutDeviceRequireQrCode;
 	private LinearLayout layoutDeviceUnbind;
@@ -90,6 +91,7 @@ public class KidProfileActivity extends Activity implements
 	private String getDeviceBattery;
 
 	private Dialog dialog;
+	private boolean switcher = false;
 
 	@SuppressLint("NewApi")
 	@Override
@@ -112,11 +114,13 @@ public class KidProfileActivity extends Activity implements
 		txtBinding = (TextView) findViewById(R.id.device_unbind);
 		txtDeviceQr = (TextView) findViewById(R.id.device_qr);
 		layoutDeviceBeep = (LinearLayout) findViewById(R.id.layout_device_beep);
+		laytouDeviceStopBeep = (LinearLayout) findViewById(R.id.layout_device_stop_beep);
 		layoutDeviceOta = (LinearLayout) findViewById(R.id.layout_device_ota);
 		layoutDeviceRequireQrCode = (LinearLayout) findViewById(R.id.layout_device_require_qr_code);
 		layoutDeviceUnbind = (LinearLayout) findViewById(R.id.layout_device_unbind);
 		layoutDeviceRequireQrCode.setOnClickListener(this);
 		layoutDeviceBeep.setOnClickListener(this);
+		laytouDeviceStopBeep.setOnClickListener(this);
 		layoutDeviceOta.setOnClickListener(this);
 		avatarItemLayout = (LinearLayout) findViewById(R.id.avatarItem);
 		deviceBatteryResult = (TextView) findViewById(R.id.device_battery_result);
@@ -143,11 +147,13 @@ public class KidProfileActivity extends Activity implements
 			txtDeviceQr
 					.setText(getString(R.string.text_get_the_lastest_eyebb_device_qr_code));
 			layoutDeviceBeep.setVisibility(View.GONE);
+			laytouDeviceStopBeep.setVisibility(View.GONE);
 			layoutDeviceOta.setVisibility(View.GONE);
 
 		} else {
 			txtBinding.setText(getString(R.string.btn_unbind));
 			layoutDeviceBeep.setVisibility(View.GONE);
+			laytouDeviceStopBeep.setVisibility(View.GONE);
 			// when read the battery life, showing the ota
 			layoutDeviceOta.setVisibility(View.GONE);
 		}
@@ -155,6 +161,7 @@ public class KidProfileActivity extends Activity implements
 		// if the child belongs to other parent
 		if (child.getRelationWithUser().equals("P") == false) {
 			layoutDeviceBeep.setVisibility(View.INVISIBLE);
+			laytouDeviceStopBeep.setVisibility(View.INVISIBLE);
 			layoutDeviceRequireQrCode.setVisibility(View.INVISIBLE);
 			layoutDeviceUnbind.setVisibility(View.INVISIBLE);
 		}
@@ -592,7 +599,6 @@ public class KidProfileActivity extends Activity implements
 	/**
 	 * when we read the battery life. the connection between device and phone
 	 * does not interrupt. so we let
-	 * layoutDeviceBeep.setVisibility(View.VISIBLE);
 	 */
 	@Override
 	public void onDataAvailable(final String value) {
@@ -604,6 +610,7 @@ public class KidProfileActivity extends Activity implements
 				layoutDeviceOta.setVisibility(View.VISIBLE);
 				// when we get the battery life, showing the beep button.
 				layoutDeviceBeep.setVisibility(View.VISIBLE);
+				laytouDeviceStopBeep.setVisibility(View.VISIBLE);
 				mHoloCircularProgressBar.setProgress(1f);
 
 				if (mProgressBarAnimator != null) {
@@ -658,17 +665,13 @@ public class KidProfileActivity extends Activity implements
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 
 		case R.id.layout_device_require_qr_code:
 			Intent intent = new Intent(KidProfileActivity.this,
 					RequireQrCodeDialog.class);
 			intent.putExtra("childId", child.getChildId() + "");
-
 			startActivity(intent);
-			// bindService(i1, conn1, Context.BIND_AUTO_CREATE);
-
 			break;
 
 		case R.id.layout_device_beep:
@@ -676,12 +679,26 @@ public class KidProfileActivity extends Activity implements
 				dialog = LoadingDialog.createLoadingDialog(
 						KidProfileActivity.this, getString(R.string.text_beep));
 				dialog.show();
-				// System.out.println("child.getMacAddress()---> "
-				// + child.getMacAddress());
+				// System.out.println("child.getMacAddress()---> " child.getMacAddress());
 				mBluetoothUtils.writeBeep(child.getMacAddress(), 10000, "01");
 			}
 			break;
-
+		case R.id.layout_device_stop_beep:
+			if (child.getMacAddress() != null) {
+				dialog = LoadingDialog.createLoadingDialog(
+						KidProfileActivity.this,
+						getString(R.string.btn_stop_beep));
+				dialog.show();
+				//mBluetoothUtils.write
+				if (switcher)
+					mBluetoothUtils.writeAntiLost(child.getMacAddress(), 10000,
+							"0000");
+				else
+					mBluetoothUtils.writeBeep(child.getMacAddress(), 10000,
+							"00");
+				switcher = !switcher;
+			}
+			break;
 		case R.id.layout_device_ota:
 			Intent intentFwUpdateActivity = new Intent(KidProfileActivity.this,
 					FwUpdateActivity.class);

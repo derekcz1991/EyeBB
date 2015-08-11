@@ -106,7 +106,7 @@
     <string name="text_unbind_success">宝宝安解除配对成功!</string>
     <string name="text_unbind_fail">出错!宝宝安解除配对失败!</string>
     <string name="text_no_data">没有监护的宝宝</string>
-    <string name="text_no_guest">无监护人...</string>
+    <string name="text_no_guest">无监护人&#8230;</string>
     <string name="text_select_child">请选择孩子.</string>
     <string name="text_grant_success">授权成功!</string>
     <string name="text_update_password">修改密码</string>
@@ -208,6 +208,7 @@
     <string name="btn_map">地图</string>
     <string name="btn_cur_location">当前位置</string>
     <string name="btn_trajectory">轨迹</string>
+    <string name="btn_stop_beep">停止蜂鸣</string>
     <!-- Toast strings -->
     <string name="toast_login">登录中&#8230;</string>
     <string name="toast_signup">注册中&#8230;</string>

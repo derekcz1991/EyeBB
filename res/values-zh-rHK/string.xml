@@ -207,6 +207,7 @@
     <string name="btn_select_all">全選</string>
     <string name="btn_cur_location">當前位置</string>
     <string name="btn_trajectory">軌跡</string>
+    <string name="btn_stop_beep">停止蜂鳴</string>
     <!-- Toast strings -->
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

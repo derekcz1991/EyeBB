@@ -31,6 +31,7 @@ public class BluetoothUtils {
 	public final static int WRITE_BEEP = 4;
 	public final static int WRITE_LED_BLINK = 5;
 	public final static int READ_BATTERY = 6;
+	public final static int WRITE_ANTI_LOST = 7;
 
 	private final static String TAG = BluetoothUtils.class.getSimpleName();
 
@@ -272,6 +273,20 @@ public class BluetoothUtils {
 		}
 	}
 
+	public void writeAntiLost(String mDeviceAddress, long timeout, String value) {
+		command = WRITE_BEEP;
+		this.mDeviceAddress = mDeviceAddress;
+		this.value = value;
+		if (gattServices != null) {
+			write(BLEUtils.SERVICE_UUID_0001,
+					BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, value, true);
+		} else {
+			if (initialize()) {
+				connect(timeout);
+			}
+		}
+	}
+
 	/**
 	 * Make device led blink
 	 * 
@@ -495,6 +510,17 @@ public class BluetoothUtils {
 			if (isPasswordSet) {
 				read(BLEUtils.SERVICE_UUID_0001,
 						BLEUtils.CHARACTERISTICS_BATTERY_UUID);
+			} else {
+				write(BLEUtils.SERVICE_UUID_0002,
+						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
+						false);
+			}
+			break;
+		case WRITE_ANTI_LOST:
+			if (isPasswordSet) {
+				write(BLEUtils.SERVICE_UUID_0001,
+						BLEUtils.CHARACTERISTICS_ANTI_LOST_PERIOD_UUID, "0000",
+						true);
 			} else {
 				write(BLEUtils.SERVICE_UUID_0002,
 						BLEUtils.CHARACTERISTICS_PASSWORD, BLEUtils.PASSWORD,
