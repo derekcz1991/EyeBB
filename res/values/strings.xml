@@ -219,5 +219,6 @@
     <string name="toast_read_service">Reading Service&#8230;</string>
     <string name="toast_register_to_gcm">Failed to get register id, retrying&#8230;</string>
     <string name="toast_register_to_gcm_failed">Failed to connect to server, please try again later</string>
-
+	<string name="toast_open_bluetooth">Please open Bluetooth</string>
+	<string name="toast_select_country">Please select country or region</string>
 </resources>

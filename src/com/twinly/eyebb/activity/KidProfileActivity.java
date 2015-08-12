@@ -68,7 +68,7 @@ public class KidProfileActivity extends Activity implements
 	private TextView txtDeviceQr;
 	private TextView txtBinding;
 	private TextView deviceBatteryResult;
-	private TextView deviceOtaFirmwareRevision;
+	//private TextView deviceOtaFirmwareRevision;
 	private ImageLoader imageLoader;
 	private LinearLayout avatarItemLayout;
 	private Uri mImageCaptureUri;
@@ -396,6 +396,8 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	private void bluetoothNotOpenCancelReadBattery() {
+		Toast.makeText(this, getString(R.string.toast_open_bluetooth),
+				Toast.LENGTH_SHORT).show();
 		avatarItemLayout.setBackgroundColor(getResources().getColor(
 				R.color.lilac_colour));
 		mHoloCircularProgressBar.setMarkerEnabled(false);
@@ -414,27 +416,16 @@ public class KidProfileActivity extends Activity implements
 			int state = intent.getIntExtra(stateExtra, -1);
 			switch (state) {
 			case BluetoothAdapter.STATE_TURNING_ON:
-				System.out.println("STATE_TURNING_ON");
-
 				break;
 			case BluetoothAdapter.STATE_ON:
-				System.out.println("STATE_ON");
-
 				initToReadBattery();
-
 				break;
 			case BluetoothAdapter.STATE_TURNING_OFF:
-				System.out.println("STATE_TURNING_OFF");
-
 				break;
 			case BluetoothAdapter.STATE_OFF:
-				System.out.println("STATE_OFF");
 				bluetoothNotOpenCancelReadBattery();
-
 				break;
-
 			}
-
 		}
 	};
 

@@ -219,6 +219,8 @@
     <string name="toast_read_service">讀取設備服務中&#8230;</string>
     <string name="toast_register_to_gcm">獲取註冊id失敗,重試&#8230;</string>
     <string name="toast_register_to_gcm_failed">連接服務器失敗,請稍候再試</string>
+    <string name="toast_open_bluetooth">請開啟藍牙</string>
+    <string name="toast_select_country">請選擇國家或地區</string>
     <!-- Dialog strings -->
     <string name="dialog_error_no_ble">Bluetooth Low Energy technology is not supported on your device.</string>
     <string name="dialog_error_no_bluetooth">Bluetooth is not supported on your device.</string>

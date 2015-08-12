@@ -272,7 +272,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 	}
 
-	private class UpdateViewTask extends AsyncTask<Void, Void, String> {
+	private class UpdateViewTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
 		protected void onPreExecute() {
@@ -284,7 +284,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 
 		@Override
-		protected String doInBackground(Void... params) {
+		protected Boolean doInBackground(Void... params) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -305,11 +305,7 @@ public class IndoorLocatorFragment extends Fragment implements
 							HttpConstants.GET_CHILDREN_LOC_LIST, null);
 				}
 			}
-			return result;
-		}
 
-		@Override
-		protected void onPostExecute(String result) {
 			//System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
@@ -328,6 +324,17 @@ public class IndoorLocatorFragment extends Fragment implements
 				while (it.hasNext()) {
 					mList.add(it.next());
 				}
+			} catch (JSONException e) {
+				System.out.println(HttpConstants.GET_CHILDREN_LOC_LIST
+						+ " ---->> " + e.getMessage());
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			if (result) {
 				mIndoorLocatorAdapter.notifyDataSetChanged();
 
 				// set area name
@@ -337,10 +344,6 @@ public class IndoorLocatorFragment extends Fragment implements
 					areaName.setText(areaMap.get(currentAreaId).getDisplayName(
 							getActivity()));
 				}
-
-			} catch (JSONException e) {
-				System.out.println(HttpConstants.GET_CHILDREN_LOC_LIST
-						+ " ---->> " + e.getMessage());
 			}
 			progressBar.setVisibility(View.INVISIBLE);
 			if (curAreaMapLocaionMapChildren.size() == 0) {
@@ -351,7 +354,6 @@ public class IndoorLocatorFragment extends Fragment implements
 			callback.resetProgressBar();
 			isFirstUpdate = false;
 		}
-
 	}
 
 	/**

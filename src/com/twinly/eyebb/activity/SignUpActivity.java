@@ -61,7 +61,7 @@ public class SignUpActivity extends Activity {
 	private TextView tvPassword;
 	private TextView tvNickname;
 
-	private boolean usernameFlag = false;
+	private boolean userNameFlag = false;
 
 	public static final int CHECK_ACC_SUCCESS = 1;
 	public static final int CHECK_ACC_FALSE = 2;
@@ -69,6 +69,7 @@ public class SignUpActivity extends Activity {
 	public static final int CONNECT_ERROR = 3;
 	public static final int REG_SUCCESSFULLY = 5;
 
+	private boolean isCountrySelect = false;
 	private String hashPassword;
 
 	@Override
@@ -105,6 +106,18 @@ public class SignUpActivity extends Activity {
 						SelectRegionActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_SELECT_REGION);
+			}
+		});
+
+		etUsername.setFocusable(false);
+		etUsername.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (isCountrySelect == false)
+					Toast.makeText(SignUpActivity.this,
+							getString(R.string.toast_select_country),
+							Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -175,7 +188,7 @@ public class SignUpActivity extends Activity {
 							if (RegularExpression.isEmail(email)
 									|| phone.length() > 0) {
 								if (phone != null || phone.length() > 0) {
-									if (usernameFlag) {
+									if (userNameFlag) {
 										new Thread(
 												postRegParentsCheckToServerRunnable)
 												.start();
@@ -245,12 +258,12 @@ public class SignUpActivity extends Activity {
 					Message msg = handler.obtainMessage();
 					msg.what = CHECK_ACC_SUCCESS;
 					handler.sendMessage(msg);
-					usernameFlag = true;
+					userNameFlag = true;
 				} else if (retStr.equals("false")) {
 					Message msg = handler.obtainMessage();
 					msg.what = CHECK_ACC_FALSE;
 					handler.sendMessage(msg);
-					usernameFlag = false;
+					userNameFlag = false;
 				}
 			}
 		} catch (Exception e) {
@@ -401,11 +414,17 @@ public class SignUpActivity extends Activity {
 				tvCountry.setText(getString(R.string.text_china));
 				country.setText("+86");
 				phoneLength = 11;
+				isCountrySelect = true;
+				etUsername.setFocusableInTouchMode(true);
+				etUsername.setFocusable(true);
 				break;
 			case SelectRegionActivity.RESULT_CODE_HK:
 				tvCountry.setText(getString(R.string.text_hk));
 				country.setText("+852");
 				phoneLength = 8;
+				isCountrySelect = true;
+				etUsername.setFocusableInTouchMode(true);
+				etUsername.setFocusable(true);
 				break;
 			}
 			break;

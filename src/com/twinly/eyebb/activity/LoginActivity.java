@@ -54,6 +54,8 @@ public class LoginActivity extends Activity {
 	private String hashPassword;
 	private Dialog loginDialog;
 
+	private boolean isCountrySelect = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -110,7 +112,12 @@ public class LoginActivity extends Activity {
 	}
 
 	public void OnLoginClicked(View view) {
-
+		if (isCountrySelect == false) {
+			Toast.makeText(LoginActivity.this,
+					getString(R.string.toast_select_country),
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
 		if (TextUtils.isEmpty(loginAccount.getText().toString())) {
 			return;
 		} else if (TextUtils.isEmpty(password.getText().toString())) {
@@ -257,10 +264,12 @@ public class LoginActivity extends Activity {
 			case SelectRegionActivity.RESULT_CODE_CHINA:
 				tvCountry.setText(getString(R.string.text_china));
 				country.setText("+86");
+				isCountrySelect = true;
 				break;
 			case SelectRegionActivity.RESULT_CODE_HK:
 				tvCountry.setText(getString(R.string.text_hk));
 				country.setText("+852");
+				isCountrySelect = true;
 				break;
 			}
 			break;

@@ -66,24 +66,11 @@ public class MainActivity extends FragmentActivity implements
 	private SmoothProgressBar progressBar;
 	private SmoothProgressBar bar;
 	private boolean isRefreshing;
-	private KeepSessionAliveTask keepSessionAliveTask;
 	private View profileLabel;
 	private HandleNotificationDot handleNotificationDot;
 
-	private int timeTickerCounter;
-	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (Intent.ACTION_TIME_TICK.equals(action)) {
-				timeTickerCounter++;
-				if (timeTickerCounter == 10) {
-					keepSessionAliveTask = new KeepSessionAliveTask();
-					keepSessionAliveTask
-							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				}
-			}
-		}
-	};
+	private boolean needLogin;
+	private boolean firstTime = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +78,17 @@ public class MainActivity extends FragmentActivity implements
 
 		setContentView(R.layout.activity_main);
 		setUpTab(savedInstanceState);
+
+		needLogin = getIntent().getBooleanExtra(EXTRA_NEED_LOGIN, false);
+
 		setUpProgressBar();
 		setUpNetworkBar();
 
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Intent.ACTION_TIME_TICK);
-		registerReceiver(mReceiver, intentFilter);
+		//registerReceiver(mReceiver, intentFilter);
 
+		handleNotificationDot = new HandleNotificationDot();
 	}
 
 	@Override
@@ -105,12 +96,16 @@ public class MainActivity extends FragmentActivity implements
 		super.onResume();
 		bar.setVisibility(View.INVISIBLE);
 
-		handleNotificationDot = new HandleNotificationDot();
 		IntentFilter intentFilter = new IntentFilter(
 				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT);
 		intentFilter
 				.addAction(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT);
 		registerReceiver(handleNotificationDot, intentFilter);
+
+		if (firstTime == false) {
+			new AutoLoginTask().execute();
+		}
+		firstTime = false;
 	}
 
 	@Override
@@ -129,10 +124,6 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onDestroy() {
 		System.out.println("MainActivity ==>> " + "onDestroy");
-		if (keepSessionAliveTask != null) {
-			keepSessionAliveTask.cancel(true);
-		}
-		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
 
@@ -236,12 +227,11 @@ public class MainActivity extends FragmentActivity implements
 			}
 		});
 
-		if (getIntent().getBooleanExtra(EXTRA_NEED_LOGIN, false)) {
+		if (needLogin) {
 			// set the current tab
 			if (SharePrefsUtils.isAntiLostOn(this)) {
 				mTabHost.setCurrentTab(1);
 			}
-
 			new AutoLoginTask()
 					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		}
@@ -279,7 +269,6 @@ public class MainActivity extends FragmentActivity implements
 				networkBar.setVisibility(View.VISIBLE);
 			}
 		}
-
 	}
 
 	@Override
@@ -290,7 +279,6 @@ public class MainActivity extends FragmentActivity implements
 			startMain.addCategory(Intent.CATEGORY_HOME);
 			startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(startMain);
-
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
@@ -342,18 +330,6 @@ public class MainActivity extends FragmentActivity implements
 		// reportFragment.setRefreshing(false);
 	}
 
-	private class KeepSessionAliveTask extends AsyncTask<Void, String, String> {
-
-		@Override
-		protected String doInBackground(Void... params) {
-			timeTickerCounter = 0;
-			System.out.println("KeepSessionAliveTask runs once --->>>");
-			return HttpRequestUtils.get("reportService/api/refreshSession",
-					null);
-		}
-
-	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent arg2) {
 		super.onActivityResult(requestCode, resultCode, arg2);
@@ -366,8 +342,6 @@ public class MainActivity extends FragmentActivity implements
 
 	/**
 	 *  broadcast notificaiton dot receiver 
-	 *  
-	 *  
 	 */
 	private class HandleNotificationDot extends BroadcastReceiver {
 		public void onReceive(Context context, Intent intent) {
