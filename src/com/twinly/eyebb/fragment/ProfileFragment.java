@@ -129,7 +129,6 @@ public class ProfileFragment extends Fragment {
 			String action = intent.getAction();
 			if (action.equals(BroadcastUtils.BROADCAST_OPEN_RADAR)) {
 				settingBtn.setAlpha(0.3f);
-				System.out.println("BROADCAST_OPEN_RADAR");
 			} else if (action.equals(BroadcastUtils.BROADCAST_CLOSE_RADAR)) {
 				settingBtn.setAlpha(1.0f);
 			}
@@ -138,14 +137,11 @@ public class ProfileFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		updateTheOptionsUi = new UpdateTheOptionsUi();
-		getActivity().registerReceiver(updateTheOptionsUi,
-				new IntentFilter(BroadcastUtils.BROADCAST_OPEN_RADAR));
-		getActivity().registerReceiver(updateTheOptionsUi,
-				new IntentFilter(BroadcastUtils.BROADCAST_CLOSE_RADAR));
-
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(BroadcastUtils.BROADCAST_OPEN_RADAR);
+		intentFilter.addAction(BroadcastUtils.BROADCAST_CLOSE_RADAR);
 	}
 
 	@Override
@@ -157,9 +153,7 @@ public class ProfileFragment extends Fragment {
 			getActivity().unregisterReceiver(updateTheOptionsUi);
 		} catch (IllegalArgumentException e) {
 			if (e.getMessage().contains("Receiver not registered")) {
-				// Ignore this exception. This is exactly what is desired
 			} else {
-				// unexpected, re-throw
 				throw e;
 			}
 		}
@@ -234,7 +228,8 @@ public class ProfileFragment extends Fragment {
 				}
 				updateView();
 			} catch (JSONException e) {
-				System.out.println(HttpConstants.GET_NOTICES + e.getMessage());
+				System.out.println(HttpConstants.GET_NOTICES + " ==>> "
+						+ e.getMessage());
 			}
 		}
 
@@ -252,7 +247,6 @@ public class ProfileFragment extends Fragment {
 			} else if (resultCode == ActivityConstants.RESULT_UPDATE_NICKNAME_SUCCESS) {
 				((TextView) v.findViewById(R.id.username))
 						.setText(SharePrefsUtils.getUserName(getActivity()));
-				System.out.println("UPDATE NICK NAME!!!");
 			}
 		}
 	}

@@ -24,8 +24,8 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.JPushUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
@@ -306,7 +306,8 @@ public class SignUpActivity extends Activity {
 							hashPassword);
 
 					// register to GCM server
-					new GCMUtils().GCMRegistration(SignUpActivity.this, "");
+					//new GCMUtils().GCMRegistration(SignUpActivity.this, "");
+					JPushUtils.updateRegistrationId(SignUpActivity.this);
 
 					Intent intent = new Intent(SignUpActivity.this,
 							SignUpAskToBindDialog.class);

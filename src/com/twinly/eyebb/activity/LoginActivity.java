@@ -28,8 +28,8 @@ import com.twinly.eyebb.customview.LoadingDialog;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.JPushUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
@@ -146,8 +146,8 @@ public class LoginActivity extends Activity {
 			System.out.println("login result = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
-				String receivedDeviceId = json
-						.getString(HttpConstants.JSON_KEY_REGISTRATION_ID);
+				/*String receivedDeviceId = json
+						.getString(HttpConstants.JSON_KEY_REGISTRATION_ID);*/
 
 				json = json.getJSONObject(HttpConstants.JSON_KEY_USER);
 
@@ -167,8 +167,9 @@ public class LoginActivity extends Activity {
 						loginAccount.getText().toString());
 				SharePrefsUtils.setPassowrd(LoginActivity.this, hashPassword);
 
-				new GCMUtils().GCMRegistration(LoginActivity.this,
-						receivedDeviceId);
+				/*new GCMUtils().GCMRegistration(LoginActivity.this,
+						receivedDeviceId);*/
+				JPushUtils.updateRegistrationId(LoginActivity.this);
 
 				new GetChildrenInfoTask()
 						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

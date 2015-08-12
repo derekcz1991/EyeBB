@@ -311,19 +311,22 @@
             android:theme="@style/CustomActionBarTheme" >
         </activity>
 
+        <!--
         <receiver
             android:name="com.twinly.eyebb.service.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
 
-                <!-- Receives the actual messages. -->
+                Receives the actual messages.
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- Receives the registration id. -->
+                Receives the registration id.
                 <category android:name="com.twinly.eyebb" />
             </intent-filter>
         </receiver>
 
         <service android:name="com.twinly.eyebb.service.GcmIntentService" />
+        -->
+
         <service
             android:name="com.twinly.eyebb.bluetooth.BluetoothLeService"
             android:enabled="true" />
@@ -406,7 +409,9 @@
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
 
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
-        <receiver android:name="com.twinly.eyebb.activity.MyReceiver" >
+        <receiver
+            android:name="com.twinly.eyebb.activity.JPushReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!-- Required  用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.UNREGISTRATION" />

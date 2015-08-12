@@ -97,7 +97,7 @@ public class MainActivity extends FragmentActivity implements
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Intent.ACTION_TIME_TICK);
 		registerReceiver(mReceiver, intentFilter);
-		
+
 	}
 
 	@Override
@@ -107,8 +107,9 @@ public class MainActivity extends FragmentActivity implements
 
 		handleNotificationDot = new HandleNotificationDot();
 		IntentFilter intentFilter = new IntentFilter(
-				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT); 
-		intentFilter.addAction(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT);
+				BroadcastUtils.BROADCAST_ADD_NOTIFICATION_DOT);
+		intentFilter
+				.addAction(BroadcastUtils.BROADCAST_CANCEL_NOTIFICATION_DOT);
 		registerReceiver(handleNotificationDot, intentFilter);
 	}
 
@@ -118,27 +119,23 @@ public class MainActivity extends FragmentActivity implements
 		outState.putString("tab", mTabHost.getCurrentTabTag());
 		//super.onSaveInstanceState(outState);
 	}
-	
+
 	@Override
-	protected void onPause(){
+	protected void onPause() {
 		unregisterReceiver(handleNotificationDot);
 		super.onPause();
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		System.out.println("MainActivity ==>> " + "onDestroy");
 		if (keepSessionAliveTask != null) {
 			keepSessionAliveTask.cancel(true);
 		}
-
-		//unregisterReceiver
-
-		//unregisterReceiver(handleNotificationDot);
 		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
-	
+
 	@SuppressLint("InflateParams")
 	private void setUpTab(Bundle savedInstanceState) {
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -211,7 +208,7 @@ public class MainActivity extends FragmentActivity implements
 	private void setUpProgressBar() {
 		bar = (SmoothProgressBar) findViewById(R.id.bar);
 		bar.setVisibility(View.INVISIBLE);
-		
+
 		progressBar = (SmoothProgressBar) findViewById(R.id.progressBar);
 		ShapeDrawable shape = new ShapeDrawable();
 		shape.setShape(new RectShape());

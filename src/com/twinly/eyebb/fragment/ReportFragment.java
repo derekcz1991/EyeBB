@@ -367,15 +367,14 @@ public class ReportFragment extends Fragment implements
 				activityInfo
 						.setTitleTc(item
 								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_TC));
-				activityInfo
-						.setUrl(item
-								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_URL));
+				activityInfo.setUrl(item
+						.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_URL));
 				activityInfo
 						.setUrlSc(item
-								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC));
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_URL_SC));
 				activityInfo
 						.setUrlTc(item
-								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_URL_TC));
+								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_URL_TC));
 				activityInfo
 						.setDate(item
 								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_DATE));

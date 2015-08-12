@@ -107,11 +107,11 @@ public class GcmIntentService extends IntentService {
 				.getString(HttpConstants.JSON_KEY_NOTICES_TITLE_TC));
 		notice.setTitleSc(bundle
 				.getString(HttpConstants.JSON_KEY_NOTICES_TITLE_SC));
-		notice.setUrl(bundle.getString(HttpConstants.JSON_KEY_NOTICES_NOTICE));
+		notice.setUrl(bundle.getString(HttpConstants.JSON_KEY_NOTICES_URL));
 		notice.setUrlTc(bundle
-				.getString(HttpConstants.JSON_KEY_NOTICES_NOTICE_TC));
+				.getString(HttpConstants.JSON_KEY_NOTICES_URL_TC));
 		notice.setUrlSc(bundle
-				.getString(HttpConstants.JSON_KEY_NOTICES_NOTICE_SC));
+				.getString(HttpConstants.JSON_KEY_NOTICES_URL_SC));
 		notice.setIcon(bundle.getString(HttpConstants.JSON_KEY_NOTICES_ICON));
 		notice.setDate(bundle
 				.getString(HttpConstants.JSON_KEY_NOTICES_VALID_UNTIL));

@@ -131,7 +131,6 @@ public class ReportPerformanceFragment extends Fragment implements
 				for (int i = 0; i < jsonArray.length(); i++) {
 					JSONObject object = jsonArray.getJSONObject(i);
 					// location name
-					System.out.println(object.getString(objectName));
 					PerformanceListItem item = new PerformanceListItem(
 							object.getString(objectName), -1, 0, 0, 0);
 					list.add(item);

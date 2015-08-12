@@ -74,9 +74,12 @@ public class HttpConstants {
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE = "title";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_TC = "titleTc";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_TITLE_SC = "titleSc";
-	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL = "activity";
-	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_TC = "activityTc";
-	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC = "activitySc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL = "url";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_TC = "urlTc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_URL_SC = "urlSc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_URL = "activity";
+	public static final String JSON_KEY_REPORT_ACTIVITY_URL_TC = "activityTc";
+	public static final String JSON_KEY_REPORT_ACTIVITY_URL_SC = "activitySc";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_ICON = "icon";
 	public static final String JSON_KEY_REPORT_ACTIVITY_INFO_DATE = "validUntil";
 
@@ -99,6 +102,9 @@ public class HttpConstants {
 	public static final String JSON_KEY_NOTICES_NOTICE = "notice";
 	public static final String JSON_KEY_NOTICES_NOTICE_TC = "noticeTc";
 	public static final String JSON_KEY_NOTICES_NOTICE_SC = "noticeSc";
+	public static final String JSON_KEY_NOTICES_URL = "url";
+	public static final String JSON_KEY_NOTICES_URL_TC = "urlTc";
+	public static final String JSON_KEY_NOTICES_URL_SC = "urlSc";
 	public static final String JSON_KEY_NOTICES_ICON = "icon";
 	public static final String JSON_KEY_NOTICES_VALID_UNTIL = "validUntil";
 

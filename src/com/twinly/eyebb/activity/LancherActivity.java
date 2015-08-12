@@ -28,8 +28,8 @@ import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.utils.CommonUtils;
-import com.twinly.eyebb.utils.GCMUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
+import com.twinly.eyebb.utils.JPushUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 import com.twinly.eyebb.utils.SystemUtils;
 
@@ -72,6 +72,18 @@ public class LancherActivity extends Activity {
 			}
 		}
 
+	}
+
+	@Override
+	protected void onResume() {
+		JPushInterface.onResume(this);
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		JPushInterface.onPause(this);
+		super.onPause();
 	}
 
 	private void checkLogo() {
@@ -134,8 +146,7 @@ public class LancherActivity extends Activity {
 			System.out.println("auto login result = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
-				String receivedDeviceId = json
-						.getString(HttpConstants.JSON_KEY_REGISTRATION_ID);
+				//String receivedDeviceId = json .getString(HttpConstants.JSON_KEY_REGISTRATION_ID);
 
 				json = json.getJSONObject(HttpConstants.JSON_KEY_USER);
 
@@ -148,11 +159,11 @@ public class LancherActivity extends Activity {
 				SharePrefsUtils.setUserType(LancherActivity.this,
 						json.getString(HttpConstants.JSON_KEY_USER_TYPE));
 
-				new GCMUtils().GCMRegistration(LancherActivity.this,
-						receivedDeviceId);
-
-				new GetChildrenInfoTask()
-						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				/*new GCMUtils().GCMRegistration(LancherActivity.this,
+						receivedDeviceId);*/
+				JPushUtils.updateRegistrationId(LancherActivity.this);
+				new GetChildrenInfoTask().execute();
+				//.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			} catch (JSONException e) {
 				goBackToLogin();
 			}
@@ -207,12 +218,13 @@ public class LancherActivity extends Activity {
 						DBChildren.insert(LancherActivity.this, child);
 					}
 				}
+				Intent intent = new Intent(LancherActivity.this,
+						MainActivity.class);
+				startActivity(intent);
+				finish();
 			} catch (JSONException e) {
 				goBackToLogin();
 			}
-			Intent intent = new Intent(LancherActivity.this, MainActivity.class);
-			startActivity(intent);
-			finish();
 		}
 	}
 
