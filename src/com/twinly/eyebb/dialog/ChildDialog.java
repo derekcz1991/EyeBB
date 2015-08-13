@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.DisplayLocationActivity;
+import com.twinly.eyebb.activity.DisplayLocationBaiduActivity;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.customview.LoadingDialog;
@@ -115,7 +116,7 @@ public class ChildDialog extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(ChildDialog.this,
-						DisplayLocationActivity.class);
+						DisplayLocationBaiduActivity.class);		//switch to baidu map for testing
 				Bundle bundle = new Bundle();
 				bundle.putSerializable(ChildDialog.EXTRA_CHILD, childForLocator);
 				intent.putExtras(bundle);

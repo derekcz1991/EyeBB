@@ -91,10 +91,13 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCgpafiP-1AYoJoohoOfzzQqmEa7ofp7W4" />
+            android:value="AIzaSyCgpafiP-1AYoJoohoOfzzQqmEa7ofp7W4" />		
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="U5aTRFfzTVs0CGjR5HCRGDgf" />				
 
         <activity
             android:name="com.twinly.eyebb.activity.LancherActivity"
@@ -297,6 +300,11 @@
         </activity>
         <activity
             android:name="com.twinly.eyebb.activity.DisplayLocationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" >
+        </activity>
+        <activity
+            android:name="com.twinly.eyebb.activity.DisplayLocationBaiduActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>

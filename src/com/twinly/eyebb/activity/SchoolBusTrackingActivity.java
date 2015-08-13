@@ -46,7 +46,7 @@ public class SchoolBusTrackingActivity extends FragmentActivity {
 	private int mProgress;
 	private int speed = 5;
 	Handler mHandler = new Handler();
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class SchoolBusTrackingActivity extends FragmentActivity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
-
+		
 		setUpMapIfNeeded();
 	}
 
@@ -73,11 +73,11 @@ public class SchoolBusTrackingActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
+	
 	private void setUpMapIfNeeded() {
 
 		if (mMap == null) {
-			mMap = ((SupportMapFragment) getSupportFragmentManager()
+			mMap = ((SupportMapFragment) getSupportFragmentManager()				//
 					.findFragmentById(R.id.map)).getMap();
 			if (mMap != null) {
 				setUpMap();
@@ -87,21 +87,21 @@ public class SchoolBusTrackingActivity extends FragmentActivity {
 
 	private void setUpMap() {
 		mMap.setMyLocationEnabled(true);
-		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+		mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(				//
 				22.3371689, 114.179077), 16));
-
-		marker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0))
+        
+		marker = mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0))				//
 				.icon(BitmapDescriptorFactory
 						.fromResource(R.drawable.ic_home_schoolbus)));
 
 		polylineOptions = new PolylineOptions();
-		polyline = mMap.addPolyline(polylineOptions.color(
+		polyline = mMap.addPolyline(polylineOptions.color(				//
 				getResources().getColor(R.color.red)).width(8));
 
 		getRoutePoints();
 		interpolateRoutePoints();
 
-		mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {
+		mMap.setOnMapLoadedCallback(new OnMapLoadedCallback() {			//
 
 			@Override
 			public void onMapLoaded() {
