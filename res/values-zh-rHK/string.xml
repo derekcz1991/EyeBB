@@ -169,6 +169,7 @@
     <string name="text_no_new_firmware">恭喜您,您的寶寶安固件已是最新的.</string>
     <string name="text_leave">離開</string>
     <string name="text_enter">進入</string>
+    <string name="text_daily_enter">入校通知</string>
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>

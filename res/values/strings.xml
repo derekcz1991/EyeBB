@@ -168,6 +168,7 @@
     <string name="text_is_runnig">Running&#8230;</string>
     <string name="text_leave">&#160;leave&#160;</string>
     <string name="text_enter">&#160;enter&#160;</string>
+    <string name="text_daily_enter">入校通知</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>

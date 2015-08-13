@@ -60,4 +60,33 @@ public class NotificationUtils {
 		// Issue the notification
 		mNotificationManager.notify(index, notification);
 	}
+
+	public static void pushNotification(Context context, String title,
+			String content, Intent resultIntent, int id) {
+		NotificationCompat.Builder alertNotificationbuilder = new NotificationCompat.Builder(
+				context);
+
+		alertNotificationbuilder.setSmallIcon(R.drawable.ic_launcher);
+		alertNotificationbuilder.setContentTitle(title);
+
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
+				0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		alertNotificationbuilder.setContentIntent(resultPendingIntent);
+
+		alertNotificationbuilder.setContentText(content);
+		Notification alertNotificaion = alertNotificationbuilder.build();
+		alertNotificaion.defaults |= Notification.DEFAULT_LIGHTS;
+		alertNotificaion.flags = Notification.FLAG_AUTO_CANCEL;
+		// set the notification sound and vibrate
+		if (SharePrefsUtils.isSoundOn(context)) {
+			alertNotificaion.defaults |= Notification.DEFAULT_SOUND;
+		}
+		if (SharePrefsUtils.isVibrateOn(context)) {
+			alertNotificaion.defaults |= Notification.DEFAULT_VIBRATE;
+		}
+		NotificationManager mNotificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		// Issue the notification
+		mNotificationManager.notify(0, alertNotificaion);
+	}
 }

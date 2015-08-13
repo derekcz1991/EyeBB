@@ -114,7 +114,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_GPS_LONGITUDE = "longitude";
 	public static final String JSON_KEY_GPS_RADIUS = "radius";
 	public static final String JSON_KEY_GPS_TIMESTAMP = "time";
-
+	
 	public static final String SEARCH_GUEST = "masterService/api/searchGuest";
 	public static final String UPDATE_REGISTRATION_ID = "/accSetting/api/updateDeviceId";
 	public static final String ACC_NAME_CHECK = "regService/api/accNameCheck";

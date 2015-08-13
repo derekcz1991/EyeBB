@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import cn.jpush.android.api.JPushInterface;
 
+import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.database.DBActivityInfo;
+import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.database.DBNotifications;
 import com.twinly.eyebb.model.ActivityInfo;
+import com.twinly.eyebb.model.Child;
 import com.twinly.eyebb.model.Notifications;
 import com.twinly.eyebb.utils.JPushUtils;
 import com.twinly.eyebb.utils.NotificationUtils;
@@ -32,48 +35,9 @@ public class JPushReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Bundle bundle = intent.getExtras();
-		/*Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction()
-				+ ", extras: " + printBundle(bundle));*/
+		System.out.println("[MyReceiver] onReceive - " + intent.getAction()
+				+ ", extras: " + printBundle(bundle));
 		setExtras(bundle, context);
-
-		/*if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-			String regId = bundle
-					.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-			Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-			//send the Registration Id to your server...
-
-		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent
-				.getAction())) {
-			Log.d(TAG,
-					"[MyReceiver] 接收到推送下来的自定义消息: "
-							+ bundle.getString(JPushInterface.EXTRA_MESSAGE));
-
-		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent
-				.getAction())) {
-			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
-			int notifactionId = bundle
-					.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-
-		} else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent
-				.getAction())) {
-			Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-		} else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent
-				.getAction())) {
-			Log.d(TAG,
-					"[MyReceiver] 用户收到到RICH PUSH CALLBACK: "
-							+ bundle.getString(JPushInterface.EXTRA_EXTRA));
-			//在这里根据 JPushInterface.EXTRA_EXTRA 的内容处理代码，比如打开新的Activity， 打开一个网页等..
-
-		} else if (JPushInterface.ACTION_CONNECTION_CHANGE.equals(intent
-				.getAction())) {
-			boolean connected = intent.getBooleanExtra(
-					JPushInterface.EXTRA_CONNECTION_CHANGE, false);
-			Log.w(TAG, "[MyReceiver]" + intent.getAction()
-					+ " connected state change to " + connected);
-		} else {
-			Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
-		}*/
 	}
 
 	private void setExtras(Bundle bundle, Context context) {
@@ -127,11 +91,11 @@ public class JPushReceiver extends BroadcastReceiver {
 						HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_ICON,
 						jsonObject
 								.getString(HttpConstants.JSON_KEY_REPORT_ACTIVITY_INFO_ICON));
+				handleNewActivity(mBundle, context);
 			} catch (JSONException e) {
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
-			handleNewActivity(mBundle, context);
 		} else if (request.equals(JPushUtils.JPUSH_NEW_NOTICE)) {
 			try {
 				JSONObject jsonObject = new JSONObject(json);
@@ -162,11 +126,33 @@ public class JPushReceiver extends BroadcastReceiver {
 						HttpConstants.JSON_KEY_NOTICES_VALID_UNTIL,
 						jsonObject
 								.getString(HttpConstants.JSON_KEY_NOTICES_VALID_UNTIL));
+				handleNewNotice(mBundle, context);
 			} catch (JSONException e) {
 				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
-			handleNewNotice(mBundle, context);
+		} else if (request.equals(JPushUtils.JPUSH_DAILY_PUSH)) {
+			try {
+				JSONObject jsonObject = new JSONObject(json);
+				mBundle.putString(HttpConstants.JSON_KEY_CHILD_ID,
+						jsonObject.getString(HttpConstants.JSON_KEY_CHILD_ID));
+				mBundle.putString(
+						HttpConstants.JSON_KEY_LOCATION_NAME,
+						jsonObject
+								.getString(HttpConstants.JSON_KEY_LOCATION_NAME));
+				mBundle.putString(
+						HttpConstants.JSON_KEY_LOCATION_NAME_SC,
+						jsonObject
+								.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC));
+				mBundle.putString(
+						HttpConstants.JSON_KEY_LOCATION_NAME_TC,
+						jsonObject
+								.getString(HttpConstants.JSON_KEY_LOCATION_NAME_TC));
+				handleDailyPush(mBundle, context);
+			} catch (JSONException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -194,6 +180,8 @@ public class JPushReceiver extends BroadcastReceiver {
 		DBActivityInfo.insert(context, activityInfo);
 
 		Intent notificationIntent = new Intent(context, WebViewActivity.class);
+		notificationIntent.setAction("android.intent.action.MAIN");
+		notificationIntent.addCategory("android.intent.category.LAUNCHER");
 		Bundle data = new Bundle();
 		data.putInt("from", ActivityConstants.FRAGMENT_REPORT_ACTIVITY);
 		data.putSerializable("activityInfo", activityInfo);
@@ -215,8 +203,10 @@ public class JPushReceiver extends BroadcastReceiver {
 			break;
 		}
 
-		NotificationUtils.sendNotification(notificationIntent, context,
-				WebViewActivity.class, title, "", true);
+		NotificationUtils.pushNotification(context, context
+				.getString(R.string.btn_activities), title, notificationIntent,
+				Integer.parseInt(String.valueOf(System.currentTimeMillis())
+						.substring(5)));
 	}
 
 	private void handleNewNotice(Bundle bundle, Context context) {
@@ -235,6 +225,8 @@ public class JPushReceiver extends BroadcastReceiver {
 		DBNotifications.insert(context, notice);
 
 		Intent notificationIntent = new Intent(context, WebViewActivity.class);
+		notificationIntent.setAction("android.intent.action.MAIN");
+		notificationIntent.addCategory("android.intent.category.LAUNCHER");
 		Bundle data = new Bundle();
 		data.putInt("from", ActivityConstants.FRAGMENT_PROFILE);
 		data.putSerializable("notifications", notice);
@@ -256,8 +248,39 @@ public class JPushReceiver extends BroadcastReceiver {
 			break;
 		}
 
-		NotificationUtils.sendNotification(notificationIntent, context,
-				WebViewActivity.class, title, "", true);
+		NotificationUtils.pushNotification(context, context
+				.getString(R.string.text_notifications), title,
+				notificationIntent, Integer.parseInt(String.valueOf(
+						System.currentTimeMillis()).substring(5)));
+	}
+
+	private void handleDailyPush(Bundle bundle, Context context) {
+		Child child = DBChildren
+				.getChildById(context, Long.valueOf(bundle
+						.getString(HttpConstants.JSON_KEY_CHILD_ID)));
+		String locationName = "";
+		switch (SharePrefsUtils.getLanguage(context)) {
+		case Constants.LOCALE_CN:
+			locationName = bundle
+					.getString(HttpConstants.JSON_KEY_LOCATION_NAME_TC);
+			break;
+		case Constants.LOCALE_TW:
+			locationName = bundle
+					.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC);
+			break;
+		case Constants.LOCALE_HK:
+			locationName = bundle
+					.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC);
+			break;
+		default:
+			locationName = bundle
+					.getString(HttpConstants.JSON_KEY_LOCATION_NAME);
+			break;
+		}
+		NotificationUtils.pushNotification(context,
+				context.getString(R.string.text_daily_enter),
+				child.getName() + context.getString(R.string.text_enter)
+						+ locationName, new Intent(), (int) child.getChildId());
 	}
 
 	// 打印所有的 intent extra 数据

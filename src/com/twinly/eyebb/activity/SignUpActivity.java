@@ -289,6 +289,7 @@ public class SignUpActivity extends Activity {
 		map.put("password", hashPassword);
 		map.put("email", email);
 		map.put("phoneNum", phone);
+		map.put("areaCode", country.getText().toString());
 
 		try {
 			// String retStr = GetPostUtil.sendPost(url, postMessage);
