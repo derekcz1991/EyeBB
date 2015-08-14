@@ -24,6 +24,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.SettingsActivity;

@@ -203,6 +203,8 @@ public class KidProfileActivity extends Activity implements
 
 		if (!mBluetoothAdapter.isEnabled()) {
 			bluetoothNotOpenCancelReadBattery();
+			Toast.makeText(this, getString(R.string.toast_open_bluetooth),
+					Toast.LENGTH_SHORT).show();
 		} else {
 			avatarItemLayout.setBackgroundColor(getResources().getColor(
 					R.color.activity_background_red));
@@ -396,8 +398,6 @@ public class KidProfileActivity extends Activity implements
 	}
 
 	private void bluetoothNotOpenCancelReadBattery() {
-		Toast.makeText(this, getString(R.string.toast_open_bluetooth),
-				Toast.LENGTH_SHORT).show();
 		avatarItemLayout.setBackgroundColor(getResources().getColor(
 				R.color.lilac_colour));
 		mHoloCircularProgressBar.setMarkerEnabled(false);

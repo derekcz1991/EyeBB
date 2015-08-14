@@ -23,20 +23,13 @@ import com.twinly.eyebb.utils.JPushUtils;
 import com.twinly.eyebb.utils.NotificationUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
-/**
- * 自定义接收器
- * 
- * 如果不定义这个 Receiver，则：
- * 1) 默认用户会打开主界面
- * 2) 接收不到自定义消息
- */
 public class JPushReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Bundle bundle = intent.getExtras();
-		System.out.println("[MyReceiver] onReceive - " + intent.getAction()
-				+ ", extras: " + printBundle(bundle));
+		/*System.out.println("[MyReceiver] onReceive - " + intent.getAction()
+				+ ", extras: " + printBundle(bundle));*/
 		setExtras(bundle, context);
 	}
 
@@ -258,29 +251,32 @@ public class JPushReceiver extends BroadcastReceiver {
 		Child child = DBChildren
 				.getChildById(context, Long.valueOf(bundle
 						.getString(HttpConstants.JSON_KEY_CHILD_ID)));
-		String locationName = "";
-		switch (SharePrefsUtils.getLanguage(context)) {
-		case Constants.LOCALE_CN:
-			locationName = bundle
-					.getString(HttpConstants.JSON_KEY_LOCATION_NAME_TC);
-			break;
-		case Constants.LOCALE_TW:
-			locationName = bundle
-					.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC);
-			break;
-		case Constants.LOCALE_HK:
-			locationName = bundle
-					.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC);
-			break;
-		default:
-			locationName = bundle
-					.getString(HttpConstants.JSON_KEY_LOCATION_NAME);
-			break;
+		if (child != null) {
+			String locationName = "";
+			switch (SharePrefsUtils.getLanguage(context)) {
+			case Constants.LOCALE_CN:
+				locationName = bundle
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME_TC);
+				break;
+			case Constants.LOCALE_TW:
+				locationName = bundle
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC);
+				break;
+			case Constants.LOCALE_HK:
+				locationName = bundle
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME_SC);
+				break;
+			default:
+				locationName = bundle
+						.getString(HttpConstants.JSON_KEY_LOCATION_NAME);
+				break;
+			}
+			NotificationUtils.pushNotification(context,
+					context.getString(R.string.text_daily_enter),
+					child.getName() + context.getString(R.string.text_enter)
+							+ locationName, new Intent(),
+					(int) child.getChildId());
 		}
-		NotificationUtils.pushNotification(context,
-				context.getString(R.string.text_daily_enter),
-				child.getName() + context.getString(R.string.text_enter)
-						+ locationName, new Intent(), (int) child.getChildId());
 	}
 
 	// 打印所有的 intent extra 数据

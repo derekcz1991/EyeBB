@@ -306,7 +306,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				}
 			}
 
-			//System.out.println("childrenList = " + result);
+			System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
 				getAllAreaLocation(json);
@@ -469,7 +469,8 @@ public class IndoorLocatorFragment extends Fragment implements
 						.getString(HttpConstants.JSON_KEY_CHILD_LOC_ID))) {
 					long locationId = childrenBeanObject
 							.getLong(HttpConstants.JSON_KEY_CHILD_LOC_ID);
-					locationMapChildren.get(locationId).add(childId);
+					if (locationMapChildren.containsKey(locationId))
+						locationMapChildren.get(locationId).add(childId);
 				}
 			}
 		}

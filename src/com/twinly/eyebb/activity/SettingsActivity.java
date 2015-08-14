@@ -15,6 +15,8 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
@@ -330,6 +332,7 @@ public class SettingsActivity extends Activity {
 	}
 
 	public void onLogoutClicked(View view) {
+		JPushInterface.stopPush(getApplicationContext());
 		SharePrefsUtils.setLogin(this, false);
 		setResult(ActivityConstants.RESULT_LOGOUT);
 		finish();
