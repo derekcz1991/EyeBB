@@ -169,6 +169,8 @@
     <string name="text_leave">&#160;leave&#160;</string>
     <string name="text_enter">&#160;enter&#160;</string>
     <string name="text_daily_enter">入校通知</string>
+    <string name="text_app_update">App Update</string>
+    <string name="text_app_update_content">new version detected</string>
     <!-- Button strings -->
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
@@ -210,6 +212,7 @@
     <string name="btn_cur_location">Current Location</string>
     <string name="btn_trajectory">Trajectory</string>
     <string name="btn_stop_beep">Stop Beep</string>
+    <string name="btn_update">Update</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

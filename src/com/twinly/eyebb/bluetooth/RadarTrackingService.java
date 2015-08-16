@@ -2,6 +2,7 @@ package com.twinly.eyebb.bluetooth;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
@@ -18,6 +19,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,12 +31,6 @@ import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.constant.HttpConstants;
@@ -45,8 +42,7 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
 
 @SuppressLint("NewApi")
-public class RadarTrackingService extends Service implements
-		ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+public class RadarTrackingService extends Service implements LocationListener {
 	public final static String ACTION_DATA_CHANGED = "radar_tracking.ACTION_DATA_CHANGED";
 	public final static String ACTION_STOP_SERVICE = "radar_tracking.ACTION_STOP_SERVICE";
 	public static final String EXTRA_DEVICE_LIST = "DEVICE_LIST";
@@ -78,19 +74,15 @@ public class RadarTrackingService extends Service implements
 	private NotificationCompat.Builder serviceNotificationbuilder;
 	private Notification serviceNotification;
 
-	private LocationClient mLocationClient;
 	private double latitude, longitude;
 	private int radius;
 	private boolean isFirstTime = true;
-	private boolean isLocatingWorking = false;
+	//private boolean isLocatingWorking = false;
 	private int timeTickerCounter;
 
-	// These settings are the same as the settings for the map. They will in fact give you updates
-	// at the maximal rates currently possible.
-	private static final LocationRequest REQUEST = LocationRequest.create()
-			.setInterval(5000) // 5 seconds
-			.setFastestInterval(16) // 16ms = 60fps
-			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	private RadarTrackingService instance;
+	private LocationManager locationManager;
+	private String locationProvider;
 
 	LeScanCallback leScanCallback = new LeScanCallback() {
 
@@ -175,20 +167,23 @@ public class RadarTrackingService extends Service implements
 			case MESSAGE_START_LOCATING:
 				System.out.println("MESSAGE_START_LOCATING");
 				//Toast.makeText(getApplicationContext(), "start locating", Toast.LENGTH_SHORT).show();
-				if (mLocationClient != null)
-					mLocationClient.connect();
+				if (locationManager != null) {
+					//isLocatingWorking = true;
+					locationManager.requestLocationUpdates(locationProvider, 0,
+							0, instance);
+				}
 				break;
 			case MESSAGE_STOP_LOCATING:
-				if (isLocatingWorking) {
-					isLocatingWorking = false;
-					System.out.println("MESSAGE_STOP_LOCATING");
-					//Toast.makeText(getApplicationContext(), "stop locating", Toast.LENGTH_SHORT).show();
-					if (mLocationClient != null)
-						mLocationClient.disconnect();
-					// once stop locating, upload the data to server
-					new UploadLocationTask()
-							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				}
+				//if (isLocatingWorking) {
+				//isLocatingWorking = false;
+				System.out.println("MESSAGE_STOP_LOCATING");
+				//Toast.makeText(getApplicationContext(), "stop locating", Toast.LENGTH_SHORT).show();
+				if (locationManager != null)
+					locationManager.removeUpdates(instance);
+				// once stop locating, upload the data to server
+				new UploadLocationTask()
+						.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				//}
 				break;
 			}
 		}
@@ -211,14 +206,14 @@ public class RadarTrackingService extends Service implements
 
 		serializableDeviceMap = new SerializableDeviceMap();
 		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-		setUpLocationClientIfNeeded();
+		instance = this;
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		System.out.println("onStartCommand ==>> flags:" + flags
 				+ " ==>> startId:" + startId);
+		setUpLocationClientIfNeeded();
 		deviceHashMap = DBChildren.getChildrenMapWithAddress(this);
 		// For each start request, send a message to start a job and deliver the
 		// start ID so we know which request we're stopping when we finish the job
@@ -253,10 +248,19 @@ public class RadarTrackingService extends Service implements
 	}
 
 	private void setUpLocationClientIfNeeded() {
-		if (mLocationClient == null) {
-			mLocationClient = new LocationClient(this, this, // ConnectionCallbacks
-					this); // OnConnectionFailedListener
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		//获取所有可用的位置提供器  
+		List<String> providers = locationManager.getProviders(true);
+		if (providers.contains(LocationManager.GPS_PROVIDER)) {
+			//如果是GPS  
+			locationProvider = LocationManager.GPS_PROVIDER;
+		} else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+			//如果是Network  
+			locationProvider = LocationManager.NETWORK_PROVIDER;
+		} else {
+
 		}
+		System.out.println("locationProvider = " + locationProvider);
 	}
 
 	private void startLeScan(BluetoothAdapter.LeScanCallback leScanCallback,
@@ -281,9 +285,8 @@ public class RadarTrackingService extends Service implements
 		stopSelf();
 		stopForeground(true);
 
-		if (mLocationClient != null) {
-			mLocationClient.disconnect();
-		}
+		if (locationManager != null)
+			locationManager.removeUpdates(this);
 	}
 
 	@Override
@@ -330,7 +333,6 @@ public class RadarTrackingService extends Service implements
 		serviceNotification = serviceNotificationbuilder.build();
 		startForeground(1, serviceNotification);
 	}
-	
 
 	private class UploadLocationTask extends AsyncTask<Void, Void, String> {
 
@@ -374,7 +376,6 @@ public class RadarTrackingService extends Service implements
 			System.out.println(HttpConstants.UPLOAD_LOCATION + " ==>> "
 					+ result);
 		}
-
 	}
 
 	@Override
@@ -387,20 +388,17 @@ public class RadarTrackingService extends Service implements
 	}
 
 	@Override
-	public void onConnectionFailed(ConnectionResult arg0) {
-		// TODO Auto-generated method stub
+	public void onStatusChanged(String provider, int status, Bundle extras) {
 
 	}
 
 	@Override
-	public void onConnected(Bundle arg0) {
-		isLocatingWorking = true;
-		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
+	public void onProviderEnabled(String provider) {
+
 	}
 
 	@Override
-	public void onDisconnected() {
-		// TODO Auto-generated method stub
-
+	public void onProviderDisabled(String provider) {
 	}
+
 }

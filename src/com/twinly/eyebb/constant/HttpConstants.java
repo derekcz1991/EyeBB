@@ -19,6 +19,7 @@ public class HttpConstants {
 	public static final String JSON_KEY_USER_PHONE = "phoneNumber";
 	public static final String JSON_KEY_USER_TYPE = "type";
 	public static final String JSON_KEY_REGISTRATION_ID = "registrationId";
+	public static final String JSON_KEY_VERSION = "androidLowestVer";
 
 	public static final String GET_AREA_LIST = "kindergartenList";
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";

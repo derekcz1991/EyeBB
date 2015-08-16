@@ -170,6 +170,8 @@
     <string name="text_leave">離開</string>
     <string name="text_enter">進入</string>
     <string name="text_daily_enter">入校通知</string>
+    <string name="text_app_update">應用更新</string>
+    <string name="text_app_update_content">檢測到新版本</string>
     <!-- Button strings -->
     <string name="btn_sign_up">註冊</string>
     <string name="btn_login">登錄</string>
@@ -209,6 +211,7 @@
     <string name="btn_cur_location">當前位置</string>
     <string name="btn_trajectory">軌跡</string>
     <string name="btn_stop_beep">停止蜂鳴</string>
+    <string name="btn_update">更新</string>
     <!-- Toast strings -->
     <string name="toast_login">登錄中&#8230;</string>
     <string name="toast_signup">註冊中&#8230;</string>

@@ -7,13 +7,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -38,6 +41,7 @@ import com.twinly.eyebb.fragment.ReportFragment;
 import com.twinly.eyebb.utils.BroadcastUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.SharePrefsUtils;
+import com.twinly.eyebb.utils.SystemUtils;
 
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
@@ -71,6 +75,7 @@ public class MainActivity extends FragmentActivity implements
 
 	private boolean needLogin;
 	private boolean firstTime = true;
+	private boolean updateFlag = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +268,35 @@ public class MainActivity extends FragmentActivity implements
 			networkState.setText(getString(R.string.text_network_unavailable));
 			System.out.println("auto login result = " + result);
 			try {
-				new JSONObject(result);
+				JSONObject json = new JSONObject(result);
+				String version = json.getString(HttpConstants.JSON_KEY_VERSION);
+				String curVersion = SystemUtils
+						.getAppVersion(MainActivity.this)
+						+ "_"
+						+ SystemUtils.getAppVersionCode(MainActivity.this);
+				if (!version.equals(curVersion) && updateFlag == false) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							MainActivity.this);
+					builder.setTitle(getString(R.string.text_app_update));
+					builder.setMessage(getString(R.string.text_app_update_content));
+					builder.setPositiveButton(getString(R.string.btn_update),
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Uri uri = Uri
+											.parse(HttpConstants.SERVER_URL
+													+ "android");
+									Intent intent = new Intent(
+											Intent.ACTION_VIEW, uri);
+									startActivity(intent);
+								}
+							});
+					builder.setNegativeButton(R.string.btn_cancel, null);
+					builder.create().show();
+				}
+				updateFlag = true;
 				networkBar.setVisibility(View.GONE);
 			} catch (JSONException e) {
 				networkBar.setVisibility(View.VISIBLE);
