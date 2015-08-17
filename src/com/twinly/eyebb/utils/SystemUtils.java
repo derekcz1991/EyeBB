@@ -82,12 +82,23 @@ public class SystemUtils {
 	/**
 	 * @return Application's version string from the {@code PackageManager}.
 	 */
-	public static String getAppVersion(Context context) {
+	public static String getAppVersionAndCode(Context context) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager()
 					.getPackageInfo(context.getPackageName(), 0);
 			return packageInfo.versionName + "(" + packageInfo.versionCode
 					+ ")";
+		} catch (NameNotFoundException e) {
+			// should never happen
+			throw new RuntimeException("Could not get package name: " + e);
+		}
+	}
+
+	public static String getAppVersion(Context context) {
+		try {
+			PackageInfo packageInfo = context.getPackageManager()
+					.getPackageInfo(context.getPackageName(), 0);
+			return packageInfo.versionName;
 		} catch (NameNotFoundException e) {
 			// should never happen
 			throw new RuntimeException("Could not get package name: " + e);

@@ -18,7 +18,10 @@ import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMapOptions;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.CircleOptions;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -27,7 +30,8 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
-
+import com.baidu.mapapi.utils.CoordinateConverter;
+import com.baidu.mapapi.utils.CoordinateConverter.CoordType;
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.dialog.ChildDialog;
@@ -37,24 +41,26 @@ import com.twinly.eyebb.utils.CommonUtils;
 import com.twinly.eyebb.utils.HttpRequestUtils;
 
 public class DisplayLocationBaiduActivity extends FragmentActivity {
-	
+
 	private SupportMapFragment mMap;
 	private ChildForLocator childForLoator;
 	private List<GPSLocation> gpsLocationList;
 	private boolean showCurLocation = true;
 
+	BitmapDescriptor bd = BitmapDescriptorFactory
+			.fromResource(R.drawable.icon_gcoding);
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_display_location);
 
+		setContentView(R.layout.activity_display_location);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
 		childForLoator = (ChildForLocator) getIntent().getExtras()
 				.getSerializable(ChildDialog.EXTRA_CHILD);
 		setTitle(childForLoator.getName());
-
 		setUpMapIfNeeded();
 	}
 
@@ -86,19 +92,20 @@ public class DisplayLocationBaiduActivity extends FragmentActivity {
 					displayCurLocation();
 				}
 			}
-
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private void setUpMapIfNeeded() {
 		if (mMap == null) {
-			MapStatus ms = new MapStatus.Builder().overlook(-20).zoom(15).build();
+			MapStatus ms = new MapStatus.Builder().overlook(-20).zoom(15)
+					.build();
 			BaiduMapOptions bo = new BaiduMapOptions().mapStatus(ms)
 					.compassEnabled(false).zoomControlsEnabled(false);
 			mMap = SupportMapFragment.newInstance(bo);
 			FragmentManager manager = getSupportFragmentManager();
-			manager.beginTransaction().add(R.id.map, mMap, "map_fragment").commit();
+			manager.beginTransaction().add(R.id.map, mMap, "map_fragment")
+					.commit();
 			if (mMap != null) {
 				setUpMap();
 			}
@@ -111,65 +118,67 @@ public class DisplayLocationBaiduActivity extends FragmentActivity {
 	}
 
 	private void displayTrajectory() {
+		CoordinateConverter converter = new CoordinateConverter();
 		showCurLocation = false;
 		for (int i = 0; i < gpsLocationList.size(); i++) {
+			//Convert coordinate from WGS84 to BAIDU09
+			converter.from(CoordType.GPS);
+			converter.coord(new LatLng(gpsLocationList.get(i).getLatitude(),
+					gpsLocationList.get(i).getLongitude()));
+			LatLng currentLocation = converter.convert();
 			if (i == 0) {
-				LatLng cPoint = new LatLng(
-						gpsLocationList.get(i).getLatitude(), gpsLocationList
-						.get(i).getLongitude());
+
 				MapStatus mMapStatus = new MapStatus.Builder()
-                .target(cPoint)
-                .zoom(16)
-                .build();
-				MapStatusUpdate msu = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-				
+						.target(currentLocation).zoom(16).build();
+				MapStatusUpdate msu = MapStatusUpdateFactory
+						.newMapStatus(mMapStatus);
 				mMap.getBaiduMap().setMapStatus(msu);
-				
-				mMap.getBaiduMap().addOverlay((new CircleOptions()
-						.center(new LatLng(
-								gpsLocationList.get(i).getLatitude(),
-								gpsLocationList.get(i).getLongitude()))
-						.radius((int)gpsLocationList.get(i).getRadius())
-						.stroke(new Stroke(1, 0xFF88b5dc))));
+
+				mMap.getBaiduMap().addOverlay(
+						(new CircleOptions()
+								.center(currentLocation)
+								.radius((int) gpsLocationList.get(i)
+										.getRadius()).fillColor(1409351437)
+								.stroke(new Stroke(5, 0xFF88b5dc))));
 			}
-			mMap.getBaiduMap().addOverlay((new MarkerOptions()
-					.position(
-							new LatLng(gpsLocationList.get(i).getLatitude(),
-									gpsLocationList.get(i).getLongitude()))
-					.title(CommonUtils
-							.ConvertTimestampToDateFormat(gpsLocationList
-									.get(i).getTimestamp()))));
+			mMap.getBaiduMap()
+					.addOverlay(
+							(new MarkerOptions().position(currentLocation)
+									.icon(bd).title(CommonUtils
+									.ConvertTimestampToDateFormat(gpsLocationList
+											.get(i).getTimestamp()))));
 		}
 	}
 
 	private void displayCurLocation() {
+		CoordinateConverter converter = new CoordinateConverter();
 		showCurLocation = true;
+
 		if (gpsLocationList.size() > 0) {
-			
-			LatLng cPoint = new LatLng(
-					gpsLocationList.get(0).getLatitude(), gpsLocationList
-					.get(0).getLongitude());
+			//Convert coordinate from WGS84 to BAIDU09			
+			converter.from(CoordType.GPS);
+			converter.coord(new LatLng(gpsLocationList.get(0).getLatitude(),
+					gpsLocationList.get(0).getLongitude()));
+			LatLng currentLocation = converter.convert();
+
 			MapStatus mMapStatus = new MapStatus.Builder()
-            .target(cPoint)
-            .zoom(16)
-            .build();
-			MapStatusUpdate msu = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-			
+					.target(currentLocation).zoom(16).build();
+			MapStatusUpdate msu = MapStatusUpdateFactory
+					.newMapStatus(mMapStatus);
 			mMap.getBaiduMap().setMapStatus(msu);
-						
-			mMap.getBaiduMap().addOverlay((new MarkerOptions().position(
-					new LatLng(gpsLocationList.get(0).getLatitude(),
-							gpsLocationList.get(0).getLongitude())).title(
-					CommonUtils.ConvertTimestampToDateFormat(gpsLocationList
-							.get(0).getTimestamp()))));
-			
-			mMap.getBaiduMap().addOverlay((new CircleOptions()
-			.center(new LatLng(
-					gpsLocationList.get(0).getLatitude(),
-					gpsLocationList.get(0).getLongitude()))
-			.radius((int)gpsLocationList.get(0).getRadius())
-			.stroke(new Stroke(1, 0xFF88b5dc))));
-			
+
+			mMap.getBaiduMap()
+					.addOverlay(
+							(new MarkerOptions().position(currentLocation)
+									.icon(bd).title(CommonUtils
+									.ConvertTimestampToDateFormat(gpsLocationList
+											.get(0).getTimestamp()))));
+
+			mMap.getBaiduMap().addOverlay(
+					(new CircleOptions().center(currentLocation)
+							.radius((int) gpsLocationList.get(0).getRadius())
+							.fillColor(1409351437).stroke(new Stroke(3,
+							0xFF88b5dc))));
 		}
 	}
 

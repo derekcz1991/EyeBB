@@ -97,7 +97,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="U5aTRFfzTVs0CGjR5HCRGDgf" />				
+            android:value="TAjPNCcaLto0231NauNDn2GK" />				
 
         <activity
             android:name="com.twinly.eyebb.activity.LancherActivity"

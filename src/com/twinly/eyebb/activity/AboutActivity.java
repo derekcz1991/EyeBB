@@ -33,7 +33,7 @@ public class AboutActivity extends Activity {
 		logo = (ImageView) findViewById(R.id.logo_img);
 
 		versionTxt = (TextView) findViewById(R.id.version);
-		versionTxt.setText(SystemUtils.getAppVersion(this));
+		versionTxt.setText(SystemUtils.getAppVersionAndCode(this));
 		setLogo();
 
 	}

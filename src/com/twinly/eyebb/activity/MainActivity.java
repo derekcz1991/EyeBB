@@ -286,8 +286,7 @@ public class MainActivity extends FragmentActivity implements
 								public void onClick(DialogInterface dialog,
 										int which) {
 									Uri uri = Uri
-											.parse(HttpConstants.SERVER_URL
-													+ "android");
+											.parse("www.eyebb.com/android");
 									Intent intent = new Intent(
 											Intent.ACTION_VIEW, uri);
 									startActivity(intent);

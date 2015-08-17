@@ -306,7 +306,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				}
 			}
 
-			System.out.println("childrenList = " + result);
+			//System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
 				getAllAreaLocation(json);
