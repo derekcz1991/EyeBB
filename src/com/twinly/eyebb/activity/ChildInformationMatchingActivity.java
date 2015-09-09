@@ -3,10 +3,14 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +41,7 @@ public class ChildInformationMatchingActivity extends Activity {
 	private Button binding;
 
 	private int areaId = -1;
+	private String areaType;
 	private String childName;
 	private String birthday;
 
@@ -94,14 +99,10 @@ public class ChildInformationMatchingActivity extends Activity {
 				if (CommonUtils.isFastDoubleClick()) {
 					return;
 				} else {
-					/**
-					 * hide keyboard
-					 */
-
+					//hide keyboard
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(
 							childBirthdayLayout.getWindowToken(), 0);
-
 					Intent intent = new Intent(
 							ChildInformationMatchingActivity.this,
 							ChildBirthdayDialog.class);
@@ -122,44 +123,37 @@ public class ChildInformationMatchingActivity extends Activity {
 				childName = userName.getText().toString();
 				if (childName != null && childName.length() > 0) {
 					childNameFlag = true;
-					//					icChildName.setBackground(getResources().getDrawable(
-					//							R.drawable.ic_login_name));
 					icChildName.setBackgroundResource(R.drawable.ic_login_name);
 				} else {
 					childNameFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					//					icChildName.setBackground(getResources().getDrawable(
-					//							R.drawable.ic_cross));
 					icChildName.setBackgroundResource(R.drawable.ic_cross);
 				}
 
 				if (birthday != null && birthday.length() > 0) {
 					birthdayFlag = true;
-					//					icBirthday.setBackground(getResources().getDrawable(
-					//							R.drawable.ic_login_email));
 					icBirthday.setBackgroundResource(R.drawable.ic_login_email);
 				} else {
 					birthdayFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
-					//					icBirthday.setBackground(getResources().getDrawable(
-					//							R.drawable.ic_cross));
 					icBirthday.setBackgroundResource(R.drawable.ic_cross);
 				}
 
 				if (areaId >= 0) {
 					kindergartenFlag = true;
-					//setTitle(getString(R.string.text_something_has_gone_wrong));
 					icArea.setVisibility(View.INVISIBLE);
 				} else {
 					kindergartenFlag = false;
 					setTitle(getString(R.string.text_something_has_gone_wrong));
 					icArea.setVisibility(View.VISIBLE);
-
 				}
 
 				if (kindergartenFlag && birthdayFlag && childNameFlag) {
-					new Thread(postRegParentsCheckToServerRunnable).start();
-					// startActivity(intent);
+					if (areaType.equals("D")) {
+						new AddChildInDummyTask().execute();
+					} else if (areaType.equals("K")) {
+						new Thread(postRegParentsCheckToServerRunnable).start();
+					}
 				}
 
 			}
@@ -174,24 +168,6 @@ public class ChildInformationMatchingActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY) {
-			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
-				area.setText(data
-						.getStringExtra(AreaListActivity.EXTRA_AREA_DISPLAY_NAME));
-				areaId = data.getIntExtra(
-						AreaListActivity.EXTRA_AREA_ID, -1);
-			}
-		}
-		if (requestCode == ActivityConstants.REQUEST_GO_TO_BIRTHDAY_ACTIVITY) {
-			if (resultCode == ActivityConstants.RESULT_RESULT_BIRTHDAY_OK) {
-				childBirthday.setText(data.getStringExtra("childBirthday"));
-				birthday = data.getStringExtra("childBirthday");
-			}
-		}
 	}
 
 	Runnable postRegParentsCheckToServerRunnable = new Runnable() {
@@ -241,17 +217,13 @@ public class ChildInformationMatchingActivity extends Activity {
 			}
 
 		} catch (Exception e) {
-
-			e.printStackTrace();
-
+			System.out.println(e.getMessage());
 		}
-
 	}
 
 	@SuppressLint("HandlerLeak")
 	Handler handler = new Handler() {
 
-		@SuppressLint("ShowToast")
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case CHILD_EXIST:
@@ -269,4 +241,52 @@ public class ChildInformationMatchingActivity extends Activity {
 		}
 	};
 
+	private class AddChildInDummyTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("childName", childName);
+			map.put("dateOfBirth", birthday);
+			map.put("areaId", String.valueOf(areaId));
+			//System.out.println("map = " + map);
+			return HttpRequestUtils.post(HttpConstants.ADD_CHILD, map);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			System.out.println("result = " + result);
+			try {
+				JSONObject jsonObject = new JSONObject(result);
+				childName = jsonObject
+						.getString(HttpConstants.JSON_KEY_CHILD_NAME);
+				if (CommonUtils.isNotNull(childName)) {
+					new Thread(postRegParentsCheckToServerRunnable).start();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_KINDERGARTEN_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_OK) {
+				area.setText(data
+						.getStringExtra(AreaListActivity.EXTRA_AREA_DISPLAY_NAME));
+				areaId = data.getIntExtra(AreaListActivity.EXTRA_AREA_ID, -1);
+				areaType = data
+						.getStringExtra(AreaListActivity.EXTRA_AREA_TYPE);
+			}
+		}
+		if (requestCode == ActivityConstants.REQUEST_GO_TO_BIRTHDAY_ACTIVITY) {
+			if (resultCode == ActivityConstants.RESULT_RESULT_BIRTHDAY_OK) {
+				childBirthday.setText(data.getStringExtra("childBirthday"));
+				birthday = data.getStringExtra("childBirthday");
+			}
+		}
+	}
 }

@@ -41,6 +41,7 @@ import com.twinly.eyebb.utils.SystemUtils;
  */
 public class AreaListActivity extends Activity {
 	public static final String EXTRA_AREA_ID = "AREA_ID";
+	public static final String EXTRA_AREA_TYPE = "AREA_TYPE";
 	public static final String EXTRA_AREA_DISPLAY_NAME = "AREA_DISPLAY_NAME";
 
 	private ListView listView;
@@ -67,6 +68,7 @@ public class AreaListActivity extends Activity {
 
 				data.putExtra(EXTRA_AREA_ID,
 						Integer.parseInt(map.get(EXTRA_AREA_ID)));
+				data.putExtra(EXTRA_AREA_TYPE, map.get(EXTRA_AREA_TYPE));
 				data.putExtra(EXTRA_AREA_DISPLAY_NAME,
 						map.get(EXTRA_AREA_DISPLAY_NAME));
 				setResult(ActivityConstants.RESULT_RESULT_OK, data);
@@ -119,7 +121,9 @@ public class AreaListActivity extends Activity {
 
 						Map<String, String> map = new HashMap<String, String>();
 						map.put(EXTRA_AREA_ID, object
-								.getString(HttpConstants.JSON_KEY_AREAS_id));
+								.getString(HttpConstants.JSON_KEY_AREAS_ID));
+						map.put(EXTRA_AREA_TYPE, object
+								.getString(HttpConstants.JSON_KEY_AREAS_TYPE));
 						int locale = SystemUtils
 								.getLocale(AreaListActivity.this);
 						switch (locale) {

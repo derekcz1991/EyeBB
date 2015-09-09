@@ -3,14 +3,15 @@ package com.twinly.eyebb.constant;
 public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
-	//public static final String SERVER_URL = "http://test.eyebb.com/";
-	public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
+	public static final String SERVER_URL = "http://test.eyebb.com/";
+	//public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
 	public static final String JSON_KEY_CHILD_ID = "childId";
 	public static final String JSON_KEY_CHILD_NAME = "name";
 	public static final String JSON_KEY_CHILD_ICON = "icon";
+	public static final String JSON_KEY_CHILD_DATE_OF_BIRTH = "dateOfBirth";
 
 	public static final String LOGIN = "j_spring_security_check";
 	public static final String JSON_KEY_USER = "guardian";
@@ -23,7 +24,8 @@ public class HttpConstants {
 
 	public static final String GET_AREA_LIST = "kindergartenList";
 	public static final String JSON_KEY_AREAS_INFO = "allLocationAreasInfo";
-	public static final String JSON_KEY_AREAS_id = "areaId";
+	public static final String JSON_KEY_AREAS_ID = "areaId";
+	public static final String JSON_KEY_AREAS_TYPE = "type";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_EN = "name";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_TC = "nameTc";
 	public static final String JSON_KEY_KINDERGARTEN_NAME_SC = "nameSc";
@@ -135,6 +137,7 @@ public class HttpConstants {
 	public static final String CHANGE_NICKNAME = "accSetting/api/changeNickname";
 	public static final String REQUIRE_OR_GET_QR_CODE = "masterService/api/childMacAddressAvailable";
 	public static final String UPLOAD_LOCATION = "appBgService/api/radar";
+	public static final String ADD_CHILD = "masterService/api/addChildInDummy";
 
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
