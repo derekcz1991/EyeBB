@@ -3,8 +3,8 @@ package com.twinly.eyebb.constant;
 public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
-	public static final String SERVER_URL = "http://test.eyebb.com/";
-	//public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
+	//public static final String SERVER_URL = "http://test.eyebb.com/";
+	public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 

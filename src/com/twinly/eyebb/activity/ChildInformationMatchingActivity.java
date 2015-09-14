@@ -179,8 +179,8 @@ public class ChildInformationMatchingActivity extends Activity {
 
 	private void postChildInformationToServer() {
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("username=>" + childName + " " + birthday + " "
-				+ areaId);
+		System.out.println(HttpConstants.CHILD_CHECKING + "==>>" + childName
+				+ " " + birthday + " " + areaId);
 
 		map.put("childName", childName);
 		map.put("dateOfBirth", birthday);
@@ -255,13 +255,26 @@ public class ChildInformationMatchingActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			System.out.println("result = " + result);
+			//System.out.println("result = " + result);
 			try {
 				JSONObject jsonObject = new JSONObject(result);
 				childName = jsonObject
 						.getString(HttpConstants.JSON_KEY_CHILD_NAME);
 				if (CommonUtils.isNotNull(childName)) {
-					new Thread(postRegParentsCheckToServerRunnable).start();
+					Intent intent = new Intent(
+							ChildInformationMatchingActivity.this,
+							CheckChildToBindDialog.class);
+					intent.putExtra(
+							ActivityConstants.EXTRA_GUARDIAN_ID,
+							getIntent().getLongExtra(
+									ActivityConstants.EXTRA_GUARDIAN_ID, -1L));
+					String retStr = "[{'childId':_id,'name':'_n','icon':''}]";
+					retStr = retStr.replace("_id", jsonObject
+							.getString(HttpConstants.JSON_KEY_CHILD_ID));
+					retStr = retStr.replace("_n", childName);
+					intent.putExtra(CheckChildToBindDialog.EXTRA_CHILDREN_LIST,
+							retStr);
+					startActivity(intent);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
