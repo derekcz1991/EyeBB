@@ -54,18 +54,18 @@ public class AreaListActivity extends Activity {
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
-
+		
 		setContentView(R.layout.activity_kindergarten);
-
+		
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
+			
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent data = new Intent();
 				Map<String, String> map = mapList.get(position);
-
+				
 				data.putExtra(EXTRA_AREA_ID,
 						Integer.parseInt(map.get(EXTRA_AREA_ID)));
 				data.putExtra(EXTRA_AREA_TYPE, map.get(EXTRA_AREA_TYPE));
@@ -97,7 +97,7 @@ public class AreaListActivity extends Activity {
 					getString(R.string.text_loading));
 			dialog.show();
 		}
-
+		
 		@Override
 		protected String doInBackground(Void... params) {
 			dialog.dismiss();
@@ -116,9 +116,10 @@ public class AreaListActivity extends Activity {
 
 					JSONArray list = json
 							.getJSONArray(HttpConstants.JSON_KEY_AREAS_INFO);
+					
 					for (int i = 0; i < list.length(); i++) {
 						JSONObject object = (JSONObject) list.get(i);
-
+						
 						Map<String, String> map = new HashMap<String, String>();
 						map.put(EXTRA_AREA_ID, object
 								.getString(HttpConstants.JSON_KEY_AREAS_ID));

@@ -200,7 +200,7 @@ public class LoginActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(String result) {
-			//System.out.println(HttpConstants.GET_CHILDREN_INFO_LIST + " ==>> " + result);
+			System.out.println(HttpConstants.GET_CHILDREN_INFO_LIST + " ==>> " + result);
 			try {
 				JSONObject json = new JSONObject(result);
 				if (CommonUtils.isNotNull(json

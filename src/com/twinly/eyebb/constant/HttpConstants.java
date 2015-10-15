@@ -37,7 +37,7 @@ public class HttpConstants {
 	public static final String GET_CHILDREN_LOC_LIST = "reportService/api/childrenLocList";
 	public static final String JSON_KEY_CHILDREN_BY_AREA = "childrenByArea";
 	public static final String JSON_KEY_CHILDREN_BEAN = "childrenBean";
-
+	public static final String JSON_KEY_UNLOCATED_CHILDREN = "unlocatedChildren";
 	public static final String JSON_KEY_CHILD_REL = "childRel";
 	public static final String JSON_KEY_CHILD = "child";
 	public static final String JSON_KEY_CHILD_RELATION = "relation";

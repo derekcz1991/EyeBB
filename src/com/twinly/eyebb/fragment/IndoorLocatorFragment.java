@@ -72,6 +72,7 @@ public class IndoorLocatorFragment extends Fragment implements
 	private SerializableChildrenMap myMap;
 	private IndoorLocatorAdapter mIndoorLocatorAdapter;
 	private long currentAreaId = -1L;
+	private long otherID = 0L;
 	// <area_id, Area>
 	private HashMap<Long, Area> areaMap;
 	// <location_id, Location>
@@ -82,9 +83,9 @@ public class IndoorLocatorFragment extends Fragment implements
 	private HashMap<Long, HashMap<Long, ArrayList<Long>>> curAreaMapLocaionMapChildren;
 	private HashMap<Long, HashMap<Long, ArrayList<Long>>> preAreaMapLocaionMapChildren;
 	private ArrayList<HashMap.Entry<Long, Area>> areaList;
-	private List<HashMap.Entry<Long, ArrayList<Long>>> mList;
+	private List<HashMap.Entry<Long, ArrayList<Long>>> mList;		//long location ID, Arraylist ID
 	private List<Long> locMonitoringList;
-
+	
 	private boolean autoUpdateFlag;
 	private AutoUpdateTask autoUpdateTask;
 	private boolean isViewAllRooms = false;
@@ -206,7 +207,6 @@ public class IndoorLocatorFragment extends Fragment implements
 				});
 		v.findViewById(R.id.btn_option).setOnClickListener(
 				new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
 						Intent intent = new Intent(getActivity(),
@@ -219,17 +219,23 @@ public class IndoorLocatorFragment extends Fragment implements
 
 					}
 				});
-		mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+		/*Switch kinder Garden*/
+		mSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {	
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				currentAreaId = areaList.get(position).getKey();
+				areaName.setText(areaMap.get(currentAreaId).getDisplayName(
+						getActivity()));
 				mList.clear();
 				Iterator<Entry<Long, ArrayList<Long>>> it = curAreaMapLocaionMapChildren
 						.get(currentAreaId).entrySet().iterator();
-				while (it.hasNext()) {
-					mList.add(it.next());
+				 
+				while (it.hasNext()) {						
+						mList.add(it.next());	
+				}
+				if(mList.isEmpty()){				
 				}
 				mIndoorLocatorAdapter.notifyDataSetChanged();
 			}
@@ -263,7 +269,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				updateView();
 				try {
 					Thread.sleep(SharePrefsUtils.getAutoUpdateTime(
-							getActivity(), 5) * 1000);
+							getActivity(), 5) * 1000) ;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -271,7 +277,7 @@ public class IndoorLocatorFragment extends Fragment implements
 			return null;
 		}
 	}
-
+	/* Parse JSON to view*/
 	private class UpdateViewTask extends AsyncTask<Void, Void, Boolean> {
 
 		@Override
@@ -284,7 +290,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 
 		@Override
-		protected Boolean doInBackground(Void... params) {
+		protected Boolean doInBackground(Void... params) {			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -306,13 +312,14 @@ public class IndoorLocatorFragment extends Fragment implements
 				}
 			}
 
-			//System.out.println("childrenList = " + result);
+			System.out.println("childrenList = " + result);
 			try {
 				JSONObject json = new JSONObject(result);
 				getAllAreaLocation(json);
 				getAllChild(json);
+				getUnlocatedChildren(json);
 				checkMonitroingLoc();
-				// copy curAreaMapLocaionMapChildren
+				// copy curAreaMapLocaionMapChildren to mList
 				preAreaMapLocaionMapChildren
 						.put(currentAreaId,
 								new HashMap<Long, ArrayList<Long>>(
@@ -324,6 +331,7 @@ public class IndoorLocatorFragment extends Fragment implements
 				while (it.hasNext()) {
 					mList.add(it.next());
 				}
+				System.out.println("here");
 			} catch (JSONException e) {
 				System.out.println(HttpConstants.GET_CHILDREN_LOC_LIST
 						+ " ---->> " + e.getMessage());
@@ -336,7 +344,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		protected void onPostExecute(Boolean result) {
 			if (result) {
 				mIndoorLocatorAdapter.notifyDataSetChanged();
-
+				
 				// set area name
 				if (areaMap.get(currentAreaId) != null) {
 					secondMenu.setVisibility(View.VISIBLE);
@@ -371,15 +379,18 @@ public class IndoorLocatorFragment extends Fragment implements
 		}
 		JSONArray allLocationsJSONList = json
 				.getJSONArray(HttpConstants.JSON_KEY_LOCATION_ALL);
-
+		
 		for (int i = 0; i < allLocationsJSONList.length(); i++) {
+			System.out.println("start parse");
 			JSONObject object = (JSONObject) allLocationsJSONList.get(i);
 			JSONObject areaObject = object
 					.getJSONObject(HttpConstants.JSON_KEY_LOCATION_AREA);
+			
 			if (i == 0) {
 				currentAreaId = areaObject
 						.getLong(HttpConstants.JSON_KEY_LOCATION_AREA_ID);
 			}
+			
 			Area area = new Area();
 			area.setAreaId(areaObject
 					.getLong(HttpConstants.JSON_KEY_LOCATION_AREA_ID));
@@ -392,9 +403,11 @@ public class IndoorLocatorFragment extends Fragment implements
 			area.setNameSc(areaObject
 					.getString(HttpConstants.JSON_KEY_LOCATION_AREA_NAME_SC));
 			areaMap.put(area.getAreaId(), area);
-
+			System.out.println("AreaID:"+areaObject.getLong(HttpConstants.JSON_KEY_LOCATION_AREA_ID));
+			System.out.println(areaMap.entrySet().toArray().length);
+			/* get all locations */
 			HashMap<Long, ArrayList<Long>> locationMapChildren;
-			if (curAreaMapLocaionMapChildren.keySet()
+			if (curAreaMapLocaionMapChildren.keySet()		//assign children to corresponding area
 					.contains(area.getAreaId())) {
 				locationMapChildren = curAreaMapLocaionMapChildren.get(area
 						.getAreaId());
@@ -403,6 +416,18 @@ public class IndoorLocatorFragment extends Fragment implements
 			}
 			JSONArray locationsJSONList = object
 					.getJSONArray(HttpConstants.JSON_KEY_LOCATIONS);
+			if(locationsJSONList.length() == 0){
+				System.out.println("it is empty!!");
+				otherID = area.getAreaId();
+				Location location = new Location();
+				location.setId(0L);
+				location.setIcon(null);
+				location.setName("for Testing");location.setNameSc("for Testing");location.setNameTc("for Testing");
+				location.setType("O");
+				locationMap.put(location.getId(), location);
+				locationMapChildren.put(location.getId(), new ArrayList<Long>());
+			}
+				
 			for (int j = 0; j < locationsJSONList.length(); j++) {
 				JSONObject locationObject = (JSONObject) locationsJSONList
 						.get(j);
@@ -421,7 +446,7 @@ public class IndoorLocatorFragment extends Fragment implements
 						.getString(HttpConstants.JSON_KEY_LOCATION_ICON));
 
 				locationMap.put(location.getId(), location);
-
+				
 				// clear previous location
 				locationMapChildren
 						.put(location.getId(), new ArrayList<Long>());
@@ -475,7 +500,38 @@ public class IndoorLocatorFragment extends Fragment implements
 			}
 		}
 	}
-
+	/**
+	 *  Show unlocated children
+	 * */
+	private void getUnlocatedChildren(JSONObject json) throws JSONException {
+		JSONArray unLocatedChildrenJSONList = json
+				.getJSONArray(HttpConstants.JSON_KEY_UNLOCATED_CHILDREN);
+		HashMap<Long, ArrayList<Long>> locationMapChildren = curAreaMapLocaionMapChildren
+				.get(otherID);
+		
+		System.out.println("area:"+otherID);
+		for(int i = 0; i < unLocatedChildrenJSONList.length(); i++){
+			JSONObject childObject = unLocatedChildrenJSONList.getJSONObject(i);
+			
+			Child child = DBChildren.getChildById(getActivity(),
+					childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID));
+			if (child == null) {
+				child = new Child(
+						childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID),
+						
+						childObject.getString(HttpConstants.JSON_KEY_CHILD_NAME),
+						childObject.getString(HttpConstants.JSON_KEY_CHILD_ICON));
+			System.out.println(childObject.getInt(HttpConstants.JSON_KEY_CHILD_ID));
+			}
+			DBChildren.insert(getActivity(), child);
+			ChildForLocator childForLocator = new ChildForLocator(child);
+			//childForLocator.setLastAppearTime(0);
+			childrenMap.put(child.getChildId(), childForLocator);		
+			long id = 0L;
+			if (locationMapChildren.containsKey(id))
+				locationMapChildren.get(id).add(child.getChildId());			
+		}
+	}
 	private long insertChild(JSONObject childrenBeanObject)
 			throws JSONException {
 		JSONObject childRelObject = childrenBeanObject
@@ -496,7 +552,7 @@ public class IndoorLocatorFragment extends Fragment implements
 		child.setMacAddress(childrenBeanObject
 				.getString(HttpConstants.JSON_KEY_CHILD_MAC_ADDRESS));
 		DBChildren.insert(getActivity(), child);
-
+		
 		ChildForLocator childForLocator = new ChildForLocator(child);
 		childForLocator
 				.setLastAppearTime(CommonUtils.isNull(childrenBeanObject

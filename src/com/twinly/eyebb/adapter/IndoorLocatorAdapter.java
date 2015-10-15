@@ -208,7 +208,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 		ArrayList<Long> childrenIds = new ArrayList<Long>();
 		childrenIds.addAll(list.get(position).getValue());
-
+		
 		// remove the child if he showed in the EXIT area and stay more than 10 mins.
 		/*if (locationType.equals("X")) {
 			for (int i = 0; i < childrenIds.size(); i++) {
