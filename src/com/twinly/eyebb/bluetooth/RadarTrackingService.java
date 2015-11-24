@@ -170,7 +170,7 @@ public class RadarTrackingService extends Service implements LocationListener {
 				if (locationManager != null) {
 					//isLocatingWorking = true;
 					locationManager.requestLocationUpdates(locationProvider, 0,
-							0, instance);
+							1, instance);
 				}
 				break;
 			case MESSAGE_STOP_LOCATING:
@@ -251,12 +251,15 @@ public class RadarTrackingService extends Service implements LocationListener {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		//获取所有可用的位置提供器  
 		List<String> providers = locationManager.getProviders(true);
-		if (providers.contains(LocationManager.GPS_PROVIDER)) {
+		for (int i = 0; i < providers.size(); i++) {
+			System.out.println("providers = " + providers.get(i));
+		}
+		if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+			//如果是Network
+			locationProvider = LocationManager.NETWORK_PROVIDER;
+		} else if (providers.contains(LocationManager.GPS_PROVIDER)) {
 			//如果是GPS  
 			locationProvider = LocationManager.GPS_PROVIDER;
-		} else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
-			//如果是Network  
-			locationProvider = LocationManager.NETWORK_PROVIDER;
 		} else {
 
 		}
