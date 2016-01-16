@@ -171,7 +171,9 @@
     <string name="text_daily_enter">入校通知</string>
     <string name="text_app_update">App Update</string>
     <string name="text_app_update_content">new version detected</string>
+    <string name="text_verify_code">Verify Code</string>
     <!-- Button strings -->
+    <string name="btn_verify_code">Get Code</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_login">Login</string>
     <string name="btn_add_new_guest">Add guest</string>

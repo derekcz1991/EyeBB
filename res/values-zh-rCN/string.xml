@@ -172,7 +172,9 @@
     <string name="text_daily_enter">入校通知</string>
     <string name="text_app_update">应用更新</string>
     <string name="text_app_update_content">检测到新版本</string>
+    <string name="text_verify_code">验证码</string>
     <!-- Button strings -->
+    <string name="btn_verify_code">获取验证码</string>
     <string name="btn_sign_up">注册</string>
     <string name="btn_login">登录</string>
     <string name="btn_logout">登出</string>

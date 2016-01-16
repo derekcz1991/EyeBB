@@ -38,7 +38,7 @@ import com.twinly.eyebb.utils.SystemUtils;
  *           SignUpActivity will let the user register their own information.
  *           this information will post to the server.
  */
-public class SignUpActivity extends Activity {
+public class SignUpStepTwoActivity extends Activity {
 	private Button btnSignup;
 
 	private LinearLayout llCountry;
@@ -75,7 +75,7 @@ public class SignUpActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sign_up);
+		setContentView(R.layout.activity_sign_up_step_two);
 		setTitle(getString(R.string.btn_sign_up));
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,7 +102,7 @@ public class SignUpActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SignUpActivity.this,
+				Intent intent = new Intent(SignUpStepTwoActivity.this,
 						SelectRegionActivity.class);
 				startActivityForResult(intent,
 						ActivityConstants.REQUEST_GO_TO_SELECT_REGION);
@@ -115,7 +115,7 @@ public class SignUpActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (isCountrySelect == false)
-					Toast.makeText(SignUpActivity.this,
+					Toast.makeText(SignUpStepTwoActivity.this,
 							getString(R.string.toast_select_country),
 							Toast.LENGTH_SHORT).show();
 			}
@@ -200,14 +200,14 @@ public class SignUpActivity extends Activity {
 								}
 							} else {
 
-								Toast.makeText(SignUpActivity.this,
+								Toast.makeText(SignUpStepTwoActivity.this,
 										R.string.text_fill_email_or_phone,
 										Toast.LENGTH_SHORT).show();
 								tvEmail.setBackgroundResource(R.drawable.ic_cross);
 
 							}
 						} else {
-							Toast.makeText(SignUpActivity.this,
+							Toast.makeText(SignUpStepTwoActivity.this,
 									R.string.text_error_password,
 									Toast.LENGTH_SHORT).show();
 
@@ -216,14 +216,14 @@ public class SignUpActivity extends Activity {
 						}
 
 					} else {
-						Toast.makeText(SignUpActivity.this,
+						Toast.makeText(SignUpStepTwoActivity.this,
 								R.string.text_error_nickname,
 								Toast.LENGTH_SHORT).show();
 						tvNickname.setBackgroundResource(R.drawable.ic_cross);
 					}
 
 				} else {
-					Toast.makeText(SignUpActivity.this,
+					Toast.makeText(SignUpStepTwoActivity.this,
 							R.string.text_error_username, Toast.LENGTH_SHORT)
 							.show();
 					tvUsername.setBackgroundResource(R.drawable.ic_cross);
@@ -311,19 +311,19 @@ public class SignUpActivity extends Activity {
 					msg.what = REG_SUCCESSFULLY;
 					handler.sendMessage(msg);
 
-					SystemUtils.clearData(SignUpActivity.this);
+					SystemUtils.clearData(SignUpStepTwoActivity.this);
 
-					SharePrefsUtils.setLogin(SignUpActivity.this, true);
-					SharePrefsUtils.setLoginAccount(SignUpActivity.this,
+					SharePrefsUtils.setLogin(SignUpStepTwoActivity.this, true);
+					SharePrefsUtils.setLoginAccount(SignUpStepTwoActivity.this,
 							userName);
-					SharePrefsUtils.setPassowrd(SignUpActivity.this,
+					SharePrefsUtils.setPassowrd(SignUpStepTwoActivity.this,
 							hashPassword);
 
 					// register to GCM server
 					//new GCMUtils().GCMRegistration(SignUpActivity.this, "");
-					JPushUtils.updateRegistrationId(SignUpActivity.this);
+					JPushUtils.updateRegistrationId(SignUpStepTwoActivity.this);
 
-					Intent intent = new Intent(SignUpActivity.this,
+					Intent intent = new Intent(SignUpStepTwoActivity.this,
 							SignUpAskToBindDialog.class);
 					intent.putExtra(ActivityConstants.EXTRA_REGION_CODE,
 							country.getText().toString());
@@ -364,27 +364,27 @@ public class SignUpActivity extends Activity {
 				break;
 
 			case CHECK_ACC_FALSE:
-				Toast.makeText(SignUpActivity.this,
+				Toast.makeText(SignUpStepTwoActivity.this,
 						R.string.text_username_is_used, Toast.LENGTH_SHORT)
 						.show();
 				tvUsername.setBackgroundResource(R.drawable.ic_verify_cross);
 				break;
 
 			case CHECK_ACC_ERROR:
-				Toast.makeText(SignUpActivity.this,
+				Toast.makeText(SignUpStepTwoActivity.this,
 						R.string.text_error_username, Toast.LENGTH_SHORT)
 						.show();
 				tvUsername.setBackgroundResource(R.drawable.ic_verify_cross);
 				break;
 
 			case CONNECT_ERROR:
-				Toast.makeText(SignUpActivity.this,
+				Toast.makeText(SignUpStepTwoActivity.this,
 						R.string.text_network_error, Toast.LENGTH_SHORT).show();
 
 				break;
 
 			case REG_SUCCESSFULLY:
-				Toast.makeText(SignUpActivity.this,
+				Toast.makeText(SignUpStepTwoActivity.this,
 						R.string.text_register_successfully, Toast.LENGTH_SHORT)
 						.show();
 				break;

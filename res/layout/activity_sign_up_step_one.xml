@@ -1,0 +1,163 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_background_grey"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
+
+        <LinearLayout
+            android:id="@+id/ll_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/DarkGreyText_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/text_country" />
+
+            <TextView
+                android:id="@+id/tv_country"
+                style="@style/DarkGreyText_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="right" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_red" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/ic_signup_phone"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_login_phone" />
+
+            <TextView
+                android:id="@+id/country"
+                style="@style/DarkGreyText_18"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="+" />
+
+            <EditText
+                android:id="@+id/et_phone_number"
+                style="@style/DarkGreyText_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:digits="0123456789"
+                android:hint="@string/text_phone_number"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:longClickable="false"
+                android:maxLength="60"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_red" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/ic_signup_pw"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_login_pw" />
+
+            <EditText
+                android:id="@+id/et_vcode"
+                style="@style/DarkGreyText_18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="100dp"
+                android:background="@color/transparent"
+                android:hint="@string/text_verify_code"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:longClickable="false"
+                android:maxLength="30"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_vcode"
+            style="@style/WhiteText_18"
+            android:layout_width="100dp"
+            android:layout_height="44dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_bg_red"
+            android:text="@string/btn_verify_code" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="100dp"
+            android:background="@color/divider_red" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_signup"
+        style="@style/WhiteText_18"
+        android:layout_width="180dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_bg_red"
+        android:text="@string/btn_sign_up" />
+
+</LinearLayout>

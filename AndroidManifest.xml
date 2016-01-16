@@ -120,7 +120,7 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name="com.twinly.eyebb.activity.SignUpActivity"
+            android:name="com.twinly.eyebb.activity.SignUpStepTwoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" >
         </activity>
