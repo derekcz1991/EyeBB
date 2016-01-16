@@ -11,6 +11,7 @@ public class Area {
 	private String nameTc;
 	private String nameSc;
 	private String icon;
+	private boolean isDataOpen;
 
 	public Long getAreaId() {
 		return areaId;
@@ -34,6 +35,10 @@ public class Area {
 
 	public void setNameTc(String nameTc) {
 		this.nameTc = nameTc;
+	}
+
+	public void setDataOpen(boolean isDataOpen) {
+		this.isDataOpen = isDataOpen;
 	}
 
 	public String getNameSc() {
@@ -60,8 +65,12 @@ public class Area {
 		case Constants.LOCALE_CN:
 			return nameSc;
 		default:
-			return name; 
+			return name;
 		}
+	}
+
+	public boolean isDataOpen() {
+		return isDataOpen;
 	}
 
 	@Override

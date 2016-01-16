@@ -42,6 +42,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private boolean isViewAllRooms;
 	private ImageLoader imageLoader;
+	private boolean isDataOpen;
 
 	public IndoorLocatorAdapterCallback mCallback;
 
@@ -73,6 +74,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		this.mCallback = mCallback;
 
 		imageLoader = ImageLoader.getInstance();
+		isDataOpen = true;
 		sort();
 	}
 
@@ -85,6 +87,10 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	public void setViewAllRooms(boolean isViewAllRooms) {
 		this.isViewAllRooms = isViewAllRooms;
 		sort();
+	}
+
+	public void setDataOpen(boolean isDataOpen) {
+		this.isDataOpen = isDataOpen;
 	}
 
 	private void sort() {
@@ -152,7 +158,10 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return list.size();
+		if (isDataOpen)
+			return list.size();
+		else
+			return 2;
 	}
 
 	@Override
@@ -208,7 +217,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 		ArrayList<Long> childrenIds = new ArrayList<Long>();
 		childrenIds.addAll(list.get(position).getValue());
-		
+
 		// remove the child if he showed in the EXIT area and stay more than 10 mins.
 		/*if (locationType.equals("X")) {
 			for (int i = 0; i < childrenIds.size(); i++) {
@@ -247,6 +256,11 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 		viewHolder.contentLayout.setBackgroundResource(backgrouds[position
 				% backgrouds.length]);
 
+		if (isDataOpen) {
+			viewHolder.monitorSwitch.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.monitorSwitch.setVisibility(View.GONE);
+		}
 		if (locMonitoringList.contains(list.get(position).getKey())) {
 			viewHolder.monitorSwitch.setChecked(true);
 		} else {

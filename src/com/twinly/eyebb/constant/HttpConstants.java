@@ -3,8 +3,8 @@ package com.twinly.eyebb.constant;
 public class HttpConstants {
 
 	public static final int CONNECT_TIMEOUT = 5000;
-	//public static final String SERVER_URL = "http://test.eyebb.com/";
-	public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
+	public static final String SERVER_URL = "http://test.eyebb.com/";
+	//public static final String SERVER_URL = "http://srv.eyebb.com:8080/";
 	public static final String HTTP_POST_RESPONSE_URL_NULL = "Url Null";
 	public static final String HTTP_POST_RESPONSE_EXCEPTION = "Failed to connect to server";
 
@@ -43,10 +43,12 @@ public class HttpConstants {
 	public static final String JSON_KEY_CHILD_RELATION = "relation";
 	public static final String JSON_KEY_CHILD_MAC_ADDRESS = "macAddress";
 	public static final String JSON_KEY_CHILD_LAST_APPEAR_TIME = "lastAppearTime";
+	public static final String JSON_KEY_CHILD_IS_IN_SCHOOL = "general";
 	public static final String JSON_KEY_CHILD_LOC_ID = "locId";
 
 	public static final String JSON_KEY_LOCATION_ALL = "allLocations";
 	public static final String JSON_KEY_LOCATION_AREA = "area";
+	public static final String JSON_KEY_LOCATION_OPEN_DATA = "opendata";
 	public static final String JSON_KEY_LOCATION_AREA_ID = "areaId";
 	public static final String JSON_KEY_LOCATION_AREA_NAME = "name";
 	public static final String JSON_KEY_LOCATION_AREA_NAME_TC = "nameTc";

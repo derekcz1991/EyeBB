@@ -270,11 +270,13 @@ public class MainActivity extends FragmentActivity implements
 			try {
 				JSONObject json = new JSONObject(result);
 				String version = json.getString(HttpConstants.JSON_KEY_VERSION);
+
 				String curVersion = SystemUtils
 						.getAppVersion(MainActivity.this)
 						+ "_"
 						+ SystemUtils.getAppVersionCode(MainActivity.this);
-				if (!version.equals(curVersion) && updateFlag == false) {
+				//System.out.println("version = " + version + "  curVersion = "+ curVersion + "   delta = "+ version.compareTo(curVersion));
+				if (version.compareTo(curVersion) > 0 && updateFlag == false) {
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							MainActivity.this);
 					builder.setTitle(getString(R.string.text_app_update));

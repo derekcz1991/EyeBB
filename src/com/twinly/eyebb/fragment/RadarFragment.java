@@ -92,10 +92,8 @@ public class RadarFragment extends Fragment {
 		tvRadarTracking = (CheckedTextView) v.findViewById(R.id.radar_tracking);
 		tvAntiLost = (CheckedTextView) v.findViewById(R.id.anti_lost);
 
-		FragmentTransaction fragmentTransaction = getChildFragmentManager()
-				.beginTransaction();
-		radarTrackingFragment = (RadarTrackingFragment) getChildFragmentManager()
-				.findFragmentByTag("radar");
+		FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+		radarTrackingFragment = (RadarTrackingFragment) getChildFragmentManager().findFragmentByTag("radar");
 		if (radarTrackingFragment == null) {
 			radarTrackingFragment = new RadarTrackingFragment();
 			fragmentTransaction.add(R.id.container, radarTrackingFragment,

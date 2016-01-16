@@ -9,12 +9,14 @@ public class ChildForLocator extends Child implements Serializable {
 	private static final long serialVersionUID = -8549868122420844984L;
 	private String locationName;
 	private long lastAppearTime;
+	private boolean isInSchool;
 
 	public ChildForLocator(Child child) {
 		super(child.getChildId(), child.getName(), child.getIcon(), child
 				.getLocalIcon(), child.getPhone(), child.getMacAddress());
 		this.locationName = "";
 		this.lastAppearTime = 0;
+		this.isInSchool = false;
 	}
 
 	public String getLocationName() {
@@ -31,6 +33,14 @@ public class ChildForLocator extends Child implements Serializable {
 
 	public void setLastAppearTime(long lastAppearTime) {
 		this.lastAppearTime = lastAppearTime;
+	}
+
+	public boolean isInSchool() {
+		return isInSchool;
+	}
+
+	public void setInSchool(boolean isInSchool) {
+		this.isInSchool = isInSchool;
 	}
 
 }
