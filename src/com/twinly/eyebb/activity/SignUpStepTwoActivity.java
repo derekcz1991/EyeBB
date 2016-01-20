@@ -5,18 +5,13 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,37 +34,28 @@ import com.twinly.eyebb.utils.SystemUtils;
  *           this information will post to the server.
  */
 public class SignUpStepTwoActivity extends Activity {
-	private Button btnSignup;
+	public static final String EXTRA_PHONE_COUNTRY = "phone_country";
+	public static final String EXTRA_PHONE_NUM = "phone_num";
 
-	private LinearLayout llCountry;
-	private TextView tvCountry;
-	private TextView country;
-	private int phoneLength = 100;
+	private Button signupBtn;
 
-	private EditText etUsername;
-	private EditText etEmail;
-	private EditText etPassword;
-	private EditText etNickname;
-	private String userName;
+	private TextView countryText;
+	private TextView phoneNumText;
+
+	private EditText emailText;
+	private EditText passwordText;
+	private EditText nicknameText;
+
+	private String phoneCountry;
+	private String phoneNum;
 	private String email;
 	private String password;
-	private String nickname;
-	private String phone;
+	private String nickName;
 
-	private TextView tvUsername;
-	private TextView tvEmail;
-	private TextView tvPassword;
-	private TextView tvNickname;
+	private TextView emailIcon;
+	private TextView passwordIcon;
+	private TextView nicknameIcon;
 
-	private boolean userNameFlag = false;
-
-	public static final int CHECK_ACC_SUCCESS = 1;
-	public static final int CHECK_ACC_FALSE = 2;
-	public static final int CHECK_ACC_ERROR = 4;
-	public static final int CONNECT_ERROR = 3;
-	public static final int REG_SUCCESSFULLY = 5;
-
-	private boolean isCountrySelect = false;
 	private String hashPassword;
 
 	@Override
@@ -81,316 +67,122 @@ public class SignUpStepTwoActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		llCountry = (LinearLayout) findViewById(R.id.ll_country);
-		tvCountry = (TextView) findViewById(R.id.tv_country);
-		country = (TextView) findViewById(R.id.country);
+		phoneCountry = getIntent().getStringExtra(EXTRA_PHONE_COUNTRY);
+		phoneNum = getIntent().getStringExtra(EXTRA_PHONE_NUM);
 
-		// username password email
-		etUsername = (EditText) findViewById(R.id.et_phone_number);
-		etEmail = (EditText) findViewById(R.id.et_email);
-		etPassword = (EditText) findViewById(R.id.et_password);
-		etNickname = (EditText) findViewById(R.id.et_nickname);
+		countryText = (TextView) findViewById(R.id.country);
+		phoneNumText = (TextView) findViewById(R.id.et_phone_number);
 
-		tvUsername = (TextView) findViewById(R.id.ic_signup_phone);
-		tvEmail = (TextView) findViewById(R.id.ic_signup_email);
-		tvPassword = (TextView) findViewById(R.id.ic_signup_pw);
-		tvNickname = (TextView) findViewById(R.id.ic_signup_nickname);
+		emailText = (EditText) findViewById(R.id.et_email);
+		passwordText = (EditText) findViewById(R.id.et_password);
+		nicknameText = (EditText) findViewById(R.id.et_nickname);
 
-		btnSignup = (Button) findViewById(R.id.btn_signup);
+		emailIcon = (TextView) findViewById(R.id.ic_signup_email);
+		passwordIcon = (TextView) findViewById(R.id.ic_signup_pw);
+		nicknameIcon = (TextView) findViewById(R.id.ic_signup_nickname);
 
-		llCountry.setOnClickListener(new OnClickListener() {
+		signupBtn = (Button) findViewById(R.id.btn_signup);
+
+		countryText.setText(phoneCountry);
+		phoneNumText.setText(phoneNum);
+
+		signupBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SignUpStepTwoActivity.this,
-						SelectRegionActivity.class);
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_SELECT_REGION);
+				onSignUpClicked();
 			}
 		});
+	}
 
-		etUsername.setFocusable(false);
-		etUsername.setOnClickListener(new OnClickListener() {
+	private void onSignUpClicked() {
+		email = emailText.getText().toString();
+		password = passwordText.getText().toString();
+		nickName = nicknameText.getText().toString();
 
-			@Override
-			public void onClick(View v) {
-				if (isCountrySelect == false)
+		if (nickName != null && nickName.length() > 0) {
+			if (RegularExpression.isPassword(password)) {
+				new SignUpTask().execute();
+			} else {
+				Toast.makeText(this, R.string.text_error_password,
+						Toast.LENGTH_SHORT).show();
+				passwordIcon.setBackgroundResource(R.drawable.ic_cross);
+			}
+		} else {
+			Toast.makeText(this, R.string.text_error_nickname,
+					Toast.LENGTH_SHORT).show();
+			nicknameIcon.setBackgroundResource(R.drawable.ic_cross);
+		}
+	}
+
+	private class SignUpTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected String doInBackground(Void... params) {
+			Map<String, String> map = new HashMap<String, String>();
+			hashPassword = CommonUtils.getSHAHashValue(password);
+			map.put("accName", phoneNum);
+			map.put("name", nickName);
+			map.put("password", hashPassword);
+			map.put("email", email);
+			map.put("phoneNum", phoneNum);
+			map.put("areaCode", phoneCountry);
+			return HttpRequestUtils.post(HttpConstants.REG_PARENTS, map);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			try {
+				System.out.println("signUp======>" + result);
+				if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+						|| result.equals("") || result.length() == 0) {
+					System.out.println("connect error");
 					Toast.makeText(SignUpStepTwoActivity.this,
-							getString(R.string.toast_select_country),
-							Toast.LENGTH_SHORT).show();
-			}
-		});
+							R.string.text_network_error, Toast.LENGTH_SHORT)
+							.show();
+				} else {
+					if (!result.equals(HttpConstants.SERVER_RETURN_F)
+							&& result.length() > 0 && result.length() < 20) {
+						SystemUtils.clearData(SignUpStepTwoActivity.this);
+						SharePrefsUtils.setLogin(SignUpStepTwoActivity.this,
+								true);
+						SharePrefsUtils.setLoginAccount(
+								SignUpStepTwoActivity.this, phoneNum);
+						SharePrefsUtils.setPassowrd(SignUpStepTwoActivity.this,
+								hashPassword);
 
-		etUsername.setOnFocusChangeListener(new OnFocusChangeListener() {
+						// register to GCM server
+						//new GCMUtils().GCMRegistration(SignUpActivity.this, "");
+						JPushUtils
+								.updateRegistrationId(SignUpStepTwoActivity.this);
 
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (etUsername.hasFocus() == false) {
-					userName = etUsername.getText().toString();
-					if (RegularExpression.isUsername(userName, phoneLength)) {
-						new Thread(postAccNameCheckToServerRunnable).start();
-					} else {
-						Message msg = handler.obtainMessage();
-						msg.what = CHECK_ACC_ERROR;
-						handler.sendMessage(msg);
-					}
-				}
-
-			}
-		});
-
-		etUsername.addTextChangedListener(new TextWatcher() {
-			private CharSequence temp;
-			private int editStart;
-			private int editEnd;
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				temp = s;
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				editStart = etUsername.getSelectionStart();
-				editEnd = etUsername.getSelectionEnd();
-				if (temp.length() > phoneLength) {
-					s.delete(editStart - 1, editEnd);
-					int tempSelection = editStart;
-					etUsername.setText(s);
-					etUsername.setSelection(tempSelection);
-				}
-
-			}
-		});
-
-		btnSignup.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				userName = etUsername.getText().toString();
-				email = etEmail.getText().toString();
-				password = etPassword.getText().toString();
-				nickname = etNickname.getText().toString();
-				phone = etUsername.getText().toString();
-
-				if (userName != null && userName.length() > 0) {
-
-					if (nickname != null && nickname.length() > 0) {
-
-						if (RegularExpression.isPassword(password)) {
-							if (RegularExpression.isEmail(email)
-									|| phone.length() > 0) {
-								if (phone != null || phone.length() > 0) {
-									if (userNameFlag) {
-										new Thread(
-												postRegParentsCheckToServerRunnable)
-												.start();
-									} else {
-										new Thread(
-												postAccNameCheckToServerRunnable)
-												.start();
-									}
-								}
-							} else {
-
-								Toast.makeText(SignUpStepTwoActivity.this,
-										R.string.text_fill_email_or_phone,
-										Toast.LENGTH_SHORT).show();
-								tvEmail.setBackgroundResource(R.drawable.ic_cross);
-
-							}
-						} else {
-							Toast.makeText(SignUpStepTwoActivity.this,
-									R.string.text_error_password,
-									Toast.LENGTH_SHORT).show();
-
-							tvPassword
-									.setBackgroundResource(R.drawable.ic_cross);
-						}
+						Intent intent = new Intent(SignUpStepTwoActivity.this,
+								SignUpAskToBindDialog.class);
+						intent.putExtra(ActivityConstants.EXTRA_REGION_CODE,
+								countryText.getText().toString());
+						intent.putExtra(ActivityConstants.EXTRA_USER_NAME,
+								phoneNum);
+						intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
+								hashPassword);
+						intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID,
+								Long.parseLong(result));
+						startActivityForResult(
+								intent,
+								ActivityConstants.REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG);
 
 					} else {
 						Toast.makeText(SignUpStepTwoActivity.this,
-								R.string.text_error_nickname,
-								Toast.LENGTH_SHORT).show();
-						tvNickname.setBackgroundResource(R.drawable.ic_cross);
+								R.string.text_network_error, Toast.LENGTH_SHORT)
+								.show();
 					}
-
-				} else {
-					Toast.makeText(SignUpStepTwoActivity.this,
-							R.string.text_error_username, Toast.LENGTH_SHORT)
-							.show();
-					tvUsername.setBackgroundResource(R.drawable.ic_cross);
 				}
-			}
-		});
-	}
-
-	Runnable postAccNameCheckToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			postCheckAccToServer();
-		}
-	};
-
-	private void postCheckAccToServer() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("accName", userName);
-		try {
-			String retStr = HttpRequestUtils.post(HttpConstants.ACC_NAME_CHECK,
-					map);
-			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-
-				Message msg = handler.obtainMessage();
-				msg.what = CONNECT_ERROR;
-				handler.sendMessage(msg);
-			} else {
-				if (retStr.equals("true")) {
-					Message msg = handler.obtainMessage();
-					msg.what = CHECK_ACC_SUCCESS;
-					handler.sendMessage(msg);
-					userNameFlag = true;
-				} else if (retStr.equals("false")) {
-					Message msg = handler.obtainMessage();
-					msg.what = CHECK_ACC_FALSE;
-					handler.sendMessage(msg);
-					userNameFlag = false;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	Runnable postRegParentsCheckToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			postRegParentsToServer();
-		}
-	};
-
-	private void postRegParentsToServer() {
-		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("username=>" + nickname + " " + password + " "
-				+ email + " " + phone);
-
-		hashPassword = CommonUtils.getSHAHashValue(password);
-		map.put("accName", userName);
-		map.put("name", nickname);
-		map.put("password", hashPassword);
-		map.put("email", email);
-		map.put("phoneNum", phone);
-		map.put("areaCode", country.getText().toString());
-
-		try {
-			// String retStr = GetPostUtil.sendPost(url, postMessage);
-			String retStr = HttpRequestUtils.post(HttpConstants.REG_PARENTS,
-					map);
-			System.out.println("signUp======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-
-				Message msg = handler.obtainMessage();
-				msg.what = CONNECT_ERROR;
-				handler.sendMessage(msg);
-			} else {
-
-				if (!retStr.equals(HttpConstants.SERVER_RETURN_F)
-						&& retStr.length() > 0 && retStr.length() < 20) {
-					Message msg = handler.obtainMessage();
-					msg.what = REG_SUCCESSFULLY;
-					handler.sendMessage(msg);
-
-					SystemUtils.clearData(SignUpStepTwoActivity.this);
-
-					SharePrefsUtils.setLogin(SignUpStepTwoActivity.this, true);
-					SharePrefsUtils.setLoginAccount(SignUpStepTwoActivity.this,
-							userName);
-					SharePrefsUtils.setPassowrd(SignUpStepTwoActivity.this,
-							hashPassword);
-
-					// register to GCM server
-					//new GCMUtils().GCMRegistration(SignUpActivity.this, "");
-					JPushUtils.updateRegistrationId(SignUpStepTwoActivity.this);
-
-					Intent intent = new Intent(SignUpStepTwoActivity.this,
-							SignUpAskToBindDialog.class);
-					intent.putExtra(ActivityConstants.EXTRA_REGION_CODE,
-							country.getText().toString());
-					intent.putExtra(ActivityConstants.EXTRA_USER_NAME, userName);
-					intent.putExtra(ActivityConstants.EXTRA_HASH_PASSWORD,
-							hashPassword);
-					intent.putExtra(ActivityConstants.EXTRA_GUARDIAN_ID,
-							Long.parseLong(retStr));
-					startActivityForResult(
-							intent,
-							ActivityConstants.REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG);
-
-				} else if (retStr.equals(HttpConstants.SERVER_RETURN_F)) {
-					Message msg = handler.obtainMessage();
-					msg.what = CHECK_ACC_FALSE;
-					handler.sendMessage(msg);
-
-				} else {
-					Message msg = handler.obtainMessage();
-					msg.what = CONNECT_ERROR;
-					handler.sendMessage(msg);
-				}
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	Handler handler = new Handler() {
-
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-
-			case CHECK_ACC_SUCCESS:
-				tvUsername.setBackgroundResource(R.drawable.ic_selected);
-				break;
-
-			case CHECK_ACC_FALSE:
-				Toast.makeText(SignUpStepTwoActivity.this,
-						R.string.text_username_is_used, Toast.LENGTH_SHORT)
-						.show();
-				tvUsername.setBackgroundResource(R.drawable.ic_verify_cross);
-				break;
-
-			case CHECK_ACC_ERROR:
-				Toast.makeText(SignUpStepTwoActivity.this,
-						R.string.text_error_username, Toast.LENGTH_SHORT)
-						.show();
-				tvUsername.setBackgroundResource(R.drawable.ic_verify_cross);
-				break;
-
-			case CONNECT_ERROR:
+			} catch (Exception e) {
+				e.printStackTrace();
 				Toast.makeText(SignUpStepTwoActivity.this,
 						R.string.text_network_error, Toast.LENGTH_SHORT).show();
-
-				break;
-
-			case REG_SUCCESSFULLY:
-				Toast.makeText(SignUpStepTwoActivity.this,
-						R.string.text_register_successfully, Toast.LENGTH_SHORT)
-						.show();
-				break;
 			}
 		}
-	};
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -400,36 +192,4 @@ public class SignUpStepTwoActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-		case ActivityConstants.REQUEST_GO_TO_SIGNUP_ASK_TO_BIND_DIALOG:
-			setResult(ActivityConstants.RESULT_RESULT_OK);
-			finish();
-			break;
-		case ActivityConstants.REQUEST_GO_TO_SELECT_REGION:
-			switch (resultCode) {
-			case SelectRegionActivity.RESULT_CODE_CHINA:
-				tvCountry.setText(getString(R.string.text_china));
-				country.setText("+86");
-				phoneLength = 11;
-				isCountrySelect = true;
-				etUsername.setFocusableInTouchMode(true);
-				etUsername.setFocusable(true);
-				break;
-			case SelectRegionActivity.RESULT_CODE_HK:
-				tvCountry.setText(getString(R.string.text_hk));
-				country.setText("+852");
-				phoneLength = 8;
-				isCountrySelect = true;
-				etUsername.setFocusableInTouchMode(true);
-				etUsername.setFocusable(true);
-				break;
-			}
-			break;
-		}
-	}
-
 }

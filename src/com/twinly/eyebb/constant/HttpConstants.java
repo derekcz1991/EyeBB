@@ -141,6 +141,8 @@ public class HttpConstants {
 	public static final String UPLOAD_LOCATION = "appBgService/api/radar";
 	public static final String ADD_CHILD = "masterService/api/addChildInDummy";
 
+	public static final String GET_VCODE = "regService/api/identitycode";
+
 	public static final String SERVER_RETURN_true = "true";
 	public static final String SERVER_RETURN_TRUE = "TRUE";
 	public static final String SERVER_RETURN_false = "false";

@@ -5,15 +5,15 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.CountDownTimer;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,26 +26,23 @@ import com.twinly.eyebb.utils.HttpRequestUtils;
 import com.twinly.eyebb.utils.RegularExpression;
 
 public class SignUpStepOneActivity extends Activity implements OnClickListener {
+	private static final int SMS_COUNT_DOWN_TOTAL_TIME = 60 * 1000; //短信定时60s
+	private static final int COUNT_DOWN_INTERVAL_TIME = 1000; //倒数间隔1s
 
-	private LinearLayout llCountry;
+	private LinearLayout countryLayout;
 	private TextView tvCountry;
-	private TextView country;
+	private TextView phoneCountryText;
 	private int phoneLength = 100;
 
-	private EditText etUsername;
-	private EditText etVcode;
-	private String phone;
-	private String userName;
+	private EditText phoneNumText;
+	private EditText vCodeText;
+	private Button vCodeBtn;
+	private TextView phoneNumIcon;
 
-	private TextView tvUsername;
+	private String vCode = "";
+
 	private boolean isCountrySelect = false;
-	private boolean userNameFlag = false;
-
-	public static final int CHECK_ACC_SUCCESS = 1;
-	public static final int CHECK_ACC_FALSE = 2;
-	public static final int CHECK_ACC_ERROR = 4;
-	public static final int CONNECT_ERROR = 3;
-	public static final int REG_SUCCESSFULLY = 5;
+	private boolean isPhoneNumValid = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,161 +53,153 @@ public class SignUpStepOneActivity extends Activity implements OnClickListener {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
-		llCountry = (LinearLayout) findViewById(R.id.ll_country);
+		countryLayout = (LinearLayout) findViewById(R.id.ll_country);
 		tvCountry = (TextView) findViewById(R.id.tv_country);
-		country = (TextView) findViewById(R.id.country);
+		phoneCountryText = (TextView) findViewById(R.id.country);
 
-		tvUsername = (TextView) findViewById(R.id.ic_signup_phone);
-		etUsername = (EditText) findViewById(R.id.et_phone_number);
-		etUsername.setFocusable(false);
-		etVcode = (EditText) findViewById(R.id.et_vcode);
+		phoneNumIcon = (TextView) findViewById(R.id.ic_signup_phone);
+		phoneNumText = (EditText) findViewById(R.id.et_phone_number);
+		phoneNumText.setFocusable(false);
+		vCodeText = (EditText) findViewById(R.id.et_vcode);
+		vCodeBtn = (Button) findViewById(R.id.btn_vcode);
 
-		etUsername.setFocusable(false);
-		llCountry.setOnClickListener(this);
-		etUsername.setOnClickListener(this);
+		phoneNumText.setFocusable(false);
+		countryLayout.setOnClickListener(this);
+		phoneNumText.setOnClickListener(this);
+		vCodeBtn.setOnClickListener(this);
+		findViewById(R.id.btn_next).setOnClickListener(this);
 
-		etUsername.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (etUsername.hasFocus() == false) {
-					userName = etUsername.getText().toString();
-					if (RegularExpression.isUsername(userName, phoneLength)) {
-						new Thread(postAccNameCheckToServerRunnable).start();
-					} else {
-						Message msg = handler.obtainMessage();
-						msg.what = CHECK_ACC_ERROR;
-						handler.sendMessage(msg);
-					}
-				}
-
-			}
-		});
-
-		etUsername.addTextChangedListener(new TextWatcher() {
-			private CharSequence temp;
-			private int editStart;
-			private int editEnd;
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				temp = s;
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				editStart = etUsername.getSelectionStart();
-				editEnd = etUsername.getSelectionEnd();
-				if (temp.length() > phoneLength) {
-					s.delete(editStart - 1, editEnd);
-					int tempSelection = editStart;
-					etUsername.setText(s);
-					etUsername.setSelection(tempSelection);
-				}
-
-			}
-		});
+		phoneNumText.setInputType(InputType.TYPE_CLASS_PHONE);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.ll_country:
+		case R.id.ll_country: {
 			Intent intent = new Intent(this, SelectRegionActivity.class);
 			startActivityForResult(intent,
 					ActivityConstants.REQUEST_GO_TO_SELECT_REGION);
 			break;
+		}
+
 		case R.id.et_phone_number:
 			if (isCountrySelect == false)
 				Toast.makeText(this, getString(R.string.toast_select_country),
 						Toast.LENGTH_SHORT).show();
 			break;
-		}
-	}
-
-	Runnable postAccNameCheckToServerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			postCheckAccToServer();
-		}
-	};
-
-	private void postCheckAccToServer() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("accName", userName);
-		try {
-			String retStr = HttpRequestUtils.post(HttpConstants.ACC_NAME_CHECK,
-					map);
-			System.out.println("retStrpost======>" + retStr);
-			if (retStr.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
-					|| retStr.equals("") || retStr.length() == 0) {
-				System.out.println("connect error");
-
-				Message msg = handler.obtainMessage();
-				msg.what = CONNECT_ERROR;
-				handler.sendMessage(msg);
+		case R.id.btn_vcode:
+			if (RegularExpression.isUsername(phoneNumText.getText().toString(),
+					phoneLength)) {
+				new CheckAccoutTask().execute();
 			} else {
-				if (retStr.equals("true")) {
-					Message msg = handler.obtainMessage();
-					msg.what = CHECK_ACC_SUCCESS;
-					handler.sendMessage(msg);
-					userNameFlag = true;
-				} else if (retStr.equals("false")) {
-					Message msg = handler.obtainMessage();
-					msg.what = CHECK_ACC_FALSE;
-					handler.sendMessage(msg);
-					userNameFlag = false;
-				}
+				Toast.makeText(this, R.string.text_error_username,
+						Toast.LENGTH_SHORT).show();
+				phoneNumIcon.setBackgroundResource(R.drawable.ic_verify_cross);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			break;
+		case R.id.btn_next: {
+			if (isPhoneNumValid == false) {
+				Toast.makeText(this, getString(R.string.text_invalid_username),
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			if (vCodeText.getText().toString().equals(vCode) == false) {
+				Toast.makeText(this, getString(R.string.text_invalid_vcode),
+						Toast.LENGTH_SHORT).show();
+				return;
+			}
+			Intent intent = new Intent(this, SignUpStepTwoActivity.class);
+			intent.putExtra(SignUpStepTwoActivity.EXTRA_PHONE_COUNTRY,
+					phoneCountryText.getText().toString());
+			intent.putExtra(SignUpStepTwoActivity.EXTRA_PHONE_NUM, phoneNumText
+					.getText().toString());
+			startActivity(intent);
+			break;
+		}
+
 		}
 	}
 
-	Handler handler = new Handler() {
+	private class CheckAccoutTask extends AsyncTask<Void, Void, String> {
 
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
+		@Override
+		protected String doInBackground(Void... params) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("accName", phoneNumText.getText().toString());
+			return HttpRequestUtils.post(HttpConstants.ACC_NAME_CHECK, map);
+		}
 
-			case CHECK_ACC_SUCCESS:
-				tvUsername.setBackgroundResource(R.drawable.ic_selected);
-				break;
+		@Override
+		protected void onPostExecute(String result) {
+			try {
+				System.out.println("retStrpost======>" + result);
+				if (result.equals(HttpConstants.HTTP_POST_RESPONSE_EXCEPTION)
+						|| result.equals("") || result.length() == 0) {
+					System.out.println("connect error");
 
-			case CHECK_ACC_FALSE:
-				Toast.makeText(SignUpStepOneActivity.this,
-						R.string.text_username_is_used, Toast.LENGTH_SHORT)
-						.show();
-				tvUsername.setBackgroundResource(R.drawable.ic_verify_cross);
-				break;
-
-			case CHECK_ACC_ERROR:
-				Toast.makeText(SignUpStepOneActivity.this,
-						R.string.text_error_username, Toast.LENGTH_SHORT)
-						.show();
-				tvUsername.setBackgroundResource(R.drawable.ic_verify_cross);
-				break;
-
-			case CONNECT_ERROR:
-				Toast.makeText(SignUpStepOneActivity.this,
-						R.string.text_network_error, Toast.LENGTH_SHORT).show();
-
-				break;
-
-			case REG_SUCCESSFULLY:
-				Toast.makeText(SignUpStepOneActivity.this,
-						R.string.text_register_successfully, Toast.LENGTH_SHORT)
-						.show();
-				break;
+					Toast.makeText(SignUpStepOneActivity.this,
+							R.string.text_network_error, Toast.LENGTH_SHORT)
+							.show();
+				} else {
+					if (result.equals("true")) {
+						phoneNumIcon
+								.setBackgroundResource(R.drawable.ic_selected);
+						isPhoneNumValid = true;
+						new GetVcodeTask().execute();
+					} else if (result.equals("false")) {
+						Toast.makeText(SignUpStepOneActivity.this,
+								R.string.text_username_is_used,
+								Toast.LENGTH_SHORT).show();
+						phoneNumIcon
+								.setBackgroundResource(R.drawable.ic_verify_cross);
+						isPhoneNumValid = false;
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-	};
+
+	}
+
+	private class GetVcodeTask extends AsyncTask<Void, Void, String> {
+
+		@Override
+		protected void onPreExecute() {
+			vCodeBtn.setEnabled(false);
+			vCodeBtn.setText(R.string.sending_verify_code);
+			getSMSCountDownTimer(SMS_COUNT_DOWN_TOTAL_TIME).start();
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("accName", phoneNumText.getText().toString());
+			return HttpRequestUtils.post(HttpConstants.GET_VCODE, map);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			System.out.println("getVcodeTask result = " + result);
+			vCode = result;
+		}
+	}
+
+	private CountDownTimer getSMSCountDownTimer(long millisInFuture) {
+		return new CountDownTimer(millisInFuture, COUNT_DOWN_INTERVAL_TIME) {
+			@Override
+			public void onTick(long millisUntilFinished) {
+				vCodeBtn.setText(getString(R.string.text_sign_up_retry,
+						(int) millisUntilFinished / 1000));
+			}
+
+			@Override
+			public void onFinish() {
+				vCodeBtn.setText(getString(R.string.btn_verify_code));
+				vCodeBtn.setEnabled(true);
+			}
+		};
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -220,7 +209,7 @@ public class SignUpStepOneActivity extends Activity implements OnClickListener {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -233,19 +222,21 @@ public class SignUpStepOneActivity extends Activity implements OnClickListener {
 			switch (resultCode) {
 			case SelectRegionActivity.RESULT_CODE_CHINA:
 				tvCountry.setText(getString(R.string.text_china));
-				country.setText("+86");
+				phoneCountryText.setText("+86");
 				phoneLength = 11;
 				isCountrySelect = true;
-				etUsername.setFocusableInTouchMode(true);
-				etUsername.setFocusable(true);
+				phoneNumText.setFocusableInTouchMode(true);
+				phoneNumText.setFocusable(true);
+				phoneNumText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(11) });
 				break;
 			case SelectRegionActivity.RESULT_CODE_HK:
 				tvCountry.setText(getString(R.string.text_hk));
-				country.setText("+852");
+				phoneCountryText.setText("+852");
 				phoneLength = 8;
 				isCountrySelect = true;
-				etUsername.setFocusableInTouchMode(true);
-				etUsername.setFocusable(true);
+				phoneNumText.setFocusableInTouchMode(true);
+				phoneNumText.setFocusable(true);
+				phoneNumText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(8) });
 				break;
 			}
 			break;
