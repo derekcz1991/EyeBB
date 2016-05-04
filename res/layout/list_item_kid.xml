@@ -41,7 +41,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/area_name"
+                    android:id="@+id/areaNameText"
                     style="@style/BlackText_15"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

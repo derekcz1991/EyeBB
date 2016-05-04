@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +13,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,8 +23,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import cn.jpush.android.api.JPushInterface;
 
 import com.twinly.eyebb.R;
 import com.twinly.eyebb.activity.LancherActivity;
@@ -81,7 +79,7 @@ public class ProfileFragment extends Fragment {
 		((TextView) v.findViewById(R.id.username)).setText(SharePrefsUtils
 				.getUserName(getActivity()));
 
-		settingBtn = (TextView) v.findViewById(R.id.options_btn);
+		settingBtn = (TextView) v.findViewById(R.id.optionBtn);
 		settingBtn.setOnClickListener(new OnClickListener() {
 
 			@Override

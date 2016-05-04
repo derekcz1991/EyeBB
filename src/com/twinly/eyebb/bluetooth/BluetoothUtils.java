@@ -5,7 +5,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -18,10 +17,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.twinly.eyebb.R;
-import com.twinly.eyebb.dialog.ErrorDialog;
 import com.twinly.eyebb.utils.CommonUtils;
 
 @SuppressLint("NewApi")
@@ -349,8 +349,10 @@ public class BluetoothUtils {
 		if (context.getPackageManager().hasSystemFeature(
 				PackageManager.FEATURE_BLUETOOTH_LE) == false) {
 			if (manager != null) {
-				ErrorDialog.newInstance(R.string.dialog_error_no_ble).show(
-						manager, ErrorDialog.TAG);
+				Toast.makeText(context, R.string.dialog_error_no_ble,
+						Toast.LENGTH_SHORT).show();
+				/*ErrorDialog.newInstance(R.string.dialog_error_no_ble).show(
+						manager, ErrorDialog.TAG);*/
 			}
 			return false;
 		} else {
@@ -364,8 +366,10 @@ public class BluetoothUtils {
 			// Checks if Bluetooth is supported on the device.
 			if (mBluetoothAdapter == null) {
 				if (manager != null) {
-					ErrorDialog.newInstance(R.string.dialog_error_no_bluetooth)
-							.show(manager, ErrorDialog.TAG);
+					Toast.makeText(context, R.string.dialog_error_no_bluetooth,
+							Toast.LENGTH_SHORT).show();
+					/*ErrorDialog.newInstance(R.string.dialog_error_no_bluetooth)
+							.show(manager, ErrorDialog.TAG);*/
 				}
 				return false;
 			}

@@ -2,18 +2,18 @@ package com.twinly.eyebb.adapter;
 
 import java.util.ArrayList;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
-import com.twinly.eyebb.fragment.IndoorLocatorFragment;
+import com.twinly.eyebb.fragment.MainFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
@@ -31,12 +31,13 @@ import com.twinly.eyebb.utils.BroadcastUtils;
  */
 public class TabsAdapter extends FragmentPagerAdapter implements
 		TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener {
+
 	private final Context mContext;
 	private final TabHost mTabHost;
 	private final ViewPager mViewPager;
 	// private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 	private final ArrayList<Integer> mFragments = new ArrayList<Integer>();
-	private IndoorLocatorFragment indoorLocatorFragment;
+	private MainFragment mainFragment;
 	private RadarFragment radarFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
@@ -56,10 +57,10 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 			return v;
 		}
 	}
-
+	
 	public TabsAdapter(FragmentActivity activity, TabHost tabHost,
 			ViewPager pager) {
-		super(activity.getFragmentManager());
+		super(activity.getSupportFragmentManager());
 		mContext = activity;
 		mTabHost = tabHost;
 		mViewPager = pager;
@@ -68,9 +69,8 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 		mViewPager.setOnPageChangeListener(this);
 	}
 
-	public void addFragment(TabHost.TabSpec tabSpec,
-			IndoorLocatorFragment indoorLocatorFragment) {
-		this.indoorLocatorFragment = indoorLocatorFragment;
+	public void addFragment(TabHost.TabSpec tabSpec, MainFragment mainFragment) {
+		this.mainFragment = mainFragment;
 		mFragments.add(0);
 		addTab(tabSpec);
 	}
@@ -110,7 +110,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	public Fragment getItem(int position) {
 		switch (mFragments.get(position)) {
 		case 0:
-			return indoorLocatorFragment;
+			return mainFragment;
 		case 1:
 			return radarFragment;
 		case 2:

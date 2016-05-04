@@ -39,7 +39,6 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	private List<HashMap.Entry<Long, ArrayList<Long>>> list;
 	private List<Long> locMonitoringList;
 
-	private LayoutInflater inflater;
 	private boolean isViewAllRooms;
 	private ImageLoader imageLoader;
 	private boolean isDataOpen;
@@ -62,13 +61,11 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	public IndoorLocatorAdapter(Context context,
 			List<HashMap.Entry<Long, ArrayList<Long>>> list,
 			HashMap<Long, Location> locationMap,
-			HashMap<Long, ChildForLocator> childrenMap, boolean isViewAllRooms,
+			HashMap<Long, ChildForLocator> childrenMap,
 			List<Long> locMonitoringList, IndoorLocatorAdapterCallback mCallback) {
-		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.locationMap = locationMap;
 		this.childrenMap = childrenMap;
-		this.isViewAllRooms = isViewAllRooms;
 		this.list = list;
 		this.locMonitoringList = locMonitoringList;
 		this.mCallback = mCallback;
@@ -86,7 +83,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 
 	public void setViewAllRooms(boolean isViewAllRooms) {
 		this.isViewAllRooms = isViewAllRooms;
-		sort();
+		notifyDataSetChanged();
 	}
 
 	public void setDataOpen(boolean isDataOpen) {
@@ -178,8 +175,8 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder = null;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.list_item_indoor_locator,
-					parent, false);
+			convertView = LayoutInflater.from(context).inflate(
+					R.layout.list_item_indoor_locator, parent, false);
 			viewHolder = new ViewHolder();
 			viewHolder.contentLayout = (LinearLayout) convertView
 					.findViewById(R.id.content);
@@ -188,7 +185,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			viewHolder.monitorSwitch = (CheckedTextView) convertView
 					.findViewById(R.id.btn_monitor_switch);
 			viewHolder.areaName = (TextView) convertView
-					.findViewById(R.id.area_name);
+					.findViewById(R.id.areaNameText);
 			viewHolder.childrenNum = (TextView) convertView
 					.findViewById(R.id.children_num);
 			viewHolder.avatarContainer = (ViewGroup) convertView

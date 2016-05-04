@@ -3,11 +3,11 @@ package com.twinly.eyebb.activity;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,7 +32,7 @@ import com.twinly.eyebb.utils.ImageUtils;
  *           this activity is used when get the qrcode and bind the device
  *           (qrcode) to the child
  */
-public class BindingChildMacaronActivity extends Activity implements
+public class BindingChildMacaronActivity extends FragmentActivity implements
 		BluetoothUtils.BleConnectCallback {
 	private final static int BIND_STEP_CONNECTING = 1;
 	private final static int BIND_STEP_CONNECT_FAIL = 2;
@@ -105,7 +105,7 @@ public class BindingChildMacaronActivity extends Activity implements
 		mHandler.postDelayed(new UpdateAnimation(), 500);
 
 		mBluetoothUtils = new BluetoothUtils(BindingChildMacaronActivity.this,
-				getFragmentManager(), BindingChildMacaronActivity.this);
+				getSupportFragmentManager(), BindingChildMacaronActivity.this);
 		new GetMajorMinorTask().execute();
 
 		btnEvent.setOnClickListener(new OnClickListener() {

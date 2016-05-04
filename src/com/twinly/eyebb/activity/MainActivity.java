@@ -34,7 +34,7 @@ import com.twinly.eyebb.R;
 import com.twinly.eyebb.adapter.TabsAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.HttpConstants;
-import com.twinly.eyebb.fragment.IndoorLocatorFragment;
+import com.twinly.eyebb.fragment.MainFragment;
 import com.twinly.eyebb.fragment.ProfileFragment;
 import com.twinly.eyebb.fragment.RadarFragment;
 import com.twinly.eyebb.fragment.ReportFragment;
@@ -54,14 +54,13 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
  * 
  */
 public class MainActivity extends FragmentActivity implements
-		ReportFragment.CallbackInterface,
-		IndoorLocatorFragment.CallbackInterface {
+		ReportFragment.CallbackInterface, MainFragment.CallbackInterface {
 	public static final String EXTRA_NEED_LOGIN = "NEED_LOGIN";
 
 	private TabHost mTabHost;
 	private ViewPager mViewPager;
 	private TabsAdapter mTabsAdapter;
-	private IndoorLocatorFragment indoorLocatorFragment;
+	private MainFragment mainFragment;
 	private ReportFragment reportFragment;
 	private ProfileFragment profileFragment;
 
@@ -141,9 +140,9 @@ public class MainActivity extends FragmentActivity implements
 		mViewPager.setOffscreenPageLimit(3);
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
-		indoorLocatorFragment = new IndoorLocatorFragment();
-		indoorLocatorFragment.setCallbackInterface(this);
 		// main
+		mainFragment = new MainFragment();
+		mainFragment.setCallbackInterface(this);
 		View mainLabel = (View) LayoutInflater.from(this).inflate(
 				R.layout.tab_label, null);
 		mainLabel.findViewById(R.id.label).setBackgroundResource(
@@ -152,7 +151,7 @@ public class MainActivity extends FragmentActivity implements
 				View.GONE);
 		mTabsAdapter.addFragment(
 				mTabHost.newTabSpec("Main").setIndicator(mainLabel),
-				indoorLocatorFragment);
+				mainFragment);
 
 		// radar
 		//radarTrackingFragment = new RadarFragment();
@@ -319,7 +318,7 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void updateProgressBarForIndoorLocator(int value) {
+	public void updateProgressBarForLocator(int value) {
 		updateProgressBar(value, 0);
 	}
 
@@ -338,7 +337,7 @@ public class MainActivity extends FragmentActivity implements
 				bar.progressiveStart();
 				switch (fragmentId) {
 				case 0:
-					indoorLocatorFragment.updateView();
+					mainFragment.updateView();
 					break;
 				case 1:
 					reportFragment.updateView();

@@ -57,7 +57,7 @@ public class ChildDialog extends Activity {
 		phone = (TextView) findViewById(R.id.phone);
 		phoneBtn = (LinearLayout) findViewById(R.id.phone_btn);
 		name = (TextView) findViewById(R.id.name);
-		locationName = (TextView) findViewById(R.id.area_name);
+		locationName = (TextView) findViewById(R.id.areaNameText);
 		lastAppearTime = (TextView) findViewById(R.id.last_appear_time);
 		avatar = (CircleImageView) findViewById(R.id.avatar);
 
@@ -115,8 +115,8 @@ public class ChildDialog extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(ChildDialog.this,
-						DisplayLocationBaiduActivity.class);		//switch to baidu map for testing
+				//Intent intent = new Intent(ChildDialog.this,DisplayLocationBaiduActivity.class);		//switch to baidu map for testing
+				Intent intent = new Intent(ChildDialog.this, DisplayLocationActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable(ChildDialog.EXTRA_CHILD, childForLocator);
 				intent.putExtras(bundle);

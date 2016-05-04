@@ -7,8 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,6 +170,7 @@ public class ReportPerformanceFragment extends Fragment implements
 
 	@Override
 	public void updateProgressBar(int value) {
+		System.out.println("activity = " + value);
 		callback.updateProgressBar(value);
 	}
 

@@ -9,7 +9,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -25,6 +24,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
@@ -58,7 +58,7 @@ import com.twinly.eyebb.utils.RegularExpression;
  *           (contains eyeBB Battery Usage, Beep, Update the eyebb device
  *           firmware, Apply for the lastest qr code and binding(unbind))
  */
-public class KidProfileActivity extends Activity implements
+public class KidProfileActivity extends FragmentActivity implements
 		BluetoothUtils.BleConnectCallback, OnClickListener {
 	private final static int SCANNIN_GREQUEST_CODE = 500;
 
@@ -127,7 +127,7 @@ public class KidProfileActivity extends Activity implements
 		//deviceOtaFirmwareRevision = (TextView) findViewById(R.id.device_ota_firmware_revision);
 
 		mBluetoothUtils = new BluetoothUtils(KidProfileActivity.this,
-				getFragmentManager(), this);
+				getSupportFragmentManager(), this);
 		// deviceAddress.setText(child.getMacAddress());
 
 		kidName.setText(child.getName());

@@ -3,14 +3,14 @@ package com.twinly.eyebb.fragment;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,8 +71,9 @@ public class RadarFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
 		mBluetoothUtils = new BluetoothUtils(getActivity(),
-				getFragmentManager());
+				getChildFragmentManager());
 
 		View v = inflater.inflate(R.layout.fragment_radar, container, false);
 		setUpView(v);
@@ -92,8 +93,10 @@ public class RadarFragment extends Fragment {
 		tvRadarTracking = (CheckedTextView) v.findViewById(R.id.radar_tracking);
 		tvAntiLost = (CheckedTextView) v.findViewById(R.id.anti_lost);
 
-		FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-		radarTrackingFragment = (RadarTrackingFragment) getChildFragmentManager().findFragmentByTag("radar");
+		FragmentTransaction fragmentTransaction = getChildFragmentManager()
+				.beginTransaction();
+		radarTrackingFragment = (RadarTrackingFragment) getChildFragmentManager()
+				.findFragmentByTag("radar");
 		if (radarTrackingFragment == null) {
 			radarTrackingFragment = new RadarTrackingFragment();
 			fragmentTransaction.add(R.id.container, radarTrackingFragment,
@@ -225,7 +228,7 @@ public class RadarFragment extends Fragment {
 			tvAntiLost.setChecked(true);
 			antiLostFragment.start(antiLostDeviceList);
 			getChildFragmentManager().beginTransaction().show(antiLostFragment)
-					.hide(radarTrackingFragment).commit();
+					.hide(radarTrackingFragment).commitAllowingStateLoss();
 		}
 	}
 

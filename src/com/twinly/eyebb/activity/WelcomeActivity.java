@@ -23,7 +23,7 @@ import com.twinly.eyebb.utils.SharePrefsUtils;
  *           login(LoginActivity).
  * 
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends Activity implements OnClickListener {
 	private ImageView logo;
 
 	@Override
@@ -32,34 +32,14 @@ public class WelcomeActivity extends Activity {
 
 		setContentView(R.layout.activity_welcome);
 
-		logo = (ImageView) findViewById(R.id.icon);
 		checkLogo();
-		findViewById(R.id.sign_up).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(WelcomeActivity.this,
-						SignUpStepOneActivity.class);
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
-			}
-		});
-
-		findViewById(R.id.login).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(WelcomeActivity.this,
-						LoginActivity.class);
-				startActivityForResult(intent,
-						ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
-			}
-		});
-
+		findViewById(R.id.sign_up).setOnClickListener(this);
+		findViewById(R.id.login).setOnClickListener(this);
 	}
 
 	@SuppressLint("NewApi")
 	private void checkLogo() {
+		logo = (ImageView) findViewById(R.id.icon);
 		switch (SharePrefsUtils.getLanguage(this)) {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
@@ -70,6 +50,28 @@ public class WelcomeActivity extends Activity {
 			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
 			break;
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		Intent intent;
+		switch (v.getId()) {
+		case R.id.sign_up:
+			intent = new Intent(WelcomeActivity.this,
+					SignUpStepOneActivity.class);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_SIGN_UP_ACTIVITY);
+			break;
+		case R.id.login:
+			intent = new Intent(WelcomeActivity.this,
+					LoginActivity.class);
+			startActivityForResult(intent,
+					ActivityConstants.REQUEST_GO_TO_LOGIN_ACTIVITY);
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Override

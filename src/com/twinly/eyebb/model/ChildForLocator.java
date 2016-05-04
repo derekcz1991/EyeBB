@@ -11,6 +11,9 @@ public class ChildForLocator extends Child implements Serializable {
 	private long lastAppearTime;
 	private boolean isInSchool;
 
+	public ChildForLocator() {
+	}
+
 	public ChildForLocator(Child child) {
 		super(child.getChildId(), child.getName(), child.getIcon(), child
 				.getLocalIcon(), child.getPhone(), child.getMacAddress());

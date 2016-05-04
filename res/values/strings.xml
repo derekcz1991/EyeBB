@@ -176,6 +176,8 @@
     <string name="text_verify_code">Verify Code</string>
     <string name="text_sign_up_retry">%d seconds retry</string>
     <string name="sending_verify_code">sending...</string>
+    <string name="text_class_room">Class Room</string>
+    <string name="text_group">Group</string>
     <!-- Button strings -->
     <string name="btn_verify_code">Get Code</string>
     <string name="btn_sign_up">Sign Up</string>
@@ -219,6 +221,8 @@
     <string name="btn_trajectory">Trajectory</string>
     <string name="btn_stop_beep">Stop Beep</string>
     <string name="btn_update">Update</string>
+    <string name="btn_accept">accept</string>
+    <string name="btn_reject">ignore</string>
     <!-- Toast strings -->
     <string name="toast_login">Login&#8230;</string>
     <string name="toast_signup">Sign up&#8230;</string>

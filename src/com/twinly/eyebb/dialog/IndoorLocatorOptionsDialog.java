@@ -25,13 +25,14 @@ public class IndoorLocatorOptionsDialog extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_indoor_locator_options);
 
-		isViewAllRooms = getIntent().getBooleanExtra(EXTRA_VIEW_ALL_ROOMS,
-				true);
+		isViewAllRooms = getIntent()
+				.getBooleanExtra(EXTRA_VIEW_ALL_ROOMS, true);
+		isAutoRefresh = getIntent().getBooleanExtra(EXTRA_AUTO_REFRESH, false);
 
 		tvAutoRefresh = (TextView) findViewById(R.id.tv_auto_refresh);
 		tvViewAllRooms = (TextView) findViewById(R.id.tv_view_all_room);
 
-		isAutoRefresh = SharePrefsUtils.isAutoUpdate(this);
+		//isAutoRefresh = SharePrefsUtils.isAutoUpdate(this);
 		if (isAutoRefresh) {
 			tvAutoRefresh.setBackgroundResource(R.drawable.ic_selected);
 		}
@@ -82,8 +83,8 @@ public class IndoorLocatorOptionsDialog extends Activity {
 						Intent data = new Intent();
 						data.putExtra(EXTRA_AUTO_REFRESH, isAutoRefresh);
 						data.putExtra(EXTRA_VIEW_ALL_ROOMS, isViewAllRooms);
-						SharePrefsUtils.setAutoUpdate(IndoorLocatorOptionsDialog.this,
-								isAutoRefresh);
+						SharePrefsUtils.setAutoUpdate(
+								IndoorLocatorOptionsDialog.this, isAutoRefresh);
 						setResult(ActivityConstants.RESULT_RESULT_OK, data);
 						finish();
 					}

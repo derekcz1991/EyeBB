@@ -177,6 +177,8 @@
     <string name="text_verify_code">验证码</string>
     <string name="text_sign_up_retry">%d秒后重发</string>
     <string name="sending_verify_code">正在发送...</string>
+    <string name="text_class_room">教室</string>
+    <string name="text_group">分组</string>
     <!-- Button strings -->
     <string name="btn_verify_code">获取验证码</string>
     <string name="btn_sign_up">注册</string>
@@ -219,6 +221,8 @@
     <string name="btn_trajectory">轨迹</string>
     <string name="btn_stop_beep">停止蜂鸣</string>
     <string name="btn_update">更新</string>
+    <string name="btn_accept">接受</string>
+    <string name="btn_reject">忽略</string>
     <!-- Toast strings -->
     <string name="toast_login">登录中&#8230;</string>
     <string name="toast_signup">注册中&#8230;</string>

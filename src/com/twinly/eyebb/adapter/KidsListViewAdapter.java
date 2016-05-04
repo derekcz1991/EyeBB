@@ -138,7 +138,7 @@ public class KidsListViewAdapter extends
 					.findViewById(R.id.avatar);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
 			viewHolder.locationName = (TextView) convertView
-					.findViewById(R.id.area_name);
+					.findViewById(R.id.areaNameText);
 			viewHolder.lastAppearTime = (TextView) convertView
 					.findViewById(R.id.last_appear_time);
 			viewHolder.phone = (TextView) convertView.findViewById(R.id.phone);
