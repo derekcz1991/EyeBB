@@ -7,7 +7,7 @@
         <item>Last 50 days</item>
     </string-array>
     <!-- Text strings -->
-    <string name="app_name">EyeBB</string>
+    <string name="app_name">Twinly</string>
     <string name="text_policy">By Continuing, you agree to our <u>Terms</u> and <u>Privacy Policy</u>.</string>
     <string name="text_user_name">User Name</string>
     <string name="text_email">Email (optional)</string>
@@ -63,7 +63,7 @@
     <string name="text_sec">Sec.</string>
     <string name="text_error_bluetooth_not_supported">Bluetooth not supported</string>
     <string name="text_notificationDetails">Notification Details</string>
-    <string name="text_about_details">EyeBB is a smart child bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，EyeBB can help you monitor the safety of childs at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your childs.</string>
+    <string name="text_about_details">Twinly is a smart child bahavior analysis and monitoring application. It works with our developed Bluetooth Low Energy-based smart device "Macaron"，Twinly can help you monitor the safety of childs at home, in the school bus, and in the kindergarten. It also provides accurate behavior analysis for your childs.</string>
     <string name="text_version">Version</string>
     <string name="text_http">Welcome to www.eyebb.com</string>
     <string name="text_invalidKindergarten">Invalid kindergarten</string>
@@ -124,7 +124,7 @@
     <string name="text_authorization_from_others">Authorization from</string>
     <string name="text_avatar">Avatar</string>
     <string name="text_kindergarten">Kindergarten</string>
-    <string name="text_battery_life">eyeBB Battery Usage:</string>
+    <string name="text_battery_life">twinly Battery Usage:</string>
     <string name="text_no_device_nearby">eyebb is not connected</string>
     <string name="text_wrong_login_for_binding">Wrong login, only parent account can bind the device.</string>
     <string name="text_master_of_the_child_exist_already">Master of the child already exists.</string>

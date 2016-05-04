@@ -42,6 +42,7 @@ public class SettingsActivity extends Activity {
 	private TextView enableSoundSelected;
 	private TextView enableVibrationSelected;
 	private View aboutBtn;
+	private TextView about;
 	private LinearLayout deviceItem;
 	private LinearLayout bindingBtn;
 	private LinearLayout authorizationBtn;
@@ -66,6 +67,7 @@ public class SettingsActivity extends Activity {
 		englishSelected = (CheckedTextView) findViewById(R.id.english_selected);
 		simplifiedChineseSelected = (CheckedTextView) findViewById(R.id.simplified_chinese_selected);
 		aboutBtn = findViewById(R.id.about_btn);
+		about = (TextView) findViewById(R.id.about);
 		refreshTimeView = (LinearLayout) findViewById(R.id.refresh_time_view);
 		refreshTimeNumber = (TextView) findViewById(R.id.refresh_time_number);
 		deviceItem = (LinearLayout) findViewById(R.id.device_item);
@@ -163,6 +165,7 @@ public class SettingsActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(SettingsActivity.this, AboutActivity.class);
+				intent.putExtra("title", about.getText().toString());
 				startActivity(intent);
 			}
 		});
@@ -224,13 +227,18 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SettingsActivity.this,
+				/*Intent intent = new Intent(SettingsActivity.this,
 						WebViewActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putInt("from", ActivityConstants.ACTIVITY_SETTING);
 				bundle.putString("url", HttpConstants.SERVER_URL + "disclaimer");
 				bundle.putString("title", termsOfService.getText().toString());
 				intent.putExtras(bundle);
+				startActivity(intent);*/
+				
+				Intent intent = new Intent();
+				intent.setClass(SettingsActivity.this, AboutActivity.class);
+				intent.putExtra("title", termsOfService.getText().toString());
 				startActivity(intent);
 			}
 		});
@@ -239,13 +247,18 @@ public class SettingsActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SettingsActivity.this,
+				/*Intent intent = new Intent(SettingsActivity.this,
 						WebViewActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putInt("from", ActivityConstants.ACTIVITY_SETTING);
 				bundle.putString("url", HttpConstants.SERVER_URL + "privacy");
 				bundle.putString("title", privacyPolicy.getText().toString());
 				intent.putExtras(bundle);
+				startActivity(intent);*/
+				
+				Intent intent = new Intent();
+				intent.setClass(SettingsActivity.this, AboutActivity.class);
+				intent.putExtra("title", privacyPolicy.getText().toString());
 				startActivity(intent);
 			}
 		});

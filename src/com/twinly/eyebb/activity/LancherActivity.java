@@ -92,10 +92,10 @@ public class LancherActivity extends Activity {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
 		case Constants.LOCALE_CN:
-			logo.setBackgroundResource(R.drawable.logo_cht);
+			logo.setBackgroundResource(R.drawable.logo_twinly);
 			break;
 		default:
-			logo.setBackgroundResource(R.drawable.logo_en);
+			logo.setBackgroundResource(R.drawable.logo_twinly);
 			break;
 		}
 	}

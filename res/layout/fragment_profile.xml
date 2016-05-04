@@ -90,7 +90,7 @@
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/logo_tmp"
+                android:src="@drawable/logo_twinly"
                 app:border_color="#FF000000"
                 app:border_width="0dp" />
 

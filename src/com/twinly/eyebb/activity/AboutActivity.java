@@ -26,7 +26,7 @@ public class AboutActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
-		setTitle(getString(R.string.text_about));
+		setTitle(getIntent().getStringExtra("title"));
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setIcon(android.R.color.transparent);
 
@@ -43,10 +43,10 @@ public class AboutActivity extends Activity {
 		case Constants.LOCALE_TW:
 		case Constants.LOCALE_HK:
 		case Constants.LOCALE_CN:
-			logo.setBackgroundResource(R.drawable.logo_cht);
+			logo.setBackgroundResource(R.drawable.logo_twinly);
 			break;
 		default:
-			logo.setBackgroundResource(R.drawable.logo_en);
+			logo.setBackgroundResource(R.drawable.logo_twinly);
 			break;
 		}
 	}

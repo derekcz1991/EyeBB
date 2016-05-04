@@ -40,16 +40,7 @@ public class WelcomeActivity extends Activity implements OnClickListener {
 	@SuppressLint("NewApi")
 	private void checkLogo() {
 		logo = (ImageView) findViewById(R.id.icon);
-		switch (SharePrefsUtils.getLanguage(this)) {
-		case Constants.LOCALE_TW:
-		case Constants.LOCALE_HK:
-		case Constants.LOCALE_CN:
-			logo.setBackground(getResources().getDrawable(R.drawable.logo_cht));
-			break;
-		default:
-			logo.setBackground(getResources().getDrawable(R.drawable.logo_en));
-			break;
-		}
+		logo.setBackground(getResources().getDrawable(R.drawable.logo_twinly));
 	}
 
 	@Override

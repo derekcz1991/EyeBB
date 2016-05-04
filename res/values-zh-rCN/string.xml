@@ -7,7 +7,7 @@
         <item>最近50天</item>
     </string-array>
     <!-- Text strings -->
-    <string name="app_name">宝宝安</string>
+    <string name="app_name">Twinly</string>
     <string name="text_policy">下一步前，请接受我们的 <u>服务条款</u> 和 <u>隐私政策</u>。</string>
     <string name="text_user_name">用户名</string>
     <string name="text_email">电邮 (可选)</string>
@@ -31,7 +31,7 @@
     <string name="text_school_bus_tracking">校车轨迹</string>
     <string name="text_notifications">通告</string>
     <string name="text_settings">设定</string>
-    <string name="text_settings_app_function">宝宝安APP功能</string>
+    <string name="text_settings_app_function">Twinly APP功能</string>
     <string name="text_enableSound">开启声音</string>
     <string name="text_enableVibration">开启震动</string>
     <string name="text_language">语言</string>
@@ -53,7 +53,7 @@
     <string name="text_sec">秒.</string>
     <string name="text_ble_not_supported">对不起,你的手机不支持bluetooth4.0</string>
     <string name="text_error_bluetooth_not_supported">不支持bluetooth</string>
-    <string name="text_about_details">宝宝安 (EyeBB) 是一个智能儿童行为安全监控软件。配合我们开发的基于蓝牙4.0 BLE的专用智能设备 Macaron，宝宝安能为您监视儿童在家居、校车及幼稚园范围内行为安全，并提供智能行为分析数据。</string>
+    <string name="text_about_details">Twinly是一个智能儿童行为安全监控软件。配合我们开发的基于蓝牙4.0 BLE的专用智能设备 Macaron，Twinly能为您监视儿童在家居、校车及幼稚园范围内行为安全，并提供智能行为分析数据。</string>
     <string name="text_version">版本</string>
     <string name="text_http">欢迎访问 www.eyebb.com</string>
     <string name="text_invalidKindergarten">选择幼稚园</string>
@@ -81,10 +81,10 @@
     <string name="text_something_has_gone_wrong">请填入完整信息!</string>
     <string name="text_view_all_room">查看所有房间</string>
     <string name="text_auto_refresh">自动更新</string>
-    <string name="text_binding_device">配对宝宝安?</string>
+    <string name="text_binding_device">配对Twinly?</string>
     <string name="text_anti_lost_mode">防丢模式</string>
     <string name="text_authorization">授权</string>
-    <string name="text_device">宝宝安设备功能</string>
+    <string name="text_device">Twinly设备功能</string>
     <string name="text_nick_name">昵称</string>
     <string name="text_feed_back_content">请提出您宝贵的建议或告诉我们您的不满:</string>
     <string name="text_your_comments">您的意见</string>
@@ -101,12 +101,12 @@
     <string name="text_register_successfully">注册成功!</string>
     <string name="text_child_not_exist">暂时没有这个孩子的信息</string>
     <string name="text_already_relationship">错误!这个孩子已经被别的用户配对了</string>
-    <string name="text_device_already_binded">错误!此宝宝安设备已经被配对了,请更换另一设备.</string>
+    <string name="text_device_already_binded">错误!此Twinly设备已经被配对了,请更换另一设备.</string>
     <string name="text_feed_back_successful">提交成功,谢谢!</string>
-    <string name="text_search_guest_null">请先邀请他安装宝宝安，再重试。</string>
+    <string name="text_search_guest_null">请先邀请他安装Twinly，再重试。</string>
     <string name="text_unbind_device">确定解除已配对的设备吗?</string>
-    <string name="text_unbind_success">宝宝安解除配对成功!</string>
-    <string name="text_unbind_fail">出错!宝宝安解除配对失败!</string>
+    <string name="text_unbind_success">Twinly解除配对成功!</string>
+    <string name="text_unbind_fail">出错!Twinly解除配对失败!</string>
     <string name="text_no_data">没有监护的宝宝</string>
     <string name="text_no_guest">无监护人&#8230;</string>
     <string name="text_select_child">请选择孩子.</string>
@@ -167,8 +167,8 @@
     <string name="text_Apply_qr_code_fail">申请设备二维码失败,请使用监护人账号</string>
     <string name="text_network_unavailable">无法连接到服务器(点击连接)</string>
     <string name="text_network_connecting">连接中&#8230;</string>
-    <string name="text_search_guset_activity_share_msg">我想授权你观看我的孩子情况，请你在完成安装宝宝安后通知我，我会再次授权给你。连结：play.google.com/xxxxxxxx</string>
-    <string name="text_no_new_firmware">恭喜您,您的宝宝安固件已是最新的.</string>
+    <string name="text_search_guset_activity_share_msg">我想授权你观看我的孩子情况，请你在完成安装Twinly后通知我，我会再次授权给你。连结：play.google.com/xxxxxxxx</string>
+    <string name="text_no_new_firmware">恭喜您,您的Twinly固件已是最新的.</string>
     <string name="text_leave">\&#160;离开\&#160;</string>
     <string name="text_enter">\&#160;进入\&#160;</string>
     <string name="text_daily_enter">入校通知</string>
