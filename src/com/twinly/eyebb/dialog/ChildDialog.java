@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.DisplayLocationActivity;
 import com.twinly.eyebb.activity.DisplayLocationBaiduActivity;
 import com.twinly.eyebb.constant.HttpConstants;

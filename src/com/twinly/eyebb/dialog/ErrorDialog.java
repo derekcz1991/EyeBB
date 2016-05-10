@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public class ErrorDialog extends AppDialog<ErrorDialog.ErrorDialogListener> {
 	public static final String TAG = ErrorDialog.class.getSimpleName();

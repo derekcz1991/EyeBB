@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.adapter.RadarKidsListViewAdapter;
 import com.twinly.eyebb.bluetooth.RadarTrackingService;
 import com.twinly.eyebb.model.Device;

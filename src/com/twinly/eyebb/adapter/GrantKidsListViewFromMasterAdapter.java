@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.customview.CircleImageView;
 import com.twinly.eyebb.model.ChildForGrant;
 import com.twinly.eyebb.utils.ImageUtils;

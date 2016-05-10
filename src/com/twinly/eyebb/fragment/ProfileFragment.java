@@ -24,7 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.activity.SettingsActivity;
 import com.twinly.eyebb.activity.WebViewActivity;

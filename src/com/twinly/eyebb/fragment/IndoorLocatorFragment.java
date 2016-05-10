@@ -30,7 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.adapter.IndoorLocatorAdapter;
 import com.twinly.eyebb.constant.HttpConstants;

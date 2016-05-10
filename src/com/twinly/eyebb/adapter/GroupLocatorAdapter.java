@@ -11,7 +11,7 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.customview.CircleImageView;

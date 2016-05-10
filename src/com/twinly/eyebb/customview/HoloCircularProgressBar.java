@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 /**
  * HoloCircularProgressBar custom view.

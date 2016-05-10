@@ -22,7 +22,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public abstract class BarcodeCreater {
 

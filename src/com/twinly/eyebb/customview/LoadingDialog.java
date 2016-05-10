@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public class LoadingDialog {
 	/**

@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public class ImageUtils {
 	public static DisplayImageOptions avatarOpitons = new DisplayImageOptions.Builder()

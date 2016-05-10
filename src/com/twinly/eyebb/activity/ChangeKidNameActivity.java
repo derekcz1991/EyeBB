@@ -1,6 +1,6 @@
 package com.twinly.eyebb.activity;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.utils.CommonUtils;

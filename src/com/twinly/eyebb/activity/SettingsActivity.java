@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import cn.jpush.android.api.JPushInterface;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.constant.HttpConstants;

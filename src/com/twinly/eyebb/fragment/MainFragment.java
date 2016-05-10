@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.constant.ActivityConstants;
 import com.twinly.eyebb.dialog.IndoorLocatorOptionsDialog;
 import com.twinly.eyebb.utils.SharePrefsUtils;

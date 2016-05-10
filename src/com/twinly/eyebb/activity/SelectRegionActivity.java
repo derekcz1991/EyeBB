@@ -6,7 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public class SelectRegionActivity extends Activity {
 	public static final int RESULT_CODE_CHINA = 1;

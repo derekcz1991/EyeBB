@@ -8,7 +8,7 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.SupportMapFragment;
 
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 import android.os.Bundle;
 import android.os.Handler;

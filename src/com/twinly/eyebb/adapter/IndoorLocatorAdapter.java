@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.customview.AvatarView;
 import com.twinly.eyebb.customview.CircleImageView;
@@ -232,7 +232,7 @@ public class IndoorLocatorAdapter extends BaseAdapter {
 			// add the avatar to flowlayout
 			AvatarView avatarView;
 			if (System.currentTimeMillis()
-					- childrenMap.get(childrenIds.get(i)).getLastAppearTime() < Constants.validTimeDuration) {
+					- childrenMap.get(childrenIds.get(i)).getLastAppearTime() < 10000) {
 				avatarView = new AvatarView(context,
 						childrenMap.get(childrenIds.get(i)),
 						viewHolder.avatarContainer, true);

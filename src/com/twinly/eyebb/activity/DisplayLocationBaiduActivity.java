@@ -32,7 +32,7 @@ import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.CoordinateConverter;
 import com.baidu.mapapi.utils.CoordinateConverter.CoordType;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.constant.HttpConstants;
 import com.twinly.eyebb.dialog.ChildDialog;
 import com.twinly.eyebb.model.ChildForLocator;

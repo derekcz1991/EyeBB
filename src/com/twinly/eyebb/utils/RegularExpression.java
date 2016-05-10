@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public class RegularExpression {
 	/**

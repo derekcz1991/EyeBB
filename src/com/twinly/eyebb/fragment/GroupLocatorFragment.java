@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.adapter.GroupLocatorAdapter;
 import com.twinly.eyebb.constant.Constants;
 import com.twinly.eyebb.model.ChildForLocator;

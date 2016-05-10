@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 
 public class NotificationUtils {
 	public static void sendNotification(Intent notificationIntent,

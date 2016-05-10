@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.dialog.ChildDialog;
 import com.twinly.eyebb.model.ChildForLocator;
 import com.twinly.eyebb.utils.ImageUtils;

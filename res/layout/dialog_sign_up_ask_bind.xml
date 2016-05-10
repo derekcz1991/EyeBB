@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/ble_icon" />
+            android:background="@drawable/logo_twinly" />
 
         <TextView
             style="@style/RedText_26"

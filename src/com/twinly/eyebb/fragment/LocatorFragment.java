@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.KidsListActivity;
 import com.twinly.eyebb.customview.PullToRefreshListView;
 import com.twinly.eyebb.customview.PullToRefreshListView.PullToRefreshListener;

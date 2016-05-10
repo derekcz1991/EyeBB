@@ -9,7 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.bluetooth.BLEUtils;
 import com.twinly.eyebb.model.Device;
 

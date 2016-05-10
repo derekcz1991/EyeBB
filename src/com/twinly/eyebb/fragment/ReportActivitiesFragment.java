@@ -18,7 +18,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.WebViewActivity;
 import com.twinly.eyebb.adapter.ActivitiesListViewAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;

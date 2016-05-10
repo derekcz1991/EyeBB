@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.adapter.GrantKidsListViewFromGuestAdapter;
 import com.twinly.eyebb.adapter.GrantKidsListViewFromMasterAdapter;
 import com.twinly.eyebb.constant.ActivityConstants;

@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.KidProfileActivity;
 import com.twinly.eyebb.activity.MyKidsListActivity;
 import com.twinly.eyebb.constant.ActivityConstants;

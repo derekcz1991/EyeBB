@@ -34,7 +34,7 @@ import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.twinly.eyebb.R;
+import com.twinly.twinly.R;
 import com.twinly.eyebb.activity.LancherActivity;
 import com.twinly.eyebb.database.DBChildren;
 import com.twinly.eyebb.fragment.RadarFragment;
